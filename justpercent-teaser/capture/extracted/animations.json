@@ -1,0 +1,467 @@
+{
+  "summary": {
+    "webAnimations": 28,
+    "cssDeclarations": 427,
+    "scrollTargets": 8,
+    "cdpAnimations": 683,
+    "canvases": 1
+  },
+  "namedAnimations": [
+    "spin",
+    "typewriter-blink",
+    "pulse-fallback",
+    "guide-right",
+    "fadeIn",
+    "beam-run",
+    "bounce"
+  ],
+  "scrollTriggeredElements": 8,
+  "representativeAnimations": [
+    {
+      "type": "CSSTransition",
+      "playState": "running",
+      "animationName": null,
+      "targetSelector": "svg",
+      "targetRect": {
+        "x": 622,
+        "y": 2780.7265625,
+        "width": 134.8203125,
+        "height": 28,
+        "top": 2780.7265625,
+        "right": 756.8203125,
+        "bottom": 2808.7265625,
+        "left": 622
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "linear",
+          "composite": "auto",
+          "opacity": "0",
+          "computedOffset": 0
+        },
+        {
+          "offset": 1,
+          "easing": "linear",
+          "composite": "auto",
+          "opacity": "1",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 200,
+        "delay": 0,
+        "iterations": 1,
+        "easing": "ease-in",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "running",
+      "animationName": "spin",
+      "targetSelector": "div.spinner",
+      "targetRect": {
+        "x": 933.8287963867188,
+        "y": 513.8287963867188,
+        "width": 52.3424072265625,
+        "height": 52.3424072265625,
+        "top": 513.8287963867188,
+        "right": 986.1712036132812,
+        "bottom": 566.1712036132812,
+        "left": 933.8287963867188
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "linear",
+          "composite": "auto",
+          "transform": "rotate(0deg)",
+          "computedOffset": 0
+        },
+        {
+          "offset": 1,
+          "easing": "linear",
+          "composite": "auto",
+          "transform": "rotate(360deg)",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1000,
+        "delay": 0,
+        "iterations": null,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "running",
+      "animationName": "typewriter-blink",
+      "targetSelector": "#typewriter-cursor.text-gray-400.dark:text-gray-400",
+      "targetRect": {
+        "x": 842.4609375,
+        "y": -1160.5,
+        "width": 5.03125,
+        "height": 24,
+        "top": -1160.5,
+        "right": 847.4921875,
+        "bottom": -1136.5,
+        "left": 842.4609375
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "steps(1)",
+          "composite": "auto",
+          "opacity": "1",
+          "computedOffset": 0
+        },
+        {
+          "offset": 0.5,
+          "easing": "steps(1)",
+          "composite": "auto",
+          "opacity": "0",
+          "computedOffset": 0.5
+        },
+        {
+          "offset": 1,
+          "easing": "steps(1)",
+          "composite": "auto",
+          "opacity": "1",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1000,
+        "delay": 0,
+        "iterations": null,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "running",
+      "animationName": "pulse-fallback",
+      "targetSelector": "div.solution-note-fallback",
+      "targetRect": {
+        "x": 573.5256958007812,
+        "y": -1035.474365234375,
+        "width": 192.94866943359375,
+        "height": 192.94873046875,
+        "top": -1035.474365234375,
+        "right": 766.474365234375,
+        "bottom": -842.525634765625,
+        "left": 573.5256958007812
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 0
+        },
+        {
+          "offset": 0.5,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1.05)",
+          "computedOffset": 0.5
+        },
+        {
+          "offset": 1,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1500,
+        "delay": 0,
+        "iterations": null,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "running",
+      "animationName": "pulse-fallback",
+      "targetSelector": "div.solution-note-fallback",
+      "targetRect": {
+        "x": 941.5256958007812,
+        "y": -1035.474365234375,
+        "width": 192.94866943359375,
+        "height": 192.94873046875,
+        "top": -1035.474365234375,
+        "right": 1134.474365234375,
+        "bottom": -842.525634765625,
+        "left": 941.5256958007812
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 0
+        },
+        {
+          "offset": 0.5,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1.05)",
+          "computedOffset": 0.5
+        },
+        {
+          "offset": 1,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1500,
+        "delay": 0,
+        "iterations": null,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "running",
+      "animationName": "pulse-fallback",
+      "targetSelector": "div.solution-note-fallback",
+      "targetRect": {
+        "x": 573.5256958007812,
+        "y": -872.4743041992188,
+        "width": 192.94866943359375,
+        "height": 192.94866943359375,
+        "top": -872.4743041992188,
+        "right": 766.474365234375,
+        "bottom": -679.525634765625,
+        "left": 573.5256958007812
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 0
+        },
+        {
+          "offset": 0.5,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1.05)",
+          "computedOffset": 0.5
+        },
+        {
+          "offset": 1,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1500,
+        "delay": 0,
+        "iterations": null,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "running",
+      "animationName": "pulse-fallback",
+      "targetSelector": "div.solution-note-fallback",
+      "targetRect": {
+        "x": 941.5256958007812,
+        "y": -872.4743041992188,
+        "width": 192.94866943359375,
+        "height": 192.94866943359375,
+        "top": -872.4743041992188,
+        "right": 1134.474365234375,
+        "bottom": -679.525634765625,
+        "left": 941.5256958007812
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 0
+        },
+        {
+          "offset": 0.5,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1.05)",
+          "computedOffset": 0.5
+        },
+        {
+          "offset": 1,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1500,
+        "delay": 0,
+        "iterations": null,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "running",
+      "animationName": "pulse-fallback",
+      "targetSelector": "div.solution-note-fallback",
+      "targetRect": {
+        "x": 573.5256958007812,
+        "y": -709.4743041992188,
+        "width": 192.94866943359375,
+        "height": 192.94866943359375,
+        "top": -709.4743041992188,
+        "right": 766.474365234375,
+        "bottom": -516.525634765625,
+        "left": 573.5256958007812
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 0
+        },
+        {
+          "offset": 0.5,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1.05)",
+          "computedOffset": 0.5
+        },
+        {
+          "offset": 1,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1500,
+        "delay": 0,
+        "iterations": null,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "running",
+      "animationName": "pulse-fallback",
+      "targetSelector": "div.solution-note-fallback",
+      "targetRect": {
+        "x": 941.5256958007812,
+        "y": -709.4743041992188,
+        "width": 192.94866943359375,
+        "height": 192.94866943359375,
+        "top": -709.4743041992188,
+        "right": 1134.474365234375,
+        "bottom": -516.525634765625,
+        "left": 941.5256958007812
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 0
+        },
+        {
+          "offset": 0.5,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1.05)",
+          "computedOffset": 0.5
+        },
+        {
+          "offset": 1,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1500,
+        "delay": 0,
+        "iterations": null,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "running",
+      "animationName": "pulse-fallback",
+      "targetSelector": "div.solution-note-fallback",
+      "targetRect": {
+        "x": 573.5256958007812,
+        "y": -546.4743041992188,
+        "width": 192.94866943359375,
+        "height": 192.94863891601562,
+        "top": -546.4743041992188,
+        "right": 766.474365234375,
+        "bottom": -353.5256652832031,
+        "left": 573.5256958007812
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 0
+        },
+        {
+          "offset": 0.5,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1.05)",
+          "computedOffset": 0.5
+        },
+        {
+          "offset": 1,
+          "easing": "ease-in-out",
+          "composite": "auto",
+          "transform": "rotate(-45deg) scale(1)",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1500,
+        "delay": 0,
+        "iterations": null,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    }
+  ]
+}

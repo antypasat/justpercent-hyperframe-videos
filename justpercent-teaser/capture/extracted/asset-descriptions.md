@@ -1,0 +1,46 @@
+# Asset Descriptions
+
+One line per file. Read this instead of opening every image individually.
+
+- cky-close-icon.svg — 1KB, cky close icon
+- cky-placeholder.svg — 1KB, cky placeholder
+- closing-a-deal-calculate-your-estimated-.webp — 12KB, closing a deal calculate your estimated 
+- dining-out-or-ordering-in-calculate-the-.webp — 12KB, dining out or ordering in calculate the 
+- external-link.svg — 2KB, "external link", above fold
+- favicon.ico — 15KB, favicon
+- got-a-raise-at-work-see-how-much-your-ne.webp — 10KB, got a raise at work see how much your ne
+- in-store-shopping-calculate-the-total-pr.webp — 11KB, in store shopping calculate the total pr
+- loading.gif — 47KB, loading
+- og-image.jpeg — 17KB, og image
+- percentage-symbol-logo.webp — 72KB, percentage symbol logo
+- revisit-consent-button.svg — 2KB, revisit consent button
+- svgs/close-icon.svg — icon: close-icon
+- svgs/darktext-gray-300.svg — icon: darktext gray 300
+- svgs/icon-0.svg — icon: icon 0
+- svgs/icon-1.svg — icon: icon 1
+- svgs/menu-icon.svg — icon: menu-icon
+- svgs/mr-1.svg — icon: mr 1
+- svgs/solution-hover-arrow-icon-2.svg — icon: solution-hover-arrow-icon
+- svgs/solution-hover-arrow-icon-3.svg — icon: solution-hover-arrow-icon
+- svgs/solution-hover-arrow-icon-4.svg — icon: solution-hover-arrow-icon
+- svgs/solution-hover-arrow-icon-5.svg — icon: solution-hover-arrow-icon
+- svgs/solution-hover-arrow-icon-6.svg — icon: solution-hover-arrow-icon
+- svgs/solution-hover-arrow-icon-7.svg — icon: solution-hover-arrow-icon
+- svgs/solution-hover-arrow-icon-8.svg — icon: solution-hover-arrow-icon
+- svgs/solution-hover-arrow-icon.svg — icon: solution-hover-arrow-icon
+- svgs/star-filled-2.svg — icon: star-filled
+- svgs/star-filled-3.svg — icon: star-filled
+- svgs/star-filled-4.svg — icon: star-filled
+- svgs/star-filled-5.svg — icon: star-filled
+- svgs/star-filled-6.svg — icon: star-filled
+- svgs/star-filled-7.svg — icon: star-filled
+- svgs/star-filled-8.svg — icon: star-filled
+- svgs/star-filled.svg — icon: star-filled
+- svgs/star-outline-2.svg — icon: star-outline
+- svgs/star-outline-3.svg — icon: star-outline
+- svgs/star-outline-4.svg — icon: star-outline
+- svgs/star-outline-5.svg — icon: star-outline
+- svgs/star-outline-6.svg — icon: star-outline
+- svgs/star-outline-7.svg — icon: star-outline
+- svgs/star-outline-8.svg — icon: star-outline
+- svgs/star-outline.svg — icon: star-outline

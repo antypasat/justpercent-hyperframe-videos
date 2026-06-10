@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+      }
+
+      [data-composition-id="main"] {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        background: #000;
+        overflow: hidden;
+      }
+
+      .crawl-viewport {
+        position: absolute;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        perspective: 900px;
+        perspective-origin: 50% 50%;
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 1) 18%,
+          rgba(0, 0, 0, 1) 100%
+        );
+        mask-image: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 1) 18%,
+          rgba(0, 0, 0, 1) 100%
+        );
+      }
+
+      .crawl-perspective {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 1920px;
+        height: 100%;
+        transform: translateX(-50%) scale(2) rotateX(22deg);
+        transform-origin: 50% 50%;
+        transform-style: preserve-3d;
+      }
+
+      .crawl-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        will-change: transform;
+        transform: translateY(1080px);
+      }
+
+      .crawl-content iframe {
+        display: block;
+        border: 0;
+        width: 1920px;
+        background: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="45" data-width="1920" data-height="1080">
+      <div class="crawl-viewport">
+        <div class="crawl-perspective">
+          <div data-hf-studio-original-inline-translate="" data-hf-studio-original-translate="" data-hf-studio-path-offset="true" style="--hf-studio-offset-x:0px;--hf-studio-offset-y:0px;translate:var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)" class="crawl-content">
+            <iframe id="crawl-frame" src="JustPercent.html" scrolling="no" loading="eager"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const VIEWPORT_H = 1080;
+      const DURATION = 45;
+
+      const iframe = document.getElementById("crawl-frame");
+      const content = document.querySelector(".crawl-content");
+
+      let contentHeight = VIEWPORT_H;
+
+      function injectOverrides() {
+        try {
+          const doc = iframe.contentDocument;
+          if (!doc || !doc.head) return;
+          if (doc.getElementById("__crawl_overrides")) return;
+          const style = doc.createElement("style");
+          style.id = "__crawl_overrides";
+          style.textContent = `
+            html, body {
+              background: #030712 !important;
+              min-height: 0 !important;
+              height: auto !important;
+              display: block !important;
+            }
+            #main-content, main {
+              flex-grow: 0 !important;
+              min-height: 0 !important;
+              height: auto !important;
+            }
+            header.fixed { display: none !important; }
+            #floating-nav-container,
+            [id*="floating-nav-container"],
+            .floating-nav-container,
+            #cky-btn-revisit-wrapper,
+            [id*="cky-btn-revisit-wrapper"],
+            .cky-btn-revisit-wrapper,
+            [class*="cky-"] { display: none !important; }
+            .minimap-theme-toggle-active .minimap-widget,
+            [data-minimap-widget],
+            .minimap:not([id="minimap-content"]) { display: none !important; }
+            .equation-toggle, .help-icon, .summary { display: none !important; }
+            *, *::before, *::after {
+              animation-duration: 0s !important;
+              animation-delay: 0s !important;
+              transition-duration: 0s !important;
+              transition-delay: 0s !important;
+            }
+          `;
+          doc.head.appendChild(style);
+          if (doc.documentElement) {
+            doc.documentElement.classList.add("dark");
+            doc.documentElement.style.background = "#000";
+          }
+        } catch (e) {}
+      }
+
+      function measure() {
+        try {
+          const doc = iframe.contentDocument;
+          if (!doc) return contentHeight;
+          injectOverrides();
+          const h = Math.max(
+            doc.body ? doc.body.scrollHeight : 0,
+            doc.documentElement ? doc.documentElement.scrollHeight : 0,
+            doc.body ? doc.body.offsetHeight : 0,
+            doc.documentElement ? doc.documentElement.offsetHeight : 0
+          );
+          if (h > 0) {
+            contentHeight = h;
+            iframe.style.height = h + "px";
+          }
+        } catch (e) {}
+        return contentHeight;
+      }
+
+      iframe.addEventListener("load", measure);
+      measure();
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      const proxy = { p: 0 };
+      tl.to(
+        proxy,
+        {
+          p: 1,
+          duration: DURATION,
+          ease: "none",
+          onUpdate: () => {
+            const h = measure();
+            const start = VIEWPORT_H;
+            const end = -(h + VIEWPORT_H);
+            const y = start + (end - start) * proxy.p;
+            content.style.transform = "translateY(" + y + "px)";
+          },
+        },
+        0
+      );
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

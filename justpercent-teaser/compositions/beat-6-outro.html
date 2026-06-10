@@ -1,0 +1,187 @@
+<template id="beat-6-outro-template">
+  <div
+    data-composition-id="beat-6-outro"
+    data-start="0"
+    data-width="1080"
+    data-height="1920"
+  >
+    <div class="b6-stage">
+      <div class="b6-aurora b6-aurora-a"></div>
+      <div class="b6-aurora b6-aurora-b"></div>
+
+      <div class="b6-content">
+        <!-- real brand mark: chart-line icon like site section headers -->
+        <svg class="b6-glyph" width="220" height="220" viewBox="0 0 100 100" fill="none">
+          <circle class="b6-c1" cx="22" cy="22" r="13" stroke="#c4a3ff" stroke-width="6.5" fill="none"/>
+          <circle class="b6-c2" cx="78" cy="78" r="13" stroke="#c4a3ff" stroke-width="6.5" fill="none"/>
+          <line
+            class="b6-slash"
+            x1="84" y1="16" x2="16" y2="84"
+            stroke="#7c3aed" stroke-width="7" stroke-linecap="round"
+          />
+        </svg>
+
+        <!-- real site H1 -->
+        <div class="b6-h1">Free, online percentage calculators</div>
+
+        <!-- real brand wordmark -->
+        <div class="b6-wordmark">
+          <span class="b6-mark b6-mark-1">Just</span>
+          <span class="b6-mark b6-mark-2">Percent</span>
+        </div>
+
+        <!-- URL + underline -->
+        <div class="b6-url-wrap">
+          <div class="b6-url">justpercent.com</div>
+          <svg class="b6-underline" width="520" height="14" viewBox="0 0 520 14" fill="none">
+            <line class="b6-uline" x1="6" y1="7" x2="514" y2="7"
+              stroke="#7c3aed" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <!-- search-bar mock (mirrors real site "Calculate anything..." input) -->
+        <div class="b6-search">
+          <span class="b6-search-icon">⌕</span>
+          <span class="b6-search-ph">Calculate anything…</span>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="beat-6-outro"] {
+        position: relative; width: 1080px; height: 1920px;
+        background: #030712; overflow: hidden;
+        font-family: "IBM Plex Sans", sans-serif;
+      }
+      [data-composition-id="beat-6-outro"] .b6-stage { position: absolute; inset: 0; }
+      [data-composition-id="beat-6-outro"] .b6-aurora {
+        position: absolute; border-radius: 50%; filter: blur(160px);
+      }
+      [data-composition-id="beat-6-outro"] .b6-aurora-a {
+        width: 1200px; height: 1200px; top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, #3b0764 0%, rgba(59,7,100,0) 70%);
+        opacity: 0.85;
+      }
+      [data-composition-id="beat-6-outro"] .b6-aurora-b {
+        width: 700px; height: 700px; top: -180px; left: -160px;
+        background: radial-gradient(circle, #1e1b4b 0%, rgba(30,27,75,0) 70%);
+        opacity: 0.55;
+      }
+      [data-composition-id="beat-6-outro"] .b6-content {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        gap: 28px; text-align: center; padding: 0 60px;
+      }
+      [data-composition-id="beat-6-outro"] .b6-glyph {
+        filter: drop-shadow(0 0 60px rgba(124,58,237,0.6));
+        will-change: transform, opacity;
+      }
+      [data-composition-id="beat-6-outro"] .b6-c1,
+      [data-composition-id="beat-6-outro"] .b6-c2 {
+        will-change: transform, opacity;
+        transform-origin: center; transform-box: fill-box;
+      }
+      [data-composition-id="beat-6-outro"] .b6-slash {
+        stroke-dasharray: 110; stroke-dashoffset: 110;
+      }
+      [data-composition-id="beat-6-outro"] .b6-h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 60px; font-weight: 300;
+        color: #e5e7eb; letter-spacing: -0.025em;
+        will-change: opacity, transform;
+      }
+      [data-composition-id="beat-6-outro"] .b6-wordmark {
+        display: flex; gap: 22px; align-items: baseline; margin-top: 4px;
+      }
+      [data-composition-id="beat-6-outro"] .b6-mark {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 124px; font-weight: 700;
+        color: #ffffff; letter-spacing: -0.03em; line-height: 1;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="beat-6-outro"] .b6-mark-2 { color: #c4a3ff; }
+      [data-composition-id="beat-6-outro"] .b6-url-wrap {
+        display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 8px;
+      }
+      [data-composition-id="beat-6-outro"] .b6-url {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 56px; font-weight: 500;
+        color: rgba(255,255,255,0.92); letter-spacing: 0.002em;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="beat-6-outro"] .b6-underline { width: 520px; height: 14px; }
+      [data-composition-id="beat-6-outro"] .b6-uline {
+        stroke-dasharray: 510; stroke-dashoffset: 510;
+      }
+      [data-composition-id="beat-6-outro"] .b6-search {
+        margin-top: 28px;
+        display: flex; align-items: center; gap: 16px;
+        width: 620px;
+        padding: 18px 26px;
+        background: rgba(31, 41, 55, 0.78);
+        border: 1px solid rgba(148,163,184,0.32);
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+        will-change: opacity, transform;
+      }
+      [data-composition-id="beat-6-outro"] .b6-search-icon {
+        font-size: 28px; color: rgba(255,255,255,0.6);
+      }
+      [data-composition-id="beat-6-outro"] .b6-search-ph {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 26px; font-weight: 400;
+        color: rgba(255,255,255,0.55);
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var beat = 2.70;
+
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-aurora-a',
+          { scale: 0.95 }, { scale: 1.05, duration: beat, ease: "sine.inOut" }, 0);
+
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-glyph',
+          { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, 0.1);
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-c1',
+          { scale: 0.4, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.8)" }, 0.18);
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-c2',
+          { scale: 0.4, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.8)" }, 0.32);
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-slash',
+          { strokeDashoffset: 110 },
+          { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, 0.5);
+
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-h1',
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 0.7);
+
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-mark-1',
+          { y: 36, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.95);
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-mark-2',
+          { y: 36, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 1.08);
+
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-url',
+          { y: 22, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 1.45);
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-uline',
+          { strokeDashoffset: 510 },
+          { strokeDashoffset: 0, duration: 0.55, ease: "power2.out" }, 1.65);
+
+        tl.fromTo('[data-composition-id="beat-6-outro"] .b6-search',
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.45, ease: "power2.out" }, 2.0);
+
+        window.__timelines["beat-6-outro"] = tl;
+      })();
+    </script>
+  </div>
+</template>

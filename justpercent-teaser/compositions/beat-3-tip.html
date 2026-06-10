@@ -1,0 +1,240 @@
+<template id="beat-3-tip-template">
+  <div data-composition-id="beat-3-tip" data-start="0" data-width="1080" data-height="1920">
+    <div class="b3-stage">
+      <div class="b3-aurora b3-aurora-a"></div>
+      <div class="b3-aurora b3-aurora-b"></div>
+
+      <div class="b3-card-wrap">
+        <div class="b3-calc">
+          <div class="b3-head">
+            <svg class="b3-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c4a3ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7l6 6 4-4 8 8" /><polyline points="21 17 21 20 18 20" />
+            </svg>
+            <span class="b3-title">Value Increase</span>
+            <span class="b3-title-soft">Calculator</span>
+          </div>
+
+          <div class="b3-q"><span class="b3-q-em">Original</span> increased by <span class="b3-q-em">Increase %</span> is what?</div>
+
+          <div class="b3-tabs">
+            <div class="b3-tab b3-tab-on">▸ Equation</div>
+            <div class="b3-tab">⟳ Round</div>
+          </div>
+
+          <div class="b3-eq">
+            <div class="b3-chip b3-chip-in">$84.50</div>
+            <div class="b3-op">increased by</div>
+            <div class="b3-chip b3-chip-in">18%</div>
+          </div>
+
+          <div class="b3-result-row">
+            <div class="b3-eq-op">=</div>
+            <div class="b3-chip b3-chip-ans">
+              <div class="b3-ans-label">read-only Answer/Result</div>
+              <div class="b3-ans-num" id="b3-ans-num">$0.00</div>
+            </div>
+          </div>
+
+          <div class="b3-actions">
+            <span class="b3-act">⧉ Copy</span>
+            <span class="b3-act">☆ Save</span>
+            <span class="b3-act">↺ Clear</span>
+            <span class="b3-hint">Tip $15.21 · Total $99.71</span>
+          </div>
+
+          <div class="b3-stamp">— DONE</div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="beat-3-tip"] {
+        position: relative; width: 1080px; height: 1920px;
+        background: #030712; overflow: hidden;
+        font-family: "IBM Plex Sans", sans-serif;
+      }
+      [data-composition-id="beat-3-tip"] .b3-stage { position: absolute; inset: 0; }
+      [data-composition-id="beat-3-tip"] .b3-aurora {
+        position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.8;
+      }
+      [data-composition-id="beat-3-tip"] .b3-aurora-a {
+        width: 1000px; height: 1000px; top: -200px; right: -260px;
+        background: radial-gradient(circle, #4a044e 0%, rgba(74,4,78,0) 70%);
+      }
+      [data-composition-id="beat-3-tip"] .b3-aurora-b {
+        width: 900px; height: 900px; bottom: -200px; left: -240px;
+        background: radial-gradient(circle, #1863dc 0%, rgba(24,99,220,0) 70%);
+      }
+      [data-composition-id="beat-3-tip"] .b3-card-wrap {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        will-change: transform, opacity, filter;
+      }
+      [data-composition-id="beat-3-tip"] .b3-calc {
+        width: 960px;
+        background: #1f2937;
+        border: 1px solid rgba(148,163,184,0.22);
+        border-radius: 18px;
+        box-shadow: 0 18px 50px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+        padding: 40px 44px 32px;
+        display: flex; flex-direction: column; gap: 22px;
+        position: relative;
+      }
+      [data-composition-id="beat-3-tip"] .b3-head { display: flex; align-items: center; gap: 14px; }
+      [data-composition-id="beat-3-tip"] .b3-title {
+        font-family: "Space Grotesk", sans-serif; font-size: 40px; font-weight: 700;
+        color: #ffffff; letter-spacing: -0.02em;
+      }
+      [data-composition-id="beat-3-tip"] .b3-title-soft {
+        font-family: "Space Grotesk", sans-serif; font-size: 40px; font-weight: 300;
+        color: rgba(255,255,255,0.65);
+      }
+      [data-composition-id="beat-3-tip"] .b3-q {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 32px; font-weight: 400;
+        color: rgba(255,255,255,0.82);
+      }
+      [data-composition-id="beat-3-tip"] .b3-q-em {
+        font-family: "JetBrains Mono", monospace; color: #c4a3ff;
+        background: rgba(124,58,237,0.18); padding: 2px 10px; border-radius: 6px;
+      }
+      [data-composition-id="beat-3-tip"] .b3-tabs { display: flex; gap: 12px; }
+      [data-composition-id="beat-3-tip"] .b3-tab {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 22px; font-weight: 500;
+        color: rgba(255,255,255,0.55); padding: 8px 18px; border-radius: 8px;
+        border: 1px solid rgba(148,163,184,0.18);
+      }
+      [data-composition-id="beat-3-tip"] .b3-tab-on {
+        color: #ffffff; background: rgba(124,58,237,0.2);
+        border-color: rgba(196,163,255,0.55);
+      }
+      [data-composition-id="beat-3-tip"] .b3-eq {
+        display: flex; align-items: center; justify-content: center;
+        flex-wrap: wrap; gap: 14px; padding: 10px 0 0;
+      }
+      [data-composition-id="beat-3-tip"] .b3-chip {
+        font-family: "JetBrains Mono", monospace; font-size: 56px; font-weight: 400;
+        color: #ffffff; font-variant-numeric: tabular-nums;
+        padding: 14px 22px; border-radius: 12px; letter-spacing: -0.02em;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="beat-3-tip"] .b3-chip-in {
+        background: rgba(2,6,23,0.6);
+        border: 1px solid rgba(148,163,184,0.32);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+      }
+      [data-composition-id="beat-3-tip"] .b3-op {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 30px; font-weight: 400;
+        color: rgba(255,255,255,0.68); padding: 0 6px;
+      }
+      [data-composition-id="beat-3-tip"] .b3-result-row {
+        display: flex; align-items: center; justify-content: center;
+        gap: 18px; padding-top: 8px;
+      }
+      [data-composition-id="beat-3-tip"] .b3-eq-op {
+        font-family: "Space Grotesk", sans-serif; font-size: 56px; font-weight: 300;
+        color: rgba(255,255,255,0.78);
+      }
+      [data-composition-id="beat-3-tip"] .b3-chip-ans {
+        background: #7c3aed;
+        border: 1px solid rgba(255,255,255,0.18);
+        padding: 12px 32px; border-radius: 14px;
+        box-shadow: 0 18px 48px rgba(124,58,237,0.55), inset 0 1px 0 rgba(255,255,255,0.32);
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        will-change: transform, opacity, filter;
+      }
+      [data-composition-id="beat-3-tip"] .b3-ans-label {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 15px; font-weight: 500;
+        color: rgba(255,255,255,0.82); letter-spacing: 0.06em;
+      }
+      [data-composition-id="beat-3-tip"] .b3-ans-num {
+        font-family: "JetBrains Mono", monospace; font-size: 88px; font-weight: 400;
+        color: #ffffff; font-variant-numeric: tabular-nums; letter-spacing: -0.025em;
+        line-height: 1.05;
+      }
+      [data-composition-id="beat-3-tip"] .b3-actions {
+        display: flex; align-items: center; gap: 20px; padding-top: 12px;
+        border-top: 1px solid rgba(148,163,184,0.18);
+      }
+      [data-composition-id="beat-3-tip"] .b3-act {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 20px; font-weight: 500;
+        color: rgba(196,163,255,0.95);
+      }
+      [data-composition-id="beat-3-tip"] .b3-hint {
+        margin-left: auto;
+        font-family: "JetBrains Mono", monospace; font-size: 16px;
+        color: rgba(255,255,255,0.55);
+      }
+      [data-composition-id="beat-3-tip"] .b3-stamp {
+        position: absolute; right: 40px; bottom: -42px;
+        font-family: "Space Grotesk", sans-serif; font-size: 36px; font-weight: 700;
+        letter-spacing: 0.18em; color: #c4a3ff; transform: rotate(-8deg);
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var beat = 1.0;
+
+        tl.fromTo(
+          '[data-composition-id="beat-3-tip"] .b3-aurora-a',
+          { x: 0, y: 0 }, { x: -20, y: 14, duration: beat, ease: "sine.inOut" }, 0,
+        );
+        tl.fromTo(
+          '[data-composition-id="beat-3-tip"] .b3-aurora-b',
+          { x: 0, y: 0 }, { x: 20, y: -14, duration: beat, ease: "sine.inOut" }, 0,
+        );
+
+        tl.fromTo(
+          '[data-composition-id="beat-3-tip"] .b3-card-wrap',
+          { x: 200, opacity: 0, filter: "blur(18px)" },
+          { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power2.out" },
+          0,
+        );
+
+        tl.fromTo(
+          '[data-composition-id="beat-3-tip"] .b3-chip-in',
+          { y: 18, opacity: 0, scale: 0.95 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2)", stagger: 0.08 },
+          0.18,
+        );
+
+        tl.fromTo(
+          '[data-composition-id="beat-3-tip"] .b3-chip-ans',
+          { scale: 0.88, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.28, ease: "power3.out" },
+          0.42,
+        );
+
+        var ansEl = document.querySelector('[data-composition-id="beat-3-tip"] #b3-ans-num');
+        var proxy = { v: 0 };
+        tl.to(
+          proxy, {
+            v: 99.71,
+            duration: 0.32,
+            ease: "power2.out",
+            onUpdate: function () { ansEl.textContent = "$" + proxy.v.toFixed(2); },
+          },
+          0.5,
+        );
+
+        tl.fromTo(
+          '[data-composition-id="beat-3-tip"] .b3-stamp',
+          { scale: 1.5, opacity: 0, rotation: -18 },
+          { scale: 1, opacity: 1, rotation: -8, duration: 0.22, ease: "back.out(2.4)" },
+          0.78,
+        );
+
+        tl.to(
+          '[data-composition-id="beat-3-tip"] .b3-card-wrap',
+          { x: -160, opacity: 0, filter: "blur(20px)", duration: 0.28, ease: "power2.in" },
+          beat - 0.28,
+        );
+
+        window.__timelines["beat-3-tip"] = tl;
+      })();
+    </script>
+  </div>
+</template>

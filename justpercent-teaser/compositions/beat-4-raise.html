@@ -1,0 +1,257 @@
+<template id="beat-4-raise-template">
+  <div
+    data-composition-id="beat-4-raise"
+    data-start="0"
+    data-width="1080"
+    data-height="1920"
+  >
+    <div class="b4-stage">
+      <div class="b4-aurora b4-aurora-a"></div>
+      <div class="b4-aurora b4-aurora-b"></div>
+      <div class="b4-aurora b4-aurora-c"></div>
+
+      <div class="b4-card-wrap">
+        <div class="b4-calc">
+          <div class="b4-head">
+            <svg class="b4-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c4a3ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7l6 6 4-4 8 8"/><polyline points="21 17 21 20 18 20"/>
+            </svg>
+            <span class="b4-title">Value Increase</span>
+            <span class="b4-title-soft">Calculator</span>
+          </div>
+
+          <div class="b4-q"><span class="b4-q-em">Original</span> increased by <span class="b4-q-em">Increase %</span> is what?</div>
+
+          <div class="b4-tabs">
+            <div class="b4-tab b4-tab-on">▸ Equation</div>
+            <div class="b4-tab">⟳ Round</div>
+          </div>
+
+          <div class="b4-eq">
+            <div class="b4-chip b4-chip-in">$72,000</div>
+            <div class="b4-op">increased by</div>
+            <div class="b4-chip b4-chip-in">10%</div>
+          </div>
+
+          <div class="b4-result-row">
+            <div class="b4-eq-op">=</div>
+            <div class="b4-chip b4-chip-ans">
+              <div class="b4-ans-label">read-only Answer/Result</div>
+              <div class="b4-ans-num" id="b4-ans-num">$72,000</div>
+            </div>
+          </div>
+
+          <div class="b4-delta-row">
+            <svg class="b4-arrow" width="36" height="36" viewBox="0 0 44 44" fill="none">
+              <path class="b4-arrow-path"
+                d="M 22 36 L 22 12 M 22 12 L 10 24 M 22 12 L 34 24"
+                stroke="#c4a3ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span id="b4-delta-num">+$0 / year</span>
+          </div>
+
+          <div class="b4-actions">
+            <span class="b4-act">⧉ Copy</span>
+            <span class="b4-act">☆ Save</span>
+            <span class="b4-act">↺ Clear</span>
+            <span class="b4-hint">Final value result updated to 79,200</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="beat-4-raise"] {
+        position: relative; width: 1080px; height: 1920px;
+        background: #030712; overflow: hidden;
+        font-family: "IBM Plex Sans", sans-serif;
+      }
+      [data-composition-id="beat-4-raise"] .b4-stage { position: absolute; inset: 0; }
+      [data-composition-id="beat-4-raise"] .b4-aurora {
+        position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.85;
+      }
+      [data-composition-id="beat-4-raise"] .b4-aurora-a {
+        width: 1100px; height: 1100px; top: -260px; left: -300px;
+        background: radial-gradient(circle, #1e1b4b 0%, rgba(30,27,75,0) 70%);
+      }
+      [data-composition-id="beat-4-raise"] .b4-aurora-b {
+        width: 900px; height: 900px; bottom: -200px; right: -200px;
+        background: radial-gradient(circle, #1863dc 0%, rgba(24,99,220,0) 72%);
+        opacity: 0.55;
+      }
+      [data-composition-id="beat-4-raise"] .b4-aurora-c {
+        width: 600px; height: 600px; top: 40%; left: 50%;
+        background: radial-gradient(circle, #7c3aed 0%, rgba(124,58,237,0) 70%);
+        opacity: 0.5; transform: translate(-50%, -50%);
+      }
+      [data-composition-id="beat-4-raise"] .b4-card-wrap {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        will-change: transform, opacity, filter;
+      }
+      [data-composition-id="beat-4-raise"] .b4-calc {
+        width: 980px;
+        background: #1f2937;
+        border: 1px solid rgba(148,163,184,0.22);
+        border-radius: 18px;
+        box-shadow: 0 22px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+        padding: 44px 48px 36px;
+        display: flex; flex-direction: column; gap: 24px;
+        position: relative;
+      }
+      [data-composition-id="beat-4-raise"] .b4-head { display: flex; align-items: center; gap: 14px; }
+      [data-composition-id="beat-4-raise"] .b4-title {
+        font-family: "Space Grotesk", sans-serif; font-size: 40px; font-weight: 700;
+        color: #ffffff; letter-spacing: -0.02em;
+      }
+      [data-composition-id="beat-4-raise"] .b4-title-soft {
+        font-family: "Space Grotesk", sans-serif; font-size: 40px; font-weight: 300;
+        color: rgba(255,255,255,0.65);
+      }
+      [data-composition-id="beat-4-raise"] .b4-q {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 32px; font-weight: 400;
+        color: rgba(255,255,255,0.82);
+      }
+      [data-composition-id="beat-4-raise"] .b4-q-em {
+        font-family: "JetBrains Mono", monospace; color: #c4a3ff;
+        background: rgba(124,58,237,0.18); padding: 2px 10px; border-radius: 6px;
+      }
+      [data-composition-id="beat-4-raise"] .b4-tabs { display: flex; gap: 12px; }
+      [data-composition-id="beat-4-raise"] .b4-tab {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 22px; font-weight: 500;
+        color: rgba(255,255,255,0.55); padding: 8px 18px; border-radius: 8px;
+        border: 1px solid rgba(148,163,184,0.18);
+      }
+      [data-composition-id="beat-4-raise"] .b4-tab-on {
+        color: #ffffff; background: rgba(124,58,237,0.2);
+        border-color: rgba(196,163,255,0.55);
+      }
+      [data-composition-id="beat-4-raise"] .b4-eq {
+        display: flex; align-items: center; justify-content: center;
+        flex-wrap: wrap; gap: 14px; padding: 10px 0 0;
+      }
+      [data-composition-id="beat-4-raise"] .b4-chip {
+        font-family: "JetBrains Mono", monospace; font-size: 56px; font-weight: 400;
+        color: #ffffff; font-variant-numeric: tabular-nums;
+        padding: 14px 22px; border-radius: 12px; letter-spacing: -0.02em;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="beat-4-raise"] .b4-chip-in {
+        background: rgba(2,6,23,0.6);
+        border: 1px solid rgba(148,163,184,0.32);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+      }
+      [data-composition-id="beat-4-raise"] .b4-op {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 30px; font-weight: 400;
+        color: rgba(255,255,255,0.68); padding: 0 6px;
+      }
+      [data-composition-id="beat-4-raise"] .b4-result-row {
+        display: flex; align-items: center; justify-content: center;
+        gap: 18px; padding-top: 8px;
+      }
+      [data-composition-id="beat-4-raise"] .b4-eq-op {
+        font-family: "Space Grotesk", sans-serif; font-size: 56px; font-weight: 300;
+        color: rgba(255,255,255,0.78);
+      }
+      [data-composition-id="beat-4-raise"] .b4-chip-ans {
+        background: #7c3aed;
+        border: 1px solid rgba(255,255,255,0.18);
+        padding: 14px 36px; border-radius: 14px;
+        box-shadow: 0 20px 52px rgba(124,58,237,0.6), inset 0 1px 0 rgba(255,255,255,0.32);
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        will-change: transform, opacity, filter;
+      }
+      [data-composition-id="beat-4-raise"] .b4-ans-label {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 15px; font-weight: 500;
+        color: rgba(255,255,255,0.82); letter-spacing: 0.06em;
+      }
+      [data-composition-id="beat-4-raise"] .b4-ans-num {
+        font-family: "JetBrains Mono", monospace; font-size: 104px; font-weight: 400;
+        color: #ffffff; font-variant-numeric: tabular-nums; letter-spacing: -0.025em;
+        line-height: 1.05;
+      }
+      [data-composition-id="beat-4-raise"] .b4-delta-row {
+        display: flex; align-items: center; justify-content: center;
+        gap: 12px; padding-top: 4px;
+        font-family: "Space Grotesk", sans-serif; font-size: 36px; font-weight: 700;
+        color: #c4a3ff;
+      }
+      [data-composition-id="beat-4-raise"] .b4-delta-row span {
+        font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums;
+      }
+      [data-composition-id="beat-4-raise"] .b4-arrow-path {
+        stroke-dasharray: 80; stroke-dashoffset: 80;
+      }
+      [data-composition-id="beat-4-raise"] .b4-actions {
+        display: flex; align-items: center; gap: 20px; padding-top: 12px;
+        border-top: 1px solid rgba(148,163,184,0.18);
+      }
+      [data-composition-id="beat-4-raise"] .b4-act {
+        font-family: "IBM Plex Sans", sans-serif; font-size: 20px; font-weight: 500;
+        color: rgba(196,163,255,0.95);
+      }
+      [data-composition-id="beat-4-raise"] .b4-hint {
+        margin-left: auto;
+        font-family: "JetBrains Mono", monospace; font-size: 16px;
+        color: rgba(255,255,255,0.55);
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        var beat = 2.45;
+
+        tl.fromTo('[data-composition-id="beat-4-raise"] .b4-aurora-a',
+          { x: 0, y: 0 }, { x: 30, y: 20, duration: beat, ease: "sine.inOut" }, 0);
+        tl.fromTo('[data-composition-id="beat-4-raise"] .b4-aurora-b',
+          { x: 0, y: 0 }, { x: -25, y: -16, duration: beat, ease: "sine.inOut" }, 0);
+        tl.fromTo('[data-composition-id="beat-4-raise"] .b4-aurora-c',
+          { scale: 0.85, opacity: 0.3 },
+          { scale: 1.15, opacity: 0.7, duration: beat, ease: "sine.inOut" }, 0);
+
+        tl.fromTo('[data-composition-id="beat-4-raise"] .b4-card-wrap',
+          { x: 220, opacity: 0, filter: "blur(20px)" },
+          { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power2.out" }, 0);
+
+        tl.fromTo('[data-composition-id="beat-4-raise"] .b4-chip-in',
+          { y: 24, opacity: 0, scale: 0.94 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.8)", stagger: 0.16 }, 0.35);
+
+        tl.fromTo('[data-composition-id="beat-4-raise"] .b4-chip-ans',
+          { scale: 0.9, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.85);
+
+        var ansEl = document.querySelector('[data-composition-id="beat-4-raise"] #b4-ans-num');
+        var deltaEl = document.querySelector('[data-composition-id="beat-4-raise"] #b4-delta-num');
+        var proxy = { v: 72000 };
+        tl.to(proxy, {
+          v: 79200, duration: 0.95, ease: "power3.out",
+          onUpdate: function () {
+            ansEl.textContent = "$" + Math.round(proxy.v).toLocaleString("en-US");
+            deltaEl.textContent = "+$" + Math.round(proxy.v - 72000).toLocaleString("en-US") + " / year";
+          },
+        }, 1.0);
+
+        tl.fromTo('[data-composition-id="beat-4-raise"] .b4-chip-ans',
+          { filter: "drop-shadow(0 0 0px rgba(124,58,237,0))" },
+          { filter: "drop-shadow(0 0 56px rgba(124,58,237,0.85))", duration: 0.7, ease: "power2.out" }, 1.05);
+
+        tl.fromTo('[data-composition-id="beat-4-raise"] .b4-arrow-path',
+          { strokeDashoffset: 80 },
+          { strokeDashoffset: 0, duration: 0.4, ease: "power2.out" }, 1.65);
+        tl.fromTo('[data-composition-id="beat-4-raise"] .b4-delta-row',
+          { y: 14, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 1.6);
+
+        tl.to('[data-composition-id="beat-4-raise"] .b4-card-wrap',
+          { scale: 1.1, opacity: 0, filter: "blur(24px)", duration: 0.32, ease: "power2.in" },
+          beat - 0.32);
+
+        window.__timelines["beat-4-raise"] = tl;
+      })();
+    </script>
+  </div>
+</template>

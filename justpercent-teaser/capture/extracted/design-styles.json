@@ -1,0 +1,197 @@
+{
+  "typography": [
+    {
+      "role": "display",
+      "fontFamily": "Space Grotesk",
+      "fontSize": "30px",
+      "fontWeight": "300",
+      "lineHeight": "36px",
+      "letterSpacing": "-0.75px",
+      "color": "#E5E7EB",
+      "sampleText": "Free, online percentage calculators"
+    },
+    {
+      "role": "heading",
+      "fontFamily": "Space Grotesk",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "lineHeight": "28px",
+      "letterSpacing": "-0.5px",
+      "color": "#FFFFFF",
+      "sampleText": "Basic Percentage Calculator"
+    },
+    {
+      "role": "link",
+      "fontFamily": "IBM Plex Sans",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "lineHeight": "28px",
+      "letterSpacing": "normal",
+      "color": "#FFFFFF",
+      "sampleText": "Just Percent"
+    },
+    {
+      "role": "body",
+      "fontFamily": "IBM Plex Sans",
+      "fontSize": "18px",
+      "fontWeight": "700",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "color": "#212121",
+      "sampleText": "We value your privacy"
+    },
+    {
+      "role": "heading-2",
+      "fontFamily": "Space Grotesk",
+      "fontSize": "16px",
+      "fontWeight": "700",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "color": "#FFFFFF",
+      "sampleText": "What Can You Calculate?"
+    },
+    {
+      "role": "body-small",
+      "fontFamily": "IBM Plex Sans",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "color": "#FFFFFF",
+      "sampleText": "What is X% of Y?"
+    },
+    {
+      "role": "heading-2",
+      "fontFamily": "Space Grotesk",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "lineHeight": "20px",
+      "letterSpacing": "normal",
+      "color": "#9CA3AF",
+      "sampleText": "Pick a Calculator"
+    }
+  ],
+  "spacing": {
+    "observed": [
+      8,
+      12,
+      24
+    ],
+    "baseUnit": 8
+  },
+  "radius": [
+    "2px",
+    "6px"
+  ],
+  "shadows": [
+    {
+      "value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "count": 1
+    },
+    {
+      "value": "rgba(0, 0, 0, 0.4) 0px 8px 32px 0px",
+      "count": 1
+    },
+    {
+      "value": "rgba(0, 0, 0, 0.3) 0px 10px 30px 0px, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset",
+      "count": 1
+    },
+    {
+      "value": "rgba(2, 6, 23, 0.5) 0px 2px 8px 0px, rgba(148, 163, 184, 0.16) 0px 1px 0px 0px inset",
+      "count": 1
+    },
+    {
+      "value": "rgba(0, 0, 0, 0.3) 0px 2px 4px 0px",
+      "count": 1
+    }
+  ],
+  "buttons": [
+    {
+      "label": "our 1729 partners",
+      "background": "#FFFFFF",
+      "color": "#1863DC",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "border": "0px none rgb(24, 99, 220)",
+      "boxShadow": "none",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "height": "24px"
+    },
+    {
+      "label": "Customise Reject All Accept All",
+      "background": "#000000",
+      "color": "#FFFFFF",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "44px"
+    },
+    {
+      "label": "Customise",
+      "background": "#000000",
+      "color": "#1863DC",
+      "padding": "8px",
+      "borderRadius": "2px",
+      "border": "2px solid rgb(24, 99, 220)",
+      "boxShadow": "none",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "height": "44px"
+    },
+    {
+      "label": "Reject All",
+      "background": "#1863DC",
+      "color": "#FFFFFF",
+      "padding": "8px",
+      "borderRadius": "2px",
+      "border": "2px solid rgb(24, 99, 220)",
+      "boxShadow": "none",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "height": "44px"
+    }
+  ],
+  "cards": [
+    {
+      "label": "card",
+      "background": "#1F2937",
+      "color": "#FFFFFF",
+      "padding": "24px",
+      "borderRadius": "8px",
+      "border": "1px solid rgba(75, 85, 99, 0.4)",
+      "boxShadow": "rgba(0, 0, 0, 0.4) 0px 8px 32px 0px",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "100px"
+    },
+    {
+      "label": "card",
+      "background": "#000000",
+      "color": "#000000",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "border": "0px none rgb(0, 0, 0)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "807px"
+    },
+    {
+      "label": "card",
+      "background": "#000000",
+      "color": "#F1F5F9",
+      "padding": "8px",
+      "borderRadius": "8px",
+      "border": "1px solid rgba(255, 255, 255, 0.2)",
+      "boxShadow": "rgba(0, 0, 0, 0.3) 0px 10px 30px 0px, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset",
+      "fontSize": "18px",
+      "fontWeight": "500",
+      "height": "155px"
+    }
+  ],
+  "nav": null
+}
