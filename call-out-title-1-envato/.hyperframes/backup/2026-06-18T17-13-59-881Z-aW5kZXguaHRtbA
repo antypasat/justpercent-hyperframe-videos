@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #080a09;
+      }
+
+      body {
+        font-family: "Montserrat", "Avenir Next", Arial, sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        color: #fff;
+        background: #080a09;
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+      }
+
+      .aerial {
+        z-index: 0;
+        background:
+          linear-gradient(90deg, rgba(168, 158, 118, 0.84) 0 37%, rgba(24, 36, 35, 0.94) 37% 70%, rgba(122, 126, 112, 0.92) 70% 100%),
+          repeating-linear-gradient(103deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 10px),
+          repeating-linear-gradient(7deg, rgba(0, 0, 0, 0.2) 0 3px, transparent 3px 16px);
+      }
+
+      .aerial-texture,
+      .aerial::after {
+        content: "";
+        position: absolute;
+        inset: -120px;
+        background:
+          radial-gradient(circle at 19% 26%, rgba(232, 220, 172, 0.24), transparent 19%),
+          radial-gradient(circle at 58% 55%, rgba(6, 20, 22, 0.58), transparent 26%),
+          repeating-linear-gradient(74deg, rgba(255, 255, 255, 0.105) 0 1px, transparent 1px 9px);
+        opacity: 0.85;
+        transform: translate3d(0, 0, 0);
+      }
+
+      .aerial::after {
+        inset: 0 0 0 auto;
+        width: 255px;
+        background:
+          linear-gradient(90deg, rgba(8, 14, 16, 0.72), rgba(72, 68, 58, 0.78) 42%, rgba(122, 116, 94, 0.86)),
+          linear-gradient(0deg, transparent 0 41%, rgba(255, 255, 255, 0.18) 41% 42%, transparent 42% 100%);
+      }
+
+      .vehicle {
+        position: absolute;
+        inset: auto;
+        right: 48px;
+        top: 110px;
+        width: 96px;
+        height: 190px;
+        z-index: 1;
+        transform: rotate(1deg);
+      }
+
+      .vehicle::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 18px 18px 10px 10px;
+        background:
+          linear-gradient(90deg, rgba(225, 222, 194, 0.72) 0 16%, transparent 16% 84%, rgba(225, 222, 194, 0.72) 84% 100%),
+          linear-gradient(180deg, rgba(52, 112, 84, 0.96), rgba(36, 75, 63, 0.96) 48%, rgba(170, 165, 132, 0.88) 48% 100%);
+        box-shadow: 0 34px 36px rgba(0, 0, 0, 0.34);
+      }
+
+      .vehicle::after {
+        content: "";
+        position: absolute;
+        left: 18px;
+        top: 72px;
+        width: 60px;
+        height: 46px;
+        border: 3px solid rgba(255, 255, 255, 0.28);
+        background: rgba(10, 18, 18, 0.56);
+      }
+
+      .overlay {
+        z-index: 4;
+        pointer-events: none;
+      }
+
+      .callout {
+        position: absolute;
+        inset: auto;
+        color: #fff;
+      }
+
+      .callout svg {
+        position: absolute;
+        inset: 0;
+        overflow: visible;
+      }
+
+      .stroke {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.94);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 3;
+      }
+
+      .thin {
+        stroke-width: 2.4;
+      }
+
+      .dot-ring {
+        fill: rgba(255, 255, 255, 0.06);
+        stroke: rgba(255, 255, 255, 0.96);
+        stroke-width: 3;
+      }
+
+      .dot-core {
+        fill: #fff;
+      }
+
+      .mask {
+        overflow: hidden;
+        padding: 56px 220px 132px 0;
+        margin: -56px -220px -132px 0;
+      }
+
+      .name {
+        font-weight: 800;
+        font-size: 86px;
+        line-height: 0.9;
+        letter-spacing: 0;
+        white-space: nowrap;
+        text-transform: uppercase;
+      }
+
+      .role {
+        margin-top: 18px;
+        font-size: 42px;
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.9);
+        white-space: nowrap;
+      }
+
+      #steven {
+        left: 72px;
+        bottom: 112px;
+        width: 1380px;
+        height: 610px;
+      }
+
+      #steven .steven-copy {
+        position: absolute;
+        left: 32px;
+        bottom: 14px;
+      }
+
+      #steven .name {
+        font-size: 96px;
+      }
+
+      #steven .role {
+        font-size: 46px;
+        margin-top: 16px;
+      }
+
+      #rachel {
+        left: 24px;
+        top: 28px;
+        width: 1790px;
+        height: 510px;
+      }
+
+      #rachel .rachel-copy {
+        position: absolute;
+        top: 0;
+        right: 306px;
+        width: 1260px;
+        text-align: right;
+      }
+
+      #rachel .name {
+        font-size: 94px;
+      }
+
+      #rachel .role {
+        font-size: 45px;
+        margin-top: 18px;
+      }
+
+      #rachel .accent {
+        position: absolute;
+        top: 0;
+        right: 276px;
+        display: block;
+        width: 14px;
+        height: 142px;
+        background: rgba(255, 255, 255, 0.98);
+        transform-origin: center top;
+      }
+
+      #smooth {
+        left: 560px;
+        top: 42px;
+        width: 1200px;
+        height: 980px;
+      }
+
+      #smooth .circle-copy {
+        position: absolute;
+        left: 350px;
+        top: 218px;
+        width: 530px;
+        text-align: center;
+      }
+
+      #smooth .circle-word {
+        display: block;
+        font-size: 76px;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      #smooth .circle-word:nth-child(2) {
+        font-size: 84px;
+      }
+
+      #smooth .circle-word:nth-child(3) {
+        font-size: 82px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-hf-id="hf-199x" data-composition-id="main" data-start="0" data-duration="8" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-qn64" id="aerial-bg" class="clip aerial" data-start="0" data-duration="8" data-track-index="0">
+        <div data-hf-id="hf-khtt" class="aerial-texture" data-layout-ignore=""></div>
+      </div>
+      <div data-hf-id="hf-v3dr" id="vehicle" class="clip vehicle" data-start="0" data-duration="8" data-track-index="1"></div>
+
+      <section data-hf-id="hf-nxdk" id="steven" class="clip overlay callout" data-start="1" data-duration="2" data-track-index="2" data-layout-allow-occlusion="" data-layout-allow-overlap="">
+        <svg data-hf-id="hf-e34p" width="1380" height="610" viewBox="0 0 1380 610" aria-hidden="true">
+          <path data-hf-id="hf-vjqo" id="steven-frame" class="stroke thin" pathLength="1" d="M 8 518 L 8 424 Q 8 404 28 404 L 1030 404 L 1192 226 L 1338 46" />
+          <path data-hf-id="hf-pl2w" id="steven-arrow-a" class="stroke thin" pathLength="1" d="M 1338 46 L 1292 64" />
+          <path data-hf-id="hf-d5w6" id="steven-arrow-b" class="stroke thin" pathLength="1" d="M 1338 46 L 1324 96" />
+          <circle data-hf-id="hf-hg30" id="steven-ring" class="dot-ring" cx="1338" cy="46" r="31" />
+        </svg>
+        <div data-hf-id="hf-r17v" class="steven-copy" data-layout-allow-occlusion="" data-layout-allow-overlap="">
+          <div data-hf-id="hf-haq9" class="mask" data-layout-allow-overflow="">
+            <h1 data-hf-id="hf-iw38" class="name">STEVEN DERRICK</h1>
+          </div>
+          <div data-hf-id="hf-92bp" class="mask" data-layout-allow-overflow="">
+            <p data-hf-id="hf-xbjb" class="role">ANIMATION DEMORREL</p>
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-4tjz" id="rachel" class="clip overlay callout" data-start="3" data-duration="2" data-track-index="3" data-layout-allow-occlusion="" data-layout-allow-overlap="">
+        <svg data-hf-id="hf-u5sx" width="1790" height="510" viewBox="0 0 1790 510" aria-hidden="true">
+          <path data-hf-id="hf-3r10" id="rachel-line" class="stroke thin" pathLength="1" d="M 1504 126 L 1740 384" />
+          <circle data-hf-id="hf-rnlw" id="rachel-ring" class="dot-ring" cx="1740" cy="384" r="31" />
+          <circle data-hf-id="hf-gdy1" id="rachel-core" class="dot-core" cx="1740" cy="384" r="12" />
+        </svg>
+        <span data-hf-id="hf-srpz" class="accent"></span>
+        <div data-hf-id="hf-pmd3" class="rachel-copy" data-layout-allow-occlusion="" data-layout-allow-overlap="">
+          <div data-hf-id="hf-a98s" class="mask" data-layout-allow-overflow="">
+            <h2 data-hf-id="hf-zr47" class="name">RACHEL ELMERS</h2>
+          </div>
+          <div data-hf-id="hf-9uxr" class="mask" data-layout-allow-overflow="">
+            <p data-hf-id="hf-vimm" class="role">CREATIVE DIRECTOR</p>
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-wdk4" id="smooth" class="clip overlay callout" data-start="5" data-duration="3" data-track-index="4" data-layout-allow-occlusion="" data-layout-allow-overlap="">
+        <svg data-hf-id="hf-p8n7" width="1200" height="980" viewBox="0 0 1200 980" aria-hidden="true">
+          <path data-hf-id="hf-h8gn" id="smooth-line" class="stroke thin" pathLength="1" d="M 150 906 L 508 662" />
+          <circle data-hf-id="hf-0crv" id="smooth-ring" class="dot-ring" cx="150" cy="906" r="31" />
+          <circle data-hf-id="hf-2rf8" id="smooth-core" class="dot-core" cx="150" cy="906" r="12" />
+          <circle data-hf-id="hf-jipg" id="smooth-circle" class="stroke" pathLength="1" cx="690" cy="360" r="320" />
+        </svg>
+        <div data-hf-id="hf-xp1o" class="circle-copy" data-layout-allow-occlusion="" data-layout-allow-overlap="">
+          <div data-hf-id="hf-b1uu" class="mask" data-layout-allow-overflow=""><span data-hf-id="hf-m164" class="circle-word">SMOOH</span></div>
+          <div data-hf-id="hf-anjt" class="mask" data-layout-allow-overflow=""><span data-hf-id="hf-fup0" class="circle-word">ANIMATION</span></div>
+          <div data-hf-id="hf-bugw" class="mask" data-layout-allow-overflow=""><span data-hf-id="hf-agux" class="circle-word">TITLES</span></div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.to(".aerial-texture", { x: -34, y: 18, duration: 8, ease: "none" }, 0);
+      tl.to("#vehicle", { y: 700, x: -18, duration: 8, ease: "sine.inOut" }, 0);
+
+      tl.fromTo("#steven-frame, #steven-arrow-a, #steven-arrow-b", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.72, ease: "power3.out", stagger: 0.08 }, 1.12);
+      tl.fromTo("#steven-ring", { scale: 0.4, opacity: 0, transformOrigin: "center center" }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.7)" }, 1.1);
+      tl.fromTo("#steven .name", { y: 104, opacity: 0 }, { y: 0, opacity: 1, duration: 0.66, ease: "expo.out" }, 1.46);
+      tl.fromTo("#steven .role", { y: 58, opacity: 0 }, { y: 0, opacity: 1, duration: 0.58, ease: "circ.out" }, 1.62);
+
+      tl.fromTo("#rachel-line", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.64, ease: "power3.out" }, 3.08);
+      tl.fromTo("#rachel-ring, #rachel-core", { scale: 0.35, opacity: 0, transformOrigin: "center center" }, { scale: 1, opacity: 1, duration: 0.46, ease: "back.out(1.5)", stagger: 0.05 }, 3.08);
+      tl.fromTo("#rachel .accent", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: 0.54, ease: "expo.out" }, 3.25);
+      tl.fromTo("#rachel .name", { x: 165, opacity: 0 }, { x: 0, opacity: 1, duration: 0.66, ease: "power4.out" }, 3.42);
+      tl.fromTo("#rachel .role", { x: 105, opacity: 0 }, { x: 0, opacity: 1, duration: 0.58, ease: "circ.out" }, 3.54);
+
+      tl.fromTo("#smooth-line", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.82, ease: "power3.out" }, 5.08);
+      tl.fromTo("#smooth-ring, #smooth-core", { scale: 0.35, opacity: 0, transformOrigin: "center center" }, { scale: 1, opacity: 1, duration: 0.48, ease: "back.out(1.45)", stagger: 0.04 }, 5.08);
+      tl.fromTo("#smooth-circle", { strokeDasharray: 1, strokeDashoffset: 1, rotation: -90, transformOrigin: "center center" }, { strokeDashoffset: 0, duration: 0.94, ease: "expo.out" }, 5.5);
+      tl.fromTo("#smooth .circle-word", { y: 40, scale: 0.96, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.54, ease: "circ.out", stagger: 0.11 }, 5.92);
+      tl.to("#smooth", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 7.48);
+
+      tl.to("#smooth", { keyframes: { "0%": { x: -2, y: 23 }, "100%": { x: 0, y: 0 } }, duration: 0.895 }, 6.585);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

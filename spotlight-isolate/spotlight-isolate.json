@@ -1,0 +1,111 @@
+{
+  "project": "justpercent-spotlight-isolate",
+  "technique": "Spotlight & Isolate (Technika 3, warianty 3.1 + 3.3 + 3.4 + 3.5 + 3.6 + 3.7)",
+  "stage": { "width": 1600, "height": 900, "letterbox": true, "fps": "realtime (CSS/JS master clock)" },
+  "locale": "en-US (US pages only, American English copy)",
+  "theme": "dark",
+  "capture_guard": {
+    "description": "Each source frame was captured only after full DOM stabilization.",
+    "rules": [
+      "network idle >= 500ms",
+      "document.fonts.ready resolved",
+      "all images decoded",
+      "no active CSS/JS transitions or animations",
+      "zero layout shift (PerformanceObserver layout-shift) for >= 500-600ms",
+      "post-click captures wait for the triggered animation + DOM mutation to fully settle before screenshot"
+    ],
+    "extra": [
+      "?noredirect on every direct navigation (locale-redirect exemption)",
+      "isolated browser context (fresh cookies/storage), consent accepted once",
+      "localStorage jp:config:v1 = { theme: 'dark', locale: 'us' }",
+      "viewport 1600x900"
+    ]
+  },
+  "frames": {
+    "us-home-top.png": {
+      "url": "https://justpercent.com/?noredirect",
+      "geometry": {
+        "searchBox": { "x": 457, "y": 191, "w": 678, "h": 50 },
+        "solutionGrid": { "x": 432, "y": 348, "w": 728, "h": 807 },
+        "couponCard": { "x": 432, "y": 348, "w": 360, "h": 155 },
+        "couponCta": { "x": 579, "y": 452, "w": 196, "h": 38 }
+      }
+    },
+    "us-decreased-prefilled.png": {
+      "url": "https://justpercent.com/decreased-value-calculator/",
+      "opened_via": "click on SolutionCard 'Apply My Coupon' on homepage (hint + prefill 100 / 20 -> 80)",
+      "geometry": {
+        "hintBanner": { "x": 440, "y": 106, "w": 712, "h": 65 },
+        "calcCard": { "x": 432, "y": 203, "w": 728, "h": 412 },
+        "original": { "x": 502, "y": 396, "w": 128, "h": 42 },
+        "decrease": { "x": 759, "y": 396, "w": 128, "h": 42 },
+        "result": { "x": 957, "y": 401, "w": 116, "h": 32 }
+      }
+    },
+    "us-decreased-pu-list.png": {
+      "url": "https://justpercent.com/decreased-value-calculator/ (scrollY 875)",
+      "geometry": {
+        "puSaleDiscount": { "x": 464, "y": 300, "w": 680, "h": 96 },
+        "puPin": { "x": 444, "y": 305, "w": 16, "h": 16 }
+      }
+    },
+    "us-decreased-pu-applied.png": {
+      "url": "https://justpercent.com/decreased-value-calculator/",
+      "opened_via": "click on Practical Use 'Sale Discount' pin -> auto-fill 300 / 30 -> 210 + 'Selected Practical Use Example' banner",
+      "geometry": {
+        "calcCard": { "x": 432, "y": 110, "w": 728, "h": 566 },
+        "selectedBanner": { "x": 470, "y": 236, "w": 652, "h": 16 },
+        "result": { "x": 957, "y": 462, "w": 116, "h": 32 }
+      }
+    },
+    "us-home-search-tip.png": {
+      "url": "https://justpercent.com/?noredirect",
+      "opened_via": "focus #calculator-search, type 'tip', BM25 dropdown open (PU + solutions + FAQs)",
+      "geometry": {
+        "searchBox": { "x": 457, "y": 115, "w": 678, "h": 50 },
+        "dropdown": { "x": 458, "y": 192, "w": 676, "h": 395 },
+        "rowRestaurantTip": { "x": 466, "y": 216, "w": 660, "h": 94 },
+        "rowFaqTip": { "x": 466, "y": 433, "w": 660, "h": 60 }
+      }
+    },
+    "us-home-tip-result.png": {
+      "url": "https://justpercent.com/?noredirect (scrollY 1769)",
+      "opened_via": "click dropdown PU row 'Restaurant Tip' -> scroll to basic calculator, auto-fill 15 / 60 -> 9",
+      "geometry": {
+        "selectedBanner": { "x": 470, "y": 216, "w": 652, "h": 16 },
+        "inputX": { "x": 550, "y": 437, "w": 128, "h": 42 },
+        "inputY": { "x": 731, "y": 437, "w": 128, "h": 42 },
+        "result": { "x": 909, "y": 442, "w": 116, "h": 32 }
+      }
+    },
+    "us-faqs-hub.png": {
+      "url": "https://justpercent.com/faqs/?noredirect",
+      "geometry": { "h1": { "x": 432, "y": 114, "w": 728, "h": 60 }, "faqSearch": { "x": 445, "y": 315, "w": 572, "h": 42 } }
+    },
+    "us-faq-tip.png": {
+      "url": "https://justpercent.com/faqs/tip-calculation-calculator/?noredirect",
+      "geometry": {
+        "h1": { "x": 432, "y": 114, "w": 728, "h": 60 },
+        "billInput": { "x": 639, "y": 303, "w": 42, "h": 30 },
+        "pctInput": { "x": 826, "y": 303, "w": 30, "h": 30 },
+        "liveResult": { "x": 674, "y": 449, "w": 44, "h": 46 }
+      }
+    }
+  },
+  "timeline_ms": [
+    { "scene": "s0", "start": 0, "end": 4500, "variant": "intro", "note": "brand mark + tagline" },
+    { "scene": "s1", "start": 4500, "end": 13000, "variant": "3.1 Classic Spotlight", "spot": "coupon SolutionCard, pad 16px, radius 12, overlay 0.6 fade 0.5s, camera scale 1.2; cursor click on CTA" },
+    { "scene": "s2", "start": 13000, "end": 22000, "variant": "3.7 Click-Reveal + 3.3 Metric Highlight", "spot": "hint banner -> calculator card -> result $80 with pulsing glow, camera 1.15 -> 1.3" },
+    { "scene": "s3", "start": 22000, "end": 31000, "variant": "3.7 Click-Reveal", "spot": "PU 'Sale Discount' row -> click pin -> crossfade to pinned state, spotlight calculator + banner, glow on $210" },
+    { "scene": "s4", "start": 31000, "end": 40000, "variant": "3.6 Blur-the-Rest", "spot": "gaussian-blur everything except search box (fade 0.5s), then crisp window over open dropdown, glow on 'Restaurant Tip' row, cursor click" },
+    { "scene": "s5", "start": 40000, "end": 49000, "variant": "3.4 Sequential Spotlights", "spot": "persistent 0.6 overlay; cutout morphs A(15%) -> B($60) -> C($9), 0.6s morph / 1s hold, camera pans at scale 1.2, glow on result" },
+    { "scene": "s6", "start": 49000, "end": 58000, "variant": "3.5 Vignette Focus", "spot": "feathered radial vignette on FAQ hub header/search, then on live FAQ answer (15), camera push 1.12 -> 1.22" },
+    { "scene": "s7", "start": 58000, "end": 64500, "variant": "outro", "note": "brand + 'Eight calculators. Sixty-four interactive FAQs.' + justpercent.com, scale 100->102%" }
+  ],
+  "player": {
+    "file": "index.html",
+    "controls": "Space = pause, R = restart",
+    "qa_params": "?rec hides HUD, ?t=<ms> seeks master clock, ?stop=<ms> auto-pauses",
+    "seek_semantics": "in-scene CSS animations start when the scene gets .on — for mid-scene QA always seek to the scene boundary (?t=<sceneStart>) and use ?stop="
+  }
+}

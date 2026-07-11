@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #09090B;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: #EDEDED;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #09090B;
+        perspective: 1600px;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background-color: #09090B;
+        transform-style: preserve-3d;
+        will-change: transform, opacity, filter;
+      }
+
+      #scene-sidebar {
+        z-index: 1;
+      }
+
+      #scene-list,
+      #scene-diff,
+      #scene-guide,
+      #scene-selection,
+      #scene-prompt,
+      #scene-approval,
+      #scene-outro {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .scene-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 86px 120px;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+      }
+
+      .void {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 22% 34%, rgba(94, 67, 206, 0.22), rgba(94, 67, 206, 0) 360px),
+          radial-gradient(circle at 76% 72%, rgba(45, 164, 78, 0.12), rgba(45, 164, 78, 0) 300px),
+          linear-gradient(135deg, #09090B 0%, #121212 48%, #09090B 100%);
+      }
+
+      .grain {
+        position: absolute;
+        inset: 0;
+        opacity: 0.18;
+        background-image:
+          linear-gradient(rgba(237, 237, 237, 0.028) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(237, 237, 237, 0.022) 1px, transparent 1px);
+        background-size: 42px 42px, 42px 42px;
+      }
+
+      .bokeh {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(18px);
+        opacity: 0.48;
+      }
+
+      .bokeh.purple {
+        width: 260px;
+        height: 260px;
+        background: rgba(94, 67, 206, 0.34);
+        left: 1380px;
+        top: 160px;
+      }
+
+      .bokeh.green {
+        width: 180px;
+        height: 180px;
+        background: rgba(45, 164, 78, 0.22);
+        left: 230px;
+        top: 760px;
+      }
+
+      .screen-stage {
+        position: absolute;
+        width: 1480px;
+        height: 810px;
+        left: 220px;
+        top: 135px;
+        border: 1px solid rgba(237, 237, 237, 0.08);
+        border-radius: 22px;
+        overflow: hidden;
+        background: #121212;
+        box-shadow:
+          0 46px 120px rgba(0, 0, 0, 0.7),
+          0 0 90px rgba(94, 67, 206, 0.18);
+        transform: rotateX(7deg) rotateY(-11deg) translateZ(90px);
+        transform-origin: 50% 55%;
+        will-change: transform, filter;
+      }
+
+      .window-bar {
+        height: 58px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 24px;
+        border-bottom: 1px solid rgba(237, 237, 237, 0.07);
+        background: #18181B;
+      }
+
+      .dot {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+      }
+
+      .dot.red {
+        background: #CF222E;
+      }
+
+      .dot.yellow {
+        background: #D29922;
+      }
+
+      .dot.green {
+        background: #2DA44E;
+      }
+
+      .app-shell {
+        height: calc(100% - 58px);
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        background: #121212;
+      }
+
+      .sidebar {
+        border-right: 1px solid rgba(237, 237, 237, 0.08);
+        padding: 28px 22px;
+        background: #121212;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 34px;
+        font-size: 25px;
+        font-weight: 700;
+      }
+
+      .logo-mark {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        border: 1.6px solid #EDEDED;
+        border-radius: 50%;
+      }
+
+      .logo-mark::before,
+      .logo-mark::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 3px;
+        left: 7px;
+        background: #EDEDED;
+        border-radius: 8px;
+        transform: rotate(-34deg);
+      }
+
+      .logo-mark::before {
+        top: 11px;
+      }
+
+      .logo-mark::after {
+        top: 19px;
+      }
+
+      .nav-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 34px;
+      }
+
+      .nav-label {
+        padding: 0 12px 8px;
+        color: #A1A1AA;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .nav-item {
+        height: 46px;
+        padding: 0 13px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: #A1A1AA;
+        font-size: 22px;
+        font-weight: 450;
+      }
+
+      .nav-item.active {
+        background: #18181B;
+        color: #EDEDED;
+      }
+
+      .icon {
+        position: relative;
+        width: 22px;
+        height: 22px;
+        flex: 0 0 auto;
+      }
+
+      .icon.box {
+        border: 1.8px solid #A1A1AA;
+        border-radius: 5px;
+      }
+
+      .icon.box::before {
+        content: "";
+        position: absolute;
+        width: 11px;
+        height: 1.8px;
+        left: 4px;
+        top: 6px;
+        background: #A1A1AA;
+      }
+
+      .icon.pulse::before {
+        content: "";
+        position: absolute;
+        inset: 3px 0;
+        clip-path: polygon(0 58%, 18% 58%, 30% 22%, 47% 80%, 60% 38%, 74% 58%, 100% 58%, 100% 70%, 68% 70%, 58% 54%, 47% 94%, 29% 38%, 22% 70%, 0 70%);
+        background: #A1A1AA;
+      }
+
+      .icon.branch {
+        border: 1.8px solid #EDEDED;
+        border-radius: 50%;
+      }
+
+      .icon.branch::before,
+      .icon.branch::after {
+        content: "";
+        position: absolute;
+        height: 2px;
+        background: #EDEDED;
+        transform-origin: left center;
+        left: 10px;
+        top: 10px;
+      }
+
+      .icon.branch::before {
+        width: 12px;
+        transform: rotate(-34deg);
+      }
+
+      .icon.branch::after {
+        width: 10px;
+        transform: rotate(42deg);
+      }
+
+      .main-pane {
+        position: relative;
+        min-width: 0;
+        padding: 38px 46px;
+      }
+
+      .pane-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 26px;
+      }
+
+      .title {
+        color: #EDEDED;
+        font-size: 38px;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+
+      .subtle {
+        color: #A1A1AA;
+      }
+
+      .review-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .review-item {
+        min-height: 92px;
+        padding: 18px 20px;
+        display: grid;
+        grid-template-columns: 38px 1fr auto;
+        gap: 16px;
+        align-items: center;
+        border: 1px solid rgba(237, 237, 237, 0.07);
+        border-radius: 14px;
+        background: #18181B;
+      }
+
+      .status {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        position: relative;
+      }
+
+      .status.ok {
+        background: #2DA44E;
+      }
+
+      .status.fail {
+        background: #CF222E;
+      }
+
+      .status.ok::before {
+        content: "";
+        position: absolute;
+        width: 13px;
+        height: 7px;
+        left: 7px;
+        top: 8px;
+        border-left: 3px solid #EDEDED;
+        border-bottom: 3px solid #EDEDED;
+        transform: rotate(-45deg);
+      }
+
+      .status.fail::before,
+      .status.fail::after {
+        content: "";
+        position: absolute;
+        width: 15px;
+        height: 3px;
+        left: 7px;
+        top: 12px;
+        background: #EDEDED;
+        border-radius: 4px;
+      }
+
+      .status.fail::before {
+        transform: rotate(45deg);
+      }
+
+      .status.fail::after {
+        transform: rotate(-45deg);
+      }
+
+      .review-title {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1.25;
+        color: #EDEDED;
+      }
+
+      .review-meta {
+        margin-top: 6px;
+        font-size: 18px;
+        color: #A1A1AA;
+      }
+
+      .review-state {
+        font-size: 18px;
+        font-weight: 650;
+      }
+
+      .review-state.ok {
+        color: #63D783;
+      }
+
+      .review-state.fail {
+        color: #FF7B8A;
+      }
+
+      .editor-shell {
+        position: absolute;
+        width: 1620px;
+        height: 895px;
+        left: 150px;
+        top: 92px;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(237, 237, 237, 0.08);
+        background: #121212;
+        box-shadow: 0 60px 150px rgba(0, 0, 0, 0.62);
+        transform: rotateX(5deg) rotateY(8deg) translateZ(80px);
+        transform-origin: 48% 50%;
+      }
+
+      .editor-header {
+        height: 74px;
+        padding: 0 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(237, 237, 237, 0.08);
+        background: #18181B;
+      }
+
+      .crumb {
+        font-size: 22px;
+        font-weight: 650;
+        color: #EDEDED;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 10px;
+      }
+
+      .tab {
+        height: 38px;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        border: 1px solid rgba(237, 237, 237, 0.12);
+        border-radius: 999px;
+        color: #A1A1AA;
+        font-size: 17px;
+        font-weight: 600;
+      }
+
+      .tab.active {
+        color: #EDEDED;
+        background: rgba(94, 67, 206, 0.32);
+        border-color: rgba(94, 67, 206, 0.75);
+      }
+
+      .code-pane {
+        height: calc(100% - 74px);
+        overflow: hidden;
+        position: relative;
+        background: #101012;
+        font-family: "JetBrains Mono", monospace;
+        font-variant-ligatures: none;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .code-row {
+        display: grid;
+        grid-template-columns: 72px 1fr;
+        min-height: 42px;
+        align-items: center;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #EDEDED;
+        border-bottom: 1px solid rgba(237, 237, 237, 0.025);
+      }
+
+      .line-no {
+        color: #A1A1AA;
+        text-align: right;
+        padding-right: 18px;
+        user-select: none;
+      }
+
+      .line-code {
+        padding-left: 18px;
+        white-space: pre;
+      }
+
+      .kw {
+        color: #B49BFF;
+      }
+
+      .str {
+        color: #85D996;
+      }
+
+      .comment {
+        color: #71717A;
+      }
+
+      .fn {
+        color: #EDEDED;
+        font-weight: 700;
+      }
+
+      .minus {
+        background: #3E1A1E;
+      }
+
+      .plus {
+        background: #1A3B22;
+      }
+
+      .guide-layout {
+        height: calc(100% - 74px);
+        display: grid;
+        grid-template-columns: 0.92fr 1.08fr;
+        background: #121212;
+      }
+
+      .guide-copy {
+        padding: 44px 48px;
+        border-right: 1px solid rgba(237, 237, 237, 0.08);
+      }
+
+      .guide-step {
+        padding: 28px 0;
+        border-bottom: 1px solid rgba(237, 237, 237, 0.08);
+      }
+
+      .guide-step:first-child {
+        padding-top: 0;
+      }
+
+      .guide-step h2 {
+        font-size: 34px;
+        line-height: 1.12;
+        font-weight: 750;
+        margin-bottom: 14px;
+      }
+
+      .guide-step p {
+        color: #A1A1AA;
+        font-size: 21px;
+        line-height: 1.48;
+        font-weight: 350;
+      }
+
+      .guide-code {
+        padding: 40px 38px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .file-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        align-self: flex-start;
+        height: 34px;
+        padding: 0 13px;
+        border-radius: 999px;
+        background: #18181B;
+        color: #EDEDED;
+        font-size: 16px;
+        font-weight: 650;
+      }
+
+      .swift-icon,
+      .kotlin-icon {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+      }
+
+      .swift-icon {
+        background: #CF6D22;
+        clip-path: polygon(12% 18%, 72% 52%, 54% 14%, 88% 70%, 70% 88%, 17% 69%);
+      }
+
+      .kotlin-icon {
+        background: linear-gradient(135deg, #5E43CE 0%, #CF222E 100%);
+        clip-path: polygon(0 0, 100% 0, 48% 50%, 100% 100%, 0 100%, 50% 50%);
+      }
+
+      .mini-diff {
+        border: 1px solid rgba(237, 237, 237, 0.08);
+        border-radius: 14px;
+        overflow: hidden;
+        background: #101012;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 17px;
+      }
+
+      .mini-diff .code-row {
+        min-height: 34px;
+        font-size: 17px;
+      }
+
+      .submit-btn {
+        position: absolute;
+        right: 42px;
+        bottom: 34px;
+        height: 54px;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-radius: 15px;
+        background: #5E43CE;
+        color: #EDEDED;
+        font-size: 20px;
+        font-weight: 700;
+        box-shadow: 0 18px 46px rgba(94, 67, 206, 0.38);
+      }
+
+      .plane {
+        width: 20px;
+        height: 20px;
+        background: #EDEDED;
+        clip-path: polygon(0 9%, 100% 50%, 0 91%, 22% 54%);
+      }
+
+      .selection-overlay {
+        position: absolute;
+        left: 72px;
+        right: 0;
+        top: 305px;
+        height: 86px;
+        background: rgba(161, 161, 170, 0.18);
+        border-left: 3px solid #5E43CE;
+      }
+
+      .prompt-card {
+        position: absolute;
+        left: 470px;
+        top: 270px;
+        width: 980px;
+        min-height: 390px;
+        padding: 30px;
+        border-radius: 22px;
+        background: #18181B;
+        border: 1px solid rgba(237, 237, 237, 0.12);
+        box-shadow: 0 38px 110px rgba(0, 0, 0, 0.65), 0 0 70px rgba(94, 67, 206, 0.16);
+        overflow: hidden;
+      }
+
+      .prompt-shimmer {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(237, 237, 237, 0), rgba(237, 237, 237, 0.13), rgba(237, 237, 237, 0));
+        pointer-events: none;
+      }
+
+      .prompt-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #EDEDED;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 26px;
+      }
+
+      .prompt-input {
+        min-height: 112px;
+        padding: 24px;
+        border-radius: 16px;
+        background: #121212;
+        color: #EDEDED;
+        font-size: 28px;
+        line-height: 1.35;
+        font-weight: 450;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 3px;
+        height: 31px;
+        margin-left: 4px;
+        vertical-align: -5px;
+        background: #EDEDED;
+      }
+
+      .prompt-result {
+        margin-top: 24px;
+        padding: 22px 24px;
+        border: 1px solid rgba(45, 164, 78, 0.35);
+        border-radius: 16px;
+        background: rgba(26, 59, 34, 0.72);
+        color: #D5F7DD;
+        font-size: 22px;
+        line-height: 1.38;
+        opacity: 0;
+      }
+
+      .send-circle {
+        position: absolute;
+        right: 28px;
+        top: 176px;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: #5E43CE;
+      }
+
+      .send-circle::before {
+        content: "";
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        left: 16px;
+        top: 18px;
+        border-left: 3px solid #EDEDED;
+        border-top: 3px solid #EDEDED;
+        transform: rotate(45deg);
+      }
+
+      .action-bar {
+        position: absolute;
+        left: 510px;
+        bottom: 78px;
+        height: 72px;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        border-radius: 18px;
+        background: #18181B;
+        border: 1px solid rgba(237, 237, 237, 0.11);
+        box-shadow: 0 28px 78px rgba(0, 0, 0, 0.52);
+      }
+
+      .approve {
+        height: 46px;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #7DDC95;
+        opacity: 0.58;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .check-icon {
+        width: 20px;
+        height: 13px;
+        border-left: 4px solid currentColor;
+        border-bottom: 4px solid currentColor;
+        transform: rotate(-45deg);
+      }
+
+      .submit-review {
+        height: 46px;
+        padding: 0 22px;
+        display: flex;
+        align-items: center;
+        border-radius: 999px;
+        background: #5E43CE;
+        color: #EDEDED;
+        font-size: 20px;
+        font-weight: 750;
+      }
+
+      .outro-content {
+        align-items: center;
+        justify-content: center;
+        gap: 26px;
+        text-align: center;
+        background: #09090B;
+      }
+
+      .outro-logo {
+        width: 92px;
+        height: 92px;
+        border-width: 3px;
+      }
+
+      .outro-logo::before,
+      .outro-logo::after {
+        width: 54px;
+        height: 7px;
+        left: 19px;
+      }
+
+      .outro-logo::before {
+        top: 30px;
+      }
+
+      .outro-logo::after {
+        top: 50px;
+      }
+
+      .outro-kicker {
+        font-size: 42px;
+        font-weight: 500;
+        color: #EDEDED;
+      }
+
+      .outro-brand {
+        font-size: 86px;
+        font-weight: 800;
+        color: #EDEDED;
+        letter-spacing: 0.01em;
+      }
+
+      .focus-vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(ellipse at 50% 50%, rgba(9, 9, 11, 0) 0%, rgba(9, 9, 11, 0) 42%, rgba(9, 9, 11, 0.86) 92%),
+          linear-gradient(90deg, rgba(9, 9, 11, 0.72), rgba(9, 9, 11, 0) 22%, rgba(9, 9, 11, 0) 78%, rgba(9, 9, 11, 0.78));
+        z-index: 30;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-xn63" id="root" data-composition-id="main" data-start="0" data-duration="52" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-8qnp" id="scene-sidebar" class="scene" data-layout-allow-overflow data-layout-allow-overlap>
+        <div data-hf-id="hf-axgm" class="void"></div>
+        <div data-hf-id="hf-ryn8" class="grain" data-layout-ignore=""></div>
+        <div data-hf-id="hf-ta4u" class="bokeh purple" data-layout-ignore=""></div>
+        <div data-hf-id="hf-20lb" class="bokeh green" data-layout-ignore=""></div>
+        <div data-hf-id="hf-0jzy" class="screen-stage" id="sidebar-screen">
+          <div data-hf-id="hf-85t8" class="window-bar"><span data-hf-id="hf-8bbb" class="dot red"></span><span data-hf-id="hf-ipcq" class="dot yellow"></span><span data-hf-id="hf-d96z" class="dot green"></span></div>
+          <div data-hf-id="hf-4acs" class="app-shell">
+            <aside data-hf-id="hf-842t" class="sidebar">
+              <div data-hf-id="hf-oojr" class="brand"><span data-hf-id="hf-jn7i" class="logo-mark"></span><span data-hf-id="hf-4tlg">Linear</span></div>
+              <div data-hf-id="hf-xdp5" class="nav-group">
+                <div data-hf-id="hf-5avh" class="nav-item"><span data-hf-id="hf-s75h" class="icon box"></span><span data-hf-id="hf-8ae7">Inbox</span></div>
+                <div data-hf-id="hf-m2rl" class="nav-item"><span data-hf-id="hf-zomh" class="icon pulse"></span><span data-hf-id="hf-hhiy">Pulse</span></div>
+                <div data-hf-id="hf-lav9" class="nav-item active"><span data-hf-id="hf-3tty" class="icon branch"></span><span data-hf-id="hf-ngkq">Reviews</span></div>
+              </div>
+              <div data-hf-id="hf-2ict" class="nav-group">
+                <div data-hf-id="hf-410z" class="nav-label">Workspace</div>
+                <div data-hf-id="hf-n9oo" class="nav-item"><span data-hf-id="hf-s4fd" class="icon box"></span><span data-hf-id="hf-c8tc">Initiatives</span></div>
+              </div>
+            </aside>
+            <main data-hf-id="hf-mbm2" class="main-pane">
+              <div data-hf-id="hf-t7q4" class="pane-header">
+                <div data-hf-id="hf-70xv" class="title subtle">Needs your review</div>
+              </div>
+            </main>
+          </div>
+        </div>
+        <div data-hf-id="hf-toc3" class="focus-vignette"></div>
+      </div>
+
+      <div data-hf-id="hf-ib5v" id="scene-list" class="scene" data-layout-allow-overflow data-layout-allow-overlap>
+        <div data-hf-id="hf-ffca" class="void"></div>
+        <div data-hf-id="hf-3obg" class="grain" data-layout-ignore=""></div>
+        <div data-hf-id="hf-xt00" class="screen-stage" id="list-screen">
+          <div data-hf-id="hf-ws90" class="window-bar"><span data-hf-id="hf-jeqv" class="dot red"></span><span data-hf-id="hf-qrjy" class="dot yellow"></span><span data-hf-id="hf-atrf" class="dot green"></span></div>
+          <div data-hf-id="hf-kf0k" class="app-shell">
+            <aside data-hf-id="hf-cfzt" class="sidebar">
+              <div data-hf-id="hf-jbzb" class="brand"><span data-hf-id="hf-gmxu" class="logo-mark"></span><span data-hf-id="hf-may4">Linear</span></div>
+              <div data-hf-id="hf-3p9w" class="nav-group">
+                <div data-hf-id="hf-mvdn" class="nav-item"><span data-hf-id="hf-tbcg" class="icon box"></span><span data-hf-id="hf-dz4v">Inbox</span></div>
+                <div data-hf-id="hf-kvui" class="nav-item"><span data-hf-id="hf-4ztp" class="icon pulse"></span><span data-hf-id="hf-mv8e">Pulse</span></div>
+                <div data-hf-id="hf-tl09" class="nav-item active"><span data-hf-id="hf-0m2y" class="icon branch"></span><span data-hf-id="hf-ac8e">Reviews</span></div>
+              </div>
+            </aside>
+            <main data-hf-id="hf-fksu" class="main-pane">
+              <div data-hf-id="hf-5phw" class="pane-header">
+                <h1 data-hf-id="hf-0rh8" class="title">Needs your review <span data-hf-id="hf-ygvc" class="subtle">6</span></h1>
+              </div>
+              <div data-hf-id="hf-m8q1" class="review-list">
+                <div data-hf-id="hf-9sqc" class="review-item">
+                  <span data-hf-id="hf-xtan" class="status ok"></span>
+                  <div data-hf-id="hf-yeow"><div data-hf-id="hf-2132" class="review-title">Refactor notification model and capture...</div><div data-hf-id="hf-c081" class="review-meta">DRIVE-882 · Mobile Platform</div></div>
+                  <div data-hf-id="hf-twn6" class="review-state ok">Ready for review</div>
+                </div>
+                <div data-hf-id="hf-kmoc" class="review-item">
+                  <span data-hf-id="hf-jchp" class="status fail"></span>
+                  <div data-hf-id="hf-y7yw"><div data-hf-id="hf-edl9" class="review-title">Centralize driver app startup and session...</div><div data-hf-id="hf-ewqk" class="review-meta">DRIVE-877 · iOS Client</div></div>
+                  <div data-hf-id="hf-6xil" class="review-state fail">Changes requested</div>
+                </div>
+                <div data-hf-id="hf-jfr9" class="review-item">
+                  <span data-hf-id="hf-i1ox" class="status fail"></span>
+                  <div data-hf-id="hf-x11t"><div data-hf-id="hf-su2g" class="review-title">Remove duplicate TLS verification failure...</div><div data-hf-id="hf-op9n" class="review-meta">DRIVE-861 · Security Runtime</div></div>
+                  <div data-hf-id="hf-rrem" class="review-state fail">Checks failed</div>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+        <div data-hf-id="hf-1tjn" class="focus-vignette"></div>
+      </div>
+
+      <div data-hf-id="hf-jbgm" id="scene-diff" class="scene" data-layout-allow-overflow data-layout-allow-overlap>
+        <div data-hf-id="hf-ftnb" class="void"></div>
+        <div data-hf-id="hf-2hed" class="grain" data-layout-ignore=""></div>
+        <section data-hf-id="hf-6aop" class="editor-shell" id="diff-editor">
+          <header data-hf-id="hf-2n2j" class="editor-header">
+            <div data-hf-id="hf-1464" class="crumb">DRIVE-882 &gt; Refactor notification model...</div>
+            <nav data-hf-id="hf-gpn6" class="tabs"><div data-hf-id="hf-i1bw" class="tab">Activity</div><div data-hf-id="hf-874r" class="tab">Guide</div><div data-hf-id="hf-9qfm" class="tab active">Diff</div></nav>
+          </header>
+          <div data-hf-id="hf-0fy2" class="code-pane">
+            <div data-hf-id="hf-peak" class="code-row"><div data-hf-id="hf-us8n" class="line-no">54</div><div data-hf-id="hf-3dxz" class="line-code"><span data-hf-id="hf-hl38" class="kw">private func</span> <span data-hf-id="hf-jcoj" class="fn">parseNotification</span>(_ payload: Payload) -&gt; Notification?</div></div>
+            <div data-hf-id="hf-b6vo" class="code-row"><div data-hf-id="hf-v6jo" class="line-no">55</div><div data-hf-id="hf-zqyw" class="line-code">  <span data-hf-id="hf-7pq5" class="kw">guard let</span> kind = payload[<span data-hf-id="hf-n16g" class="str">"kind"</span>] <span data-hf-id="hf-k96q" class="kw">else</span> {</div></div>
+            <div data-hf-id="hf-iqz8" class="code-row minus"><div data-hf-id="hf-tzml" class="line-no">56</div><div data-hf-id="hf-930j" class="line-code">    reportFailure(payload, reason: <span data-hf-id="hf-zaew" class="str">"missing kind"</span>)</div></div>
+            <div data-hf-id="hf-tbr0" class="code-row plus"><div data-hf-id="hf-udxm" class="line-no">57</div><div data-hf-id="hf-pkrg" class="line-code">    reportParseFailure(payload, reason: <span data-hf-id="hf-zk9c" class="str">"missing kind"</span>)</div></div>
+            <div data-hf-id="hf-9zyl" class="code-row"><div data-hf-id="hf-zjwz" class="line-no">58</div><div data-hf-id="hf-wtd0" class="line-code">    <span data-hf-id="hf-pg4a" class="kw">return nil</span></div></div>
+            <div data-hf-id="hf-ae9m" class="code-row"><div data-hf-id="hf-zy80" class="line-no">59</div><div data-hf-id="hf-izrv" class="line-code">  }</div></div>
+            <div data-hf-id="hf-cdsr" class="code-row"><div data-hf-id="hf-u2hc" class="line-no">60</div><div data-hf-id="hf-qzzw" class="line-code"><span data-hf-id="hf-poak" class="kw">private func</span> <span data-hf-id="hf-l2x7" class="fn">reportFailure</span>(_ payload: Payload, reason: String) {</div></div>
+            <div data-hf-id="hf-cs3s" class="code-row"><div data-hf-id="hf-to6b" class="line-no">61</div><div data-hf-id="hf-7lil" class="line-code">  analytics.capture(<span data-hf-id="hf-uc0d" class="str">"notification_parse_failed"</span>, payload)</div></div>
+            <div data-hf-id="hf-bl6p" class="code-row"><div data-hf-id="hf-t9va" class="line-no">62</div><div data-hf-id="hf-bxej" class="line-code">}</div></div>
+            <div data-hf-id="hf-bzhq" class="code-row"><div data-hf-id="hf-svk9" class="line-no">63</div><div data-hf-id="hf-28v0" class="line-code"><span data-hf-id="hf-iczf" class="comment">// Shared across Swift and Kotlin parsing paths</span></div></div>
+          </div>
+        </section>
+        <div data-hf-id="hf-1f8m" class="focus-vignette"></div>
+      </div>
+
+      <div data-hf-id="hf-w62h" id="scene-guide" class="scene" data-layout-allow-overflow data-layout-allow-overlap>
+        <div data-hf-id="hf-g7yc" class="void"></div>
+        <div data-hf-id="hf-2vpe" class="grain" data-layout-ignore=""></div>
+        <section data-hf-id="hf-ifp6" class="editor-shell" id="guide-editor">
+          <header data-hf-id="hf-wgx7" class="editor-header">
+            <div data-hf-id="hf-y7v8" class="crumb">DRIVE-882 &gt; Refactor notification model...</div>
+            <nav data-hf-id="hf-d2xi" class="tabs"><div data-hf-id="hf-e8xg" class="tab">Activity</div><div data-hf-id="hf-7gnn" class="tab active">Guide</div><div data-hf-id="hf-wm0a" class="tab">Diff</div></nav>
+          </header>
+          <div data-hf-id="hf-c4zj" class="guide-layout">
+            <div data-hf-id="hf-20du" class="guide-copy">
+              <article data-hf-id="hf-unh2" class="guide-step"><h2 data-hf-id="hf-rn79">01/03 Shared Notification Model</h2><p data-hf-id="hf-ls5p">Moves the notification payload into a shared model so parsing behaves the same across app surfaces.</p></article>
+              <article data-hf-id="hf-tauy" class="guide-step"><h2 data-hf-id="hf-sz8i">02/03 Parser Failure Capture</h2><p data-hf-id="hf-nxtq">Renames ambiguous failure reporting and threads precise parse reasons through every call site.</p></article>
+              <article data-hf-id="hf-tp5z" class="guide-step"><h2 data-hf-id="hf-l700">03/03 Analytics Reporting</h2><p data-hf-id="hf-oh0z">Centralizes event names and preserves the existing dashboard contract for failed notifications.</p></article>
+            </div>
+            <div data-hf-id="hf-hmde" class="guide-code">
+              <div data-hf-id="hf-s79q" class="file-chip"><span data-hf-id="hf-qnk8" class="swift-icon"></span>NotificationCenter.swift</div>
+              <div data-hf-id="hf-ncb3" class="mini-diff">
+                <div data-hf-id="hf-uaek" class="code-row minus"><div data-hf-id="hf-rdns" class="line-no">60</div><div data-hf-id="hf-1g10" class="line-code">private func reportFailure(...)</div></div>
+                <div data-hf-id="hf-v2no" class="code-row plus"><div data-hf-id="hf-q6qp" class="line-no">60</div><div data-hf-id="hf-ty0x" class="line-code">private func reportParseFailure(...)</div></div>
+              </div>
+              <div data-hf-id="hf-z1ji" class="file-chip"><span data-hf-id="hf-oqo8" class="kotlin-icon"></span>NotificationParser.kt</div>
+              <div data-hf-id="hf-l25r" class="mini-diff">
+                <div data-hf-id="hf-t3hh" class="code-row minus"><div data-hf-id="hf-v7hx" class="line-no">41</div><div data-hf-id="hf-ivjz" class="line-code">tracker.reportFailure(payload)</div></div>
+                <div data-hf-id="hf-tvql" class="code-row plus"><div data-hf-id="hf-rqi1" class="line-no">41</div><div data-hf-id="hf-rxz8" class="line-code">tracker.reportParseFailure(payload)</div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div data-hf-id="hf-10xl" class="focus-vignette"></div>
+      </div>
+
+      <div data-hf-id="hf-5qu7" id="scene-selection" class="scene" data-layout-allow-overflow data-layout-allow-overlap>
+        <div data-hf-id="hf-gm9d" class="void"></div>
+        <section data-hf-id="hf-7o40" class="editor-shell" id="selection-editor">
+          <header data-hf-id="hf-w2m6" class="editor-header">
+            <div data-hf-id="hf-d492" class="crumb">NotificationCenter.swift</div>
+            <nav data-hf-id="hf-dh8j" class="tabs"><div data-hf-id="hf-d20d" class="tab">Activity</div><div data-hf-id="hf-4sbf" class="tab">Guide</div><div data-hf-id="hf-mno6" class="tab active">Diff</div></nav>
+          </header>
+          <div data-hf-id="hf-lgm6" class="code-pane">
+            <div data-hf-id="hf-dz0v" class="code-row"><div data-hf-id="hf-1o1f" class="line-no">58</div><div data-hf-id="hf-m9tg" class="line-code"><span data-hf-id="hf-ohdh" class="kw">private func</span> <span data-hf-id="hf-njvv" class="fn">reportFailure</span>(_ payload: Payload, reason: String) {</div></div>
+            <div data-hf-id="hf-edbw" class="code-row"><div data-hf-id="hf-nu2g" class="line-no">59</div><div data-hf-id="hf-n9v7" class="line-code">  <span data-hf-id="hf-fc9o" class="kw">let</span> context = ParseContext(payload: payload)</div></div>
+            <div data-hf-id="hf-ygj0" class="code-row"><div data-hf-id="hf-ql1q" class="line-no">60</div><div data-hf-id="hf-1tp2" class="line-code">  analytics.capture(<span data-hf-id="hf-n1j5" class="str">"notification_parse_failed"</span>, context)</div></div>
+            <div data-hf-id="hf-y27z" class="code-row"><div data-hf-id="hf-eeg3" class="line-no">61</div><div data-hf-id="hf-85gl" class="line-code">  logger.warning(reason)</div></div>
+            <div data-hf-id="hf-xnwy" class="code-row"><div data-hf-id="hf-26je" class="line-no">62</div><div data-hf-id="hf-bj3i" class="line-code">}</div></div>
+            <div data-hf-id="hf-1yv9" class="selection-overlay"></div>
+            <div data-hf-id="hf-xuwn" class="submit-btn"><span data-hf-id="hf-eil9" class="plane"></span><span data-hf-id="hf-1z7n">Submit review</span></div>
+          </div>
+        </section>
+        <div data-hf-id="hf-0mmk" class="focus-vignette"></div>
+      </div>
+
+      <div data-hf-id="hf-j3bd" id="scene-prompt" class="scene" data-layout-allow-overflow data-layout-allow-overlap data-layout-allow-occlusion>
+        <div data-hf-id="hf-h0ke" class="void"></div>
+        <section data-hf-id="hf-nyns" class="editor-shell" id="prompt-editor">
+          <header data-hf-id="hf-vob5" class="editor-header">
+            <div data-hf-id="hf-ftfu" class="crumb">NotificationCenter.swift</div>
+            <nav data-hf-id="hf-dvjk" class="tabs"><div data-hf-id="hf-dgbe" class="tab">Activity</div><div data-hf-id="hf-1ysz" class="tab active">Guide</div><div data-hf-id="hf-u7u6" class="tab">Diff</div></nav>
+          </header>
+          <div data-hf-id="hf-lux7" class="code-pane">
+            <div data-hf-id="hf-x9lx" class="code-row"><div data-hf-id="hf-19qe" class="line-no">58</div><div data-hf-id="hf-l2wd" class="line-code"><span data-hf-id="hf-ovoi" class="kw">private func</span> <span data-hf-id="hf-n5ku" class="fn">reportFailure</span>(_ payload: Payload, reason: String) {</div></div>
+            <div data-hf-id="hf-01r4" class="code-row"><div data-hf-id="hf-mn5d" class="line-no">59</div><div data-hf-id="hf-izo3" class="line-code">  <span data-hf-id="hf-eg2c" class="kw">let</span> context = ParseContext(payload: payload)</div></div>
+            <div data-hf-id="hf-zng3" class="code-row"><div data-hf-id="hf-pe4n" class="line-no">60</div><div data-hf-id="hf-yrga" class="line-code">  analytics.capture(<span data-hf-id="hf-o8g8" class="str">"notification_parse_failed"</span>, context)</div></div>
+            <div data-hf-id="hf-z952" class="code-row"><div data-hf-id="hf-e052" class="line-no">61</div><div data-hf-id="hf-mneh" class="line-code">  logger.warning(reason)</div></div>
+          </div>
+        </section>
+        <div data-hf-id="hf-sjyk" class="prompt-card" id="prompt-card">
+          <div data-hf-id="hf-h2dk" class="prompt-shimmer" data-layout-allow-overflow></div>
+          <div data-hf-id="hf-i4vx" class="prompt-head"><span data-hf-id="hf-dydc" class="swift-icon"></span><span data-hf-id="hf-3tq8">NotificationCenter.swift · R58</span></div>
+          <div data-hf-id="hf-8cb9" class="prompt-input"><span data-hf-id="hf-fivy" id="typed-command"></span><span data-hf-id="hf-1edb" class="cursor"></span></div>
+          <div data-hf-id="hf-apfb" class="send-circle"></div>
+          <div data-hf-id="hf-5x9u" class="prompt-result">Renamed the helper to better reflect its purpose and updated 3 call sites.</div>
+        </div>
+        <div data-hf-id="hf-08bj" class="focus-vignette"></div>
+      </div>
+
+      <div data-hf-id="hf-rhnm" id="scene-approval" class="scene" data-layout-allow-overflow data-layout-allow-overlap>
+        <div data-hf-id="hf-hevf" class="void"></div>
+        <section data-hf-id="hf-dmr9" class="editor-shell" id="approval-editor">
+          <header data-hf-id="hf-va04" class="editor-header">
+            <div data-hf-id="hf-x0y5" class="crumb">DRIVE-882 &gt; Refactor notification model...</div>
+            <nav data-hf-id="hf-b3ed" class="tabs"><div data-hf-id="hf-ffuj" class="tab">Activity</div><div data-hf-id="hf-1khy" class="tab active">Guide</div><div data-hf-id="hf-um57" class="tab">Diff</div></nav>
+          </header>
+          <div data-hf-id="hf-m988" class="code-pane">
+            <div data-hf-id="hf-ua1m" class="code-row plus"><div data-hf-id="hf-psfo" class="line-no">60</div><div data-hf-id="hf-lh7e" class="line-code"><span data-hf-id="hf-qv7n" class="kw">private func</span> <span data-hf-id="hf-jxqc" class="fn">reportParseFailure</span>(_ payload: Payload, reason: String) {</div></div>
+            <div data-hf-id="hf-w9kr" class="code-row plus"><div data-hf-id="hf-dlu1" class="line-no">61</div><div data-hf-id="hf-5lr5" class="line-code">  analytics.capture(<span data-hf-id="hf-nu57" class="str">"notification_parse_failed"</span>, payload)</div></div>
+            <div data-hf-id="hf-yuu1" class="code-row"><div data-hf-id="hf-2kuf" class="line-no">62</div><div data-hf-id="hf-b4sh" class="line-code">}</div></div>
+          </div>
+          <div data-hf-id="hf-kx7y" class="action-bar">
+            <div data-hf-id="hf-qker" class="approve"><span data-hf-id="hf-da3b" class="check-icon"></span><span data-hf-id="hf-n3cm">Approve</span></div>
+            <div data-hf-id="hf-hdif" class="submit-review">Submit review</div>
+          </div>
+        </section>
+        <div data-hf-id="hf-zu0i" class="focus-vignette"></div>
+      </div>
+
+      <div data-hf-id="hf-80wg" id="scene-outro" class="scene" data-layout-allow-overflow data-layout-allow-overlap>
+        <div data-hf-id="hf-g33x" class="scene-content outro-content">
+          <div data-hf-id="hf-hcf4" class="logo-mark outro-logo"></div>
+          <div data-hf-id="hf-r5g1" class="outro-kicker">Experience the diff</div>
+          <div data-hf-id="hf-xp58" class="outro-brand">Linear</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+
+      var tl = gsap.timeline({ paused: true });
+      var commandText = "Rename `reportFailure` to `reportParseFailure` and update its call sites";
+      var typed = document.getElementById("typed-command");
+      var commandProxy = { count: 0 };
+
+      function focusTransition(fromScene, toScene, at, duration) {
+        tl.set(toScene, { autoAlpha: 0, zIndex: 5 }, at);
+        tl.to(fromScene, { autoAlpha: 0, duration: duration, ease: "power3.inOut" }, at);
+        tl.to(toScene, { autoAlpha: 1, duration: duration, ease: "power3.inOut" }, at);
+      }
+
+      function enterScene(scene, start) {
+        tl.from(scene + " .void", { opacity: 0, scale: 1.04, duration: 0.9, ease: "sine.out" }, start + 0.12);
+        tl.from(scene + " .screen-stage, " + scene + " .editor-shell", { y: 70, z: -80, rotationX: 10, opacity: 0, duration: 0.72, ease: "expo.out" }, start + 0.22);
+      }
+
+      enterScene("#scene-sidebar", 0);
+      tl.from("#scene-sidebar .window-bar", { y: -24, opacity: 0, duration: 0.42, ease: "power4.out" }, 0.36);
+      tl.from("#scene-sidebar .brand", { x: -34, opacity: 0, duration: 0.5, ease: "back.out(1.8)" }, 0.42);
+      tl.from("#scene-sidebar .nav-item", { x: -28, opacity: 0, scale: 0.94, duration: 0.46, stagger: 0.09, ease: "power3.out" }, 0.62);
+      tl.from("#scene-sidebar .nav-item.active", { backgroundColor: "rgba(24,24,27,0)", duration: 0.48, ease: "sine.out" }, 1.38);
+      tl.to("#sidebar-screen", { x: 120, y: -8, rotationY: -6, duration: 2.4, ease: "sine.inOut" }, 0.45);
+
+      focusTransition("#scene-sidebar", "#scene-list", 3.0, 0.38);
+      enterScene("#scene-list", 3.0);
+      tl.from("#scene-list .window-bar", { y: -24, opacity: 0, duration: 0.42, ease: "power4.out" }, 3.36);
+      tl.from("#scene-list .title", { y: 32, opacity: 0, duration: 0.5, ease: "power4.out" }, 3.22);
+      tl.from("#scene-list .review-item", { x: 70, opacity: 0, scale: 0.98, duration: 0.54, stagger: 0.12, ease: "expo.out" }, 3.42);
+      tl.from("#scene-list .status", { scale: 0.2, rotation: -18, opacity: 0, duration: 0.4, stagger: 0.1, ease: "back.out(2.0)" }, 3.62);
+      tl.to("#list-screen", { x: -135, rotationY: -2, duration: 3.2, ease: "sine.inOut" }, 3.25);
+
+      focusTransition("#scene-list", "#scene-diff", 6.7, 0.28);
+      enterScene("#scene-diff", 7.0);
+      tl.from("#scene-diff .crumb", { x: -44, opacity: 0, duration: 0.42, ease: "power3.out" }, 7.18);
+      tl.from("#scene-diff .tab", { y: -18, opacity: 0, duration: 0.36, stagger: 0.05, ease: "back.out(1.5)" }, 7.32);
+      tl.from("#scene-diff .code-row", { x: 42, opacity: 0, duration: 0.34, stagger: 0.045, ease: "power2.out" }, 7.52);
+      tl.to("#diff-editor", { x: -210, rotationY: 3, duration: 5.2, ease: "sine.inOut" }, 7.45);
+      tl.from("#scene-diff .kw, #scene-diff .str, #scene-diff .comment", { color: "#EDEDED", duration: 0.55, stagger: 0.018, ease: "power1.out" }, 8.0);
+
+      focusTransition("#scene-diff", "#scene-guide", 12.6, 0.34);
+      enterScene("#scene-guide", 13.0);
+      tl.from("#scene-guide .tab.active", { scale: 0.72, opacity: 0, duration: 0.42, ease: "back.out(2.1)" }, 13.2);
+      tl.from("#scene-guide .guide-step", { y: 56, opacity: 0, duration: 0.62, stagger: 0.16, ease: "expo.out" }, 13.45);
+      tl.from("#scene-guide .file-chip", { x: 48, opacity: 0, duration: 0.45, stagger: 0.18, ease: "power4.out" }, 13.76);
+      tl.from("#scene-guide .mini-diff", { x: 80, opacity: 0, scale: 0.97, duration: 0.56, stagger: 0.18, ease: "circ.out" }, 13.95);
+      tl.to("#guide-editor", { y: -170, rotationX: 2, duration: 10.8, ease: "sine.inOut" }, 13.8);
+      tl.to("#scene-guide .guide-layout", { y: -86, duration: 10.2, ease: "sine.inOut" }, 14.2);
+
+      focusTransition("#scene-guide", "#scene-selection", 24.6, 0.26);
+      enterScene("#scene-selection", 25.0);
+      tl.from("#scene-selection .submit-btn", { scale: 0.72, y: 34, opacity: 0, duration: 0.38, ease: "back.out(2.0)" }, 25.18);
+      tl.from("#scene-selection .code-row", { x: -34, opacity: 0, duration: 0.32, stagger: 0.04, ease: "power3.out" }, 25.32);
+      tl.from("#scene-selection .selection-overlay", { scaleX: 0, opacity: 0, transformOrigin: "left center", duration: 0.42, ease: "power4.out" }, 27.36);
+      tl.to("#selection-editor", { scale: 1.08, x: -80, y: -36, duration: 4.6, ease: "sine.inOut" }, 25.2);
+
+      focusTransition("#scene-selection", "#scene-prompt", 29.7, 0.3);
+      enterScene("#scene-prompt", 30.0);
+      tl.to("#prompt-editor", { filter: "blur(12px)", scale: 1.03, duration: 0.65, ease: "sine.out" }, 30.15);
+      tl.from("#prompt-card", { scale: 0.78, y: 60, opacity: 0, duration: 0.58, ease: "back.out(1.7)" }, 30.35);
+      tl.from("#prompt-card .prompt-head", { x: -30, opacity: 0, duration: 0.34, ease: "power3.out" }, 30.58);
+      tl.from("#prompt-card .prompt-input", { y: 26, opacity: 0, duration: 0.42, ease: "circ.out" }, 30.78);
+      tl.to(commandProxy, {
+        count: commandText.length,
+        duration: 3.15,
+        ease: "none",
+        onUpdate: function () {
+          typed.textContent = commandText.slice(0, Math.floor(commandProxy.count));
+        }
+      }, 31.2);
+      tl.fromTo(".prompt-shimmer", { xPercent: -110 }, { xPercent: 110, duration: 0.72, ease: "power2.inOut" }, 34.6);
+      tl.from(".send-circle", { scale: 0.4, opacity: 0, duration: 0.36, ease: "back.out(2.2)" }, 34.82);
+      tl.to(".prompt-result", { opacity: 1, y: -4, duration: 0.62, ease: "power3.out" }, 35.42);
+      tl.to(".cursor", { opacity: 0, duration: 0.34, repeat: 13, yoyo: true, ease: "steps(1)" }, 31.1);
+
+      focusTransition("#scene-prompt", "#scene-approval", 39.6, 0.28);
+      enterScene("#scene-approval", 40.0);
+      tl.from("#scene-approval .code-row", { y: 32, opacity: 0, duration: 0.36, stagger: 0.08, ease: "power3.out" }, 40.24);
+      tl.from(".action-bar", { y: 60, opacity: 0, scale: 0.94, duration: 0.48, ease: "back.out(1.8)" }, 40.65);
+      tl.from(".submit-review", { x: 24, opacity: 0, duration: 0.34, ease: "circ.out" }, 40.88);
+      tl.to(".approve", { opacity: 1, color: "#B7F5C6", scale: 1.04, duration: 0.42, ease: "power2.out" }, 41.72);
+      tl.to("#approval-editor", { y: -34, scale: 1.03, duration: 3.2, ease: "sine.inOut" }, 40.35);
+
+      focusTransition("#scene-approval", "#scene-outro", 43.72, 0.8);
+      tl.from("#scene-outro .outro-logo", { scale: 0.72, opacity: 0, duration: 0.7, ease: "power3.out" }, 44.45);
+      tl.from("#scene-outro .outro-kicker", { y: 28, opacity: 0, duration: 0.72, ease: "sine.out" }, 44.82);
+      tl.from("#scene-outro .outro-brand", { y: 34, opacity: 0, duration: 0.78, ease: "expo.out" }, 45.15);
+      tl.to("#scene-outro .outro-logo, #scene-outro .outro-kicker, #scene-outro .outro-brand", { opacity: 0, y: -18, duration: 0.9, stagger: 0.06, ease: "power2.in" }, 50.75);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

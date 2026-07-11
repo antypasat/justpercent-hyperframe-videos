@@ -1,0 +1,157 @@
+{
+  "hyperframes": "1.0",
+  "name": "justpercent-isometric-tilt-hover-7.1-basic-premium-float",
+  "meta": {
+    "product": "Just Percent",
+    "url": "https://justpercent.com/",
+    "locale": "en-US",
+    "author": "Hyperframes / SaaS motion preset",
+    "technique": "Isometric Tilt & Hover — 7.1 Basic Premium Float",
+    "description": "Flat US homepage frame tilts into isometric space (rotateX 45deg, rotateZ -30deg over 1.4s ease-in-out-cubic), fades in a 0px 50px 100px rgba(0,0,0,0.3) depth shadow, then floats forever on a 6s translateY -8px -> +8px hover loop. The Basic Percentage Calculator card docks above the plane as a parallax layer."
+  },
+
+  "capture": {
+    "viewport": { "width": 1600, "height": 900, "deviceScaleFactor": 2 },
+    "colorScheme": "dark",
+    "captureGuard": {
+      "description": "Wait for full DOM stabilization before screenshotting the source frame. Applies to initial load, reloads, and any click that mutates the DOM. Never capture mid-transition or before reflow settles.",
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "noFiniteAnimations": true,
+      "layoutShiftQuietMs": 500,
+      "readyState": "complete",
+      "maxWaitMs": 15000,
+      "neverCaptureMidTransition": true
+    },
+    "frames": [
+      {
+        "id": "home",
+        "url": "https://justpercent.com/?noredirect",
+        "note": "US default locale lives at the root path (no /en/ prefix). ?noredirect avoids locale bounce.",
+        "preSteps": [
+          { "action": "click", "target": "button:contains('Accept All')", "optional": true },
+          { "action": "waitForStabilization", "guard": "captureGuard" }
+        ],
+        "asset": "assets/us-home.png"
+      },
+      {
+        "id": "calculator-card",
+        "url": "https://justpercent.com/?noredirect",
+        "note": "Crop of the Basic Percentage Calculator card from the stabilized homepage frame.",
+        "preSteps": [
+          { "action": "waitForStabilization", "guard": "captureGuard" },
+          { "action": "crop", "target": "[data-calculator-id] .calculator-card" }
+        ],
+        "asset": "assets/crop-calc-card.png"
+      }
+    ]
+  },
+
+  "scene": {
+    "stage": { "width": 1600, "height": 900, "background": "app-dark-gradient" },
+    "camera": { "perspective": "1200px", "perspectiveOrigin": "50% 42%" },
+    "brand": {
+      "logo": "assets/logo-percentage.webp",
+      "wordmark": "Just Percent",
+      "fonts": {
+        "heading": "Space Grotesk",
+        "body": "IBM Plex Sans",
+        "mono": "JetBrains Mono"
+      }
+    }
+  },
+
+  "layers": [
+    {
+      "id": "ui-home",
+      "frame": "home",
+      "class": "device",
+      "transformOrigin": "50% 50%",
+      "initial": {
+        "rotateX": "0deg", "rotateY": "0deg", "rotateZ": "0deg",
+        "boxShadow": "0px 50px 100px rgba(0,0,0,0)"
+      }
+    },
+    {
+      "id": "ui-calculator",
+      "frame": "calculator-card",
+      "class": "hover-card",
+      "parent": "ui-home",
+      "initial": { "opacity": 0, "translateZ": "0px" }
+    }
+  ],
+
+  "timeline": [
+    {
+      "id": "isometric-tilt",
+      "layer": "ui-home",
+      "delay": "0.6s",
+      "duration": "1.4s",
+      "easing": "ease-in-out-cubic",
+      "easingCss": "cubic-bezier(0.65, 0, 0.35, 1)",
+      "from": { "rotateX": "0deg", "rotateY": "0deg", "rotateZ": "0deg" },
+      "to":   { "rotateX": "45deg", "rotateY": "0deg", "rotateZ": "-30deg" },
+      "fill": "forwards"
+    },
+    {
+      "id": "depth-shadow",
+      "layer": "ui-home",
+      "delay": "0.6s",
+      "duration": "1.4s",
+      "easing": "ease-in-out-cubic",
+      "easingCss": "cubic-bezier(0.65, 0, 0.35, 1)",
+      "from": { "boxShadow": "0px 50px 100px rgba(0,0,0,0)" },
+      "to":   { "boxShadow": "0px 50px 100px rgba(0,0,0,0.3)" },
+      "fill": "forwards",
+      "simultaneousWith": "isometric-tilt"
+    },
+    {
+      "id": "calculator-dock",
+      "layer": "ui-calculator",
+      "delay": "2.1s",
+      "duration": "0.9s",
+      "easing": "ease-out-cubic",
+      "easingCss": "cubic-bezier(0.33, 1, 0.68, 1)",
+      "from": { "opacity": 0, "translateZ": "140px", "translateY": "40px" },
+      "to":   { "opacity": 1, "translateZ": "90px",  "translateY": "0px" },
+      "fill": "forwards"
+    }
+  ],
+
+  "loops": [
+    {
+      "id": "float-hover",
+      "layer": "ui-home",
+      "property": "translateY",
+      "from": "-8px",
+      "to": "8px",
+      "duration": "6s",
+      "direction": "alternate",
+      "iterations": "infinite",
+      "easing": "ease-in-out-sine",
+      "easingCss": "cubic-bezier(0.37, 0, 0.63, 1)"
+    },
+    {
+      "id": "float-hover-card",
+      "layer": "ui-calculator",
+      "property": "translateY",
+      "from": "6px",
+      "to": "-6px",
+      "duration": "6s",
+      "direction": "alternate",
+      "iterations": "infinite",
+      "phaseOffset": "-3s",
+      "easing": "ease-in-out-sine",
+      "easingCss": "cubic-bezier(0.37, 0, 0.63, 1)"
+    }
+  ],
+
+  "player": {
+    "preview": "index.html",
+    "qaParams": { "rec": "hide controls", "stop": "auto-pause at <ms>" },
+    "fps": 60,
+    "recommendedRecording": { "durationSec": 12, "format": "mp4", "resolution": "1600x900@2x" }
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "hyperframes": "1.0",
+  "name": "justpercent-isometric-tilt-hover-mix-7.4-7.2-7.3",
+  "meta": {
+    "product": "Just Percent",
+    "url": "https://justpercent.com/",
+    "locale": "en-US",
+    "author": "Hyperframes / SaaS motion preset",
+    "technique": "Isometric Tilt & Hover — story film mixing 7.4 Landing Hero Loop, 7.2 Post-Click State Tilt, 7.3 Dual-Axis Studio Light",
+    "durationMs": 56000,
+    "description": "56s product film: hero loop over the US homepage (7.4), a guided SolutionCard click landing in the prefilled Value Decrease Calculator (7.2), search-box practical uses with studio-light tilt (7.3), Practical Use click on the Value Increase page (7.2), and the interactive FAQ hub + salary-raise FAQ docking in Z-space (7.3)."
+  },
+
+  "capture": {
+    "viewport": { "width": 1600, "height": 900, "deviceScaleFactor": 2 },
+    "colorScheme": "dark",
+    "captureGuard": {
+      "description": "Wait for full DOM stabilization before screenshotting ANY source frame — on initial load/refresh AND after every click that triggers an animation or mutates the DOM. Never capture mid-transition or before reflow settles.",
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "noFiniteAnimations": true,
+      "layoutShiftQuietMs": 500,
+      "readyState": "complete",
+      "maxWaitMs": 15000,
+      "neverCaptureMidTransition": true
+    },
+    "frames": [
+      {
+        "id": "home",
+        "url": "https://justpercent.com/?noredirect",
+        "preSteps": [
+          { "action": "click", "target": "button:contains('Accept All')", "optional": true },
+          { "action": "waitForStabilization", "guard": "captureGuard" }
+        ],
+        "asset": "assets/us-home.png"
+      },
+      {
+        "id": "home-solutions",
+        "url": "https://justpercent.com/?noredirect",
+        "preSteps": [
+          { "action": "scrollTo", "target": "#solution-desktop-grid" },
+          { "action": "waitForStabilization", "guard": "captureGuard" }
+        ],
+        "asset": "assets/us-home-solutions.png"
+      },
+      {
+        "id": "calc-decreased-postclick",
+        "url": "https://justpercent.com/?noredirect",
+        "note": "SolutionCard 'Apply My Coupon' navigates to /decreased-value-calculator/ prefilled 100 / 20% -> 80, with the card hint banner.",
+        "preSteps": [
+          { "action": "click", "target": "SolutionCard: Apply My Coupon" },
+          { "action": "waitForNavigation", "url": "https://justpercent.com/decreased-value-calculator/" },
+          { "action": "waitForStabilization", "guard": "captureGuard" }
+        ],
+        "asset": "assets/us-calc-decreased-postclick.png"
+      },
+      {
+        "id": "home-search-tip",
+        "url": "https://justpercent.com/?noredirect",
+        "preSteps": [
+          { "action": "type", "target": "#calculator-search", "text": "tip" },
+          { "action": "waitForStabilization", "guard": "captureGuard" }
+        ],
+        "asset": "assets/us-home-search-tip.png"
+      },
+      {
+        "id": "home-pu-selected",
+        "url": "https://justpercent.com/?noredirect",
+        "note": "Clicking a practical-use row in the dropdown scrolls to the calculator, fills 15% of $60 -> $9 and shows the SELECTED PRACTICAL USE EXAMPLE banner.",
+        "preSteps": [
+          { "action": "type", "target": "#calculator-search", "text": "tip" },
+          { "action": "click", "target": ".search-dropdown practical-use row: Restaurant Tip" },
+          { "action": "waitForStabilization", "guard": "captureGuard" }
+        ],
+        "asset": "assets/us-home-pu-selected.png"
+      },
+      {
+        "id": "calc-increased-pu-list",
+        "url": "https://justpercent.com/increased-value-calculator/?noredirect",
+        "preSteps": [
+          { "action": "scrollTo", "target": ".help-panel .practical-use--interactive" },
+          { "action": "waitForStabilization", "guard": "captureGuard" }
+        ],
+        "asset": "assets/us-calc-increased-pu-list.png"
+      },
+      {
+        "id": "calc-increased-pu-postclick",
+        "url": "https://justpercent.com/increased-value-calculator/?noredirect",
+        "note": "PU 'Budget Boost' fills 5000 / 25% -> 6250 and pins the example above the calculator.",
+        "preSteps": [
+          { "action": "click", "target": ".practical-use--interactive: Budget Boost" },
+          { "action": "waitForStabilization", "guard": "captureGuard" }
+        ],
+        "asset": "assets/us-calc-increased-pu-postclick.png"
+      },
+      {
+        "id": "faqs-hub",
+        "url": "https://justpercent.com/faqs/?noredirect",
+        "preSteps": [{ "action": "waitForStabilization", "guard": "captureGuard" }],
+        "asset": "assets/us-faqs-hub.png"
+      },
+      {
+        "id": "faq-salary-raise",
+        "url": "https://justpercent.com/faqs/calculate-new-salary-after-percentage-raise/?noredirect",
+        "preSteps": [{ "action": "waitForStabilization", "guard": "captureGuard" }],
+        "asset": "assets/us-faq-salary-raise.png"
+      }
+    ]
+  },
+
+  "scene": {
+    "stage": { "width": 1600, "height": 900, "background": "app-dark-gradient" },
+    "camera": { "perspective": "1200px", "perspectiveDualAxisScenes": "1000px", "perspectiveOrigin": "50% 40%" },
+    "environmentLighting": "studio",
+    "brand": {
+      "logo": "assets/logo-percentage.webp",
+      "wordmark": "Just Percent",
+      "fonts": { "heading": "Space Grotesk", "body": "IBM Plex Sans", "mono": "JetBrains Mono" }
+    }
+  },
+
+  "scenes": [
+    { "id": "s0", "t": 0,     "label": "Intro — logo + wordmark + tagline" },
+    {
+      "id": "s1", "t": 2500, "label": "7.4 Landing Hero Loop — homepage",
+      "frame": "home",
+      "timeline": [
+        { "id": "hero-tilt", "delay": "0.5s", "duration": "1.4s", "easing": "ease-in-out-cubic",
+          "from": { "rotateX": "0deg", "rotateZ": "0deg" }, "to": { "rotateX": "48deg", "rotateZ": "-32deg" }, "fill": "forwards" },
+        { "id": "depth-shadow", "simultaneousWith": "hero-tilt",
+          "from": { "boxShadow": "0 50px 100px rgba(0,0,0,0)" }, "to": { "boxShadow": "0 50px 100px rgba(0,0,0,0.3)" } }
+      ],
+      "loops": [
+        { "id": "loop-y", "property": "translateY", "from": "-8px", "to": "8px", "duration": "10s", "direction": "alternate", "iterations": "infinite", "easing": "ease-in-out-sine" },
+        { "id": "loop-rz", "property": "rotateZ", "from": "-2deg", "to": "2deg", "duration": "10s", "direction": "alternate", "iterations": "infinite", "phaseOffset": "-3.1s", "easing": "ease-in-out-sine", "note": "micro oscillation layered on the tilted slab for a seamless loop" }
+      ]
+    },
+    {
+      "id": "s2", "t": 11000, "label": "SolutionCard guided click — 'Apply My Coupon'",
+      "frame": "home-solutions",
+      "interaction": {
+        "highlightRing": { "left": "26%", "top": "9%", "width": "23.5%", "height": "18%" },
+        "cursorPath": { "from": ["78%", "78%"], "to": ["42%", "23.5%"], "duration": "1.4s", "easing": "ease-in-out-cubic" },
+        "clickAtMs": 3500, "ripple": true, "pageOutAtMs": 4900
+      }
+    },
+    {
+      "id": "s3", "t": 16500, "label": "7.2 Post-Click State Tilt — /decreased-value-calculator/ prefilled",
+      "frame": "calc-decreased-postclick",
+      "timeline": [
+        { "id": "nav-in", "delay": "0.1s", "duration": "0.6s", "easing": "ease-out-quart", "from": { "opacity": 0, "scale": 0.985 }, "to": { "opacity": 1, "scale": 1 } },
+        { "id": "post-tilt", "delay": "1.1s", "duration": "1.5s", "easing": "ease-in-out-cubic",
+          "from": { "rotateX": "0deg", "rotateZ": "0deg" }, "to": { "rotateX": "50deg", "rotateZ": "-25deg" }, "fill": "forwards" },
+        { "id": "depth-shadow", "simultaneousWith": "post-tilt", "to": { "boxShadow": "0 50px 100px rgba(0,0,0,0.3)" } }
+      ],
+      "loops": [{ "id": "slow-hover", "property": "translateY", "from": "-8px", "to": "8px", "duration": "8s", "direction": "alternate", "iterations": "infinite", "easing": "ease-in-out-sine" }]
+    },
+    {
+      "id": "s4", "t": 23000, "label": "7.3 Dual-Axis Studio Light — search 'tip' dropdown",
+      "frame": "home-search-tip",
+      "camera": { "perspective": "1000px" },
+      "timeline": [
+        { "id": "studio-tilt", "delay": "0.7s", "duration": "1.6s", "easing": "ease-out-quart",
+          "from": { "rotateX": "0deg", "rotateY": "0deg", "rotateZ": "0deg" }, "to": { "rotateX": "40deg", "rotateY": "-10deg", "rotateZ": "-28deg" }, "fill": "forwards" },
+        { "id": "specular-sweep", "delay": "1.2s", "duration": "2.4s", "easing": "ease-out-quart",
+          "from": { "translateX": "-120%" }, "to": { "translateX": "120%" }, "layer": "specular-highlight" },
+        { "id": "depth-shadow", "simultaneousWith": "studio-tilt", "to": { "boxShadow": "0 50px 100px rgba(0,0,0,0.3)" } }
+      ],
+      "loops": [{ "id": "slow-hover", "property": "translateY", "from": "-8px", "to": "8px", "duration": "8s", "direction": "alternate", "iterations": "infinite", "easing": "ease-in-out-sine" }]
+    },
+    {
+      "id": "s5", "t": 29500, "label": "Practical use selected via search — calculator prefilled 15% of $60 = $9",
+      "frame": "home-pu-selected",
+      "timeline": [
+        { "id": "gentle-tilt", "delay": "1s", "duration": "1.5s", "easing": "ease-in-out-cubic",
+          "from": { "rotateX": "0deg", "rotateZ": "0deg" }, "to": { "rotateX": "26deg", "rotateZ": "-14deg" }, "fill": "forwards" }
+      ],
+      "loops": [{ "id": "hover", "property": "translateY", "from": "-8px", "to": "8px", "duration": "7s", "direction": "alternate", "iterations": "infinite", "easing": "ease-in-out-sine" }]
+    },
+    {
+      "id": "s6", "t": 35000, "label": "Practical Uses on calculator page — guided click 'Budget Boost'",
+      "frame": "calc-increased-pu-list",
+      "interaction": {
+        "highlightRing": { "left": "26.5%", "top": "33%", "width": "45.5%", "height": "17%" },
+        "cursorPath": { "from": ["80%", "80%"], "to": ["33%", "37.5%"], "duration": "1.4s", "easing": "ease-in-out-cubic" },
+        "clickAtMs": 3500, "ripple": true, "pageOutAtMs": 4900
+      }
+    },
+    {
+      "id": "s7", "t": 40500, "label": "7.2 Post-Click State Tilt — Budget Boost filled, $5,000 + 25% = $6,250",
+      "frame": "calc-increased-pu-postclick",
+      "timeline": [
+        { "id": "post-tilt", "delay": "1.1s", "duration": "1.5s", "easing": "ease-in-out-cubic",
+          "from": { "rotateX": "0deg", "rotateZ": "0deg" }, "to": { "rotateX": "50deg", "rotateZ": "-25deg" }, "fill": "forwards" }
+      ],
+      "loops": [{ "id": "slow-hover", "property": "translateY", "from": "-8px", "to": "8px", "duration": "8s", "direction": "alternate", "iterations": "infinite", "easing": "ease-in-out-sine" }]
+    },
+    {
+      "id": "s8", "t": 46000, "label": "7.3 FAQs — hub tilts under studio light, interactive salary-raise FAQ docks in Z-space",
+      "frames": ["faqs-hub", "faq-salary-raise"],
+      "camera": { "perspective": "1000px" },
+      "timeline": [
+        { "id": "studio-tilt", "delay": "0.6s", "duration": "1.6s", "easing": "ease-out-quart",
+          "to": { "rotateX": "40deg", "rotateY": "-10deg", "rotateZ": "-28deg" }, "fill": "forwards" },
+        { "id": "faq-dock", "layer": "faq-salary-raise", "delay": "2.6s", "duration": "1s", "easing": "ease-out-cubic",
+          "from": { "opacity": 0, "translateZ": "150px", "translateY": "46px" }, "to": { "opacity": 1, "translateZ": "95px", "translateY": "0px" }, "fill": "forwards" }
+      ]
+    },
+    { "id": "s9", "t": 52000, "label": "Outro — logo, wordmark, CTA justpercent.com" }
+  ],
+
+  "player": {
+    "preview": "index.html",
+    "masterClock": true,
+    "qaParams": { "rec": "hide controls", "t": "seek master clock to <ms>", "stop": "auto-pause at <ms>" },
+    "fps": 60,
+    "recommendedRecording": { "durationSec": 56, "format": "mp4", "resolution": "1600x900@2x" }
+  }
+}

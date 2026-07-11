@@ -1,0 +1,11 @@
+{
+  "name": "call-out-titles-and-text-boxes-envato",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.6.111 preview",
+    "check": "npx --yes hyperframes@0.6.111 lint && npx --yes hyperframes@0.6.111 validate && npx --yes hyperframes@0.6.111 inspect",
+    "render": "npx --yes hyperframes@0.6.111 render",
+    "publish": "npx --yes hyperframes@0.6.111 publish"
+  }
+}

@@ -1,0 +1,22 @@
+# Video source files and rendered outputs (HyperFrames / FFmpeg)
+*.mp4
+*.mov
+*.m4v
+*.webm
+*.mkv
+*.avi
+*.mpeg
+*.mpg
+*.mpe
+*.ogv
+*.wmv
+*.flv
+*.3gp
+*.3g2
+*.vob
+*.m2v
+*.mts
+*.m2ts
+*.mxf
+*.hevc
+

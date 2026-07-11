@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Just Percent — Isometric Tilt &amp; Hover 7.1 · Basic Premium Float</title>
+<style>
+  @font-face { font-family:"IBM Plex Sans"; font-weight:300; src:url("fonts/ibm-plex-sans-latin-300-normal.woff2") format("woff2"); }
+  @font-face { font-family:"IBM Plex Sans"; font-weight:400; src:url("fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family:"IBM Plex Sans"; font-weight:600; src:url("fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family:"Space Grotesk"; font-weight:500; src:url("fonts/space-grotesk-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family:"Space Grotesk"; font-weight:700; src:url("fonts/space-grotesk-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family:"JetBrains Mono"; font-weight:400; src:url("fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+
+  :root {
+    --bg-0: #07050d;
+    --bg-1: #14101f;
+    --violet: #8b5cf6;
+    --violet-deep: #7c3aed;
+    --teal: #14b8a6;
+    --txt: #f4f2f8;
+    --dim: #9b93ad;
+    --line: rgba(139,92,246,.22);
+    --sans: "IBM Plex Sans", sans-serif;
+    --heading: "Space Grotesk", sans-serif;
+    --mono: "JetBrains Mono", monospace;
+    --ease-io-cubic: cubic-bezier(0.65, 0, 0.35, 1);  /* ease-in-out-cubic */
+    --ease-io-sine: cubic-bezier(0.37, 0, 0.63, 1);   /* ease-in-out-sine  */
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; background:var(--bg-0); overflow:hidden; font-family:var(--sans); }
+  body.paused #stage * { animation-play-state:paused !important; }
+
+  /* ---------- Stage: 1600x900, letterboxed ---------- */
+  #viewport { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+  #stage {
+    position:relative; width:1600px; height:900px; overflow:hidden;
+    transform-origin:center center;
+    background:
+      radial-gradient(900px 700px at 82% 20%, rgba(20,184,166,.10), transparent 60%),
+      radial-gradient(1000px 800px at 12% 85%, rgba(124,58,237,.16), transparent 62%),
+      radial-gradient(700px 500px at 30% 10%, rgba(139,92,246,.12), transparent 65%),
+      linear-gradient(160deg, var(--bg-1), var(--bg-0) 55%);
+  }
+
+  /* faint % constellation, echoes the app's background grid */
+  .glyphs { position:absolute; inset:0; pointer-events:none; }
+  .glyphs span {
+    position:absolute; font-family:var(--mono); color:rgba(155,147,173,.10);
+    animation: glyphDrift 9s var(--ease-io-sine) infinite alternate;
+  }
+  @keyframes glyphDrift { from { transform:translateY(-10px); } to { transform:translateY(10px); } }
+
+  /* ---------- Left column: brand + copy ---------- */
+  .copy { position:absolute; left:96px; top:170px; width:520px; z-index:5; }
+  .brandline { display:flex; align-items:center; gap:14px; opacity:0; animation:fadeUp .9s .2s var(--ease-io-cubic) forwards; }
+  .brandline img { width:52px; height:52px; }
+  .brandline .wordmark { font-family:var(--sans); font-weight:300; letter-spacing:-0.02em; font-size:40px; color:var(--txt); }
+  .copy h1 {
+    margin-top:40px; font-family:var(--heading); font-weight:700; font-size:48px; line-height:1.1;
+    letter-spacing:-0.015em; color:var(--txt);
+    opacity:0; animation:fadeUp .9s .55s var(--ease-io-cubic) forwards;
+  }
+  .copy h1 em { font-style:normal; color:var(--violet); }
+  .copy p.lead {
+    margin-top:22px; font-size:19px; line-height:1.55; color:var(--dim); font-weight:400;
+    opacity:0; animation:fadeUp .9s .85s var(--ease-io-cubic) forwards;
+  }
+  .keys { margin-top:34px; display:flex; flex-direction:column; gap:12px; opacity:0; animation:fadeUp .9s 1.15s var(--ease-io-cubic) forwards; }
+  .keys .row { display:flex; align-items:center; gap:12px; font-size:14.5px; color:var(--dim); }
+  kbd {
+    font-family:var(--mono); font-size:13px; color:var(--txt);
+    background:rgba(139,92,246,.12); border:1px solid var(--line); border-bottom-width:2px;
+    border-radius:6px; padding:4px 10px; min-width:58px; text-align:center;
+  }
+  .cta {
+    margin-top:44px; display:inline-flex; align-items:center; gap:12px;
+    background:linear-gradient(180deg, var(--violet), var(--violet-deep));
+    color:#fff; font-family:var(--heading); font-weight:500; font-size:19px;
+    padding:15px 30px; border-radius:12px; text-decoration:none;
+    box-shadow:0 12px 34px rgba(124,58,237,.35);
+    opacity:0; animation:fadeUp .9s 1.45s var(--ease-io-cubic) forwards;
+  }
+  .cta .url { font-family:var(--mono); font-weight:400; font-size:15px; opacity:.85; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+
+  /* ---------- Isometric scene (technique 7.1) ---------- */
+  .scene3d {
+    position:absolute; right:-40px; top:0; width:1000px; height:900px;
+    perspective:1200px; perspective-origin:50% 42%;   /* spec: perspective 1200px */
+  }
+  /* looping floating motion: translateY -8px -> +8px over 6s */
+  .float {
+    position:absolute; left:50%; top:50%; width:0; height:0;
+    animation: floatHover 6s var(--ease-io-sine) infinite alternate;
+  }
+  @keyframes floatHover { from { transform:translateY(-8px); } to { transform:translateY(8px); } }
+
+  /* flat UI -> isometric: rotateX 0->45deg, rotateZ 0->-30deg, 1.4s ease-in-out-cubic */
+  .tilt {
+    position:absolute; left:-490px; top:-276px; width:980px; height:551px;
+    transform-style:preserve-3d;
+    transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    animation: isometricTilt 1.4s var(--ease-io-cubic) 0.6s forwards;
+  }
+  @keyframes isometricTilt {
+    from { transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    to   { transform:rotateX(45deg) rotateY(0deg) rotateZ(-30deg); }
+  }
+
+  /* browser-chrome mockup around the stabilized source frame */
+  .device {
+    position:absolute; inset:0; border-radius:14px; overflow:hidden;
+    border:1px solid rgba(139,92,246,.28); background:#0b0714;
+    box-shadow:0px 50px 100px rgba(0,0,0,0);
+    animation: depthShadow 1.4s var(--ease-io-cubic) 0.6s forwards; /* simultaneous with tilt */
+    transform:translateZ(0px);
+  }
+  @keyframes depthShadow {
+    from { box-shadow:0px 50px 100px rgba(0,0,0,0); }
+    to   { box-shadow:0px 50px 100px rgba(0,0,0,0.3); }
+  }
+  .device .bar {
+    height:38px; display:flex; align-items:center; gap:8px; padding:0 16px;
+    background:#151021; border-bottom:1px solid rgba(139,92,246,.18);
+  }
+  .device .bar i { width:11px; height:11px; border-radius:50%; background:#2c2440; }
+  .device .bar i:nth-child(1){ background:#f87171; } .device .bar i:nth-child(2){ background:#fbbf24; } .device .bar i:nth-child(3){ background:#34d399; }
+  .device .bar .addr {
+    margin-left:14px; flex:1; max-width:420px; height:22px; border-radius:6px;
+    background:#0d0917; border:1px solid rgba(139,92,246,.16);
+    font-family:var(--mono); font-size:12px; color:var(--dim);
+    display:flex; align-items:center; padding:0 12px; gap:7px;
+  }
+  .device .bar .addr b { color:var(--teal); font-weight:400; }
+  .device .shot { width:100%; height:calc(100% - 38px); object-fit:cover; object-position:top; display:block; }
+
+  /* hover card: the calculator, docked above the plane in Z-space */
+  .card {
+    position:absolute; left:51%; top:44%; width:430px;
+    border-radius:16px; overflow:hidden;
+    border:1px solid rgba(139,92,246,.4);
+    box-shadow:0px 30px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.3);
+    opacity:0;
+    animation: cardDock .9s cubic-bezier(0.33,1,0.68,1) 2.1s forwards,
+               cardFloat 6s var(--ease-io-sine) -3s infinite alternate;
+  }
+  @keyframes cardDock {
+    from { opacity:0; transform:translateZ(140px) translateY(40px); }
+    to   { opacity:1; transform:translateZ(90px) translateY(0px); }
+  }
+  @keyframes cardFloat { from { margin-top:6px; } to { margin-top:-6px; } }
+  .card img { width:100%; display:block; }
+
+  /* ground glow under the tilted slab */
+  .ground {
+    position:absolute; left:50%; top:63%; width:760px; height:210px; transform:translate(-50%,0);
+    background:radial-gradient(50% 50% at 50% 50%, rgba(124,58,237,.22), transparent 70%);
+    filter:blur(6px); opacity:0; animation:fadeIn 1.4s var(--ease-io-cubic) .9s forwards;
+  }
+  @keyframes fadeIn { to { opacity:1; } }
+
+  /* footer chip */
+  .chip {
+    position:absolute; left:96px; bottom:56px; display:flex; gap:10px; align-items:center;
+    font-family:var(--mono); font-size:12.5px; color:var(--dim); letter-spacing:.06em;
+    opacity:0; animation:fadeIn 1s 2.4s var(--ease-io-cubic) forwards;
+  }
+  .chip .dot { width:8px; height:8px; border-radius:50%; background:var(--teal); box-shadow:0 0 10px var(--teal); }
+
+  .ctl { position:fixed; right:18px; bottom:18px; z-index:50; display:flex; gap:8px; }
+  .ctl button {
+    width:40px; height:40px; border-radius:50%;
+    background:rgba(139,92,246,.15); border:1px solid var(--line); color:var(--txt);
+    font-size:15px; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="stage">
+    <div class="glyphs" id="glyphs"></div>
+
+    <div class="copy">
+      <div class="brandline">
+        <img src="assets/logo-percentage.webp" alt="Just Percent logo" />
+        <span class="wordmark">Just Percent</span>
+      </div>
+      <h1>Every percentage.<br /><em>Zero</em> head-scratching.</h1>
+      <p class="lead">Free online calculators for tips, discounts, sales tax, raises, and commissions — instant answers, keyboard-fast, no clutter.</p>
+      <div class="keys">
+        <div class="row"><kbd>Tab</kbd> Move to next field</div>
+        <div class="row"><kbd>Enter</kbd> Save &amp; copy result</div>
+        <div class="row"><kbd>Esc</kbd> Clear all fields and start fresh</div>
+      </div>
+      <a class="cta" href="https://justpercent.com/" target="_blank" rel="noopener">Try it free <span class="url">justpercent.com</span></a>
+    </div>
+
+    <div class="scene3d">
+      <div class="ground"></div>
+      <div class="float">
+        <div class="tilt">
+          <div class="device">
+            <div class="bar">
+              <i></i><i></i><i></i>
+              <div class="addr">&#128274; <b>justpercent.com</b></div>
+            </div>
+            <img class="shot" src="assets/us-home.png" alt="Just Percent — free online percentage calculators" />
+          </div>
+          <div class="card">
+            <img src="assets/crop-calc-card.png" alt="Basic Percentage Calculator" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chip"><span class="dot"></span> HYPERFRAMES &middot; ISOMETRIC TILT &amp; HOVER 7.1 &middot; PREMIUM FLOAT &middot; 60 FPS &middot; EN-US</div>
+  </div>
+</div>
+<div class="ctl">
+  <button id="pause" title="Pause / play (Space)">&#10074;&#10074;</button>
+  <button id="replay" title="Replay (R)">&#8635;</button>
+</div>
+
+<script>
+  // letterbox scale-to-fit
+  var stage = document.getElementById("stage");
+  function fit(){ var s = Math.min(innerWidth/1600, innerHeight/900); stage.style.transform = "scale(" + s + ")"; }
+  addEventListener("resize", fit); fit();
+
+  // % constellation
+  var g = document.getElementById("glyphs");
+  var cells = [[70,60,30],[240,190,22],[120,420,26],[300,700,20],[520,80,18],[640,780,24],[1380,120,26],[1500,340,20],[1440,660,30],[1240,820,18],[900,60,20],[1560,780,22]];
+  cells.forEach(function(c, i){
+    var s = document.createElement("span");
+    s.textContent = "%";
+    s.style.left = c[0] + "px"; s.style.top = c[1] + "px"; s.style.fontSize = c[2] + "px";
+    s.style.animationDelay = (-i * 1.3) + "s";
+    g.appendChild(s);
+  });
+
+  // QA clock: ?rec hides controls, ?t=<ms> not needed (single continuous shot), ?stop=<ms> auto-pauses
+  var template = stage.innerHTML;
+  var t0 = performance.now(), paused = false, pausedAt = 0;
+  var qa = new URLSearchParams(location.search);
+  var stopAt = parseInt(qa.get("stop") || "0", 10);
+
+  function togglePause(){
+    if (!paused){ paused = true; pausedAt = performance.now(); document.body.classList.add("paused"); document.getElementById("pause").innerHTML = "&#9654;"; }
+    else { t0 += performance.now() - pausedAt; paused = false; document.body.classList.remove("paused"); document.getElementById("pause").innerHTML = "&#10074;&#10074;"; }
+  }
+  function restart(){ stage.innerHTML = template; t0 = performance.now(); }
+
+  function tick(now){
+    if (!paused && stopAt > 0 && now - t0 >= stopAt){ stopAt = 0; togglePause(); }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  document.getElementById("pause").addEventListener("click", togglePause);
+  document.getElementById("replay").addEventListener("click", function(){ if (paused) togglePause(); restart(); });
+  addEventListener("keydown", function(e){
+    if (e.code === "Space"){ e.preventDefault(); togglePause(); }
+    if (e.key === "r" || e.key === "R"){ if (paused) togglePause(); restart(); }
+  });
+  if (qa.has("rec")) document.querySelector(".ctl").style.display = "none";
+</script>
+</body>
+</html>

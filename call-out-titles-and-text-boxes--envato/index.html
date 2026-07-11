@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000000;
+      }
+
+      body {
+        font-family: Montserrat, "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.055), transparent 42%),
+          linear-gradient(180deg, #050505 0%, #000000 100%);
+        color: #ffffff;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        transform-style: preserve-3d;
+        perspective: 1600px;
+      }
+
+      .space {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+        will-change: transform;
+      }
+
+      .grid {
+        position: absolute;
+        inset: 0;
+        opacity: 0.16;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+        background-size: 96px 96px;
+        mask-image: radial-gradient(circle at 50% 50%, #000000 0%, transparent 68%);
+      }
+
+      .scanline {
+        position: absolute;
+        inset: 0;
+        opacity: 0.08;
+        background: repeating-linear-gradient(180deg, transparent 0 7px, #ffffff 8px 9px);
+      }
+
+      .label {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 210px;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 0;
+        transform-origin: left center;
+      }
+
+      .title {
+        display: block;
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .subtitle {
+        display: block;
+        font-size: 10px;
+        line-height: 1.2;
+        font-weight: 300;
+        white-space: nowrap;
+        opacity: 0.9;
+      }
+
+      .mask {
+        display: block;
+        overflow: hidden;
+      }
+
+      .label .mask {
+        height: 34px;
+      }
+
+      .label .mask + .mask {
+        height: 15px;
+      }
+
+      .mask span {
+        display: block;
+      }
+
+      .node {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ffffff;
+        transform: translate(-50%, -50%);
+        transform-origin: center;
+        box-shadow: 0 0 18px rgba(255, 255, 255, 0.45);
+      }
+
+      .node.square {
+        border-radius: 0;
+      }
+
+      .brackets {
+        position: absolute;
+        width: 260px;
+        height: 54px;
+        pointer-events: none;
+      }
+
+      .brackets::before,
+      .brackets::after,
+      .brackets span::before,
+      .brackets span::after {
+        content: "";
+        position: absolute;
+        width: 22px;
+        height: 14px;
+        border-color: rgba(255, 255, 255, 0.72);
+      }
+
+      .brackets::before {
+        left: 0;
+        top: 0;
+        border-left: 1px solid;
+        border-top: 1px solid;
+      }
+
+      .brackets::after {
+        right: 0;
+        top: 0;
+        border-right: 1px solid;
+        border-top: 1px solid;
+      }
+
+      .brackets span::before {
+        left: 0;
+        bottom: 0;
+        border-left: 1px solid;
+        border-bottom: 1px solid;
+      }
+
+      .brackets span::after {
+        right: 0;
+        bottom: 0;
+        border-right: 1px solid;
+        border-bottom: 1px solid;
+      }
+
+      svg.hud {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: visible;
+        pointer-events: none;
+      }
+
+      .draw {
+        stroke-dasharray: 1;
+        stroke-dashoffset: var(--draw, 0);
+      }
+
+      .thin {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.66);
+        stroke-width: 1;
+        vector-effect: non-scaling-stroke;
+      }
+
+      .thin.soft {
+        stroke: rgba(255, 255, 255, 0.5);
+      }
+
+      .badge {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 164px;
+        height: 164px;
+        margin-left: -82px;
+        margin-top: -82px;
+        border: 1px dashed rgba(255, 255, 255, 0.76);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 18px;
+        line-height: 1.08;
+        transform-origin: center;
+      }
+
+      .badge .badge-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        transform: rotate(0deg);
+        line-height: 1.2;
+      }
+
+      .badge small {
+        display: block;
+        font-size: 10px;
+        line-height: 1.15;
+        font-weight: 300;
+      }
+
+      .s1 .radial-label:nth-of-type(1) { left: 1110px; top: 190px; }
+      .s1 .radial-label:nth-of-type(2) { left: 1285px; top: 380px; }
+      .s1 .radial-label:nth-of-type(3) { left: 1116px; top: 760px; }
+      .s1 .radial-label:nth-of-type(4) { left: 478px; top: 764px; }
+      .s1 .radial-label:nth-of-type(5) { left: 322px; top: 420px; }
+      .s1 .radial-label:nth-of-type(6) { left: 506px; top: 208px; }
+      .s1 .radial-label:nth-of-type(7) { left: 827px; top: 836px; }
+
+      .s2 .hex {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        transform: translate(-50%, -50%);
+        clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+        background: #ffffff;
+        transform-origin: center;
+      }
+
+      .s2 .hex.hollow {
+        background: transparent;
+        border: 1px solid #ffffff;
+        clip-path: none;
+      }
+
+      .s2 .box {
+        position: absolute;
+        width: 340px;
+        height: 68px;
+        border: 1px solid rgba(255, 255, 255, 0.48);
+      }
+
+      .s3 .bullseye {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border: 1px solid #ffffff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .s3 .bullseye::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 4px;
+        height: 4px;
+        margin-left: -2px;
+        margin-top: -2px;
+        border-radius: 50%;
+        background: #ffffff;
+      }
+
+      .divider {
+        position: absolute;
+        width: 1px;
+        height: 58px;
+        background: rgba(255, 255, 255, 0.75);
+        transform-origin: center;
+      }
+
+      .s4 .badge {
+        left: 1385px;
+        top: 300px;
+        width: 118px;
+        height: 118px;
+        margin-left: -59px;
+        margin-top: -59px;
+      }
+
+      .s4 .moving-node {
+        left: 438px;
+        top: 325px;
+      }
+
+      .s5 .plane {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+      }
+
+      .underline {
+        position: absolute;
+        width: 242px;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.66);
+        transform-origin: left center;
+      }
+
+      .drop {
+        position: absolute;
+        width: 1px;
+        height: 116px;
+        background: rgba(255, 255, 255, 0.66);
+        transform-origin: top center;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-199x" id="root" data-composition-id="main" data-start="0" data-duration="44" data-width="1920" data-height="1080">
+      <section data-hf-id="hf-tvki" id="scene-1" class="clip scene s1" data-start="0" data-duration="9" data-track-index="1">
+        <div data-hf-id="hf-kxq8" class="grid"></div>
+        <div data-hf-id="hf-qmm1" class="scanline"></div>
+        <div data-hf-id="hf-m79d" class="space main-null" data-layout-allow-overflow>
+          <svg data-hf-id="hf-curz" class="hud" viewBox="0 0 1920 1080" aria-hidden="true">
+            <path data-hf-id="hf-sjcs" class="thin draw s1-line" pathLength="1" d="M960 540 L1128 212" />
+            <path data-hf-id="hf-2lv1" class="thin draw s1-line" pathLength="1" d="M960 540 L1302 402" />
+            <path data-hf-id="hf-p4d9" class="thin draw s1-line" pathLength="1" d="M960 540 L1136 782" />
+            <path data-hf-id="hf-lw6z" class="thin draw s1-line" pathLength="1" d="M960 540 L498 786" />
+            <path data-hf-id="hf-yvjq" class="thin draw s1-line" pathLength="1" d="M960 540 L342 444" />
+            <path data-hf-id="hf-jxkz" class="thin draw s1-line" pathLength="1" d="M960 540 L526 230" />
+            <path data-hf-id="hf-t0c5" class="thin soft draw s1-line" pathLength="1" d="M960 540 L852 858" />
+          </svg>
+          <div data-hf-id="hf-9s2p" class="badge"><div data-hf-id="hf-3jo7" class="badge-text">SMOOH<small data-hf-id="hf-ib1u">Animation</small><small data-hf-id="hf-lm0j">Titles</small></div></div>
+          <div data-hf-id="hf-62ry" class="node" style="left:1128px; top:212px"></div>
+          <div data-hf-id="hf-ig31" class="node" style="left:1302px; top:402px"></div>
+          <div data-hf-id="hf-4zf7" class="node" style="left:1136px; top:782px"></div>
+          <div data-hf-id="hf-ku4z" class="node" style="left:498px; top:786px"></div>
+          <div data-hf-id="hf-cw7k" class="node" style="left:342px; top:444px"></div>
+          <div data-hf-id="hf-z14j" class="node" style="left:526px; top:230px"></div>
+          <div data-hf-id="hf-177j" class="node" style="left:852px; top:858px"></div>
+          <div data-hf-id="hf-t11q" class="label radial-label"><span data-hf-id="hf-vdsp" class="mask"><span data-hf-id="hf-g0fa" class="title">Miguel Daniels</span></span><span data-hf-id="hf-2y5p" class="mask"><span data-hf-id="hf-pptw" class="subtitle">Creative Director</span></span></div>
+          <div data-hf-id="hf-prwy" class="label radial-label"><span data-hf-id="hf-452s" class="mask"><span data-hf-id="hf-40ki" class="title">James Benson</span></span><span data-hf-id="hf-3qrr" class="mask"><span data-hf-id="hf-6fnp" class="subtitle">Animation Demorrel</span></span></div>
+          <div data-hf-id="hf-q67z" class="label radial-label"><span data-hf-id="hf-4xou" class="mask"><span data-hf-id="hf-qsaj" class="title">Adam Sandler</span></span><span data-hf-id="hf-4jdt" class="mask"><span data-hf-id="hf-zqtx" class="subtitle">Your Text Here</span></span></div>
+          <div data-hf-id="hf-qkj0" class="label radial-label"><span data-hf-id="hf-5qaw" class="mask"><span data-hf-id="hf-psx5" class="title">David Brown</span></span><span data-hf-id="hf-5bzv" class="mask"><span data-hf-id="hf-im9o" class="subtitle">Creative Director</span></span></div>
+          <div data-hf-id="hf-qyu1" class="label radial-label"><span data-hf-id="hf-6iwy" class="mask"><span data-hf-id="hf-4miq" class="title">Rachel Elmers</span></span><span data-hf-id="hf-64lx" class="mask"><span data-hf-id="hf-hfcl" class="subtitle">Creative Director</span></span></div>
+          <div data-hf-id="hf-rd52" class="label radial-label"><span data-hf-id="hf-w0h3" class="mask"><span data-hf-id="hf-0uoi" class="title">Steven Derrick</span></span><span data-hf-id="hf-wes4" class="mask"><span data-hf-id="hf-82l5" class="subtitle">Animation Demorrel</span></span></div>
+          <div data-hf-id="hf-rrg3" class="label radial-label"><span data-hf-id="hf-v7v1" class="mask"><span data-hf-id="hf-bbaj" class="title">Call-Outs Title</span></span><span data-hf-id="hf-vm62" class="mask"><span data-hf-id="hf-fzyh" class="subtitle">Your Text Here</span></span></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-fb3e" id="scene-2" class="clip scene s2" data-start="9" data-duration="8" data-track-index="1">
+        <div data-hf-id="hf-6qwo" class="grid"></div>
+        <div data-hf-id="hf-1twz" class="space drift" data-layout-allow-overflow>
+          <svg data-hf-id="hf-spgv" class="hud" viewBox="0 0 1920 1080" aria-hidden="true">
+            <path data-hf-id="hf-fpxr" class="thin draw elbow-a" pathLength="1" d="M500 300 L570 370" />
+            <path data-hf-id="hf-0nqi" class="thin draw elbow-b" pathLength="1" d="M570 370 L822 370" />
+            <path data-hf-id="hf-tukx" class="thin draw elbow-a" pathLength="1" d="M660 476 L742 558" />
+            <path data-hf-id="hf-3mp7" class="thin draw elbow-b" pathLength="1" d="M742 558 L1010 558" />
+            <path data-hf-id="hf-oex7" class="thin draw elbow-a" pathLength="1" d="M855 672 L928 745" />
+            <path data-hf-id="hf-1w5y" class="thin draw elbow-b" pathLength="1" d="M928 745 L1190 745" />
+            <path data-hf-id="hf-co7l" class="thin draw elbow-a" pathLength="1" d="M1138 226 L1214 302" />
+            <path data-hf-id="hf-e6sd" class="thin draw elbow-b" pathLength="1" d="M1214 302 L1484 302" />
+          </svg>
+          <div data-hf-id="hf-d238" class="hex" style="left:500px; top:300px"></div>
+          <div data-hf-id="hf-60lk" class="hex hollow" style="left:660px; top:476px"></div>
+          <div data-hf-id="hf-kyyr" class="hex" style="left:855px; top:672px"></div>
+          <div data-hf-id="hf-sktu" class="hex hollow" style="left:1138px; top:226px"></div>
+          <div data-hf-id="hf-jig0" class="box" style="left:822px; top:336px"></div>
+          <div data-hf-id="hf-02hb" class="box" style="left:1010px; top:524px"></div>
+          <div data-hf-id="hf-1ljy" class="box" style="left:1190px; top:711px"></div>
+          <div data-hf-id="hf-nath" class="box" style="left:1484px; top:268px"></div>
+          <div data-hf-id="hf-zipx" class="label" style="left:844px; top:354px"><span data-hf-id="hf-isgt" class="title">David Brown</span><span data-hf-id="hf-htnm" class="subtitle">Creative Director</span></div>
+          <div data-hf-id="hf-mxho" class="label" style="left:1032px; top:542px"><span data-hf-id="hf-sbm3" class="title">Call-Outs Title</span><span data-hf-id="hf-h6vk" class="subtitle">Your Text Here</span></div>
+          <div data-hf-id="hf-7iez" class="label" style="left:1212px; top:729px"><span data-hf-id="hf-rxb2" class="title">Call-Outs Title</span><span data-hf-id="hf-gskj" class="subtitle">Your Text Here</span></div>
+          <div data-hf-id="hf-vwy7" class="label" style="left:1506px; top:286px"><span data-hf-id="hf-rj01" class="title">Call-Outs Title</span><span data-hf-id="hf-et1e" class="subtitle">Your Text Here</span></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-nr7l" id="scene-3" class="clip scene s3" data-start="18" data-duration="7" data-track-index="1">
+        <div data-hf-id="hf-spfx" class="scanline"></div>
+        <div data-hf-id="hf-40cc" class="space rotating-null" data-layout-allow-overflow>
+          <svg data-hf-id="hf-sb5u" class="hud" viewBox="0 0 1920 1080" aria-hidden="true">
+            <path data-hf-id="hf-mq5i" class="thin draw branch-y" pathLength="1" d="M708 360 L708 500" />
+            <path data-hf-id="hf-cau3" class="thin draw branch-x" pathLength="1" d="M708 500 L474 500" />
+            <path data-hf-id="hf-s7t9" class="thin draw branch-y" pathLength="1" d="M1202 348 L1202 486" />
+            <path data-hf-id="hf-nmtx" class="thin draw branch-x" pathLength="1" d="M1202 486 L1426 486" />
+            <path data-hf-id="hf-dpcq" class="thin draw branch-y" pathLength="1" d="M736 735 L736 618" />
+            <path data-hf-id="hf-pbsj" class="thin draw branch-x" pathLength="1" d="M736 618 L488 618" />
+            <path data-hf-id="hf-1nrt" class="thin draw branch-y" pathLength="1" d="M1190 730 L1190 612" />
+            <path data-hf-id="hf-40ii" class="thin draw branch-x" pathLength="1" d="M1190 612 L1418 612" />
+          </svg>
+          <div data-hf-id="hf-ves2" class="bullseye" style="left:708px; top:360px"></div>
+          <div data-hf-id="hf-46o8" class="bullseye" style="left:1202px; top:348px"></div>
+          <div data-hf-id="hf-v671" class="bullseye" style="left:736px; top:735px"></div>
+          <div data-hf-id="hf-0cpv" class="bullseye" style="left:1190px; top:730px"></div>
+          <div data-hf-id="hf-mhkg" class="divider" style="left:462px; top:471px"></div>
+          <div data-hf-id="hf-jfor" class="divider" style="left:1406px; top:457px"></div>
+          <div data-hf-id="hf-nfht" class="divider" style="left:476px; top:589px"></div>
+          <div data-hf-id="hf-h2rj" class="divider" style="left:1398px; top:583px"></div>
+          <div data-hf-id="hf-ayyj" class="label orient" style="left:272px; top:482px"><span data-hf-id="hf-8reu" class="title">James Benson</span><span data-hf-id="hf-jt6r" class="subtitle">Creative Director</span></div>
+          <div data-hf-id="hf-9vcq" class="label orient" style="left:1434px; top:468px"><span data-hf-id="hf-gl17" class="title">Adam Sandler</span><span data-hf-id="hf-k7hs" class="subtitle">Creative Director</span></div>
+          <div data-hf-id="hf-4rlo" class="label orient" style="left:286px; top:600px"><span data-hf-id="hf-g6q6" class="title">Adam Sandler</span><span data-hf-id="hf-j0kp" class="subtitle">Creative Director</span></div>
+          <div data-hf-id="hf-mssh" class="label orient" style="left:1426px; top:594px"><span data-hf-id="hf-u36y" class="title">Am Sandler</span><span data-hf-id="hf-jevq" class="subtitle">Creative Director</span></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-sd8d" id="scene-4" class="clip scene s4" data-start="26" data-duration="8" data-track-index="1">
+        <div data-hf-id="hf-5jzl" class="grid"></div>
+        <div data-hf-id="hf-99l1" class="space y-drift" data-layout-allow-overflow>
+          <svg data-hf-id="hf-rwut" class="hud" viewBox="0 0 1920 1080" aria-hidden="true">
+            <path data-hf-id="hf-nbln" class="thin draw curve curve-primary" pathLength="1" d="M438 325 C620 310 640 486 790 486 S1034 384 1192 414" />
+            <path data-hf-id="hf-3se2" class="thin soft draw curve curve-secondary" pathLength="1" d="M438 325 C646 532 736 660 964 662 S1260 574 1375 620" />
+          </svg>
+          <div data-hf-id="hf-ykaf" class="node moving-node"></div>
+          <div data-hf-id="hf-46et" class="badge"><div data-hf-id="hf-jrdj" class="badge-text">SMOOH<small data-hf-id="hf-g3li">Animation</small><small data-hf-id="hf-gr9v">Titles</small></div></div>
+          <div data-hf-id="hf-nc5j" class="label" style="left:1210px; top:396px"><span data-hf-id="hf-m5cm" class="title">Steven Derrick</span><span data-hf-id="hf-99i8" class="subtitle">Animation Demorrel</span></div>
+          <div data-hf-id="hf-os1a" class="label" style="left:1394px; top:602px"><span data-hf-id="hf-1qw6" class="title">Rachel Elmers</span><span data-hf-id="hf-f1if" class="subtitle">Creative Director</span></div>
+          <div data-hf-id="hf-0er1" class="label" style="left:245px; top:690px"><span data-hf-id="hf-qpq6" class="title">En Derrick</span><span data-hf-id="hf-8v77" class="subtitle">Animation Demorrel</span></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-oq2o" id="scene-5" class="clip scene s5" data-start="35" data-duration="9" data-track-index="1">
+        <div data-hf-id="hf-twd0" class="scanline"></div>
+        <div data-hf-id="hf-x0r2" class="space dolly" data-layout-allow-overflow>
+          <div data-hf-id="hf-yszl" class="plane foreground">
+            <div data-hf-id="hf-u8tv" class="node square" style="left:516px; top:254px"></div>
+            <div data-hf-id="hf-vsi9" class="drop" style="left:516px; top:254px"></div>
+            <div data-hf-id="hf-13rp" class="underline" style="left:516px; top:370px"></div>
+            <div data-hf-id="hf-3v8k" class="label" style="left:528px; top:390px"><span data-hf-id="hf-95pv" class="title">James Benson</span><span data-hf-id="hf-6vo2" class="subtitle">Animation Demorrel</span></div>
+            <div data-hf-id="hf-dtwc" class="node square" style="left:1320px; top:642px"></div>
+            <div data-hf-id="hf-ke8e" class="drop" style="left:1320px; top:642px"></div>
+            <div data-hf-id="hf-ggtb" class="underline" style="left:1078px; top:758px"></div>
+            <div data-hf-id="hf-3bxn" class="label" style="left:1078px; top:778px"><span data-hf-id="hf-mjnn" class="title">Steven Derrick</span><span data-hf-id="hf-6hd1" class="subtitle">Animation Demorrel</span></div>
+          </div>
+          <div data-hf-id="hf-1ezm" class="plane background">
+            <div data-hf-id="hf-h7li" class="node square" style="left:980px; top:380px"></div>
+            <div data-hf-id="hf-tpr4" class="drop" style="left:980px; top:380px"></div>
+            <div data-hf-id="hf-u6y1" class="underline" style="left:980px; top:496px"></div>
+            <div data-hf-id="hf-iz9p" class="label" style="left:992px; top:516px"><span data-hf-id="hf-2577" class="title">Rachel Elmers</span><span data-hf-id="hf-fftg" class="subtitle">Creative Director</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+
+      const easeOut = "cubic-bezier(0.25, 1, 0.5, 1)";
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: easeOut },
+      });
+
+      gsap.set(".draw", { "--draw": 1 });
+      gsap.set(".label .mask span", { y: 30 });
+      gsap.set(".s2 .label, .s3 .label, .s4 .label, .s5 .label", { opacity: 0 });
+      gsap.set(".node, .hex, .bullseye", { scale: 0 });
+      gsap.set(".brackets, .s2 .box", { opacity: 0 });
+      gsap.set(".divider", { scaleY: 0 });
+      gsap.set(".drop", { scaleY: 0 });
+      gsap.set(".underline", { scaleX: 0 });
+      gsap.set(".badge", { scale: 0.72, opacity: 0 });
+
+      tl.addLabel("radial", 0);
+      tl.fromTo(".s1 .main-null", { scale: 1.04, z: 0 }, { scale: 0.92, z: -180, duration: 9, ease: "none" }, "radial");
+      tl.to(".s1 .badge", { scale: 1, opacity: 1, duration: 0.7 }, "radial+=0.2");
+      tl.to(".s1 .badge", { rotation: 135, duration: 9, ease: "none" }, "radial");
+      tl.to(".s1 .node", { scale: 1.2, duration: 0.22, stagger: 0.08 }, "radial+=0.25");
+      tl.to(".s1 .node", { scale: 1, duration: 0.18, stagger: 0.08 }, "radial+=0.47");
+      tl.to(".s1-line", { "--draw": 0, duration: 0.74, stagger: 0.08 }, "radial+=0.42");
+      tl.to(".s1 .label .mask span", { y: 0, duration: 0.5, stagger: 0.035 }, "radial+=1.02");
+
+      tl.addLabel("diagonal", 9);
+      tl.fromTo(".s2 .drift", { x: -80 }, { x: 95, duration: 8, ease: "none" }, "diagonal");
+      tl.to(".s2 .hex", { scale: 1, duration: 0.42, stagger: 0.14 }, "diagonal+=0.18");
+      tl.to(".s2 .elbow-a", { "--draw": 0, duration: 0.52, stagger: 0.26 }, "diagonal+=0.54");
+      tl.to(".s2 .elbow-b", { "--draw": 0, duration: 0.52, stagger: 0.26 }, "diagonal+=1.04");
+      tl.to(".s2 .box", { opacity: 1, duration: 0.22, stagger: 0.26 }, "diagonal+=1.48");
+      tl.to(".s2 .label", { opacity: 1, duration: 0.36, stagger: 0.26 }, "diagonal+=1.64");
+
+      tl.addLabel("split", 18);
+      tl.to(".s3 .rotating-null", { rotation: -35, duration: 7, ease: "none" }, "split");
+      tl.to(".s3 .orient", { rotation: 35, duration: 7, ease: "none" }, "split");
+      tl.to(".s3 .bullseye", { scale: 1, duration: 0.34, stagger: 0.1 }, "split+=0.2");
+      tl.to(".s3 .branch-y", { "--draw": 0, duration: 0.5, stagger: 0.16 }, "split+=0.5");
+      tl.to(".s3 .branch-x", { "--draw": 0, duration: 0.5, stagger: 0.16 }, "split+=0.94");
+      tl.to(".s3 .divider", { scaleY: 1, duration: 0.34, stagger: 0.12 }, "split+=1.28");
+      tl.to(".s3 .label", { opacity: 1, duration: 0.42, stagger: 0.12 }, "split+=1.5");
+
+      tl.addLabel("dynamic", 26);
+      tl.fromTo(".s4 .y-drift", { y: -45 }, { y: 70, duration: 8, ease: "none" }, "dynamic");
+      tl.to(".s4 .moving-node", { scale: 1, duration: 0.34 }, "dynamic+=0.18");
+      tl.to(".s4 .moving-node", { y: 270, duration: 6.8, ease: "none" }, "dynamic+=0.55");
+      tl.to(".s4 .curve", { "--draw": 0, duration: 1.1, stagger: 0.18 }, "dynamic+=0.52");
+      tl.to(".s4 .badge", { scale: 1, opacity: 1, duration: 0.5 }, "dynamic+=0.9");
+      tl.to(".s4 .badge", { rotation: 120, duration: 8, ease: "none" }, "dynamic");
+      tl.to(".s4 .label", { opacity: 1, duration: 0.44, stagger: 0.18 }, "dynamic+=1.25");
+
+      tl.addLabel("parallax", 35);
+      tl.fromTo(".s5 .dolly", { x: -110 }, { x: 150, duration: 9, ease: "none" }, "parallax");
+      tl.fromTo(".s5 .foreground", { x: -75, z: -500 }, { x: 145, z: -500, duration: 9, ease: "none" }, "parallax");
+      tl.fromTo(".s5 .background", { x: 90, z: 1000 }, { x: -72, z: 1000, duration: 9, ease: "none" }, "parallax");
+      tl.to(".s5 .node", { scale: 1, duration: 0.32, stagger: 0.18 }, "parallax+=0.2");
+      tl.to(".s5 .drop", { scaleY: 1, duration: 0.52, stagger: 0.2 }, "parallax+=0.54");
+      tl.to(".s5 .underline", { scaleX: 1, duration: 0.56, stagger: 0.2 }, "parallax+=0.96");
+      tl.to(".s5 .label", { opacity: 1, duration: 0.42, stagger: 0.2 }, "parallax+=1.36");
+      tl.to(".s5 .label, .s5 .node, .s5 .drop, .s5 .underline", { opacity: 0, duration: 0.55 }, "parallax+=8.2");
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
