@@ -1,0 +1,216 @@
+{
+  "us-home-full": {
+    "searchBox": {
+      "x": 461,
+      "y": 191,
+      "w": 678,
+      "h": 50
+    },
+    "solutionGridDesktop": {
+      "x": 436,
+      "y": 348,
+      "w": 728,
+      "h": 807
+    },
+    "heading": {
+      "x": 436,
+      "y": 106,
+      "w": 728,
+      "h": 36
+    },
+    "__page": {
+      "scrollHeight": 5861,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    },
+    "solutionCards": [
+      {
+        "noteId": "5",
+        "text": "Coupon    Have a coupon — e.g. '20% off'? See what you'll ac",
+        "x": 436,
+        "y": 348,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "noteId": "4",
+        "text": "Sale    Shopping the clearance rack? Find out exactly how mu",
+        "x": 804,
+        "y": 348,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "noteId": "1",
+        "text": "Tax    In-store shopping? Calculate the total price with Sal",
+        "x": 436,
+        "y": 511,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "noteId": "9",
+        "text": "Tip    Dining out or ordering in? Calculate the perfect tip ",
+        "x": 804,
+        "y": 511,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "noteId": "7",
+        "text": "Commission    Closing a deal? Calculate your estimated commi",
+        "x": 436,
+        "y": 674,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "noteId": "8",
+        "text": "Costs    Facing a rent hike? Calculate the exact percentage ",
+        "x": 804,
+        "y": 674,
+        "w": 360,
+        "h": 155
+      }
+    ]
+  },
+  "us-home-search-tip": {
+    "searchBox": {
+      "x": 461,
+      "y": 191,
+      "w": 678,
+      "h": 50
+    },
+    "resultsList": {
+      "x": 463,
+      "y": 269,
+      "w": 674,
+      "h": 395
+    },
+    "scrollContainer": {
+      "x": 463,
+      "y": 251,
+      "w": 674,
+      "h": 384
+    },
+    "__page": {
+      "scrollHeight": 5861,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 76
+    }
+  },
+  "us-home-search-tip-scrolled": {
+    "activeCard": {
+      "x": 436,
+      "y": 1859,
+      "w": 728,
+      "h": 458
+    },
+    "pinnedUse": {
+      "x": 0,
+      "y": 5477,
+      "w": 0,
+      "h": 0
+    },
+    "__page": {
+      "scrollHeight": 6780,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 5477
+    }
+  },
+  "us-decreased-value-after-card-click": {
+    "card": {
+      "x": 436,
+      "y": 203,
+      "w": 728,
+      "h": 412
+    },
+    "helpPanel": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "heading": {
+      "x": 517,
+      "y": 238,
+      "w": 610,
+      "h": 28
+    },
+    "__page": {
+      "scrollHeight": 4610,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    }
+  },
+  "us-increased-value-practical-use": {
+    "card": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 590
+    },
+    "pinnedUse": {
+      "x": 468,
+      "y": 912,
+      "w": 680,
+      "h": 120
+    },
+    "result": {
+      "x": 946,
+      "y": 495,
+      "w": 12,
+      "h": 24
+    },
+    "heading": {
+      "x": 517,
+      "y": 145,
+      "w": 610,
+      "h": 28
+    },
+    "__page": {
+      "scrollHeight": 4701,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    }
+  },
+  "us-faqs-index": {
+    "heading": {
+      "x": 436,
+      "y": 114,
+      "w": 728,
+      "h": 60
+    },
+    "__page": {
+      "scrollHeight": 13044,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    }
+  },
+  "us-faq-bill-splitting": {
+    "heading": {
+      "x": 436,
+      "y": 114,
+      "w": 728,
+      "h": 96
+    },
+    "breadcrumb": {
+      "x": 436,
+      "y": 61,
+      "w": 728,
+      "h": 28
+    },
+    "__page": {
+      "scrollHeight": 1055,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    }
+  }
+}

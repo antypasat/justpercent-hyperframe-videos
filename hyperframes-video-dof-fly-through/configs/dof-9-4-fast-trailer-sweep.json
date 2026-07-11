@@ -1,0 +1,109 @@
+{
+  "hyperframes": "1.0",
+  "name": "dof-9-4-fast-trailer-sweep",
+  "technique": "DoF Fly-Through / Fast Trailer Sweep",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/increased-value-calculator/",
+    "locale": "en-US",
+    "flow": "Value Increase Calculator → clicked Practical Use 'Budget Boost' below the calculator → inputs fill themselves: $5,000 + 25% = $6,250. Diagonal sweep, focus snaps to the hero metric.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "afterClick": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 2.2,
+  "plane": {
+    "asset": "assets/us-increased-value-practical-use.png",
+    "w": 1600,
+    "h": 4701
+  },
+  "scene": {
+    "tiltX": 70,
+    "perspective": 1400,
+    "lift": 30
+  },
+  "camera": {
+    "easing": "ease-out-quint",
+    "path": [
+      {
+        "t": 0,
+        "x": -260,
+        "y": 2900,
+        "z": -160
+      },
+      {
+        "t": 1.6,
+        "x": 20,
+        "y": 620,
+        "z": 0
+      },
+      {
+        "t": 2.2,
+        "x": 0,
+        "y": 520,
+        "z": 30
+      }
+    ]
+  },
+  "depth_of_field": true,
+  "focus": {
+    "mode": "track",
+    "easing": "ease-out-expo",
+    "track": [
+      {
+        "t": 0,
+        "y": 2900
+      },
+      {
+        "t": 1.5,
+        "y": 900
+      },
+      {
+        "t": 1.65,
+        "y": 500
+      },
+      {
+        "t": 2.2,
+        "y": 500
+      }
+    ]
+  },
+  "dof": {
+    "maxBlur": 14,
+    "falloff": 300,
+    "aperture": "f/2.8"
+  },
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true,
+    "motionBlur": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Value Increase → Practical Use: “Budget Boost”",
+      "in": 0.15,
+      "out": 2.15
+    },
+    {
+      "kind": "caption",
+      "text": "+25% on a $5,000 budget?",
+      "in": 0.2,
+      "out": 1.35
+    },
+    {
+      "kind": "caption",
+      "text": "$6,250. Instantly.",
+      "in": 1.55,
+      "out": 2.2,
+      "emphasis": true
+    }
+  ]
+}

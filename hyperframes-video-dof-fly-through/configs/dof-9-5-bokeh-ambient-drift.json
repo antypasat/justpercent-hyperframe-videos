@@ -1,0 +1,106 @@
+{
+  "hyperframes": "1.0",
+  "name": "dof-9-5-bokeh-ambient-drift",
+  "technique": "DoF Fly-Through / Bokeh Ambient Drift",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/?noredirect",
+    "locale": "en-US",
+    "flow": "Homepage Search box: typed 'tip' — Practical Uses, related FAQs and suggested calculators appear in the dropdown. Dreamy ambient drift.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 6,
+  "plane": {
+    "asset": "assets/us-home-search-tip.png",
+    "w": 1600,
+    "h": 900
+  },
+  "scene": {
+    "tiltX": 80,
+    "perspective": 1400,
+    "lift": 130
+  },
+  "camera": {
+    "easing": "linear",
+    "path": [
+      {
+        "t": 0,
+        "x": 0,
+        "y": 640,
+        "z": 300
+      },
+      {
+        "t": 6,
+        "x": 0,
+        "y": 340,
+        "z": 380
+      }
+    ]
+  },
+  "depth_of_field": true,
+  "focus": {
+    "mode": "track",
+    "easing": "ease-in-out-sine",
+    "track": [
+      {
+        "t": 0,
+        "y": 216
+      },
+      {
+        "t": 1.6,
+        "y": 216
+      },
+      {
+        "t": 3.2,
+        "y": 420
+      },
+      {
+        "t": 4.4,
+        "y": 420
+      },
+      {
+        "t": 6,
+        "y": 600
+      }
+    ]
+  },
+  "dof": {
+    "maxBlur": 22,
+    "falloff": 140,
+    "aperture": "f/1.2"
+  },
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true,
+    "bokeh": true,
+    "bloom": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Home → Search",
+      "in": 0.3,
+      "out": 5.9
+    },
+    {
+      "kind": "caption",
+      "text": "Type “tip”…",
+      "in": 0.6,
+      "out": 2.6
+    },
+    {
+      "kind": "caption",
+      "text": "Practical uses, FAQs & calculators — before you finish typing.",
+      "in": 3,
+      "out": 5.8
+    }
+  ]
+}

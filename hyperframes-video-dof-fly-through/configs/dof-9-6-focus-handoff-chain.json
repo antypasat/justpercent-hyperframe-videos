@@ -1,0 +1,136 @@
+{
+  "hyperframes": "1.0",
+  "name": "dof-9-6-focus-handoff-chain",
+  "technique": "DoF Fly-Through / Focus Handoff Chain",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/?noredirect",
+    "locale": "en-US",
+    "flow": "Homepage Solution Cards. Gentle S-curve flight; focus hands off Coupon → Tip → Commission, each sharp ~1s.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 5,
+  "plane": {
+    "asset": "assets/us-home-full.png",
+    "w": 1600,
+    "h": 5861
+  },
+  "scene": {
+    "tiltX": 74,
+    "perspective": 1400,
+    "lift": 40
+  },
+  "camera": {
+    "easing": "ease-in-out-sine",
+    "path": [
+      {
+        "t": 0,
+        "x": -150,
+        "y": 1150,
+        "z": -40
+      },
+      {
+        "t": 1.7,
+        "x": 150,
+        "y": 800,
+        "z": -10
+      },
+      {
+        "t": 3.4,
+        "x": -110,
+        "y": 500,
+        "z": 10
+      },
+      {
+        "t": 5,
+        "x": 0,
+        "y": 320,
+        "z": 30
+      }
+    ]
+  },
+  "depth_of_field": true,
+  "focus": {
+    "mode": "track",
+    "easing": "ease-in-out-cubic",
+    "track": [
+      {
+        "t": 0,
+        "y": 426
+      },
+      {
+        "t": 1.05,
+        "y": 426
+      },
+      {
+        "t": 1.55,
+        "y": 589
+      },
+      {
+        "t": 2.6,
+        "y": 589
+      },
+      {
+        "t": 3.1,
+        "y": 752
+      },
+      {
+        "t": 4.15,
+        "y": 752
+      },
+      {
+        "t": 5,
+        "y": 752
+      }
+    ]
+  },
+  "dof": {
+    "maxBlur": 13,
+    "falloff": 260,
+    "aperture": "f/2.0"
+  },
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Homepage → Solution Cards",
+      "in": 0.2,
+      "out": 4.9
+    },
+    {
+      "kind": "caption",
+      "text": "Coupons.",
+      "in": 0.25,
+      "out": 1.25
+    },
+    {
+      "kind": "caption",
+      "text": "Tips.",
+      "in": 1.7,
+      "out": 2.7
+    },
+    {
+      "kind": "caption",
+      "text": "Commission.",
+      "in": 3.2,
+      "out": 4.1
+    },
+    {
+      "kind": "caption",
+      "text": "Every answer is one card away.",
+      "in": 4.25,
+      "out": 4.95
+    }
+  ]
+}

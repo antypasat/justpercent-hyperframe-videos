@@ -1,0 +1,82 @@
+{
+  "hyperframes": "1.0",
+  "name": "dof-9-1-classic-cinematic-fly",
+  "technique": "DoF Fly-Through / Classic Cinematic Fly",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/?noredirect",
+    "locale": "en-US",
+    "flow": "Homepage, full page — bottom-to-top camera fly.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 4,
+  "plane": {
+    "asset": "assets/us-home-full.png",
+    "w": 1600,
+    "h": 5861
+  },
+  "scene": {
+    "tiltX": 75,
+    "perspective": 1400,
+    "lift": 40
+  },
+  "camera": {
+    "easing": "ease-in-out-cubic",
+    "path": [
+      {
+        "t": 0,
+        "x": 0,
+        "y": 5450,
+        "z": -120
+      },
+      {
+        "t": 4,
+        "x": 0,
+        "y": 420,
+        "z": -60
+      }
+    ]
+  },
+  "depth_of_field": true,
+  "focus": {
+    "mode": "camera-lock",
+    "lead": -40
+  },
+  "dof": {
+    "maxBlur": 16,
+    "falloff": 480,
+    "aperture": "f/2.0"
+  },
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "justpercent.com — Home",
+      "in": 0.2,
+      "out": 3.9
+    },
+    {
+      "kind": "caption",
+      "text": "Every percentage answer. One page.",
+      "in": 0.5,
+      "out": 2.2
+    },
+    {
+      "kind": "caption",
+      "text": "Tips, discounts, sales tax & more — free, instant.",
+      "in": 2.4,
+      "out": 3.9
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "hyperframes": "1.0",
+  "name": "dof-9-2-post-click-data-fly-over",
+  "technique": "DoF Fly-Through / Post-Click Data Fly-Over",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/decreased-value-calculator/",
+    "locale": "en-US",
+    "flow": "Homepage → click Solution Card 'Apply My Coupon' → Value Decrease Calculator arrives pre-filled ($100 − 20% = $80). Captured only after the post-click DOM fully settled.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "afterClick": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 4.5,
+  "plane": {
+    "asset": "assets/us-decreased-value-after-card-click.png",
+    "w": 1600,
+    "h": 4610
+  },
+  "scene": {
+    "tiltX": 72,
+    "perspective": 1400,
+    "lift": 30
+  },
+  "camera": {
+    "easing": "ease-in-out-sine",
+    "path": [
+      {
+        "t": 0,
+        "x": 0,
+        "y": 300,
+        "z": -80
+      },
+      {
+        "t": 4.5,
+        "x": 0,
+        "y": 4150,
+        "z": -80
+      }
+    ]
+  },
+  "depth_of_field": true,
+  "focus": {
+    "mode": "track",
+    "easing": "ease-in-out-cubic",
+    "track": [
+      {
+        "t": 0,
+        "y": 410
+      },
+      {
+        "t": 0.7,
+        "y": 410
+      },
+      {
+        "t": 1.3,
+        "y": 1100
+      },
+      {
+        "t": 1.9,
+        "y": 1100
+      },
+      {
+        "t": 2.5,
+        "y": 2250
+      },
+      {
+        "t": 3.1,
+        "y": 2250
+      },
+      {
+        "t": 3.6,
+        "y": 3250
+      },
+      {
+        "t": 4,
+        "y": 3250
+      },
+      {
+        "t": 4.5,
+        "y": 4100
+      }
+    ]
+  },
+  "dof": {
+    "maxBlur": 12,
+    "falloff": 380,
+    "aperture": "f/2.8"
+  },
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Home → “Apply My Coupon” → Value Decrease Calculator",
+      "in": 0.2,
+      "out": 4.4
+    },
+    {
+      "kind": "caption",
+      "text": "Tap a Solution Card on the homepage…",
+      "in": 0.4,
+      "out": 1.9
+    },
+    {
+      "kind": "caption",
+      "text": "…your numbers arrive ready: $100 − 20% = $80.",
+      "in": 2.1,
+      "out": 4.3
+    }
+  ]
+}

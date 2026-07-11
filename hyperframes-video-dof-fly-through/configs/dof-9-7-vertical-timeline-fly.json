@@ -1,0 +1,83 @@
+{
+  "hyperframes": "1.0",
+  "name": "dof-9-7-vertical-timeline-fly",
+  "technique": "DoF Fly-Through / Vertical Timeline Fly",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/faqs/",
+    "locale": "en-US",
+    "flow": "Interactive FAQs index — a long vertical list of real-life questions. Bottom-to-top fly; the centered row stays in focus, rows above/below blur progressively.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "asyncListLoaded": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 5.5,
+  "plane": {
+    "asset": "assets/us-faqs-index.png",
+    "w": 1600,
+    "h": 13044
+  },
+  "scene": {
+    "tiltX": 76,
+    "perspective": 1400,
+    "lift": 40
+  },
+  "camera": {
+    "easing": "ease-in-out-sine",
+    "path": [
+      {
+        "t": 0,
+        "x": 0,
+        "y": 12500,
+        "z": -100
+      },
+      {
+        "t": 5.5,
+        "x": 0,
+        "y": 450,
+        "z": -40
+      }
+    ]
+  },
+  "depth_of_field": true,
+  "focus": {
+    "mode": "camera-lock",
+    "lead": 0
+  },
+  "dof": {
+    "maxBlur": 15,
+    "falloff": 320,
+    "aperture": "f/2.0"
+  },
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "justpercent.com/faqs — Interactive FAQs",
+      "in": 0.2,
+      "out": 5.4
+    },
+    {
+      "kind": "caption",
+      "text": "Dozens of real-life questions…",
+      "in": 0.6,
+      "out": 2.6
+    },
+    {
+      "kind": "caption",
+      "text": "…and every one is a live calculator.",
+      "in": 2.9,
+      "out": 5.3
+    }
+  ]
+}

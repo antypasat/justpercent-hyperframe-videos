@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Just Percent — DoF Fly-Through (Technique 9)</title>
+<style>
+  @font-face { font-family: "Space Grotesk"; font-weight: 700; src: url("fonts/space-grotesk-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 500; src: url("fonts/space-grotesk-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; src: url("fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; src: url("fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400; src: url("fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; background: #05060b; overflow: hidden; }
+  body { font-family: "IBM Plex Sans", system-ui, sans-serif; color: #e7e9f2;
+         display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+
+  /* ---------- stage ---------- */
+  #frame { position: relative; }
+  #stage { position: relative; width: 1600px; height: 900px; overflow: hidden;
+           background: radial-gradient(120% 90% at 50% 18%, #171d31 0%, #0b0e1a 52%, #06070d 100%);
+           border-radius: 10px; transform-origin: top left; }
+  #stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: 10px;
+                  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+  #glow { position: absolute; inset: 0; pointer-events: none;
+          background: radial-gradient(60% 42% at 50% 46%, rgba(124,108,255,.14) 0%, rgba(124,108,255,0) 70%); }
+
+  #viewport { position: absolute; inset: 0; perspective: 1400px; perspective-origin: 50% 42%; }
+  #world { position: absolute; left: 50%; top: 56%; width: 0; height: 0; transform-style: preserve-3d; }
+  #plane { position: absolute; left: -800px; top: 0; width: 1600px; transform-style: preserve-3d; }
+  .strip { position: absolute; left: 0; width: 1600px; background-repeat: no-repeat;
+           backface-visibility: hidden; will-change: filter; }
+
+  /* ---------- cinematic fx ---------- */
+  #bokeh { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; display: none; }
+  .bok { position: absolute; border-radius: 50%; will-change: transform; }
+  #bloom { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; display: none;
+           background: radial-gradient(34% 26% at 50% 52%, rgba(190,180,255,.28) 0%, rgba(190,180,255,0) 70%); }
+  #vignette { position: absolute; inset: 0; pointer-events: none;
+              background: radial-gradient(115% 95% at 50% 46%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%); }
+  #grain { position: absolute; inset: -40px; pointer-events: none; opacity: .05;
+           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E"); }
+  .bar { position: absolute; left: 0; right: 0; height: 84px; background: #030409; z-index: 6; }
+  #barTop { top: 0; } #barBottom { bottom: 0; }
+  #progress { position: absolute; bottom: 84px; left: 0; height: 3px; width: 0;
+              background: linear-gradient(90deg, #8b5cf6, #6366f1); z-index: 7; }
+
+  /* ---------- overlays ---------- */
+  #chip { position: absolute; top: 104px; left: 36px; z-index: 8; font-family: "JetBrains Mono", monospace;
+          font-size: 15px; letter-spacing: .04em; color: #cfd3ea; padding: 9px 16px; border-radius: 999px;
+          background: rgba(10,12,24,.62); border: 1px solid rgba(255,255,255,.14);
+          backdrop-filter: blur(6px); opacity: 0; }
+  #caption { position: absolute; bottom: 132px; left: 0; right: 0; text-align: center; z-index: 8;
+             font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 46px; line-height: 1.15;
+             color: #f4f5fb; text-shadow: 0 4px 30px rgba(0,0,0,.75), 0 1px 3px rgba(0,0,0,.6);
+             opacity: 0; padding: 0 120px; }
+  #caption.emphasis { font-size: 72px;
+             background: linear-gradient(92deg, #a78bfa, #818cf8 55%, #e0e7ff);
+             -webkit-background-clip: text; background-clip: text; color: transparent;
+             text-shadow: none; filter: drop-shadow(0 6px 26px rgba(99,102,241,.45)); }
+  #hud { position: absolute; bottom: 100px; right: 36px; z-index: 8; font-family: "JetBrains Mono", monospace;
+         font-size: 13px; color: rgba(207,211,234,.66); letter-spacing: .06em; text-align: right; }
+  #wm { position: absolute; top: 104px; right: 36px; z-index: 8; display: flex; align-items: center; gap: 10px;
+        font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 17px; color: rgba(231,233,242,.85); }
+  #wm img { width: 26px; height: 26px; }
+
+  /* ---------- controls ---------- */
+  #controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  #controls button { font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: #cfd3ea;
+    background: #101424; border: 1px solid rgba(255,255,255,.12); border-radius: 8px;
+    padding: 8px 13px; cursor: pointer; }
+  #controls button:hover { background: #1a2038; }
+  #controls button.active { background: linear-gradient(92deg, #6d28d9, #4f46e5); color: #fff; border-color: transparent; }
+  #vname { font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: rgba(207,211,234,.55); width: 100%;
+           text-align: center; }
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <div id="stage">
+    <div id="glow"></div>
+    <div id="viewport"><div id="world"><div id="plane"></div></div></div>
+    <div id="bokeh"></div>
+    <div id="bloom"></div>
+    <div id="vignette"></div>
+    <div id="grain"></div>
+    <div class="bar" id="barTop"></div>
+    <div class="bar" id="barBottom"></div>
+    <div id="progress"></div>
+    <div id="chip"></div>
+    <div id="caption"></div>
+    <div id="wm"><img src="assets/logo-percentage.webp" alt="" /><span>Just Percent</span></div>
+    <div id="hud"></div>
+  </div>
+</div>
+
+<div id="controls">
+  <span id="vname"></span>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <filter id="mblur" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur id="mblurStd" stdDeviation="0 0" />
+  </filter>
+</svg>
+
+<script src="configs.js"></script>
+<script>
+(() => {
+  const CFG = window.DOF_CONFIGS;
+  const KEYS = Object.keys(CFG);
+  const STRIP_H = 80, OV = 16, CULL = 2600;
+  const $ = (id) => document.getElementById(id);
+  const world = $("world"), plane = $("plane"), stage = $("stage"), viewport = $("viewport");
+  const chip = $("chip"), caption = $("caption"), hud = $("hud"), progress = $("progress");
+  const bokehLayer = $("bokeh"), bloomLayer = $("bloom"), mblurStd = $("mblurStd");
+
+  /* ---------- easings ---------- */
+  const E = {
+    "linear": (u) => u,
+    "ease-in-out-sine": (u) => -(Math.cos(Math.PI * u) - 1) / 2,
+    "ease-in-out-cubic": (u) => u < .5 ? 4*u*u*u : 1 - Math.pow(-2*u + 2, 3) / 2,
+    "ease-in-out-quart": (u) => u < .5 ? 8*u*u*u*u : 1 - Math.pow(-2*u + 2, 4) / 2,
+    "ease-out-cubic": (u) => 1 - Math.pow(1 - u, 3),
+    "ease-out-quint": (u) => 1 - Math.pow(1 - u, 5),
+    "ease-out-expo": (u) => u === 1 ? 1 : 1 - Math.pow(2, -10 * u)
+  };
+
+  function sample(keys, t, easeName, prop, dflt) {
+    const val = (k) => (k[prop] !== undefined ? k[prop] : dflt);
+    if (t <= keys[0].t) return val(keys[0]);
+    for (let i = 1; i < keys.length; i++) {
+      if (t <= keys[i].t) {
+        const a = keys[i - 1], b = keys[i];
+        const span = b.t - a.t || 1e-6;
+        const u = (E[easeName] || E.linear)((t - a.t) / span);
+        return val(a) + (val(b) - val(a)) * u;
+      }
+    }
+    return val(keys[keys.length - 1]);
+  }
+
+  /* ---------- deterministic PRNG (bokeh) ---------- */
+  function mulberry32(seed) {
+    return () => {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      let z = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      z = (z + Math.imul(z ^ (z >>> 7), 61 | z)) ^ z;
+      return ((z ^ (z >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  let bokehSprites = [];
+  function buildBokeh() {
+    bokehLayer.innerHTML = ""; bokehSprites = [];
+    const rnd = mulberry32(97);
+    const hues = ["167,139,250", "129,140,248", "224,231,255", "196,181,253"];
+    for (let i = 0; i < 20; i++) {
+      const el = document.createElement("div");
+      el.className = "bok";
+      const size = 26 + rnd() * 120, x = rnd() * 1600, y = 120 + rnd() * 680;
+      const c = hues[Math.floor(rnd() * hues.length)];
+      el.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;` +
+        `background:radial-gradient(circle, rgba(${c},${(.12 + rnd()*.22).toFixed(2)}) 0%, rgba(${c},0) 68%);` +
+        `filter:blur(${(2 + rnd()*7).toFixed(1)}px);`;
+      bokehLayer.appendChild(el);
+      bokehSprites.push({ el, sp: .3 + rnd() * .9, ph: rnd() * Math.PI * 2, amp: 14 + rnd() * 40 });
+    }
+  }
+
+  /* ---------- plane / strips ---------- */
+  let strips = [], cur = null, imgReady = Promise.resolve();
+  function buildPlane(cfg) {
+    plane.innerHTML = ""; strips = [];
+    const { asset, w, h } = cfg.plane;
+    for (let top = 0; top < h; top += STRIP_H) {
+      const sh = Math.min(STRIP_H, h - top);
+      const el = document.createElement("div");
+      el.className = "strip";
+      // strips overlap by OV and crossfade via mask -> no seams once blurred
+      const fade = `linear-gradient(to bottom, transparent 0, #000 ${OV}px, #000 calc(100% - ${OV}px), transparent 100%)`;
+      el.style.cssText = `top:${top - OV}px;height:${sh + 2 * OV}px;background-image:url("${asset}");` +
+        `background-size:${w}px ${h}px;background-position:0 ${-(top - OV)}px;display:none;` +
+        `-webkit-mask-image:${fade};mask-image:${fade};`;
+      plane.appendChild(el);
+      strips.push({ el, cy: top + sh / 2, lastF: "" });
+    }
+    const img = new Image();
+    img.src = asset;
+    imgReady = img.decode ? img.decode().catch(() => {}) : Promise.resolve();
+  }
+
+  /* ---------- render one frame at time t ---------- */  function renderFrame(cfg, t) {
+    const camE = cfg.camera.easing;
+    const camX = sample(cfg.camera.path, t, camE, "x", 0);
+    const camY = sample(cfg.camera.path, t, camE, "y", 0);
+    const camZ = sample(cfg.camera.path, t, camE, "z", 0);
+    const focusY = cfg.focus.mode === "camera-lock"
+      ? camY + (cfg.focus.lead || 0)
+      : sample(cfg.focus.track, t, cfg.focus.easing || "ease-in-out-cubic", "y", camY);
+
+    world.style.transform =
+      `translate3d(0, ${cfg.scene.lift || 0}px, ${camZ}px) rotateX(${cfg.scene.tiltX}deg)`;
+    plane.style.transform = `translate3d(${-camX}px, ${-camY}px, 0)`;
+
+    const { maxBlur, falloff } = cfg.dof;
+    for (const s of strips) {
+      const dCam = Math.abs(s.cy - camY);
+      if (dCam > CULL) {
+        if (s.lastF !== "hide") { s.el.style.display = "none"; s.lastF = "hide"; }
+        continue;
+      }
+      const d = Math.abs(s.cy - focusY);
+      const k = Math.min(1, d / falloff);
+      const b = Math.round(maxBlur * k * k * 4) / 4;                 // quadratic falloff
+      const br = (1 - .16 * k).toFixed(3);
+      const f = `blur(${b}px) brightness(${br})`;
+      if (s.lastF !== f) { s.el.style.display = "block"; s.el.style.filter = f; s.lastF = f; }
+    }
+
+    /* motion blur — analytic camera velocity (deterministic, seek-safe) */
+    if (cfg.fx.motionBlur) {
+      const dt = 1 / 30, tp = Math.max(0, t - dt);
+      const vy = (camY - sample(cfg.camera.path, tp, camE, "y", 0)) / (t - tp || dt);
+      const vx = (camX - sample(cfg.camera.path, tp, camE, "x", 0)) / (t - tp || dt);
+      mblurStd.setAttribute("stdDeviation",
+        `${Math.min(10, Math.abs(vx) * .004).toFixed(2)} ${Math.min(14, Math.abs(vy) * .003).toFixed(2)}`);
+      viewport.style.filter = "url(#mblur)";
+    } else {
+      viewport.style.filter = "";
+    }
+
+    /* bokeh drift + bloom pulse */
+    if (cfg.fx.bokeh) {
+      for (const b of bokehSprites) {
+        const dx = Math.sin(t * b.sp + b.ph) * b.amp;
+        const dy = Math.cos(t * b.sp * .7 + b.ph) * b.amp * .6 - t * 6;
+        b.el.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+      }
+    }
+    if (cfg.fx.bloom) bloomLayer.style.opacity = (.6 + .4 * Math.sin(t * 1.1)).toFixed(3);
+
+    /* overlays */
+    for (const o of cfg.overlays) {
+      const el = o.kind === "chip" ? chip : caption;
+      if (o.kind === "caption") {
+        if (t >= o.in && t <= o.out) {
+          if (caption.textContent !== o.text) {
+            caption.textContent = o.text;
+            caption.classList.toggle("emphasis", !!o.emphasis);
+          }
+          const fi = Math.min(1, (t - o.in) / .35), fo = Math.min(1, (o.out - t) / .35);
+          caption.style.opacity = Math.min(fi, fo).toFixed(3);
+          caption.style.transform = `translateY(${(1 - fi) * 18}px)`;
+        }
+      } else {
+        if (chip.textContent !== o.text) chip.textContent = o.text;
+        const fi = Math.min(1, Math.max(0, (t - o.in) / .35));
+        const fo = Math.min(1, Math.max(0, (o.out - t) / .35));
+        chip.style.opacity = Math.min(fi, fo).toFixed(3);
+      }
+    }
+    const anyCap = cfg.overlays.some((o) => o.kind === "caption" && t >= o.in && t <= o.out);
+    if (!anyCap) caption.style.opacity = 0;
+
+    /* HUD + progress + grain drift (all deterministic) */
+    hud.innerHTML = `DoF ${cfg.dof.aperture} &nbsp;·&nbsp; FOCUS ${Math.round(focusY)}px` +
+      ` &nbsp;·&nbsp; ${t.toFixed(2)}s / ${cfg.duration.toFixed(1)}s`;
+    progress.style.width = `${(t / cfg.duration) * 100}%`;
+    $("grain").style.transform =
+      `translate(${(Math.floor(t * 24) % 5) * 11}px, ${(Math.floor(t * 24) % 7) * 7}px)`;
+  }
+
+  /* ---------- clock / playback ---------- */
+  let t0 = 0, paused = false, pausedAt = 0, playAll = false, raf = 0;
+  const HOLD = .7; // end-of-take hold before loop/advance
+
+  function select(key, { autoplay = true } = {}) {
+    if (!CFG[key]) key = "9.1";
+    cur = key;
+    const cfg = CFG[key];
+    buildPlane(cfg);
+    if (cfg.fx.bokeh) { buildBokeh(); bokehLayer.style.display = "block"; } else bokehLayer.style.display = "none";
+    bloomLayer.style.display = cfg.fx.bloom ? "block" : "none";
+    chip.style.opacity = 0; caption.style.opacity = 0;
+    $("vname").textContent = `${cfg.name} — ${cfg.technique} · tilt ${cfg.scene.tiltX}° · ${cfg.duration}s`;
+    document.querySelectorAll("#controls button[data-v]").forEach((b) =>
+      b.classList.toggle("active", b.dataset.v === key));
+    location.hash = key;
+    renderFrame(cfg, 0);
+    t0 = performance.now(); pausedAt = 0; paused = !autoplay;
+  }
+
+  function tick() {
+    raf = requestAnimationFrame(tick);
+    if (!cur || paused) return;
+    const cfg = CFG[cur];
+    let t = (performance.now() - t0) / 1000;
+    if (t > cfg.duration + HOLD) {
+      if (playAll) {
+        const next = KEYS[(KEYS.indexOf(cur) + 1) % KEYS.length];
+        select(next); return;
+      }
+      t0 = performance.now(); t = 0;
+    }
+    renderFrame(cfg, Math.min(t, cfg.duration));
+  }
+
+  /* ---------- controls ---------- */
+  const controls = $("controls");
+  for (const k of KEYS) {
+    const b = document.createElement("button");
+    b.dataset.v = k;
+    b.textContent = `${k} ${CFG[k].technique.split("/")[1].trim()}`;
+    b.onclick = () => { playAll = false; select(k); };
+    controls.insertBefore(b, $("vname"));
+  }
+  const all = document.createElement("button");
+  all.textContent = "▶ Play all";
+  all.onclick = () => { playAll = true; select(KEYS[0]); };
+  controls.insertBefore(all, $("vname"));
+
+  addEventListener("keydown", (e) => {
+    if (e.code === "Space") { e.preventDefault();
+      if (paused) { t0 = performance.now() - pausedAt * 1000; paused = false; }
+      else { pausedAt = (performance.now() - t0) / 1000; paused = true; }
+    }
+    if (e.key === "r" || e.key === "R") select(cur);
+  });
+
+  /* ---------- fit stage to window ---------- */
+  function fit() {
+    const s = Math.min((innerWidth - 32) / 1600, (innerHeight - 90) / 900);
+    stage.style.transform = `scale(${s})`;
+    $("frame").style.width = `${1600 * s}px`;
+    $("frame").style.height = `${900 * s}px`;
+  }
+  addEventListener("resize", fit); fit();
+
+  /* ---------- deterministic seek hook (QA) ---------- */
+  window.__dofSeek = (key, t) => {
+    playAll = false;
+    select(key, { autoplay: false });
+    renderFrame(CFG[key], Math.min(t, CFG[key].duration));
+    return imgReady;
+  };
+
+  select(location.hash ? decodeURIComponent(location.hash.slice(1)) : "9.1",
+         { autoplay: true });
+  tick();
+})();
+</script>
+</body>
+</html>
