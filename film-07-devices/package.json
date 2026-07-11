@@ -1,0 +1,12 @@
+{
+  "name": "film-07-devices",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.6.44 preview",
+    "check": "npx --yes hyperframes@0.6.44 lint && npx --yes hyperframes@0.6.44 validate && npx --yes hyperframes@0.6.44 inspect",
+    "render": "npx --yes hyperframes@0.6.44 render",
+    "render:draft": "npx --yes hyperframes@0.6.44 render --quality draft --output renders/preview-draft.mp4",
+    "render:final": "npx --yes hyperframes@0.6.44 render --fps 60 --quality high --output renders/film-07-devices-final.mp4"
+  }
+}
