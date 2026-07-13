@@ -1,0 +1,802 @@
+/* ============================================================
+   app.css — pixel-faithful replicas of JustPercent UI components,
+   rebuilt from the app's own source (handy-percent/src):
+   Layout.astro, card-colors.css, liquid-glass.css, SolutionCard.astro,
+   SearchBox.astro, CalculatorCard.astro, ChangeCalculator.astro,
+   ExpandableInput.astro, PracticalUse.astro, FAQHubCard.astro,
+   BaseFAQ.astro, TipCalculationFAQ.astro, Navigation.astro,
+   ThemeToggle.astro. Light + dark tokens are the app's own.
+   ============================================================ */
+
+/* ---------- tokens (card-colors.css + liquid-glass.css) ---------- */
+#stage {
+  --radius: 16px;
+  --shadow: 0 8px 20px rgba(0, 0, 0, .08);
+  --bg: #F8F9FE; --surface: #FFFFFF; --text: #0F172A; --text-muted: #475569;
+  --brand: #7C3AED; --surface-glow: rgba(124, 58, 237, 0.03);
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  --glass-backdrop: blur(16px);
+  --input-border: #d1d5db;
+  --input-bg: #ffffff;
+  --gray600: #4b5563; --gray500: #6b7280; --gray400: #9ca3af;
+}
+#stage.dark {
+  --bg: #0A0514; --surface: #130D24; --text: #EDEEF7; --text-muted: #B8B7CC;
+  --brand: #A855F7; --surface-glow: rgba(168, 85, 247, 0.08);
+  --glass-bg: rgba(31, 41, 55, 0.85);
+  --glass-border: rgba(75, 85, 99, 0.4);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass-backdrop: blur(20px);
+  --input-border: #4b5563;
+  --input-bg: #374151;
+}
+
+.jp { font-family: "IBM Plex Sans", system-ui, sans-serif; color: var(--text); }
+
+/* ---------- nav bar (Navigation.astro) ---------- */
+.jp-nav {
+  background: rgba(248, 250, 252, 0.95);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 4px 12px 0;
+  border-radius: 14px 14px 0 0;
+}
+#stage.dark .jp-nav {
+  background: rgba(3, 7, 18, 0.95);
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+.jp-nav-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 3px 0;
+}
+.jp-logo { display: flex; align-items: center; }
+.jp-logo img { height: 30px; width: 30px; margin-right: 5px; }
+.jp-logo .brand {
+  font-weight: 300; letter-spacing: -0.02em;
+  font-size: 27px; line-height: 26px; color: var(--text);
+}
+.jp-menu-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  border-radius: 6px; padding: 4px 8px;
+  font-size: 12px; font-weight: 500; color: var(--gray600);
+  border: 0; background: transparent;
+}
+#stage.dark .jp-menu-btn { color: #d1d5db; }
+.jp-menu-btn svg { width: 20px; height: 20px; }
+.jp-breadcrumb {
+  display: flex; align-items: center;
+  padding: 2px 0 6px;
+  font-size: 12px; color: var(--gray500);
+}
+#stage.dark .jp-breadcrumb { color: var(--gray400); }
+.jp-breadcrumb a { color: #2563eb; text-decoration: none; }
+#stage.dark .jp-breadcrumb a { color: #60a5fa; }
+.jp-breadcrumb .sep { margin: 0 6px; }
+.jp-breadcrumb .cur { color: #374151; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#stage.dark .jp-breadcrumb .cur { color: #d1d5db; }
+
+/* ---------- page title (typography.css .page-title) ---------- */
+.jp-h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 300; letter-spacing: -0.01em;
+  font-size: 22px; line-height: 1.18;
+  color: var(--text);
+}
+
+/* ---------- liquid glass card (liquid-glass.css) ---------- */
+.jp-glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 8px;
+}
+
+/* ---------- search box (SearchBox.astro) ---------- */
+.jp-search { padding: 16px; position: relative; }
+.jp-search .box { position: relative; }
+.jp-search .mag {
+  position: absolute; left: 12px; top: 50%;
+  width: 20px; height: 20px; margin-top: -10px;
+  color: var(--gray400);
+}
+#stage.dark .jp-search .mag { color: #d1d5db; }
+.jp-search input {
+  width: 100%;
+  padding: 12px 40px;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 15.5px; font-family: inherit;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  outline: none;
+}
+.jp-search input.focused {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+#stage.dark .jp-search input.focused { box-shadow: 0 0 0 2px #6366f1; }
+.jp-search .ph {
+  position: absolute; left: 40px; right: 40px; top: 0; bottom: 0;
+  display: flex; align-items: center;
+  pointer-events: none; overflow: hidden;
+  color: var(--gray400); font-size: 15.5px;
+  white-space: nowrap;
+}
+.jp-search .typed { color: var(--text); }
+.jp-search .tcursor { color: var(--gray400); font-weight: 300; }
+
+/* ---------- search results dropdown (liquid-glass-panel portal) ---------- */
+.jp-dropdown {
+  position: absolute;
+  left: 10px; right: 10px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.82) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: 0 25px 50px -12px rgba(31, 38, 135, 0.3);
+  overflow: hidden;
+  padding: 10px 0;
+}
+#stage.dark .jp-dropdown {
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.94) 0%, rgba(17, 24, 39, 0.96) 100%);
+  border-color: rgba(75, 85, 99, 0.3);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+.jp-dropdown .sep {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 16px 5px;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: rgb(107, 114, 128);
+}
+#stage.dark .jp-dropdown .sep { color: rgb(156, 163, 175); }
+.jp-dropdown .sep::before, .jp-dropdown .sep::after {
+  content: ""; height: 1px; flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(107,114,128,0.3), transparent);
+}
+.jp-dd-item {
+  display: flex; align-items: flex-start; gap: 9px;
+  margin: 0 8px; padding: 10px 10px;
+  border-radius: 6px;
+  font-size: 13.5px; line-height: 1.45;
+  position: relative;
+}
+.jp-dd-item .ico { width: 17px; height: 17px; flex: none; margin-top: 1px; color: var(--gray500); }
+.jp-dd-item.hover { background: rgba(0, 0, 0, 0.03); transform: translateY(-2px); }
+#stage.dark .jp-dd-item.hover { background: rgba(255, 255, 255, 0.05); }
+.jp-dd-item .hl-x, .jp-dd-item .hl-y, .jp-dd-item .hl-z {
+  border-radius: 0.8em 0.3em 0.9em 0.2em;
+  padding: 0 3px;
+}
+.jp-dd-item.hover .hl-x { background: linear-gradient(105deg, rgba(254,240,138,0) 0%, rgba(254,240,138,1) 5%, rgba(253,224,71,1) 100%); color: #1a202c; }
+.jp-dd-item.hover .hl-y { background: linear-gradient(105deg, rgba(190,242,100,0) 0%, rgba(190,242,100,1) 5%, rgba(163,230,53,1) 100%); color: #1a202c; }
+.jp-dd-item.hover .hl-z { background: linear-gradient(105deg, rgba(249,168,212,0) 0%, rgba(249,168,212,1) 5%, rgba(244,114,182,1) 100%); color: #1a202c; }
+.jp-dd-sol { display: flex; align-items: center; gap: 10px; }
+.jp-dd-sol img { width: 40px; height: 40px; border-radius: 8px; flex: none; }
+.jp-dd-sol .pill {
+  color: #fff; font-size: 11px; font-weight: 600;
+  border-radius: 999px; padding: 2px 10px;
+  flex: none;
+}
+.jp-dd-sol .pill.orange { background: #ea580c; }
+.jp-dd-faq .t { font-size: 13.5px; font-weight: 500; }
+.jp-dd-faq .s { font-size: 11.5px; color: var(--gray500); }
+#stage.dark .jp-dd-faq .s { color: var(--gray400); }
+.jp-dd-item.hover.jp-dd-faq { background: rgb(239, 246, 255); }
+#stage.dark .jp-dd-item.hover.jp-dd-faq { background: rgba(59, 130, 246, 0.15); }
+
+/* ---------- solution cards (SolutionCard.astro, mobile <510px) ---------- */
+.jp-cards { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 0 8px; }
+.jp-sec-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gray500); padding: 10px 10px 6px;
+}
+.jp-note {
+  position: relative;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 4px 10px;
+  min-height: 116px;
+  padding: 4px 8px 8px 4px;
+  font-size: 15.5px; line-height: 1.4; color: #2d3748;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #d8b4fe 0%, #bfdbfe 100%);
+  background-size: 100% 700%;
+  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+/* one continuous gradient mapped across the column (app JS behavior) */
+.jp-note[data-row="0"] { background-position: 0 0%; }
+.jp-note[data-row="1"] { background-position: 0 20%; }
+.jp-note[data-row="2"] { background-position: 0 40%; }
+.jp-note[data-row="3"] { background-position: 0 60%; }
+.jp-note[data-row="4"] { background-position: 0 80%; }
+.jp-note[data-row="5"] { background-position: 0 100%; }
+#stage.dark .jp-note {
+  background-image: linear-gradient(135deg, #4a044e 0%, #3b0764 50%, #1e1b4b 100%);
+  color: #f1f5f9; font-weight: 500;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.jp-note::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,0.2) 100%);
+  opacity: 0.6; pointer-events: none;
+}
+.jp-note.lifted {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(124, 58, 237, 0.15), 0 24px 50px rgba(31, 38, 135, 0.3);
+  border-color: rgba(147, 197, 253, 0.5);
+}
+#stage.dark .jp-note.lifted {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.35), 0 0 40px rgba(168, 85, 247, 0.2), 0 24px 50px rgba(0,0,0,0.5);
+  border-color: rgba(167, 139, 250, 0.5);
+}
+.jp-note .imgwrap {
+  position: relative; grid-row: 1;
+  width: 100px; height: 100px;
+  border-radius: 16px; overflow: hidden;
+}
+.jp-note .imgwrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.jp-note .star {
+  position: absolute; left: 0; top: 0;
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  background-color: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 16px 0 8px 0;
+  color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px) saturate(170%) contrast(145%) brightness(0.78);
+}
+.jp-note .star svg { width: 14px; height: 14px; }
+.jp-note .txt { grid-column: 2; align-self: center; padding-right: 4px; }
+.jp-note .cta {
+  grid-column: 1 / -1;
+  border: 0; border-radius: 16px;
+  padding: 7px 8px;
+  background: #6d28d9; color: #ffffff;
+  font-size: 15.5px; font-weight: 600; font-family: inherit;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+#stage.dark .jp-note .cta { background: #7c3aed; }
+
+/* ---------- calculator card (CalculatorCard.astro) ---------- */
+.jp-calc {
+  position: relative;
+  padding: 22px 20px 26px;
+  border-radius: 8px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.jp-calc .dots {
+  position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 5px;
+}
+.jp-calc .dots i {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(100, 116, 139, 0.6);
+}
+.jp-calc .corner-star {
+  position: absolute; left: 0; top: 0;
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  background-color: rgba(15, 23, 42, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 8px 0 8px 0;
+  color: rgba(100, 116, 139, 0.9);
+  backdrop-filter: blur(4px);
+}
+#stage.dark .jp-calc .corner-star { color: rgba(255,255,255,0.75); background-color: rgba(15,23,42,0.35); }
+.jp-calc .corner-star svg { width: 15px; height: 15px; }
+.jp-calc .clear-btn {
+  position: absolute; right: 12px; top: 10px;
+  display: flex; align-items: center; gap: 4px;
+  border: 0; background: transparent;
+  color: #3b82f6; font-size: 13px; font-family: inherit;
+}
+#stage.dark .jp-calc .clear-btn { color: #60a5fa; }
+.jp-calc .clear-btn svg { width: 15px; height: 15px; }
+.jp-calc h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 19px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 4px 0 3px;
+}
+.jp-calc .subtitle { font-size: 13.5px; color: #1f2937; margin-bottom: 14px; }
+#stage.dark .jp-calc .subtitle { color: #e5e7eb; }
+.jp-calc .subtitle b { font-weight: 600; }
+
+.jp-form {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 8px 6px;
+  font-size: 17px;
+}
+.jp-form .word { color: var(--gray600); font-size: 17px; }
+#stage.dark .jp-form .word { color: #d1d5db; }
+.jp-form .word.inc { color: #22c55e; font-weight: 500; }
+#stage.dark .jp-form .word.inc { color: #4ade80; }
+.jp-input {
+  width: 85px; padding: 9px 8px;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  background: var(--input-bg); color: var(--text);
+  font-family: inherit; font-size: 17px; text-align: center;
+}
+.jp-input:empty::before { content: attr(data-ph); color: var(--gray400); }
+.jp-input.glow { border-color: transparent; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); }
+#stage.dark .jp-input.glow { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); }
+
+/* readonly answer (ExpandableInput readonly variant — neumorphic + purple) */
+.jp-answer {
+  position: relative;
+  min-width: 100px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 12px;
+  border-radius: 6px;
+  background: #f3f4f6;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08), -2px -2px 5px rgba(255, 255, 255, 0.8);
+  color: #7e22ce;
+  font-size: 26px; font-weight: 500;
+}
+#stage.dark .jp-answer {
+  background: #1f2937;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.05);
+  color: #d8b4fe;
+}
+.jp-answer .rlabel {
+  position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+  font-size: 10.5px; font-weight: 500; white-space: nowrap;
+  color: #7e22ce; background: #faf5ff;
+  border: 1px solid #e9d5ff; border-radius: 6px;
+  padding: 1px 6px;
+}
+#stage.dark .jp-answer .rlabel {
+  color: #d8b4fe; background: rgba(88, 28, 135, 0.3); border-color: #7e22ce;
+}
+.jp-answer.empty { color: var(--gray400); font-size: 17px; font-weight: 400; }
+
+.jp-copy {
+  display: flex; align-items: center; gap: 4px;
+  color: #3b82f6; font-size: 13px;
+}
+#stage.dark .jp-copy { color: #60a5fa; }
+.jp-copy svg { width: 14px; height: 14px; }
+
+.jp-controls {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 16px; font-size: 13px; color: var(--gray600);
+}
+#stage.dark .jp-controls { color: #d1d5db; }
+.jp-controls .eq {
+  display: flex; align-items: center; gap: 5px;
+  border: 1px solid var(--input-border); border-radius: 6px;
+  padding: 4px 10px; background: transparent; color: inherit;
+  font-family: inherit; font-size: 13px;
+}
+.jp-check {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.jp-check .boxx {
+  width: 15px; height: 15px; border-radius: 4px;
+  border: 1.5px solid var(--gray400);
+  display: flex; align-items: center; justify-content: center;
+  background: #7c3aed; border-color: #7c3aed;
+}
+.jp-check .boxx svg { width: 11px; height: 11px; color: #fff; }
+
+/* Practical Uses toggle button with the animated beam border */
+.jp-pu-btn {
+  position: relative;
+  margin-top: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.05);
+  color: #2563eb;
+  font-family: inherit; font-size: 14px; font-weight: 500;
+}
+#stage.dark .jp-pu-btn { color: #60a5fa; border-color: rgba(96, 165, 250, 0.35); background: rgba(96, 165, 250, 0.06); }
+.jp-pu-btn .beam { position: absolute; inset: 0; border-radius: 8px; overflow: visible; }
+.jp-pu-btn .beam rect {
+  fill: none; stroke: #3b82f6; stroke-width: 1.5px;
+  stroke-dasharray: 25 200;
+}
+#stage.dark .jp-pu-btn .beam rect { stroke: #60a5fa; }
+
+.jp-disclaimer { margin-top: 14px; font-size: 10px; color: rgba(156, 163, 175, 0.6); text-align: center; }
+
+/* ---------- practical uses list (PracticalUse.astro) ---------- */
+.jp-practical { padding: 4px 2px; }
+.jp-practical h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 17px; font-weight: 700; color: var(--text);
+  margin-bottom: 3px;
+}
+.jp-practical .desc { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+.jp-pu-item {
+  position: relative;
+  padding: 11px 14px 11px 16px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  font-size: 14px; line-height: 1.5;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 14px rgba(31, 38, 135, 0.08);
+}
+#stage.dark .jp-pu-item { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); }
+.jp-pu-item .t { font-weight: 600; }
+.jp-pu-item .hl-x, .jp-pu-item .hl-y, .jp-pu-item .hl-z {
+  border-radius: 0.8em 0.3em 0.9em 0.2em; padding: 0 3px;
+  transition: none;
+}
+.jp-pu-item.hot .hl-x, .jp-pu-item.pinned .hl-x { background: linear-gradient(105deg, rgba(254,240,138,0) 0%, rgba(254,240,138,1) 5%, rgba(253,224,71,1) 100%); color: #1a202c; }
+.jp-pu-item.hot .hl-y, .jp-pu-item.pinned .hl-y { background: linear-gradient(105deg, rgba(190,242,100,0) 0%, rgba(190,242,100,1) 5%, rgba(163,230,53,1) 100%); color: #1a202c; }
+.jp-pu-item.hot .hl-z, .jp-pu-item.pinned .hl-z { background: linear-gradient(105deg, rgba(249,168,212,0) 0%, rgba(249,168,212,1) 5%, rgba(244,114,182,1) 100%); color: #1a202c; }
+.jp-pu-item.pinned {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 1px rgba(209, 213, 219, 0.5), 0 8px 22px rgba(31, 38, 135, 0.14);
+}
+#stage.dark .jp-pu-item.pinned {
+  background: rgba(55, 65, 81, 0.8);
+  box-shadow: 0 0 0 1px rgba(107, 114, 128, 0.5), 0 8px 22px rgba(0, 0, 0, 0.4);
+}
+.jp-pin {
+  position: absolute; right: 10px; top: -7px;
+  opacity: 0;
+  transform: rotate(20deg) scale(0.4);
+}
+.jp-pu-item.pinned .jp-pin { opacity: 1; }
+.jp-pin .head {
+  width: 13px; height: 13px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f87171, #dc2626 70%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+.jp-pin .needle {
+  width: 2px; height: 8px; margin: -1px auto 0;
+  background: linear-gradient(90deg, #9ca3af, #d1d5db);
+}
+
+/* ---------- FAQ hub (faqs.astro + FAQHubCard.astro) ---------- */
+.jp-faq-sub {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--gray500); margin-top: 2px;
+}
+.jp-cat-h {
+  display: flex; align-items: center; gap: 10px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 19px; font-weight: 700; color: #1f2937;
+  margin: 14px 0 4px;
+}
+#stage.dark .jp-cat-h { color: #e5e7eb; }
+.jp-cat-h .cico {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(234, 88, 12, 0.12); color: #ea580c;
+}
+#stage.dark .jp-cat-h .cico { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
+.jp-cat-h .cico svg { width: 17px; height: 17px; }
+.jp-cat-desc { font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; }
+
+.jp-hubcard {
+  position: relative; overflow: hidden;
+  border-radius: 8px;
+  padding: 14px 16px 14px 18px;
+  margin-bottom: 12px;
+  color: #1f2937;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(239, 246, 255, 0.8) 100%);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 4px solid #fdba74;
+}
+#stage.dark .jp-hubcard {
+  color: #e5e7eb;
+  background: linear-gradient(135deg, #1f2937 0%, rgba(88, 28, 135, 0.3) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  border-left-color: #9a3412;
+}
+.jp-hubcard .bar { position: absolute; inset: 0 auto 0 0; width: 4px; background: #fb923c; }
+#stage.dark .jp-hubcard .bar { background: #c2410c; }
+.jp-hubcard .ht { font-size: 17.5px; font-weight: 600; line-height: 1.35; }
+.jp-hubcard .hs { margin-top: 3px; font-size: 13.5px; line-height: 1.5; color: var(--gray600); }
+#stage.dark .jp-hubcard .hs { color: #d1d5db; }
+.jp-hubcard .hq { margin-top: 7px; font-size: 12px; font-style: italic; color: var(--gray500); }
+.jp-hubcard .hq .var {
+  font-style: normal; color: rgb(79, 70, 229); background: rgb(238, 242, 255);
+  padding: 0 4px; border-radius: 3px; font-size: 11px;
+}
+#stage.dark .jp-hubcard .hq .var { color: #a5b4fc; background: rgba(67, 56, 202, 0.3); }
+.jp-hubcard .hb {
+  margin-top: 9px;
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--gray500);
+}
+.jp-hubcard .heart {
+  position: absolute; top: 6px; right: 6px;
+  width: 20px; height: 20px; color: #d1d5db;
+}
+.jp-hubcard .arrow {
+  position: absolute; right: 12px; bottom: 12px;
+  width: 28px; height: 28px; color: #1d4ed8;
+}
+#stage.dark .jp-hubcard .arrow { color: #93c5fd; }
+
+/* ---------- FAQ standalone card (BaseFAQ + TipCalculationFAQ) ---------- */
+.jp-faqcard {
+  position: relative;
+  border-radius: 8px;
+  padding: 16px 16px 22px;
+  color: #1f2937;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(239, 246, 255, 0.8) 100%);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+}
+#stage.dark .jp-faqcard {
+  color: #e5e7eb;
+  background: linear-gradient(135deg, #1f2937 0%, rgba(88, 28, 135, 0.3) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.jp-faqcard .q {
+  border-left: 4px solid #fb923c;
+  padding-left: 12px;
+  font-size: 16.5px; line-height: 1.75;
+  font-family: "Space Grotesk", sans-serif; font-weight: 500;
+}
+.jp-faqcard .q .ask {
+  display: block; margin-top: 8px;
+  font-family: "IBM Plex Sans", sans-serif; font-weight: 500;
+}
+.jp-mini {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 52px; height: 34px; padding: 0 8px;
+  border: 1px solid var(--input-border); border-radius: 6px;
+  background: var(--input-bg); color: var(--text);
+  font-size: 16px; text-align: center;
+  vertical-align: -8px;
+  cursor: ew-resize;
+}
+.jp-mini.glow { border-color: transparent; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); }
+#stage.dark .jp-mini.glow { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); }
+.jp-mini.ro {
+  border: 0; background: #f3f4f6;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08), -2px -2px 5px rgba(255, 255, 255, 0.8);
+  color: #7e22ce; font-size: 21px; font-weight: 500;
+}
+#stage.dark .jp-mini.ro {
+  background: #1f2937;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.05);
+  color: #d8b4fe;
+}
+.jp-faqcard .ans {
+  margin-top: 14px; padding-left: 12px;
+  border-left: 2px solid #fdba74;
+  font-size: 15.5px; line-height: 1.9;
+}
+#stage.dark .jp-faqcard .ans { border-left-color: #9a3412; }
+.jp-faqcard .details {
+  margin-top: 12px;
+  background: rgba(249, 250, 251, 0.9);
+  border-left: 2px solid #fdba74;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 12.5px; line-height: 1.65;
+  color: #374151;
+}
+#stage.dark .jp-faqcard .details {
+  background: rgba(31, 41, 55, 0.9);
+  border-left-color: #9a3412;
+  color: #d1d5db;
+}
+.jp-faqcard .details b { font-weight: 600; }
+.jp-faqcard .details .lnk { color: #9333ea; font-weight: 600; }
+#stage.dark .jp-faqcard .details .lnk { color: #c084fc; }
+.jp-faq-hints {
+  margin-top: 12px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 6px;
+  background: linear-gradient(135deg, rgba(243, 244, 246, 0.8), rgba(229, 231, 235, 0.6));
+  border: 1px dashed #9ca3af;
+  color: #6b7280; font-size: 11.5px; font-style: italic;
+}
+#stage.dark .jp-faq-hints {
+  background: linear-gradient(135deg, rgba(55, 65, 81, 0.8), rgba(31, 41, 55, 0.6));
+  border-color: #6b7280; color: #9ca3af;
+}
+.jp-kbd {
+  background-color: #e5e7eb; color: #111827;
+  border: 1px solid #9ca3af; border-radius: 3px;
+  font-family: ui-monospace, monospace;
+  font-size: 10.5px; font-weight: 700;
+  padding: 1px 5px; font-style: normal;
+}
+#stage.dark .jp-kbd { background-color: #374151; color: #f3f4f6; border-color: #6b7280; }
+
+/* ---------- theme toggle (ThemeToggle.astro) ---------- */
+.jp-toggle {
+  position: absolute; right: 14px; bottom: 14px;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+#stage.dark .jp-toggle { background: #1f2937; border-color: #374151; }
+.jp-toggle svg { width: 24px; height: 24px; color: #1f2937; }
+#stage.dark .jp-toggle svg { color: #e5e7eb; }
+.jp-toggle .sun { display: none; }
+#stage.dark .jp-toggle .sun { display: block; }
+#stage.dark .jp-toggle .moon { display: none; }
+
+/* ---------- footer strip ---------- */
+.jp-footer {
+  text-align: center; padding: 14px 0 10px;
+  font-size: 12px; color: var(--gray600);
+  border-top: 1px solid rgba(229, 231, 235, 0.8);
+}
+#stage.dark .jp-footer { color: var(--gray400); border-top-color: #374151; }
+
+/* ---------- All | Favorites filter toggle (Calculator.astro) ---------- */
+.jp-filter { display: flex; justify-content: center; padding: 8px 0 2px; }
+.jp-filter .seg {
+  display: inline-flex; overflow: hidden;
+  border: 1px solid #d1d5db; border-radius: 8px;
+  font-size: 13px;
+}
+#stage.dark .jp-filter .seg { border-color: #4b5563; }
+.jp-filter .seg button {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 14px; border: 0; background: transparent;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  color: var(--gray500);
+}
+.jp-filter .seg button.on { background: #d1d5db; color: #111827; }
+#stage.dark .jp-filter .seg button.on { background: #374151; color: #ffffff; }
+#stage.dark .jp-filter .seg button.fav { color: #9ca3af; }
+.jp-filter .st { width: 17px; height: 17px; color: #fbbf24; }
+.jp-filter .hr { width: 17px; height: 17px; color: #ef4444; filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.5)); }
+
+/* ---------- "Selected Practical Use Example" presentation container
+     (practicalUsePinning.ts — injected above the calculator form) ---------- */
+.jp-presentation {
+  display: none;             /* timeline drives visibility deterministically */
+  overflow: hidden;
+  transform-origin: top center;
+  will-change: transform, opacity, max-height;
+}
+.jp-presentation .pwrap {
+  position: relative;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+}
+#stage.dark .jp-presentation .pwrap {
+  background: rgba(31, 41, 55, 0.3);
+  border-color: #374151;
+}
+.jp-presentation .phead-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 8px; padding-right: 30px;
+}
+.jp-presentation .ptitle {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+#stage.dark .jp-presentation .ptitle { color: #6b7280; }
+.jp-presentation .ppin {
+  position: relative; width: 16px; height: 16px; flex: none;
+  transform: rotate(20deg) translateY(-1px);
+}
+.jp-presentation .ppin-head {
+  position: absolute; left: 2px; top: 0; z-index: 1;
+  width: 12px; height: 12px; border-radius: 50%;
+  background-color: #ef4444; border: 1px solid #dc2626;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+.jp-presentation .ppin-head::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+}
+.jp-presentation .ppin-needle {
+  position: absolute; left: 7px; top: 11px;
+  width: 2px; height: 8px;
+  background: linear-gradient(90deg, #9ca3af, #d1d5db);
+}
+.jp-presentation .pclose {
+  position: absolute; top: 8px; right: 8px;
+  width: 22px; height: 22px; padding: 3px;
+  border: 0; border-radius: 50%; background: transparent;
+  color: #9ca3af;
+}
+.jp-presentation .pclose svg { width: 100%; height: 100%; }
+.jp-presentation .pcontent {
+  font-size: 14px; line-height: 1.6; color: var(--text);
+}
+.jp-presentation .pcontent .t { font-weight: 600; }
+.jp-presentation .gap, .jp-pu-item .gap, .jp-dd-pu-txt .gap { display: block; height: 0.5em; }
+/* permanent highlight markers (practical-use--presentation [data-field]) */
+.jp-presentation .mk-x, .jp-presentation .mk-y, .jp-presentation .mk-z {
+  border-radius: 0.8em 0.3em 0.9em 0.2em;
+  padding: 0.1em 0.3em; margin: 0 -0.1em;
+  color: #1a202c; text-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+  box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
+.jp-presentation .mk-x { background-image: linear-gradient(105deg, rgba(254,240,138,0) 0%, rgba(254,240,138,1) 5%, rgba(253,224,71,1) 100%); }
+.jp-presentation .mk-y { background-image: linear-gradient(105deg, rgba(190,242,100,0) 0%, rgba(190,242,100,1) 5%, rgba(163,230,53,1) 100%); }
+.jp-presentation .mk-z { background-image: linear-gradient(105deg, rgba(249,168,212,0) 0%, rgba(249,168,212,1) 5%, rgba(244,114,182,1) 100%); }
+
+/* ---------- practical-use list extras (heart + answer line) ---------- */
+.jp-pu-item { padding-right: 34px; }
+.jp-pu-heart {
+  position: absolute; right: 4px; top: 4px;
+  width: 24px; height: 24px; padding: 0;
+  border: 0; background: transparent;
+  color: #d1d5db; line-height: 0;
+}
+#stage.dark .jp-pu-heart { color: #6b7280; }
+.jp-pu-heart svg { width: 22px; height: 22px; }
+
+/* ---------- dropdown extras ---------- */
+.jp-dd-pu-txt { flex: 1; min-width: 0; }
+.jp-dd-heart { width: 20px; height: 20px; flex: none; color: #d1d5db; margin-top: 2px; }
+#stage.dark .jp-dd-heart { color: #6b7280; }
+mark.shl {
+  background: rgba(59, 130, 246, 0.18);
+  color: inherit;
+  border-radius: 3px; padding: 0 1px;
+}
+#stage.dark mark.shl { background: rgba(96, 165, 250, 0.25); }
+
+/* ---------- FAQ hub controls (faqs.astro) ---------- */
+.jp-faqctl { display: flex; gap: 8px; }
+.jp-faqctl .fsearch {
+  flex: 1; position: relative;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(239,246,255,0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 22px rgba(31, 38, 135, 0.12);
+  backdrop-filter: blur(12px);
+}
+#stage.dark .jp-faqctl .fsearch {
+  background: linear-gradient(135deg, #1f2937 0%, rgba(88, 28, 135, 0.3) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+}
+.jp-faqctl .mag { width: 18px; height: 18px; color: var(--gray500); flex: none; }
+.jp-faqctl .fph { flex: 1; font-size: 14px; color: var(--gray400); }
+.jp-faqctl .gear { width: 20px; height: 20px; color: var(--gray400); flex: none; }
+.jp-faqctl .ffav {
+  width: 46px; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(239,246,255,0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 22px rgba(31, 38, 135, 0.12);
+  backdrop-filter: blur(12px);
+}
+#stage.dark .jp-faqctl .ffav {
+  background: linear-gradient(135deg, #1f2937 0%, rgba(88, 28, 135, 0.3) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+}
+.jp-faqctl .ffav svg { width: 22px; height: 22px; color: var(--gray400); }

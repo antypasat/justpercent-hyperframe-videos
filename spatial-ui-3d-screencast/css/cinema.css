@@ -1,0 +1,354 @@
+/* ============================================================
+   cinema.css — stage, 3D camera, claymorphic cursor, captions
+   Spatial UI & 3D screencast scaffolding (not app UI — see app.css)
+   ============================================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { background: #000; }
+
+/* ---------- fonts (from the app's own @fontsource packages) ---------- */
+@font-face { font-family: "IBM Plex Sans"; font-weight: 300; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-300-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-weight: 700; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 300; font-style: normal; src: url("../assets/fonts/space-grotesk-latin-300-normal.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 400; font-style: normal; src: url("../assets/fonts/space-grotesk-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 500; font-style: normal; src: url("../assets/fonts/space-grotesk-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 700; font-style: normal; src: url("../assets/fonts/space-grotesk-latin-700-normal.woff2") format("woff2"); }
+
+/* ---------- stage ---------- */
+/* The stage IS its declared composition size (1080×1920). All content is
+   authored in a 540×960 design space inside #view, scaled 2× — so the
+   composition fills the full canvas in any HyperFrames preview. */
+#stage {
+  position: relative;
+  width: 1080px; height: 1920px;
+  overflow: hidden;
+  background: #F8F9FE;              /* app --bg (light) */
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+}
+#view {
+  position: absolute; left: 0; top: 0;
+  width: 540px; height: 960px;
+  transform: scale(2);
+  transform-origin: 0 0;
+}
+
+/* Atmospheric backdrop — the app's own mesh gradients (Layout.astro) */
+#bg-light, #bg-dark, #bg-grid, #bg-deep {
+  position: absolute; inset: -10%;
+  pointer-events: none;
+}
+#bg-light {
+  background:
+    radial-gradient(at 20% 30%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 20%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+    radial-gradient(at 40% 70%, rgba(16, 185, 129, 0.10) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
+    #F8F9FE;
+}
+#bg-dark {
+  opacity: 0;
+  background:
+    radial-gradient(at 15% 25%, rgba(124, 58, 237, 0.25) 0px, transparent 45%),
+    radial-gradient(at 85% 15%, rgba(14, 165, 233, 0.20) 0px, transparent 45%),
+    radial-gradient(at 35% 75%, rgba(34, 197, 94, 0.18) 0px, transparent 45%),
+    radial-gradient(at 70% 65%, rgba(251, 146, 60, 0.15) 0px, transparent 45%),
+    radial-gradient(ellipse at top, #1A0F2E 0%, #0A0514 100%);
+}
+#bg-grid {
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.05;
+}
+/* darkening at depth for the 3D space feel */
+#bg-deep {
+  background: radial-gradient(ellipse at 50% 42%, transparent 30%, rgba(10, 5, 20, 0.28) 100%);
+  opacity: 0.5;
+}
+
+/* ---------- 3D world ---------- */
+#world {
+  position: absolute; inset: 0;
+  perspective: 1100px;
+  perspective-origin: 50% 42%;
+}
+#camera {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* a screen = one full app page floating as a plane */
+.screen {
+  position: absolute;
+  left: 50%; top: 0;
+  width: 430px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+.screen[hidden] { display: none; }
+
+/* a peelable UI layer inside a screen */
+.layer {
+  position: relative;
+  will-change: transform, opacity;
+  transform-style: flat;
+}
+
+/* ---------- floating glass shards (scene 1 + ambience) ---------- */
+.shard {
+  position: absolute;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 55%, rgba(255,255,255,0.18) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255,255,255,0.4);
+  backdrop-filter: blur(6px);
+  will-change: transform, opacity;
+}
+#stage.dark .shard {
+  background: linear-gradient(135deg, rgba(168,85,247,0.16) 0%, rgba(255,255,255,0.04) 55%, rgba(14,165,233,0.10) 100%);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+/* chaotic "guessing" fragments for the cold open */
+.frag {
+  position: absolute;
+  font-family: "IBM Plex Sans", sans-serif;
+  will-change: transform, opacity;
+  white-space: nowrap;
+}
+.frag-input {
+  padding: 7px 14px;
+  border: 1px solid #d1d5db; border-radius: 6px;
+  background: rgba(255,255,255,0.9); color: #9ca3af;
+  font-size: 14px; box-shadow: 0 6px 18px rgba(31,38,135,0.12);
+}
+.frag-pct {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; color: rgba(124, 58, 237, 0.55);
+  text-shadow: 0 4px 22px rgba(124,58,237,0.35);
+}
+.frag-q {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; color: rgba(15, 23, 42, 0.3);
+}
+
+/* ---------- headlines / captions ---------- */
+.headline {
+  position: absolute; left: 50%;
+  transform: translateX(-50%);
+  width: max-content; max-width: 505px;
+  padding: 18px 30px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 16px 50px rgba(31, 38, 135, 0.28), inset 0 1px 0 rgba(255,255,255,0.8);
+  backdrop-filter: blur(20px) saturate(170%);
+  text-align: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  color: #0F172A;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.headline em { font-style: normal; color: #7C3AED; }
+#stage.dark .headline { color: #EDEEF7; }
+
+.caption {
+  position: absolute; left: 50%; bottom: 118px;
+  transform: translateX(-50%);
+  max-width: 508px;
+  width: max-content;
+  padding: 15px 26px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.66) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.22), inset 0 1px 0 rgba(255,255,255,0.7);
+  backdrop-filter: blur(18px) saturate(160%);
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; font-size: 27px; line-height: 1.22;
+  text-align: center; color: #0F172A;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.caption em { font-style: normal; color: #7C3AED; }
+#stage.dark .caption {
+  background: linear-gradient(135deg, rgba(31,41,55,0.88) 0%, rgba(17,24,39,0.86) 100%);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+  color: #EDEEF7;
+}
+#stage.dark .caption em { color: #A855F7; }
+
+/* ---------- browser URL pill ---------- */
+#urlpill {
+  position: absolute; left: 50%; top: 26px;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.7) 100%);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 8px 28px rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(14px) saturate(160%);
+  font-size: 13.5px; font-weight: 500; color: #334155;
+  opacity: 0;
+  will-change: transform, opacity;
+  white-space: nowrap;
+}
+#urlpill .lock { width: 12px; height: 12px; flex: none; }
+#urlpill b { font-weight: 600; color: #0F172A; }
+#urlpill span.path { color: #7C3AED; font-weight: 600; }
+#stage.dark #urlpill {
+  background: linear-gradient(135deg, rgba(31,41,55,0.9) 0%, rgba(17,24,39,0.88) 100%);
+  border-color: rgba(75, 85, 99, 0.5);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+  color: #B8B7CC;
+}
+#stage.dark #urlpill b { color: #EDEEF7; }
+#stage.dark #urlpill span.path { color: #A855F7; }
+
+/* ---------- claymorphic 3D cursor ---------- */
+#cursor {
+  position: absolute; left: 0; top: 0;
+  width: 74px; height: 74px;
+  margin: -10px 0 0 -10px;             /* hotspot near the tip */
+  opacity: 0;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 14px 22px rgba(49, 10, 101, 0.4));
+  z-index: 40;
+}
+#cursor svg { width: 100%; height: 100%; overflow: visible; }
+
+/* contact shadow that grows when cursor "presses" the glass */
+#cursor-shadow {
+  position: absolute; left: 0; top: 0;
+  width: 54px; height: 20px;
+  margin: -10px 0 0 -18px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(49, 10, 101, 0.36) 0%, transparent 70%);
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 39;
+}
+
+/* impact ripple ring */
+.ripple {
+  position: absolute;
+  width: 90px; height: 90px;
+  margin: -45px 0 0 -45px;
+  border-radius: 50%;
+  border: 3px solid rgba(124, 58, 237, 0.65);
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.4), inset 0 0 16px rgba(124,58,237,0.25);
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 38;
+}
+
+/* value chips that fly from a practical use into the inputs */
+.flychip {
+  position: absolute;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 700; font-size: 15px;
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 37;
+  box-shadow: 0 10px 26px rgba(31,38,135,0.3);
+}
+.flychip.gold { background: linear-gradient(105deg, #fef08a, #fde047); color: #1a202c; }
+.flychip.lime { background: linear-gradient(105deg, #bef264, #a3e635); color: #1a202c; }
+
+/* ---------- specular light sweep across the whole frame ---------- */
+#specular {
+  position: absolute; inset: -30%;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.35) 46%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.35) 54%, transparent 70%);
+  mix-blend-mode: overlay;
+  transform: translateX(-120%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 45;
+  will-change: transform, opacity;
+}
+
+/* ---------- vignette + film grain ---------- */
+#vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(10, 5, 20, 0.22) 100%);
+  pointer-events: none; z-index: 46;
+}
+#grain {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.03; mix-blend-mode: overlay;
+  pointer-events: none; z-index: 47;
+}
+#stage.dark #grain { opacity: 0.05; }
+
+/* ---------- persistent bottom brand bar ---------- */
+#brandbar {
+  position: absolute; left: 50%; bottom: 34px;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.55) 100%);
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(14px) saturate(160%);
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 35;
+}
+#brandbar img { width: 28px; height: 28px; }
+#brandbar .site {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; font-size: 19px; letter-spacing: 0.01em;
+  color: #7C3AED;
+}
+#stage.dark #brandbar {
+  background: linear-gradient(135deg, rgba(31,41,55,0.88) 0%, rgba(17,24,39,0.86) 100%);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+#stage.dark #brandbar .site { color: #A855F7; }
+
+/* ---------- outro ---------- */
+#outro {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px;
+  opacity: 0;
+  z-index: 30;
+  will-change: transform, opacity;
+}
+#outro .logo-wrap {
+  display: flex; align-items: center; gap: 12px;
+  will-change: transform;
+}
+#outro img { width: 122px; height: 122px; filter: drop-shadow(0 18px 42px rgba(124, 58, 237, 0.5)); }
+#outro .brand {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300; letter-spacing: -0.02em;
+  font-size: 64px; color: #0F172A;
+}
+#stage.dark #outro .brand { color: #EDEEF7; }
+#outro .site {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; font-size: 33px; color: #7C3AED;
+}
+#stage.dark #outro .site { color: #A855F7; }
+#outro .tagline {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 500; font-size: 24px; color: #475569;
+  text-align: center; max-width: 480px;
+}
+#stage.dark #outro .tagline { color: #B8B7CC; }

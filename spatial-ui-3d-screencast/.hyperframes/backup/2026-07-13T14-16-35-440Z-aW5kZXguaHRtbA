@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JustPercent — Spatial UI & 3D Screencast (HyperFrames composition)</title>
+<link rel="stylesheet" href="css/cinema.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<div data-hf-id="hf-fl4g" id="stage" data-composition-id="justpercent" data-start="0" data-width="1080" data-height="1920" data-duration="40">
+<div data-hf-id="hf-ps8e" id="view">
+
+  <!-- atmospheric backdrop (the app's own mesh gradients) -->
+  <div data-hf-id="hf-n1xf" id="bg-light"></div>
+  <div data-hf-id="hf-j74d" id="bg-dark"></div>
+  <div data-hf-id="hf-r3kh" id="bg-grid"></div>
+  <div data-hf-id="hf-rrub" id="bg-deep"></div>
+
+  <!-- ==================== 3D WORLD ==================== -->
+  <div data-hf-id="hf-j427" id="world">
+    <div data-hf-id="hf-kwiw" id="camera">
+
+      <!-- ambient glass shards -->
+      <div data-hf-id="hf-ew79" class="shard" id="shard1" style="width:130px;height:88px"></div>
+      <div data-hf-id="hf-yqk1" class="shard" id="shard2" style="width:90px;height:150px"></div>
+      <div data-hf-id="hf-4kzu" class="shard" id="shard3" style="width:170px;height:70px"></div>
+      <div data-hf-id="hf-pa7e" class="shard" id="shard4" style="width:74px;height:74px;border-radius:50%"></div>
+
+      <!-- cold-open "guessing" fragments -->
+      <div data-hf-id="hf-m3xz" class="frag frag-input" id="frag1">Value A … ?</div>
+      <div data-hf-id="hf-49pq" class="frag frag-input" id="frag2">?? ÷ 100 × ??</div>
+      <div data-hf-id="hf-qczu" class="frag frag-input" id="frag3">X = ?</div>
+      <div data-hf-id="hf-69zw" class="frag frag-pct" id="frag4" style="font-size:64px">%</div>
+      <div data-hf-id="hf-htbs" class="frag frag-pct" id="frag5" style="font-size:38px">%</div>
+      <div data-hf-id="hf-5p01" class="frag frag-q" id="frag6" style="font-size:52px">?</div>
+      <div data-hf-id="hf-xh3c" class="frag frag-q" id="frag7" style="font-size:34px">?</div>
+      <div data-hf-id="hf-05vf" class="frag frag-input" id="frag8">Which one…?</div>
+
+      <!-- ============ SCREEN A: homepage (justpercent.com/) ============ -->
+      <section data-hf-id="hf-lm1g" class="screen jp" id="scr-home">
+        <div data-hf-id="hf-sqid" class="layer" id="hl-nav">
+          <nav data-hf-id="hf-zt14" class="jp-nav">
+            <div data-hf-id="hf-qqux" class="jp-nav-row">
+              <span data-hf-id="hf-fcbx" class="jp-logo">
+                <img data-hf-id="hf-7td6" src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+                <span data-hf-id="hf-uj2b" class="brand">Just Percent</span>
+              </span>
+              <button data-hf-id="hf-h395" class="jp-menu-btn">
+                Menu
+                <svg data-hf-id="hf-rfbg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-64uu" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+              </button>
+            </div>
+            <div data-hf-id="hf-1bho" class="jp-breadcrumb"><a data-hf-id="hf-fenh">Calculators</a><span data-hf-id="hf-yier" class="sep">›</span><span data-hf-id="hf-vylc" class="cur">All</span></div>
+          </nav>
+        </div>
+
+        <div data-hf-id="hf-dah6" class="layer" id="hl-h1" style="padding:12px 10px 4px">
+          <h1 data-hf-id="hf-wx9m" class="jp-h1">Free, online percentage calculators</h1>
+        </div>
+
+        <div data-hf-id="hf-ielp" class="layer" id="hl-search" style="padding:6px 8px">
+          <div data-hf-id="hf-5xtq" class="jp-glass jp-search">
+            <div data-hf-id="hf-d74r" class="box">
+              <svg data-hf-id="hf-3nwh" class="mag" viewBox="0 0 20 20" fill="currentColor"><path data-hf-id="hf-nnuk" fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+              <input data-hf-id="hf-liom" id="home-search" type="text" aria-label="Search calculators">
+              <div data-hf-id="hf-105j" class="ph" id="search-ph"><span data-hf-id="hf-s7lm" class="typed" id="search-typed"></span><span data-hf-id="hf-m56u" id="search-ghost">Search 'Tip'...</span><span data-hf-id="hf-u4sm" class="tcursor" id="search-cursor">|</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- All | Favorites filter toggle (Calculator.astro #homepage-filter-toggle) -->
+        <div data-hf-id="hf-aqsg" class="layer" id="hl-filter">
+          <div data-hf-id="hf-qr71" class="jp-filter">
+            <div data-hf-id="hf-ta0z" class="seg">
+              <button data-hf-id="hf-j2y5" class="on">All</button>
+              <button data-hf-id="hf-mkbh" class="fav">
+                <svg data-hf-id="hf-01p7" class="st" viewBox="0 0 24 24" fill="currentColor"><path data-hf-id="hf-hnex" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+                Favorites
+                <svg data-hf-id="hf-tpp1" class="hr" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-id2l" stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-m6r9" class="layer" id="hl-seclabel">
+          <div data-hf-id="hf-ic5t" class="jp-sec-label">What Can You Calculate?</div>
+        </div>
+
+        <!-- solution cards — real en-US copy + real homepage order (solution-notes.ts) -->
+        <div data-hf-id="hf-n044" class="jp-cards">
+          <div data-hf-id="hf-qsyd" class="layer" id="hl-card1">
+            <div data-hf-id="hf-2dbn" class="jp-note" data-row="0">
+              <div data-hf-id="hf-4uv1" class="imgwrap">
+                <img data-hf-id="hf-ln49" src="assets/images/coupon.webp" alt="">
+                <span data-hf-id="hf-6foh" class="star"><svg data-hf-id="hf-hch0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-br25" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></span>
+              </div>
+              <div data-hf-id="hf-ja2t" class="txt">Have a coupon — e.g. '20% off'? See what you'll actually pay at the register.</div>
+              <button data-hf-id="hf-swjb" class="cta">Apply My Coupon</button>
+            </div>
+          </div>
+          <div data-hf-id="hf-ur2e" class="layer" id="hl-card2">
+            <div data-hf-id="hf-yf7m" class="jp-note" data-row="1">
+              <div data-hf-id="hf-466p" class="imgwrap">
+                <img data-hf-id="hf-i4yc" src="assets/images/sale.webp" alt="">
+                <span data-hf-id="hf-xkad" class="star"><svg data-hf-id="hf-g5jx" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-cxz8" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></span>
+              </div>
+              <div data-hf-id="hf-gvud" class="txt">Shopping the clearance rack? Find out exactly how much you save.</div>
+              <button data-hf-id="hf-ljvl" class="cta">See My Savings</button>
+            </div>
+          </div>
+          <div data-hf-id="hf-yp6f" class="layer" id="hl-card3">
+            <div data-hf-id="hf-uh3l" class="jp-note" data-row="2">
+              <div data-hf-id="hf-5d3s" class="imgwrap">
+                <img data-hf-id="hf-3kv6" src="assets/images/tax-calc.webp" alt="">
+                <span data-hf-id="hf-yr7g" class="star"><svg data-hf-id="hf-gjuy" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-cjo7" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></span>
+              </div>
+              <div data-hf-id="hf-9l2r" class="txt">In-store shopping? Calculate the total price with Sales Tax.</div>
+              <button data-hf-id="hf-oec4" class="cta">Calculate Total Price</button>
+            </div>
+          </div>
+          <div data-hf-id="hf-4uw8" class="layer" id="hl-card4">
+            <div data-hf-id="hf-tpfs" class="jp-note" data-row="3">
+              <div data-hf-id="hf-4ysr" class="imgwrap">
+                <img data-hf-id="hf-f308" src="assets/images/tip.webp" alt="">
+                <span data-hf-id="hf-ycwf" class="star"><svg data-hf-id="hf-ije3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-dqla" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></span>
+              </div>
+              <div data-hf-id="hf-hzja" class="txt">Dining out or ordering in? Calculate the perfect tip for your server.</div>
+              <button data-hf-id="hf-rv2a" class="cta">Calculate My Tip</button>
+            </div>
+          </div>
+          <div data-hf-id="hf-5mk1" class="layer" id="hl-card5">
+            <div data-hf-id="hf-prbr" class="jp-note" data-row="4">
+              <div data-hf-id="hf-2z9m" class="imgwrap">
+                <img data-hf-id="hf-azkm" src="assets/images/commission.webp" alt="">
+                <span data-hf-id="hf-zjti" class="star"><svg data-hf-id="hf-ixp4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-e4wb" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></span>
+              </div>
+              <div data-hf-id="hf-dxv1" class="txt">Closing a deal? Calculate your estimated commission check.</div>
+              <button data-hf-id="hf-7ecb" class="cta">See My Commission</button>
+            </div>
+          </div>
+          <div data-hf-id="hf-9ko2" class="layer" id="hl-card6">
+            <div data-hf-id="hf-jlly" class="jp-note" data-row="5">
+              <div data-hf-id="hf-2kyl" class="imgwrap">
+                <img data-hf-id="hf-dsnc" src="assets/images/payroll.webp" alt="">
+                <span data-hf-id="hf-z5ih" class="star"><svg data-hf-id="hf-glbk" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-fbte" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></span>
+              </div>
+              <div data-hf-id="hf-me1u" class="txt">Facing a rent hike? Calculate the exact percentage increase.</div>
+              <button data-hf-id="hf-11rt" class="cta">See % Change</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Basic Percentage calculator card (homepage, revealed by scroll) -->
+        <div data-hf-id="hf-dnpk" class="layer" id="hl-basic" style="padding:14px 8px 8px">
+          <div data-hf-id="hf-ns0s" class="jp-calc">
+            <div data-hf-id="hf-zx1w" class="dots"><i data-hf-id="hf-wt6k"></i><i data-hf-id="hf-zeb8"></i><i data-hf-id="hf-y7e5"></i><i data-hf-id="hf-ylp6"></i><i data-hf-id="hf-0l8b"></i></div>
+            <span data-hf-id="hf-xv93" class="corner-star"><svg data-hf-id="hf-hqs1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-dca9" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></span>
+            <button data-hf-id="hf-5gfk" class="clear-btn"><svg data-hf-id="hf-i532" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-s7fp" stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>Clear</button>
+            <h2 data-hf-id="hf-72dh">Basic Percentage</h2>
+            <p data-hf-id="hf-cn5n" class="subtitle">What is <b data-hf-id="hf-p4p2">X%</b> of <b data-hf-id="hf-2nzo">Y</b>?</p>
+            <!-- "Selected Practical Use Example" presentation container
+                 (practicalUsePinning.ts getOrCreatePresentationContainer — appears ABOVE the form after pinning) -->
+            <div data-hf-id="hf-h9wm" class="jp-presentation" id="pres-basic">
+              <div data-hf-id="hf-hafo" class="pwrap">
+                <div data-hf-id="hf-ervt" class="phead-row">
+                  <span data-hf-id="hf-v010" class="ppin"><span data-hf-id="hf-c6b7" class="ppin-head"></span><span data-hf-id="hf-i7r8" class="ppin-needle"></span></span>
+                  <p data-hf-id="hf-93ga" class="ptitle">Selected Practical Use Example</p>
+                </div>
+                <button data-hf-id="hf-q2k9" class="pclose"><svg data-hf-id="hf-ly9u" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path data-hf-id="hf-7i8y" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                <div data-hf-id="hf-20xq" class="pcontent"><span data-hf-id="hf-xmdt" class="t">Restaurant Tip:</span><span data-hf-id="hf-p0yb" class="gap"></span>A <span data-hf-id="hf-9lww" class="mk-x">15% <b data-hf-id="hf-dboh">[X]</b> tip</span> on a <span data-hf-id="hf-7zkl" class="mk-y">$60 <b data-hf-id="hf-i2ek">[Y]</b> Italian chain dinner bill</span> comes to <span data-hf-id="hf-r0da" class="mk-z">how much <b data-hf-id="hf-y1if">[Z]</b>?</span><span data-hf-id="hf-jq0j" class="gap"></span><span data-hf-id="hf-1cyr" class="mk-z">$9</span></div>
+              </div>
+            </div>
+            <div data-hf-id="hf-jb45" class="jp-form">
+              <span data-hf-id="hf-yco9" class="jp-input" id="basic-x" data-ph="X"></span>
+              <span data-hf-id="hf-n8bp" class="word">% of</span>
+              <span data-hf-id="hf-1brj" class="jp-input" id="basic-y" data-ph="Y"></span>
+              <span data-hf-id="hf-q96p" class="word">is</span>
+              <span data-hf-id="hf-mmva" class="jp-answer empty" id="basic-z"><span data-hf-id="hf-nmy4" class="rlabel">read-only Answer/Result</span><span data-hf-id="hf-ia93" id="basic-z-val">Z</span></span>
+            </div>
+            <div data-hf-id="hf-wbjp" class="jp-controls">
+              <button data-hf-id="hf-18kd" class="eq"><svg data-hf-id="hf-79zl" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-bfrl" d="M5 8h14M5 16h14" /></svg>Equation</button>
+              <span data-hf-id="hf-ni8w" class="jp-check"><span data-hf-id="hf-mkkw" class="boxx"><svg data-hf-id="hf-bwd5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path data-hf-id="hf-45nv" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></span>Round</span>
+            </div>
+            <button data-hf-id="hf-5w5n" class="jp-pu-btn">
+              <svg data-hf-id="hf-909k" class="beam"><rect data-hf-id="hf-ihx1" x="1" y="1" rx="7" style="width:calc(100% - 2px);height:calc(100% - 2px)" /></svg>
+              <svg data-hf-id="hf-w2gx" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-6v0q" stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+              Practical Uses
+            </button>
+            <p data-hf-id="hf-iyaw" class="jp-disclaimer">For informational purposes only.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SCREEN B: /percentage-change-calculator/ ===== -->
+      <section data-hf-id="hf-yhrp" class="screen jp" id="scr-calc" hidden>
+        <div data-hf-id="hf-jfz8" class="layer" id="cl-nav">
+          <nav data-hf-id="hf-gdqo" class="jp-nav">
+            <div data-hf-id="hf-od3h" class="jp-nav-row">
+              <span data-hf-id="hf-nlr5" class="jp-logo">
+                <img data-hf-id="hf-aii6" src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+                <span data-hf-id="hf-r0jn" class="brand">Just Percent</span>
+              </span>
+              <button data-hf-id="hf-x85p" class="jp-menu-btn">
+                Menu
+                <svg data-hf-id="hf-k4m7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-xiwq" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+              </button>
+            </div>
+            <div data-hf-id="hf-ev44" class="jp-breadcrumb"><a data-hf-id="hf-oxwh">Calculators</a><span data-hf-id="hf-gy6r" class="sep">›</span><span data-hf-id="hf-hj2d" class="cur">Percentage Change Calculator</span></div>
+          </nav>
+        </div>
+
+        <div data-hf-id="hf-h90x" class="layer" id="cl-card" style="padding:12px 8px 6px">
+          <div data-hf-id="hf-m2s4" class="jp-calc">
+            <div data-hf-id="hf-2trg" class="dots"><i data-hf-id="hf-0zjc"></i><i data-hf-id="hf-zsm9"></i><i data-hf-id="hf-06xa"></i><i data-hf-id="hf-26gf"></i><i data-hf-id="hf-2krg"></i></div>
+            <span data-hf-id="hf-2u0n" class="corner-star"><svg data-hf-id="hf-kix8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-ej7c" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></span>
+            <button data-hf-id="hf-739k" class="clear-btn"><svg data-hf-id="hf-f03g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-6j95" stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>Clear</button>
+            <h2 data-hf-id="hf-nv0d">Percentage Change</h2>
+            <p data-hf-id="hf-wydw" class="subtitle">What is the percentage change from the <b data-hf-id="hf-3rle">Original</b> value to the <b data-hf-id="hf-7j0x">New</b> value?</p>
+            <!-- "Selected Practical Use Example" presentation container
+                 (practicalUsePinning.ts getOrCreatePresentationContainer — appears ABOVE the form after pinning) -->
+            <div data-hf-id="hf-zkew" class="jp-presentation" id="pres-chg">
+              <div data-hf-id="hf-7tik" class="pwrap">
+                <div data-hf-id="hf-4vbx" class="phead-row">
+                  <span data-hf-id="hf-vj4s" class="ppin"><span data-hf-id="hf-yi4z" class="ppin-head"></span><span data-hf-id="hf-84cc" class="ppin-needle"></span></span>
+                  <p data-hf-id="hf-hjku" class="ptitle">Selected Practical Use Example</p>
+                </div>
+                <button data-hf-id="hf-vm8d" class="pclose"><svg data-hf-id="hf-ebl2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path data-hf-id="hf-s1l2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                <div data-hf-id="hf-wxkh" class="pcontent"><span data-hf-id="hf-mn1n" class="t">Inflation Rate:</span><span data-hf-id="hf-jbpi" class="gap"></span>A <b data-hf-id="hf-rqtn">concert ticket</b> rising from <span data-hf-id="hf-koj1" class="mk-x">$100 <b data-hf-id="hf-e1vm">[Original]</b></span> <span data-hf-id="hf-jqfo" class="mk-y">to $103 <b data-hf-id="hf-07sx">[New]</b></span> represents <span data-hf-id="hf-xdpb" class="mk-z">what inflation rate <b data-hf-id="hf-w210">[Change%]</b>?</span><span data-hf-id="hf-ixeh" class="gap"></span><span data-hf-id="hf-ekh4" class="mk-z">3%</span></div>
+              </div>
+            </div>
+            <div data-hf-id="hf-9ys9" class="jp-form">
+              <span data-hf-id="hf-v4g9" class="word">From</span>
+              <span data-hf-id="hf-wtp5" class="jp-input" id="chg-original" data-ph="Original"></span>
+              <span data-hf-id="hf-qy7k" class="word">to</span>
+              <span data-hf-id="hf-0d3j" class="jp-input" id="chg-new" data-ph="New"></span>
+              <span data-hf-id="hf-s87w" class="word" id="chg-status">is a change of:</span>
+              <span data-hf-id="hf-e8hh" class="jp-answer empty" id="chg-result"><span data-hf-id="hf-jaf8" class="rlabel">read-only Answer/Result</span><span data-hf-id="hf-kt59" id="chg-result-val">Change%</span></span>
+            </div>
+            <div data-hf-id="hf-spm1" class="jp-controls">
+              <button data-hf-id="hf-h5f5" class="eq"><svg data-hf-id="hf-itvp" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-5lhh" d="M5 8h14M5 16h14" /></svg>Equation</button>
+              <span data-hf-id="hf-9ee0" class="jp-check"><span data-hf-id="hf-x2mg" class="boxx"><svg data-hf-id="hf-2rn1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path data-hf-id="hf-0qkr" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></span>Round</span>
+            </div>
+            <button data-hf-id="hf-b5nv" class="jp-pu-btn">
+              <svg data-hf-id="hf-6acw" class="beam"><rect data-hf-id="hf-3bl5" x="1" y="1" rx="7" style="width:calc(100% - 2px);height:calc(100% - 2px)" /></svg>
+              <svg data-hf-id="hf-2kd1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-w6z2" stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+              Practical Uses
+            </button>
+            <p data-hf-id="hf-cv1c" class="jp-disclaimer">For informational purposes only.</p>
+          </div>
+        </div>
+
+        <!-- Practical Uses below the calculator (en-US percentage-change data) -->
+        <div data-hf-id="hf-badd" class="layer" id="cl-practical" style="padding:10px 10px 4px">
+          <div data-hf-id="hf-l2h4" class="jp-practical">
+            <h3 data-hf-id="hf-arjp">Practical Uses</h3>
+            <p data-hf-id="hf-b3pz" class="desc">Calculate the percentage difference between two values to determine increases or decreases.</p>
+            <div data-hf-id="hf-6crc" class="jp-pu-item" id="pu-inflation">
+              <span data-hf-id="hf-1v5x" class="jp-pin"><span data-hf-id="hf-iuaf" class="head"></span><span data-hf-id="hf-55iz" class="needle" style="display:block"></span></span>
+              <span data-hf-id="hf-jhl7" class="t">Inflation Rate:</span>
+              A <b data-hf-id="hf-6ld7">concert ticket</b> rising from <span data-hf-id="hf-9ixd" class="hl-x">$100 <b data-hf-id="hf-nqck">[Original]</b></span> to <span data-hf-id="hf-b20l" class="hl-y">$103 <b data-hf-id="hf-2ior">[New]</b></span> represents what inflation rate <span data-hf-id="hf-uduz" class="hl-z">[Change%]</span>?
+              <button data-hf-id="hf-u1fq" class="jp-pu-heart"><svg data-hf-id="hf-g70j" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-l57s" stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg></button>
+              <span data-hf-id="hf-ij3g" class="gap"></span><span data-hf-id="hf-r5ve" class="hl-z ansline">3%</span>
+            </div>
+            <div data-hf-id="hf-b09u" class="jp-pu-item" id="pu-salary">
+              <span data-hf-id="hf-vhw9" class="jp-pin"><span data-hf-id="hf-bmjb" class="head"></span><span data-hf-id="hf-wpvf" class="needle" style="display:block"></span></span>
+              <span data-hf-id="hf-9u93" class="t">Salary Change:</span>
+              A <b data-hf-id="hf-ctwi">Big Box store manager's salary</b> increase from <span data-hf-id="hf-gger" class="hl-x">$50,000 <b data-hf-id="hf-euho">[Original]</b></span> to <span data-hf-id="hf-5vm8" class="hl-y">$54,000 <b data-hf-id="hf-10ez">[New]</b></span> represents what percentage raise <span data-hf-id="hf-3tl7" class="hl-z">[Change%]</span>?
+              <button data-hf-id="hf-vmiy" class="jp-pu-heart"><svg data-hf-id="hf-fspi" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-kqwr" stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg></button>
+              <span data-hf-id="hf-i4sf" class="gap"></span><span data-hf-id="hf-98o9" class="hl-z ansline">8%</span>
+            </div>
+            <div data-hf-id="hf-oluf" class="jp-pu-item" id="pu-revenue">
+              <span data-hf-id="hf-wotc" class="jp-pin"><span data-hf-id="hf-b88a" class="head"></span><span data-hf-id="hf-wbke" class="needle" style="display:block"></span></span>
+              <span data-hf-id="hf-amd6" class="t">Revenue Growth:</span>
+              <b data-hf-id="hf-o7yy">Small business revenue</b> growing from <span data-hf-id="hf-whih" class="hl-x">$1,000,000 <b data-hf-id="hf-dnkl">[Original]</b></span> to <span data-hf-id="hf-jje2" class="hl-y">$1,200,000 <b data-hf-id="hf-0m3y">[New]</b></span> represents what percentage growth <span data-hf-id="hf-3fa6" class="hl-z">[Change%]</span>?
+              <button data-hf-id="hf-w0tz" class="jp-pu-heart"><svg data-hf-id="hf-feeh" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-kclq" stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg></button>
+              <span data-hf-id="hf-hqhe" class="gap"></span><span data-hf-id="hf-2mon" class="hl-z ansline">20%</span>
+            </div>
+          </div>
+        </div>
+
+        <button data-hf-id="hf-2dqi" class="jp-toggle" id="theme-toggle">
+          <svg data-hf-id="hf-yhzo" class="moon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path data-hf-id="hf-3xav" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+          <svg data-hf-id="hf-zv3f" class="sun" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path data-hf-id="hf-rmds" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+        </button>
+      </section>
+
+      <!-- search results dropdown (portal), used on the homepage in scene 6.
+           Real section order from SearchBox.astro: Practical Uses -> Related FAQs -> Suggested solutions -->
+      <div data-hf-id="hf-zmbs" class="jp jp-dropdown" id="dropdown" hidden>
+        <div data-hf-id="hf-20t9" class="sep">Practical Uses</div>
+        <div data-hf-id="hf-5p5x" class="jp-dd-item" id="dd-pu-tip">
+          <svg data-hf-id="hf-lgvs" class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-5jck" stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+          <span data-hf-id="hf-ba5y" class="jp-dd-pu-txt"><b data-hf-id="hf-48js">Restaurant <mark data-hf-id="hf-941c" class="shl">Tip</mark>:</b><span data-hf-id="hf-hc6d" class="gap"></span>A <span data-hf-id="hf-804z" class="hl-x">15% <b data-hf-id="hf-946t">[X]</b> <mark data-hf-id="hf-m7gw" class="shl">tip</mark></span> on a <span data-hf-id="hf-2otd" class="hl-y">$60 <b data-hf-id="hf-igjo">[Y]</b> Italian chain dinner bill</span> comes to <span data-hf-id="hf-jww2" class="hl-z">how much <b data-hf-id="hf-j553">[Z]</b>?</span><span data-hf-id="hf-gxvc" class="gap"></span><span data-hf-id="hf-acaf" class="hl-z">$9</span></span>
+          <svg data-hf-id="hf-z5i5" class="jp-dd-heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-jyap" stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+        </div>
+        <div data-hf-id="hf-lx14" class="sep">Related FAQs</div>
+        <div data-hf-id="hf-kz1k" class="jp-dd-item jp-dd-faq" id="dd-faq-tip">
+          <svg data-hf-id="hf-p8cw" class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-vccy" stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+          <span data-hf-id="hf-e9zk" class="jp-dd-faq-txt"><span data-hf-id="hf-nfpk" class="t"><mark data-hf-id="hf-7frc" class="shl">Tip</mark> Calculation</span><br data-hf-id="hf-x5px"><span data-hf-id="hf-t7yy" class="s">How do I calculate the <mark data-hf-id="hf-ssa0" class="shl">tip</mark> amount from a percentage of the bill?</span></span>
+        </div>
+        <div data-hf-id="hf-va93" class="sep">Suggested solutions</div>
+        <div data-hf-id="hf-q7ts" class="jp-dd-item jp-dd-sol" id="dd-sol-tip">
+          <img data-hf-id="hf-ak7k" src="assets/images/tip.webp" alt="">
+          <span data-hf-id="hf-9ruj" style="flex:1">Dining out or ordering in? Calculate the perfect <mark data-hf-id="hf-rlcx" class="shl">tip</mark> for your server.</span>
+          <span data-hf-id="hf-ayql" class="pill orange">Calculate My Tip</span>
+        </div>
+      </div>
+
+      <!-- ===== SCREEN C: /faqs/ hub ===== -->
+      <section data-hf-id="hf-u2pn" class="screen jp" id="scr-hub" hidden>
+        <div data-hf-id="hf-tuzn" class="layer" id="fl-nav">
+          <nav data-hf-id="hf-f6tl" class="jp-nav">
+            <div data-hf-id="hf-pk0k" class="jp-nav-row">
+              <span data-hf-id="hf-oso8" class="jp-logo">
+                <img data-hf-id="hf-awt7" src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+                <span data-hf-id="hf-qm8m" class="brand">Just Percent</span>
+              </span>
+              <button data-hf-id="hf-yf2s" class="jp-menu-btn">
+                Menu
+                <svg data-hf-id="hf-elsf" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-xx7r" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+              </button>
+            </div>
+            <div data-hf-id="hf-do71" class="jp-breadcrumb"><a data-hf-id="hf-q4tk">Calculators</a><span data-hf-id="hf-gjvq" class="sep">›</span><span data-hf-id="hf-c4ac" class="cur">FAQs</span></div>
+          </nav>
+        </div>
+
+        <div data-hf-id="hf-zk86" class="layer" id="fl-h1" style="padding:12px 10px 2px">
+          <h1 data-hf-id="hf-2ede" class="jp-h1">How to Calculate Percentages in Everyday Life</h1>
+          <div data-hf-id="hf-2x4d" class="jp-faq-sub">Interactive FAQ Calculators</div>
+        </div>
+
+        <!-- FAQ hub controls (faqs.astro #faq-controls-container): search + favorites filter -->
+        <div data-hf-id="hf-durq" class="layer" id="fl-controls" style="padding:8px 10px 0">
+          <div data-hf-id="hf-e65c" class="jp-faqctl">
+            <div data-hf-id="hf-9wae" class="fsearch">
+              <svg data-hf-id="hf-cbf9" class="mag" viewBox="0 0 20 20" fill="currentColor"><path data-hf-id="hf-9cz8" fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+              <span data-hf-id="hf-pveo" class="fph">Search FAQs...</span>
+              <svg data-hf-id="hf-nknl" class="gear" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path data-hf-id="hf-r2x8" stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path data-hf-id="hf-l8aj" stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            </div>
+            <div data-hf-id="hf-if7l" class="ffav">
+              <svg data-hf-id="hf-btn8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-mqfw" stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+            </div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-jl8g" class="layer" id="fl-cat" style="padding:8px 10px 0">
+          <div data-hf-id="hf-jnqj" class="jp-cat-h">
+            <span data-hf-id="hf-yvo3" class="cico"><svg data-hf-id="hf-e7he" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-zlw6" stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></span>
+            Shopping and Promotions
+          </div>
+          <p data-hf-id="hf-8r06" class="jp-cat-desc">Tips, coupons, discounts, and everyday retail percentage math.</p>
+        </div>
+
+        <div data-hf-id="hf-uttc" class="layer" id="fl-hub1" style="padding:2px 10px">
+          <div data-hf-id="hf-1x75" class="jp-hubcard" id="hub-tip">
+            <span data-hf-id="hf-flu0" class="bar"></span>
+            <svg data-hf-id="hf-1afx" class="heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-1g4n" stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+            <p data-hf-id="hf-hzhp" class="ht">Tip Calculation</p>
+            <p data-hf-id="hf-zrx6" class="hs">How much tip should I leave based on percentage?</p>
+            <p data-hf-id="hf-n2j5" class="hq">"The restaurant bill is <span data-hf-id="hf-szuu" class="var">$150</span>. I want to leave a <span data-hf-id="hf-rcsd" class="var">10</span>% tip..."</p>
+            <p data-hf-id="hf-36fq" class="hb">Percentage of a number</p>
+            <svg data-hf-id="hf-9a5k" class="arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-j1ti" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </div>
+        </div>
+        <div data-hf-id="hf-q8a1" class="layer" id="fl-hub2" style="padding:2px 10px">
+          <div data-hf-id="hf-ivtq" class="jp-hubcard">
+            <span data-hf-id="hf-78ow" class="bar"></span>
+            <svg data-hf-id="hf-pu0h" class="heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-j5on" stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+            <p data-hf-id="hf-ul0x" class="ht">Product Discount</p>
+            <p data-hf-id="hf-zaeo" class="hs">How much will I pay for a product after applying a percentage discount?</p>
+            <p data-hf-id="hf-h5zu" class="hb">Discounted price</p>
+            <svg data-hf-id="hf-j4io" class="arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-a0re" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </div>
+        </div>
+        <div data-hf-id="hf-k6u6" class="layer" id="fl-hub3" style="padding:2px 10px">
+          <div data-hf-id="hf-huv6" class="jp-hubcard">
+            <span data-hf-id="hf-61rt" class="bar"></span>
+            <svg data-hf-id="hf-r0xk" class="heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-irdm" stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+            <p data-hf-id="hf-ouik" class="ht">Coupon Discount</p>
+            <p data-hf-id="hf-bvau" class="hs">How much will I save with a percentage discount coupon?</p>
+            <p data-hf-id="hf-w20q" class="hb">Percentage of a number</p>
+            <svg data-hf-id="hf-hxll" class="arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-af2f" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SCREEN D: /faqs/tip-calculation-calculator/ ===== -->
+      <section data-hf-id="hf-xi6h" class="screen jp" id="scr-tip" hidden>
+        <div data-hf-id="hf-qlc9" class="layer" id="tl-nav">
+          <nav data-hf-id="hf-fl4m" class="jp-nav">
+            <div data-hf-id="hf-p5pj" class="jp-nav-row">
+              <span data-hf-id="hf-oed7" class="jp-logo">
+                <img data-hf-id="hf-bb48" src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+                <span data-hf-id="hf-q7xl" class="brand">Just Percent</span>
+              </span>
+              <button data-hf-id="hf-y0rr" class="jp-menu-btn">
+                Menu
+                <svg data-hf-id="hf-dt6d" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-ybis" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+              </button>
+            </div>
+            <div data-hf-id="hf-e2i2" class="jp-breadcrumb"><a data-hf-id="hf-pqij">Calculators</a><span data-hf-id="hf-g5kp" class="sep">›</span><a data-hf-id="hf-yefx">FAQs</a><span data-hf-id="hf-fr9o" class="sep">›</span><span data-hf-id="hf-lhtz" class="cur">Tip Calculation</span></div>
+          </nav>
+        </div>
+
+        <div data-hf-id="hf-8j3c" class="layer" id="tl-h1" style="padding:12px 10px 2px">
+          <h1 data-hf-id="hf-50fk" class="jp-h1">Tip Calculation</h1>
+          <div data-hf-id="hf-493q" class="jp-faq-sub">How much tip should I leave based on percentage?</div>
+        </div>
+
+        <div data-hf-id="hf-qc8j" class="layer" id="tl-card" style="padding:10px 10px">
+          <div data-hf-id="hf-1a9j" class="jp-faqcard">
+            <div data-hf-id="hf-mwcu" class="q">
+              The restaurant bill is $<span data-hf-id="hf-0uca" class="jp-mini" id="tip-bill">150</span>. I want to leave a <span data-hf-id="hf-oxkh" class="jp-mini" id="tip-pct">10</span>% tip...
+              <span data-hf-id="hf-bhk3" class="ask">How much should I leave?</span>
+            </div>
+            <div data-hf-id="hf-wh3w" class="jp-faq-hints">
+              <svg data-hf-id="hf-k0ss" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path data-hf-id="hf-wla3" stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+              <span data-hf-id="hf-2ovj" id="hint-txt">Hold &amp; Drag <span data-hf-id="hf-iqqv" class="jp-kbd">←</span> <span data-hf-id="hf-hy4t" class="jp-kbd">→</span> &#160;Adjust value</span>
+            </div>
+            <div data-hf-id="hf-ic9s" class="ans">
+              <b data-hf-id="hf-c8sf">Answer:</b> The tip should be $<span data-hf-id="hf-gpsp" class="jp-mini ro" id="tip-result">15</span>.
+            </div>
+            <div data-hf-id="hf-osyq" class="details">
+              <p data-hf-id="hf-b8ga"><b data-hf-id="hf-lowr">Type of calculation:</b> Calculating a percentage of a number.</p>
+              <p data-hf-id="hf-nbhw" style="margin-top:6px"><b data-hf-id="hf-tw68">How to use the calculator:</b> Use the <span data-hf-id="hf-emvg" class="lnk">Basic Percentage CALCULATOR</span> ("What is X% of Y?"). Enter the tip percentage as <span data-hf-id="hf-5u3f" id="det-x">10</span> [X] and the bill amount as <span data-hf-id="hf-12ez" id="det-y">150</span> [Y]. It will calculate <span data-hf-id="hf-nw2t" id="det-x2">10</span>% of <span data-hf-id="hf-yvob" id="det-y2">150</span>.</p>
+              <p data-hf-id="hf-nmt8" style="margin-top:6px"><b data-hf-id="hf-jeek">The formula:</b> Formula: (Percentage / 100) × Whole. Tip amount = (<span data-hf-id="hf-t991" id="det-fx">10</span> / 100) × <span data-hf-id="hf-kg35" id="det-fy">150</span> = <span data-hf-id="hf-9xjc" id="det-fr">15</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /camera -->
+  </div><!-- /world -->
+
+  <!-- ==================== SCREEN-SPACE UI ==================== -->
+  <div data-hf-id="hf-jbei" id="specular"></div>
+
+  <div data-hf-id="hf-7cjf" class="headline" id="head1" style="top:330px;font-size:42px">Percentages are <em data-hf-id="hf-xavl">easy</em>.</div>
+  <div data-hf-id="hf-wnj1" class="headline" id="head2" style="top:330px;font-size:33px">Finding the right calculator <em data-hf-id="hf-qkc4">isn't</em>.</div>
+
+  <div data-hf-id="hf-9jfd" id="urlpill">
+    <svg data-hf-id="hf-1xhf" class="lock" viewBox="0 0 20 20" fill="currentColor"><path data-hf-id="hf-r09j" fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" /></svg>
+    <span data-hf-id="hf-uckh"><b data-hf-id="hf-b8wv">justpercent.com</b><span data-hf-id="hf-dbkz" class="path" id="url-path"></span></span>
+  </div>
+
+  <div data-hf-id="hf-t3f8" class="caption" id="cap1">JustPercent starts from <em data-hf-id="hf-cqnq">your life</em> — not from math.</div>
+  <div data-hf-id="hf-7zca" class="caption" id="cap2">Tap what you need. <em data-hf-id="hf-jzye">Get the tool.</em></div>
+  <div data-hf-id="hf-3n4f" class="caption" id="cap3">Real-life examples <em data-hf-id="hf-l9rw">fill it in for you.</em></div>
+  <div data-hf-id="hf-tz29" class="caption" id="cap4">Day or night.</div>
+  <div data-hf-id="hf-44wh" class="caption" id="cap5">Search <em data-hf-id="hf-j3xo">your situation</em> — it scrolls you to the answer.</div>
+  <div data-hf-id="hf-l3eg" class="caption" id="cap6">64 real-life FAQs. <em data-hf-id="hf-r9x7">Each one is a live calculator.</em></div>
+
+  <div data-hf-id="hf-k5bb" id="brandbar">
+    <img data-hf-id="hf-8iz1" src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+    <span data-hf-id="hf-3v2c" class="site">justpercent.com</span>
+  </div>
+
+  <div data-hf-id="hf-h5aq" class="ripple" id="ripple"></div>
+  <div data-hf-id="hf-18z1" class="flychip gold" id="chip-x">$100</div>
+  <div data-hf-id="hf-0518" class="flychip lime" id="chip-y">$103</div>
+
+  <div data-hf-id="hf-s7sk" id="cursor-shadow"></div>
+  <div data-hf-id="hf-8gdj" id="cursor">
+    <!-- claymorphic 3D pointer -->
+    <svg data-hf-id="hf-rykf" viewBox="0 0 74 74">
+      <defs data-hf-id="hf-mh0t">
+        <lineargradient data-hf-id="hf-m7oc" id="clay" x1="0" y1="0" x2="1" y2="1">
+          <stop data-hf-id="hf-hguc" offset="0" stop-color="#c4b5fd" />
+          <stop data-hf-id="hf-zcdr" offset="0.45" stop-color="#8b5cf6" />
+          <stop data-hf-id="hf-be0e" offset="1" stop-color="#6d28d9" />
+        </lineargradient>
+        <radialgradient data-hf-id="hf-gjiq" id="clayHi" cx="0.32" cy="0.25" r="0.7">
+          <stop data-hf-id="hf-wpmv" offset="0" stop-color="rgba(255,255,255,0.85)" />
+          <stop data-hf-id="hf-c855" offset="0.45" stop-color="rgba(255,255,255,0.15)" />
+          <stop data-hf-id="hf-ipzn" offset="1" stop-color="rgba(255,255,255,0)" />
+        </radialgradient>
+      </defs>
+      <path data-hf-id="hf-d9ys" d="M14 8 C10 5, 5 9, 7 14 L 22 55 C 24 61, 31 61, 34 56 L 40 44 C 41 42, 43 41, 45 41 L 58 40 C 64 40, 66 33, 61 29 Z" fill="url(#clay)" stroke="rgba(255,255,255,0.5)" stroke-width="1.6" stroke-linejoin="round" />
+      <path data-hf-id="hf-8bxl" d="M14 8 C10 5, 5 9, 7 14 L 22 55 C 24 61, 31 61, 34 56 L 40 44 C 41 42, 43 41, 45 41 L 58 40 C 64 40, 66 33, 61 29 Z" fill="url(#clayHi)" />
+      <ellipse data-hf-id="hf-xj9d" cx="24" cy="22" rx="8.5" ry="5.5" fill="rgba(255,255,255,0.5)" transform="rotate(38 24 22)" />
+    </svg>
+  </div>
+
+  <!-- ==================== OUTRO ==================== -->
+  <div data-hf-id="hf-nj2e" id="outro">
+    <div data-hf-id="hf-bt52" class="logo-wrap">
+      <img data-hf-id="hf-8xa2" src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+      <span data-hf-id="hf-ptmk" class="brand">Just Percent</span>
+    </div>
+    <div data-hf-id="hf-r2ij" class="site">justpercent.com</div>
+    <div data-hf-id="hf-fw7q" class="tagline">From your problem to your answer. <b data-hf-id="hf-kwxh">Instantly.</b></div>
+  </div>
+
+  <div data-hf-id="hf-h7i3" id="vignette"></div>
+  <div data-hf-id="hf-f6d6" id="grain"></div>
+</div><!-- /view -->
+</div>
+
+<script src="lib/timeline.js"></script>
+<script src="js/scenes.js"></script>
+</body>
+</html>
