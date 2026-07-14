@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <link rel="stylesheet" href="capture/fonts.css" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0b0c16; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden;
+              font-family: "IBM Plex Sans", sans-serif; }
+
+      /* ---------- stage backgrounds (light / dark) ---------- */
+      .bg { position: absolute; inset: 0; }
+      #bgLight { background: linear-gradient(160deg, #e6e2f3 0%, #dcdaea 40%, #d8e6ea 100%); }
+      #bgDark  { background: radial-gradient(120% 90% at 50% 12%, #12142a 0%, #070812 58%, #05060d 100%); opacity: 0; }
+      .orb { position: absolute; border-radius: 50%; filter: blur(120px); }
+      #bgLight .o1 { width: 820px; height: 820px; left: -240px; top: -180px; background: rgba(167,139,250,.55); }
+      #bgLight .o2 { width: 700px; height: 700px; right: -220px; top: 620px; background: rgba(34,211,238,.35); }
+      #bgLight .o3 { width: 640px; height: 640px; left: -160px; bottom: -220px; background: rgba(196,163,255,.45); }
+      #bgDark .o1 { width: 900px; height: 900px; left: -280px; top: -220px; background: rgba(124,58,237,.42); }
+      #bgDark .o2 { width: 760px; height: 760px; right: -260px; top: 560px; background: rgba(34,211,238,.16); }
+      #bgDark .o3 { width: 700px; height: 700px; left: -200px; bottom: -260px; background: rgba(88,28,135,.5); }
+      .dots { position: absolute; inset: 0; opacity: .5; }
+      .dots i { position: absolute; width: 5px; height: 5px; border-radius: 50%;
+                background: rgba(255,255,255,.6); }
+      #bgLight .dots i { background: rgba(90,70,160,.35); }
+
+      /* ---------- compact URL bar ---------- */
+      #urlbar { position: absolute; left: 50%; top: 92px; transform: translateX(-50%);
+                height: 68px; min-width: 560px; max-width: 780px; padding: 0 34px;
+                border-radius: 34px; display: flex; align-items: center; gap: 14px;
+                background: rgba(255,255,255,.86); border: 1px solid rgba(120,110,180,.35);
+                box-shadow: 0 10px 34px rgba(30,20,70,.25); opacity: 0; }
+      #urlbar.dark-mode { background: rgba(16,18,36,.88); border-color: rgba(167,139,250,.35);
+                box-shadow: 0 10px 34px rgba(0,0,0,.5); }
+      #urlbar svg { flex-shrink: 0; }
+      #urltext { font-family: "JetBrains Mono", monospace; font-size: 29px; color: #2b2350;
+                 white-space: nowrap; letter-spacing: -0.01em; }
+      #urlbar.dark-mode #urltext { color: #cfc7f4; }
+
+      /* ---------- page card (the app view) ---------- */
+      #cardWrap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+                  will-change: transform, opacity, filter; }
+      #pagecard { position: absolute; left: 27px; top: 200px; width: 1026px; height: 1340px;
+                  border-radius: 46px; overflow: hidden; background: #efeef7;
+                  border: 1px solid rgba(255,255,255,.5);
+                  box-shadow: 0 40px 90px rgba(18,10,50,.42), 0 6px 24px rgba(18,10,50,.28);
+                  will-change: transform, opacity, filter; }
+      #pagecard.dark-shell { background: #0b0e1d; border-color: rgba(167,139,250,.22); }
+      .scene { position: absolute; inset: 0; opacity: 0; will-change: transform, opacity, filter; }
+      .pageframe { width: 432px; height: 564px; transform: scale(2.375); transform-origin: 0 0;
+                   border: 0; display: block; background: transparent; pointer-events: none; }
+      /* 3D flip stage */
+      #flipScene { perspective: 2600px; }
+      #flipInner { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+      .flipFace { position: absolute; inset: 0; backface-visibility: hidden; overflow: hidden;
+                  border-radius: 46px; box-shadow: 0 40px 90px rgba(18,10,50,.42); }
+      .flipBack { transform: rotateY(180deg); background: #0b0e1d; }
+      .flipFront { background: #efeef7; }
+
+      /* ---------- tap ripple ---------- */
+      .ripple { position: absolute; width: 130px; height: 130px; border-radius: 50%;
+                border: 5px solid rgba(124,58,237,.9); background: rgba(167,139,250,.25);
+                transform: translate(-50%,-50%) scale(0); opacity: 0; pointer-events: none;
+                will-change: transform, opacity; }
+      .cutring { position: absolute; left: 540px; top: 960px; width: 240px; height: 240px;
+                 border-radius: 50%; border: 6px solid rgba(255,255,255,.85);
+                 transform: translate(-50%,-50%) scale(0); opacity: 0; pointer-events: none; }
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+
+      /* ---------- intro headlines / captions ---------- */
+      .glass { background: rgba(8,10,22,.78); border: 1px solid rgba(167,139,250,.35);
+               border-radius: 30px; backdrop-filter: blur(10px);
+               box-shadow: 0 16px 40px rgba(0,0,0,.35); }
+      .introcap { position: absolute; left: 50%; top: 585px; transform: translateX(-50%);
+                  padding: 30px 54px; opacity: 0; text-align: center; max-width: 940px;
+                  font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 74px;
+                  line-height: 1.12; color: #ffffff; letter-spacing: -0.02em; white-space: nowrap; }
+      .introcap b { background: linear-gradient(90deg,#a78bfa,#22d3ee);
+                    -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .cap { position: absolute; left: 50%; top: 1592px; transform: translateX(-50%);
+             padding: 26px 46px; opacity: 0; text-align: center; max-width: 1000px;
+             font-family: "IBM Plex Sans", sans-serif; font-weight: 600; font-size: 45px;
+             line-height: 1.25; color: #fff; letter-spacing: -0.01em; white-space: nowrap; }
+      .cap em { font-style: normal; font-family: "JetBrains Mono", monospace; color: #7ee7f5; }
+      .cap b { color: #c4a3ff; }
+
+      /* ---------- brand bar ---------- */
+      #brandbar { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%);
+                  display: flex; align-items: center; gap: 20px; padding: 18px 42px;
+                  border-radius: 999px; background: rgba(8,10,22,.72);
+                  border: 1px solid rgba(167,139,250,.3); backdrop-filter: blur(8px); }
+      #brandbar img { width: 52px; height: 52px; }
+      #brandbar span { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 38px;
+                       color: #fff; letter-spacing: 0; }
+      #brandbar b { color: #a78bfa; font-weight: 700; }
+
+      /* ---------- opening / loop badge ---------- */
+      #badge { position: absolute; left: 540px; top: 960px; width: 560px; height: 560px;
+               transform: translate(-50%,-50%); border-radius: 50%;
+               background: rgba(255,255,255,.6);
+               border: 2px solid rgba(255,255,255,.9);
+               box-shadow: 0 30px 90px rgba(80,50,160,.35), inset 0 2px 0 rgba(255,255,255,.8);
+               backdrop-filter: blur(14px);
+               display: flex; align-items: center; justify-content: center;
+               will-change: transform, opacity; }
+      #badge img { width: 330px; height: 330px; }
+      #badgeRing { position: absolute; left: 540px; top: 960px; width: 640px; height: 640px;
+                   transform: translate(-50%,-50%); border-radius: 50%;
+                   border: 3px dashed rgba(124,58,237,.5); will-change: transform, opacity; }
+
+      /* ---------- endcard ---------- */
+      #endcard { position: absolute; inset: 0; opacity: 0; display: flex; flex-direction: column;
+                 align-items: center; justify-content: center; gap: 44px; }
+      #endBadge { width: 430px; height: 430px; border-radius: 50%;
+                  background: rgba(255,255,255,.10);
+                  border: 2px solid rgba(167,139,250,.55);
+                  box-shadow: 0 30px 110px rgba(124,58,237,.45);
+                  backdrop-filter: blur(10px);
+                  display: flex; align-items: center; justify-content: center;
+                  will-change: transform, opacity; }
+      #endBadge img { width: 260px; height: 260px; }
+      #endName { font-family: "Space Grotesk", sans-serif; font-weight: 300; font-size: 108px;
+                 color: #fff; letter-spacing: -0.03em; }
+      #endName b { font-weight: 700; background: linear-gradient(90deg,#a78bfa,#22d3ee);
+                   -webkit-background-clip: text; background-clip: text; color: transparent; }
+      #endUrl { font-family: "JetBrains Mono", monospace; font-size: 52px; font-weight: 700;
+                color: #14102b; background: #fff; padding: 20px 56px; border-radius: 999px;
+                box-shadow: 0 18px 60px rgba(255,255,255,.22); }
+      #endTag { font-family: "IBM Plex Sans", sans-serif; font-weight: 400; font-size: 44px;
+                color: rgba(255,255,255,.88); }
+      #endPills { display: flex; gap: 22px; }
+      #endPills span { font-family: "IBM Plex Sans", sans-serif; font-size: 32px; font-weight: 600;
+                       color: #cfc7f4; padding: 12px 30px; border-radius: 999px;
+                       border: 1px solid rgba(167,139,250,.45); background: rgba(124,58,237,.14); }
+      .endEl { will-change: transform, opacity; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="36"
+         data-width="1080" data-height="1920">
+
+      <!-- backgrounds -->
+      <div class="bg" id="bgLight">
+        <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+        <div class="dots"></div>
+      </div>
+      <div class="bg" id="bgDark">
+        <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+        <div class="dots"></div>
+      </div>
+
+      <!-- camera wrapper: page card + ripples -->
+      <div id="cardWrap">
+        <div id="pagecard">
+          <div class="scene" id="scHomeL"><iframe class="pageframe" src="capture/b-home-default.html" scrolling="no"></iframe></div>
+          <div class="scene" id="scCalcDef"><iframe class="pageframe" src="capture/b-calc-default.html" scrolling="no"></iframe></div>
+          <div class="scene" id="flipScene">
+            <div id="flipInner">
+              <div class="flipFace flipFront"><iframe class="pageframe" id="ifCalcPinL" src="capture/b-calc-pinned.html" scrolling="no"></iframe></div>
+              <div class="flipFace flipBack"><iframe class="pageframe" id="ifCalcPinD" src="capture/b-dark-calc-pinned.html" scrolling="no"></iframe></div>
+            </div>
+          </div>
+          <div class="scene" id="scHomeD"><iframe class="pageframe" src="capture/b-dark-home-default.html" scrolling="no"></iframe></div>
+          <div class="scene" id="scSearchD"><iframe class="pageframe" src="capture/b-dark-home-search.html" scrolling="no"></iframe></div>
+          <div class="scene" id="scTargetD"><iframe class="pageframe" src="capture/b-dark-home-target.html" scrolling="no"></iframe></div>
+          <div class="scene" id="scFaqHub"><iframe class="pageframe" src="capture/b-dark-faqs-hub.html" scrolling="no"></iframe></div>
+          <div class="scene" id="scFaqBill"><iframe class="pageframe" src="capture/b-dark-faq-bill.html" scrolling="no"></iframe></div>
+        </div>
+        <div class="ripple" id="rip1"></div>
+        <div class="ripple" id="rip2"></div>
+        <div class="ripple" id="rip3"></div>
+        <div class="ripple" id="rip4"></div>
+      </div>
+
+      <!-- URL bar -->
+      <div id="urlbar">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8b7fc7" stroke-width="2.4"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+        </svg>
+        <span id="urltext">justpercent.com/</span>
+      </div>
+
+      <!-- cut ring + flash -->
+      <div class="cutring" id="cutring"></div>
+      <div id="flash"></div>
+
+      <!-- intro headlines (sequential, same spot) -->
+      <div class="introcap glass" id="ic1">Math class? <b>No.</b></div>
+      <div class="introcap glass" id="ic2">Your life — <b>in percent.</b></div>
+
+      <!-- captions (sequential, same spot, above brand bar) -->
+      <div class="cap glass" id="c3">Start from <b>your life</b> — not from a formula.</div>
+      <div class="cap glass" id="c4">Have a coupon? <b>One tap.</b></div>
+      <div class="cap glass" id="c5"><em>$300</em> parka − <em>30%</em> → <em>$210</em> at the register.</div>
+      <div class="cap glass" id="c6">Day or night — <b>one tap.</b></div>
+      <div class="cap glass" id="c7">Or just <b>type what happened…</b></div>
+      <div class="cap glass" id="c8">A <em>15%</em> tip on <em>$60</em> → <em>$9</em>. Done.</div>
+      <div class="cap glass" id="c9"><b>64 real-life questions</b> — every one calculates.</div>
+      <div class="cap glass" id="c10">Change a number. <b>The answer follows.</b></div>
+
+      <!-- brand bar -->
+      <div id="brandbar">
+        <img src="assets/logo-percentage.webp" alt="Just Percent logo" />
+        <span>just<b>percent</b>.com</span>
+      </div>
+
+      <!-- opening / loop badge -->
+      <div id="badgeRing"></div>
+      <div id="badge"><img src="assets/logo-percentage.webp" alt="%" /></div>
+
+      <!-- endcard -->
+      <div id="endcard">
+        <div id="endBadge" class="endEl"><img src="assets/logo-percentage.webp" alt="Just Percent" /></div>
+        <div id="endName" class="endEl">Just <b>Percent</b></div>
+        <div id="endUrl" class="endEl">justpercent.com</div>
+        <div id="endTag" class="endEl">Every percent problem — solved in seconds.</div>
+        <div id="endPills" class="endEl"><span>Free</span><span>Instant</span><span>No sign-up</span></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+        /* ============================================================
+           Deterministic master clock — every pixel is a pure fn of t.
+           GSAP provides the clock; render(t) computes all state.
+           ============================================================ */
+        var DUR = 36;
+
+        /* deterministic pseudo-random */
+        function rnd(i) { var x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+
+        /* scatter dots deterministically */
+        ["#bgLight .dots", "#bgDark .dots"].forEach(function (sel, k) {
+          var host = document.querySelector(sel);
+          for (var i = 0; i < 34; i++) {
+            var d = document.createElement("i");
+            d.style.left = (rnd(i * 2 + k * 97) * 1060 + 10) + "px";
+            d.style.top = (rnd(i * 3 + 7 + k * 51) * 1880 + 20) + "px";
+            d.style.opacity = (0.25 + rnd(i * 5 + k) * 0.5).toFixed(2);
+            host.appendChild(d);
+          }
+        });
+
+        /* ---------- helpers ---------- */
+        function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+        function seg(t, a, b) { return clamp01((t - a) / (b - a)); }
+        function lerp(a, b, e) { return a + (b - a) * e; }
+        function eIO(e) { return e < 0.5 ? 2 * e * e : 1 - Math.pow(-2 * e + 2, 2) / 2; }
+        function eO(e) { return 1 - Math.pow(1 - e, 3); }
+        function eI(e) { return e * e * e; }
+        function eB(e) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(e - 1, 3) + c1 * Math.pow(e - 1, 2); } /* back.out */
+        function pulseWin(t, a, b) { var e = seg(t, a, b); return e <= 0 || e >= 1 ? 0 : Math.sin(e * Math.PI); }
+
+        var $ = function (id) { return document.getElementById(id); };
+
+        /* ---------- iframe registry ---------- */
+        function reg(elOrId) {
+          var host = typeof elOrId === "string" ? $(elOrId) : elOrId;
+          var f = host.tagName === "IFRAME" ? host : host.querySelector("iframe");
+          var o = { frame: f, doc: null };
+          function init() {
+            try {
+              var d = f.contentDocument;
+              if (!d || !d.documentElement) return;
+              o.doc = d;
+            } catch (e) { /* cross-origin or not ready — dark & static scroll are baked in */ }
+          }
+          f.addEventListener("load", init);
+          init();
+          /* animated scroll uses a negative top margin (works with overflow:hidden) */
+          o.scroll = function (y) { try { if (o.doc) o.doc.documentElement.style.marginTop = (-y) + "px"; } catch (e) {} };
+          o.val = function (id, v) { try { var el = o.doc && o.doc.getElementById(id); if (el && el.value !== v) el.value = v; } catch (e) {} };
+          return o;
+        }
+
+        var fHomeL   = reg("scHomeL");
+        var fCalcDef = reg("scCalcDef");
+        var fCalcPinL = reg("ifCalcPinL");
+        var fCalcPinD = reg("ifCalcPinD");
+        var fHomeD   = reg("scHomeD");
+        var fSearchD = reg("scSearchD");
+        var fTargetD = reg("scTargetD");
+        var fFaqHub  = reg("scFaqHub");
+        var fFaqBill = reg("scFaqBill");
+
+        /* ---------- beat sheet (all times in seconds) ---------- */
+        var B = {
+          introC1: [0.45, 1.65], introC2: [1.85, 3.05],
+          badgeOut: [2.80, 3.25],          /* badge shrinks into the page cut       */
+          homeIn: 3.10,                    /* S1 home light appears                 */
+          ctaFocus: [7.35, 8.25],          /* push into "Apply My Coupon"           */
+          rip1: 7.30,                      /* tap on CTA                            */
+          cut1: 8.25,                      /* CUT -> calc page                      */
+          calcScroll: [9.60, 11.00],       /* scroll down to Practical Uses         */
+          rip2: 11.25,                     /* tap on "Sale Discount" row            */
+          pinSwap: 11.70,                  /* pinned presentation appears on top    */
+          typeOrig: [12.40, 12.95],        /* "300"                                 */
+          typePct: [13.10, 13.50],         /* "30"                                  */
+          count1: [13.70, 14.30],          /* result counts to 210                  */
+          fabFocus: [15.20, 15.95],        /* glide toward the round theme FAB      */
+          rip3: 15.85,                     /* tap on FAB                            */
+          flip: [16.10, 17.05],            /* 3D flip light -> dark                 */
+          flipRelax: [15.95, 16.32],       /* camera back to center BEFORE the flip */
+          cut2: 17.45,                     /* CUT -> dark home                      */
+          typeTip: [18.25, 19.30],         /* typing "tip" in the search box        */
+          dropSwap: 19.45,                 /* dropdown state appears                */
+          itemGlow: [20.10, 20.90],        /* highlight of the Restaurant Tip item  */
+          rip4: 20.60,                     /* tap on dropdown item                  */
+          whoosh: [20.95, 21.60],          /* scroll-whoosh to the target calc      */
+          typePct2: [21.90, 22.35],        /* "15"                                  */
+          typeNum2: [22.45, 22.90],        /* "60"                                  */
+          count2: [23.00, 23.50],          /* result counts to 9                    */
+          cut3: 24.45,                     /* CUT -> FAQ hub                        */
+          hubFocus: [25.40, 26.25],        /* push into a category circle           */
+          cut4: 26.25,                     /* MATCH CUT -> bill splitting FAQ       */
+          billRoll: [27.60, 28.60],        /* 250 -> 300 live update                */
+          cardOut: [30.00, 30.55],         /* page recedes                          */
+          endIn: [30.55, 31.40],           /* endcard builds                        */
+          endHold: 34.40,
+          collapse: [34.40, 35.55],        /* endcard collapses into the badge      */
+          badgeBack: [35.10, 35.95]        /* opening badge state restored (loop)   */
+        };
+
+        /* caption windows: [start, end] */
+        var caps = {
+          c3: [3.70, 6.90], c4: [8.60, 11.30], c5: [12.15, 15.05],
+          c6: [15.55, 17.35], c7: [17.80, 20.85], c8: [21.90, 24.30],
+          c9: [24.70, 27.35], c10: [27.55, 30.20]
+        };
+
+        /* URL per scene */
+        var urls = [
+          [3.10,  "justpercent.com/", false],
+          [8.25,  "justpercent.com/decreased-value-calculator/", false],
+          [17.05, "justpercent.com/decreased-value-calculator/", true],
+          [17.45, "justpercent.com/", true],
+          [24.45, "justpercent.com/faqs/", true],
+          [26.25, "justpercent.com/faqs/bill-splitting-calculator/", true]
+        ];
+
+        /* ripples: [time, x(page css px), y(page css px viewport), scroll-space note] */
+        function pageToStage(x, y) { return { x: 27 + x * 2.375, y: 200 + y * 2.375 }; }
+        var ripDefs = {
+          rip1: { t: B.rip1, p: pageToStage(270, 351.8) },            /* CTA pill center            */
+          rip2: { t: B.rip2, p: pageToStage(224, 346) },              /* Sale Discount row (scrolled)*/
+          rip3: { t: B.rip3, p: pageToStage(395, 527) },              /* theme FAB                   */
+          rip4: { t: B.rip4, p: pageToStage(216, 233.6) }             /* dropdown item               */
+        };
+
+        /* camera focus: local coords inside 1026x1340 card */
+        function camXY(s, qx, qy, cx, cy) { return { x: cx - 27 - s * qx, y: cy - 200 - s * qy }; }
+
+        /* typed value helper: reveals characters over [a,b] */
+        function typed(str, t, a, b) {
+          var n = Math.floor(seg(t, a, b) * str.length + 1e-6);
+          if (t >= b) n = str.length;
+          if (t < a) n = 0;
+          return str.slice(0, n);
+        }
+
+        /* ---------- static element refs ---------- */
+        var bgLight = $("bgLight"), bgDark = $("bgDark");
+        var urlbar = $("urlbar"), urltext = $("urltext");
+        var cardWrap = $("cardWrap"), pagecard = $("pagecard");
+        var flipInner = $("flipInner");
+        var scenes = { scHomeL: $("scHomeL"), scCalcDef: $("scCalcDef"), flipScene: $("flipScene"),
+                       scHomeD: $("scHomeD"), scSearchD: $("scSearchD"), scTargetD: $("scTargetD"),
+                       scFaqHub: $("scFaqHub"), scFaqBill: $("scFaqBill") };
+        var flash = $("flash"), cutring = $("cutring");
+        var badge = $("badge"), badgeRing = $("badgeRing");
+        var brandbar = $("brandbar");
+        var endcard = $("endcard");
+        var endEls = [ $("endBadge"), $("endName"), $("endUrl"), $("endTag"), $("endPills") ];
+
+        /* ============================================================
+           render(t): pure function of time
+           ============================================================ */
+        function render(t) {
+          /* ---------- background theme ---------- */
+          var darkMix = seg(t, 16.30, 17.10);                 /* flip reveals dark      */
+          if (t >= B.collapse[0]) darkMix = 1 - seg(t, 35.05, 35.90); /* loop back to light */
+          bgDark.style.opacity = darkMix;
+          bgLight.style.opacity = 1;
+
+          /* subtle bg drift (deterministic, loop-safe: returns to 0 at t=0/36) */
+          var ph = Math.sin((t / DUR) * Math.PI * 2);
+          bgLight.style.transform = "translateY(" + (ph * 14) + "px)";
+          bgDark.style.transform = "translateY(" + (ph * -12) + "px)";
+
+          /* ---------- opening / loop badge ---------- */
+          var bIn = 1 - eI(seg(t, B.badgeOut[0], B.badgeOut[1]));   /* 1 -> 0 during exit */
+          var bBack = eO(seg(t, B.badgeBack[0], B.badgeBack[1]));   /* 0 -> 1 at loop end */
+          var bVis = t < 4 ? bIn : bBack;
+          var bScale = t < 4 ? lerp(0.28, 1, bIn) : lerp(1.55, 1, bBack);
+          if (t < B.badgeOut[0]) { bVis = 1; bScale = 1; }
+          badge.style.opacity = bVis;
+          badge.style.transform = "translate(-50%,-50%) scale(" + bScale + ")";
+          var ringSpin = (t < 4 ? t : t - DUR) * 14;                 /* same angle at 0 & 36 */
+          badgeRing.style.opacity = bVis * 0.9;
+          badgeRing.style.transform = "translate(-50%,-50%) scale(" + (bScale * (1 + 0.03 * Math.sin(t * 2.2))) + ") rotate(" + ringSpin + "deg)";
+
+          /* ---------- intro headlines (sequential) ---------- */
+          [["ic1", B.introC1], ["ic2", B.introC2]].forEach(function (pair) {
+            var el = $(pair[0]), w = pair[1];
+            var i = eO(seg(t, w[0], w[0] + 0.28));
+            var o = 1 - eI(seg(t, w[1] - 0.22, w[1]));
+            var vis = (t >= w[0] && t <= w[1]) ? Math.min(i, o) : 0;
+            el.style.opacity = vis;
+            el.style.transform = "translateX(-50%) translateY(" + lerp(36, 0, i) + "px) scale(" + lerp(0.94, 1, i) + ")";
+          });
+
+          /* ---------- captions (sequential) ---------- */
+          Object.keys(caps).forEach(function (id) {
+            var el = $(id), w = caps[id];
+            var i = eO(seg(t, w[0], w[0] + 0.30));
+            var o = 1 - eI(seg(t, w[1] - 0.25, w[1]));
+            var vis = (t >= w[0] && t <= w[1]) ? Math.min(i, o) : 0;
+            el.style.opacity = vis;
+            el.style.transform = "translateX(-50%) translateY(" + lerp(30, 0, i) + "px)";
+          });
+
+          /* ---------- URL bar ---------- */
+          var uIn = eO(seg(t, 3.10, 3.55));
+          var uOut = 1 - eI(seg(t, B.cardOut[0], B.cardOut[1]));
+          urlbar.style.opacity = Math.min(uIn, uOut);
+          var cur = null;
+          for (var ui = 0; ui < urls.length; ui++) if (t >= urls[ui][0]) cur = urls[ui];
+          if (cur) {
+            if (urltext.textContent !== cur[1]) urltext.textContent = cur[1];
+            urlbar.classList.toggle("dark-mode", !!cur[2] && darkMix > 0.5);
+          }
+          /* url swap micro-bounce at each cut */
+          var ub = 0;
+          urls.forEach(function (u) { ub = Math.max(ub, pulseWin(t, u[0], u[0] + 0.30)); });
+          urlbar.style.transform = "translateX(-50%) translateY(" + (-6 * ub) + "px)";
+
+          /* ---------- scene visibility windows ---------- */
+          function win(el, a, b, kick) {
+            var on = t >= a && t < b;
+            el.style.opacity = on ? 1 : 0;
+            el.style.visibility = on ? "visible" : "hidden";
+            if (on && kick) {
+              var k = 1 + 0.035 * (1 - eO(seg(t, a, a + 0.35)));
+              el.style.transform = "scale(" + k + ")";
+            } else if (on) {
+              el.style.transform = "none";
+            }
+            return on;
+          }
+          win(scenes.scHomeL, B.homeIn, B.cut1, true);
+          win(scenes.scCalcDef, B.cut1, B.pinSwap, true);
+          win(scenes.flipScene, B.pinSwap, B.cut2, false);
+          win(scenes.scHomeD, B.cut2, B.dropSwap, true);
+          win(scenes.scSearchD, B.dropSwap, B.whoosh[0], false);
+          var targOn = win(scenes.scTargetD, B.whoosh[0], B.cut3, false);
+          win(scenes.scFaqHub, B.cut3, B.cut4, true);
+          win(scenes.scFaqBill, B.cut4, B.cardOut[1], true);
+
+          /* pinned swap gets a soft entrance for the presentation zone */
+          if (t >= B.pinSwap && t < B.cut2) {
+            var pk = eO(seg(t, B.pinSwap, B.pinSwap + 0.4));
+            scenes.flipScene.style.opacity = pk;
+          }
+
+          /* target arrives with a vertical whoosh */
+          if (targOn) {
+            var wE = eO(seg(t, B.whoosh[0], B.whoosh[1]));
+            scenes.scTargetD.style.transform = "translateY(" + lerp(420, 0, wE) + "px)";
+            scenes.scTargetD.style.filter = "blur(" + lerp(26, 0, wE) + "px)";
+          } else {
+            scenes.scTargetD.style.filter = "none";
+          }
+
+          /* FAQ hub push-in blur just before match cut */
+          if (t >= B.cut3 && t < B.cut4) {
+            var hb = eI(seg(t, B.hubFocus[0], B.hubFocus[1]));
+            scenes.scFaqHub.style.filter = "blur(" + (hb * 14) + "px)";
+          } else scenes.scFaqHub.style.filter = "none";
+
+          /* faq bill lands from the match cut with a soft iris feel */
+          if (t >= B.cut4 && t < B.cardOut[1]) {
+            var fb = eO(seg(t, B.cut4, B.cut4 + 0.45));
+            scenes.scFaqBill.style.filter = "blur(" + lerp(14, 0, fb) + "px)";
+          } else scenes.scFaqBill.style.filter = "none";
+
+          /* ---------- 3D flip ---------- */
+          var fe = eIO(seg(t, B.flip[0], B.flip[1]));
+          flipInner.style.transform = "rotateY(" + (fe * 180) + "deg)";
+          pagecard.classList.toggle("dark-shell", (t >= (B.flip[0] + B.flip[1]) / 2 && darkMix > 0.3) || (t >= B.cut2 && t < B.collapse[0]));
+          /* shell goes transparent while the panel flips, so the 3D sliver reads */
+          var flipping = t > B.flip[0] - 0.05 && t < B.flip[1] + 0.10;
+          pagecard.style.background = flipping ? "transparent" : "";
+          pagecard.style.boxShadow = flipping ? "none" : "";
+          pagecard.style.borderColor = flipping ? "transparent" : "";
+
+          /* ---------- iframe scroll states (pure fn of t) ----------
+             static offsets (searchD 58 / targetD 2007.5 / faqBill 60) and the
+             dark theme are BAKED into the b-*.html copies; only the animated
+             scroll of the calculator page is driven at runtime. */
+          fCalcDef.scroll(lerp(0, 830, eIO(seg(t, B.calcScroll[0], B.calcScroll[1]))));
+
+          /* ---------- live values (pure fn of t) ---------- */
+          /* S2: coupon calc  300 - 30% -> 210 */
+          var vOrig = typed("300", t, B.typeOrig[0], B.typeOrig[1]);
+          var vPct = typed("30", t, B.typePct[0], B.typePct[1]);
+          var c1e = seg(t, B.count1[0], B.count1[1]);
+          var vRes = c1e <= 0 ? "" : String(Math.round(eO(c1e) * 210));
+          [fCalcPinL, fCalcPinD].forEach(function (f) {
+            f.val("decreased-value-original-input", vOrig);
+            f.val("decreased-value-percentage-input", vPct);
+            f.val("decreased-value-result", vRes);
+          });
+
+          /* S4: tip calc  15% of 60 -> 9 */
+          var vTipSearch = typed("tip", t, B.typeTip[0], B.typeTip[1]);
+          fHomeD.val("calculator-search", vTipSearch);
+          var vP2 = typed("15", t, B.typePct2[0], B.typePct2[1]);
+          var vN2 = typed("60", t, B.typeNum2[0], B.typeNum2[1]);
+          var c2e = seg(t, B.count2[0], B.count2[1]);
+          var vR2 = c2e <= 0 ? "" : String(Math.round(eO(c2e) * 9));
+          fTargetD.val("percentage-input", vP2);
+          fTargetD.val("number", vN2);
+          fTargetD.val("basic-percentage-result", vR2);
+
+          /* S5: bill splitting live roll 250 -> 300 (60/40 split) */
+          var bill = Math.round(lerp(250, 300, eIO(seg(t, B.billRoll[0], B.billRoll[1]))));
+          fFaqBill.val("bill-amount", String(bill));
+          fFaqBill.val("my-percent", "60");
+          fFaqBill.val("roommate-percent", "40");
+          fFaqBill.val("my-result", String(Math.round(bill * 0.6)));
+          fFaqBill.val("roommate-result", String(Math.round(bill * 0.4)));
+
+          /* ---------- camera (zoom infinito + focus moves) ---------- */
+          var zb = 1 + 0.0062 * Math.min(t, B.cardOut[0]);          /* monotonic base zoom */
+          var s = zb, q = { x: 513, y: 670 }, blur = 0;
+          if (t < B.cut1) {                                          /* push into CTA pill  */
+            var ce = eI(seg(t, B.ctaFocus[0], B.ctaFocus[1]));
+            s = lerp(zb, 2.25, ce);
+            q = { x: lerp(513, 641, ce), y: lerp(670, 835, ce) };
+            blur = ce > 0.72 ? (ce - 0.72) / 0.28 * 10 : 0;
+          } else if (t < B.cut2) {                                   /* FAB glide, then back to center before flip */
+            if (t < B.flipRelax[0]) {
+              var fe1 = eIO(seg(t, B.fabFocus[0], B.fabFocus[1]));
+              s = lerp(zb, 1.85, fe1);
+              q = { x: lerp(513, 938, fe1), y: lerp(670, 1252, fe1) };
+            } else {
+              var fe2 = eIO(seg(t, B.flipRelax[0], B.flipRelax[1]));
+              s = lerp(1.85, zb, fe2);
+              q = { x: lerp(938, 513, fe2), y: lerp(1252, 670, fe2) };
+            }
+          } else if (t < B.cut3) {
+            /* after the whoosh, drift focus down so the result row clears the caption */
+            s = zb; q = { x: 513, y: lerp(670, 748, eIO(seg(t, B.whoosh[1], B.whoosh[1] + 0.6))) };
+          } else if (t < B.cut4) {                                   /* hub center push     */
+            var he = eI(seg(t, B.hubFocus[0], B.hubFocus[1]));
+            s = lerp(zb, 2.35, he);
+            q = { x: 513, y: lerp(670, 560, he) };
+          } else {
+            s = zb; q = { x: 513, y: 670 };
+          }
+          var cxy = camXY(s, q.x, q.y, 540, 960);
+          var cardOutE = eI(seg(t, B.cardOut[0], B.cardOut[1]));
+          var cardShow = t >= B.homeIn - 0.15 && cardOutE < 1;
+          pagecard.style.opacity = cardShow ? (1 - cardOutE) : 0;
+          pagecard.style.visibility = cardShow ? "visible" : "hidden";
+          var outScale = lerp(1, 0.82, cardOutE);
+          pagecard.style.transform = "translate(" + cxy.x + "px," + cxy.y + "px) scale(" + (s * outScale) + ")";
+          pagecard.style.transformOrigin = "0 0";
+          pagecard.style.filter = blur > 0.2 ? "blur(" + blur + "px)" : "none";
+          /* page entrance right after the badge */
+          if (t >= B.homeIn - 0.15 && t < B.homeIn + 0.6) {
+            var pe = eB(seg(t, B.homeIn - 0.15, B.homeIn + 0.55));
+            pagecard.style.opacity = seg(t, B.homeIn - 0.15, B.homeIn + 0.25);
+            pagecard.style.transform += " scale(" + lerp(0.62, 1, pe) + ")";
+          }
+
+          /* ---------- ripples ---------- */
+          Object.keys(ripDefs).forEach(function (id) {
+            var r = $(id), d = ripDefs[id];
+            var e = seg(t, d.t, d.t + 0.55);
+            if (e <= 0 || e >= 1) { r.style.opacity = 0; return; }
+            /* ripple must track the camera transform: convert card-local to stage */
+            var lx = (d.p.x - 27), ly = (d.p.y - 200);
+            var sx = 27 + cxy.x + s * lx, sy = 200 + cxy.y + s * ly;
+            r.style.left = sx + "px"; r.style.top = sy + "px";
+            r.style.opacity = (1 - e) * 0.95;
+            r.style.transform = "translate(-50%,-50%) scale(" + (0.2 + eO(e) * 1.5) + ")";
+          });
+
+          /* ---------- cut flash + ring ---------- */
+          var cuts = [B.cut1, B.cut2, B.cut3, B.cut4, B.homeIn];
+          var fOp = 0, ringE = 0;
+          cuts.forEach(function (ct) {
+            fOp = Math.max(fOp, pulseWin(t, ct - 0.04, ct + 0.14) * 0.35);
+            ringE = Math.max(ringE, seg(t, ct, ct + 0.5) < 1 ? seg(t, ct, ct + 0.5) : 0);
+          });
+          flash.style.opacity = fOp * (darkMix > 0.5 ? 0.5 : 1);
+          if (ringE > 0 && ringE < 1) {
+            cutring.style.opacity = (1 - ringE) * 0.8;
+            cutring.style.transform = "translate(-50%,-50%) scale(" + (0.3 + eO(ringE) * 3.4) + ")";
+          } else cutring.style.opacity = 0;
+
+          /* ---------- brand bar ---------- */
+          var bbOut = 1 - eI(seg(t, B.cardOut[0], B.cardOut[1] + 0.15));
+          var bbBack = eO(seg(t, 35.30, 35.90));
+          var bbVis = t < B.cardOut[0] ? 1 : Math.max(bbOut, bbBack);
+          brandbar.style.opacity = bbVis;
+          brandbar.style.transform = "translateX(-50%) translateY(" + lerp(24, 0, bbVis) + "px)";
+
+          /* ---------- endcard ---------- */
+          var eIn = seg(t, B.endIn[0], B.endIn[1]);
+          var eCol = eI(seg(t, B.collapse[0], B.collapse[1]));
+          var eVis = t >= B.endIn[0] && t < B.collapse[1] ? Math.min(eO(eIn), 1) * (1 - eCol) : 0;
+          endcard.style.opacity = eVis;
+          endEls.forEach(function (el, i) {
+            var st = B.endIn[0] + i * 0.14;
+            var ee = eB(seg(t, st, st + 0.6));
+            var colShift = eCol * (i - 0) * -60;
+            el.style.opacity = Math.min(seg(t, st, st + 0.35), 1 - eCol);
+            el.style.transform = "translateY(" + (lerp(60, 0, ee) + colShift) + "px) scale(" + lerp(0.9, 1, ee) * lerp(1, i === 0 ? 1.3 : 0.6, eCol) + ")";
+          });
+
+          /* endcard badge morphs toward the loop badge position/size */
+          if (eCol > 0) {
+            var eb = $("endBadge");
+            eb.style.transform = "scale(" + lerp(1, 1.30, eCol) + ")";
+            eb.style.opacity = 1 - eCol;
+          }
+        }
+
+        /* ============================================================
+           GSAP master timeline (paused; framework drives it)
+           ============================================================ */
+        window.__timelines = window.__timelines || {};
+        /* Setter-driven proxy: GSAP writes proxy.t on EVERY render/seek
+           (even with suppressed events), so render(t) always runs. */
+        var _t = 0;
+        var proxy = { get t() { return _t; }, set t(v) { _t = v; render(v); } };
+        var tl = gsap.timeline({ paused: true });
+        tl.to(proxy, { t: DUR, duration: DUR, ease: "none" }, 0);
+        /* ensure frame 0 is rendered on load & after late iframe loads */
+        render(0);
+        document.querySelectorAll("iframe").forEach(function (f) {
+          f.addEventListener("load", function () { render(_t); });
+        });
+        window.__timelines["main"] = tl;
+      })();
+    </script>
+  </body>
+</html>

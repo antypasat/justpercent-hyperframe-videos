@@ -1,0 +1,12 @@
+{
+  "name": "justpercent-foley-first-cut",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JustPercent teaser — Foley-First Cut. HyperFrames composition, 1080x1920 (9:16), 38.5 s, 30 fps, muted. Every click/cut carries a visible foley signature: onomatopoeia chips, impact rings, camera shake, EQ spikes. UI recreated 1:1 from the app's own sources (en-US), light -> 3D flip -> dark.",
+  "type": "module",
+  "scripts": {
+    "preview": "npx hyperframes preview",
+    "lint": "npx hyperframes lint",
+    "validate": "npx hyperframes validate"
+  }
+}

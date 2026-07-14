@@ -1,0 +1,81 @@
+{
+  "scene": "home-cards",
+  "url": "https://justpercent.com/?noredirect#all",
+  "viewport": {
+    "width": 1600,
+    "height": 900
+  },
+  "dpr": 2,
+  "layers": [
+    {
+      "id": "nav",
+      "sel": "nav",
+      "box": {
+        "x": 436,
+        "y": 0,
+        "w": 728,
+        "h": 61
+      }
+    },
+    {
+      "id": "card1",
+      "sel": "[data-le-card=\"card1\"]",
+      "box": {
+        "x": 436,
+        "y": 348,
+        "w": 360,
+        "h": 155
+      }
+    },
+    {
+      "id": "card2",
+      "sel": "[data-le-card=\"card2\"]",
+      "box": {
+        "x": 804,
+        "y": 348,
+        "w": 360,
+        "h": 155
+      }
+    },
+    {
+      "id": "card3",
+      "sel": "[data-le-card=\"card3\"]",
+      "box": {
+        "x": 436,
+        "y": 511,
+        "w": 360,
+        "h": 155
+      }
+    },
+    {
+      "id": "card4",
+      "sel": "[data-le-card=\"card4\"]",
+      "box": {
+        "x": 804,
+        "y": 511,
+        "w": 360,
+        "h": 155
+      }
+    },
+    {
+      "id": "card5",
+      "sel": "[data-le-card=\"card5\"]",
+      "box": {
+        "x": 436,
+        "y": 674,
+        "w": 360,
+        "h": 155
+      }
+    },
+    {
+      "id": "card6",
+      "sel": "[data-le-card=\"card6\"]",
+      "box": {
+        "x": 804,
+        "y": 674,
+        "w": 360,
+        "h": 155
+      }
+    }
+  ]
+}

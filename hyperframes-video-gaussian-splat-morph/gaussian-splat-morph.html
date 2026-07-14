@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Film 6 — Gaussian Splatting &amp; AI Morphing · justpercent.com</title>
+<style>
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 300; src: url(fonts/ibm-plex-sans-latin-300-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; src: url(fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; src: url(fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 700; src: url(fonts/ibm-plex-sans-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 500; src: url(fonts/space-grotesk-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 700; src: url(fonts/space-grotesk-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400; src: url(fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 700; src: url(fonts/jetbrains-mono-latin-700-normal.woff2) format("woff2"); }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+  #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+
+  /* ---- 1080×1920 stage ---- */
+  #frame { position: absolute; left: 50%; top: 50%;
+    width: 1080px; height: 1920px; overflow: hidden;
+    border-radius: 8px; transform-origin: center center; background: #06070f; }
+  .theme-light #frame { background: #dcdaea; }
+
+  /* void backdrop */
+  #bgfx { position: absolute; inset: -80px; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(95px); }
+  #orbA { width: 900px; height: 900px; background: rgba(96, 62, 190, .20); }
+  #orbB { width: 760px; height: 760px; background: rgba(28, 118, 120, .15); }
+  .theme-light #orbA { background: rgba(146, 112, 232, .26); }
+  .theme-light #orbB { background: rgba(118, 168, 232, .26); }
+  .dust { position: absolute; border-radius: 50%; background: rgba(255,255,255,.5); }
+  .theme-light .dust { background: rgba(40, 36, 90, .32); }
+
+  /* ---- frozen-moment strip scenes ---- */
+  #persp { position: absolute; inset: 0; perspective: 900px;
+    perspective-origin: 540px 960px; overflow: hidden; }
+  .scene { position: absolute; left: 0; top: 0; width: 1080px;
+    transform-style: preserve-3d; will-change: transform; display: none; }
+  .strip { position: absolute; left: 0; width: 1080px;
+    background-repeat: no-repeat; background-size: 1080px auto;
+    will-change: transform, filter; backface-visibility: hidden; }
+  #glow { position: absolute; left: -80px; width: 1240px; height: 460px;
+    background: radial-gradient(ellipse at center,
+      rgba(127, 216, 232, .13), rgba(127, 216, 232, 0) 68%);
+    display: none; pointer-events: none; }
+
+  /* ---- hallucinatory morph layer ---- */
+  #morphL { position: absolute; inset: 0; display: none; overflow: hidden; }
+  #morphL img { position: absolute; inset: 0; width: 1080px; height: 1920px;
+    object-fit: cover; }
+  #morphVid { position: absolute; inset: 0; width: 1080px; height: 1920px;
+    object-fit: cover; display: none; }
+  #morphSlot { position: absolute; inset: 44px; border: 3px dashed rgba(255,255,255,.38);
+    border-radius: 26px; display: none; }
+  #morphSlot .lbl { position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%,-50%); text-align: center;
+    background: rgba(8, 8, 18, .68); border-radius: 16px; padding: 26px 34px; }
+  #morphSlot .lbl b { display: block; font: 700 34px/1.3 "JetBrains Mono";
+    color: #fff; letter-spacing: .04em; }
+  #morphSlot .lbl span { display: block; font: 400 26px/1.5 "JetBrains Mono";
+    color: rgba(255,255,255,.75); margin-top: 8px; }
+
+  /* ---- impossible pull-back slabs ---- */
+  #slabs { position: absolute; inset: 0; perspective: 1400px;
+    perspective-origin: 540px 880px; display: none; }
+  #slabOrbit { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .slabW { position: absolute; left: 540px; top: 880px; width: 1080px; height: 1920px;
+    margin-left: -540px; margin-top: -960px; transform-style: preserve-3d;
+    will-change: transform, opacity; }
+  .slabW img { position: absolute; inset: 0; width: 1080px; height: 1920px;
+    border-radius: 18px; box-shadow: 0 60px 120px rgba(0,0,0,.55);
+    outline: 3px solid rgba(255,255,255,.10); }
+  .theme-light .slabW img { box-shadow: 0 60px 120px rgba(40,30,90,.35);
+    outline-color: rgba(30,25,70,.12); }
+  .slabW .refl { position: absolute; left: 0; top: 100%; width: 1080px; height: 1920px;
+    transform: scaleY(-1); opacity: .16; border-radius: 18px;
+    -webkit-mask-image: linear-gradient(to top, transparent 62%, black 100%);
+    mask-image: linear-gradient(to top, transparent 62%, black 100%); }
+
+  /* ---- technique chip ---- */
+  #chip { position: absolute; left: 40px; top: 40px; z-index: 40;
+    background: rgba(10, 10, 22, .55); border: 1px solid rgba(255,255,255,.09);
+    border-radius: 14px; padding: 18px 24px; backdrop-filter: blur(6px); }
+  #chip .l1 { font: 700 27px/1.25 "JetBrains Mono"; color: #fff; letter-spacing: .03em; }
+  #chip .l2 { font: 400 22px/1.3 "JetBrains Mono"; color: rgba(255,255,255,.62); margin-top: 4px; }
+
+  /* ---- caption ---- */
+  #caption { position: absolute; left: 50%; bottom: 210px; z-index: 40;
+    transform: translateX(-50%); width: max-content; max-width: 960px;
+    text-align: center;
+    background: rgba(8, 8, 16, .64); border-radius: 22px; padding: 28px 40px;
+    opacity: 0; }
+  #capBig { font: 600 50px/1.2 "IBM Plex Sans"; color: #fff; }
+  #capSub { font: 300 34px/1.35 "IBM Plex Sans"; color: rgba(255,255,255,.78); margin-top: 8px; }
+
+  /* ---- endcard ---- */
+  .ecEl { position: absolute; left: 50%; transform: translate(-50%,-50%);
+    display: none; z-index: 30; }
+  #ecMark { top: 640px; font: 700 300px/1 "Space Grotesk";
+    background: linear-gradient(135deg, #a78bfa 20%, #22d3ee 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #ecBrand { top: 900px; font: 700 118px/1 "Space Grotesk"; color: #fff; white-space: nowrap; }
+  .theme-light #ecBrand { color: #191430; }
+  #ecPillW { top: 1150px; background: #fff; border-radius: 46px; padding: 26px 62px;
+    box-shadow: 0 18px 60px rgba(0,0,0,.35); }
+  #ecPillW span { font: 700 46px/1 "JetBrains Mono"; color: #14121f; letter-spacing: .01em; }
+  #ecTag { top: 1310px; font: 300 44px/1.3 "IBM Plex Sans"; color: rgba(255,255,255,.85);
+    white-space: nowrap; }
+  .theme-light #ecTag { color: rgba(25, 20, 48, .85); }
+  #ecPills { top: 1440px; display: none; gap: 26px; }
+  #ecPills div { font: 600 34px/1 "IBM Plex Sans"; color: rgba(255,255,255,.9);
+    border: 2px solid rgba(255,255,255,.35); border-radius: 40px; padding: 18px 34px;
+    white-space: nowrap; }
+  .theme-light #ecPills div { color: rgba(25,20,48,.9); border-color: rgba(25,20,48,.35); }
+
+  /* ---- controls ---- */
+  #controls { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+    z-index: 90; display: flex; gap: 10px; align-items: center;
+    background: rgba(16,16,28,.85); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px; padding: 10px 16px; }
+  #controls button { font: 600 15px/1 "IBM Plex Sans", sans-serif; color: #fff;
+    background: rgba(255,255,255,.12); border: 0; border-radius: 9px;
+    padding: 10px 16px; cursor: pointer; }
+  #scrub { width: 260px; accent-color: #a78bfa; }
+  #tlabel { font: 400 14px/1 "JetBrains Mono"; color: #fff; min-width: 64px; }
+  #loading { position: fixed; inset: 0; display: grid; place-items: center;
+    background: #06070f; color: #889; font: 400 18px/1 "JetBrains Mono", monospace;
+    z-index: 99; }
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="frame">
+    <div id="bgfx">
+      <div class="orb" id="orbA"></div>
+      <div class="orb" id="orbB"></div>
+    </div>
+
+    <div id="persp">
+      <div class="scene" id="scHome"></div>
+      <div class="scene" id="scInc"></div>
+      <div class="scene" id="scFaq"></div>
+    </div>
+    <div id="glow"></div>
+
+    <div id="morphL">
+      <img id="morphOut" alt="" />
+      <img id="morphIn" alt="" />
+      <video id="morphVid" muted playsinline preload="auto"></video>
+      <div id="morphSlot"><div class="lbl"><b>VIDEO PLACEHOLDER</b><span id="slotName"></span></div></div>
+    </div>
+
+    <div id="slabs"><div id="slabOrbit">
+      <div class="slabW" id="slabL"><img alt="" /><img class="refl" alt="" /></div>
+      <div class="slabW" id="slabC"><img alt="" /><img class="refl" alt="" /></div>
+      <div class="slabW" id="slabR"><img alt="" /><img class="refl" alt="" /></div>
+    </div></div>
+
+    <div class="ecEl" id="ecMark">%</div>
+    <div class="ecEl" id="ecBrand"></div>
+    <div class="ecEl" id="ecPillW"><span></span></div>
+    <div class="ecEl" id="ecTag"></div>
+    <div class="ecEl" id="ecPills"></div>
+
+    <div id="chip"><div class="l1"></div><div class="l2"></div></div>
+    <div id="caption"><div id="capBig"></div><div id="capSub"></div></div>
+  </div>
+</div>
+
+<div id="controls">
+  <button id="btnPlay">▶ Play</button>
+  <button id="btnRestart">↺</button>
+  <button id="btnTheme">🌙 Dark</button>
+  <input id="scrub" type="range" min="0" max="35000" value="0" step="33" />
+  <span id="tlabel">0.00s</span>
+</div>
+<div id="loading">building frozen moments…</div>
+
+<script src="configs.js"></script>
+<script src="geometry.js"></script>
+<script>
+(() => {
+  const CFG = window.F6, GEO = window.F6GEO;
+  const B = CFG.beats, ST = CFG.strips, K = CFG.cssToStage || CFG.meta.cssToStage;
+  const D = CFG.meta.duration * 1000;
+  const $ = (id) => document.getElementById(id);
+  const frame = $("frame");
+
+  const Q = new URLSearchParams(location.search);
+  const REC = Q.has("rec");
+  let THEME = Q.get("theme") === "light" ? "light" : "dark";
+
+  // deterministic helpers
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const norm = (t, a, b) => clamp01((t - a) / (b - a));
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const EASE = {
+    io: (u) => (u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2),
+    o: (u) => 1 - Math.pow(1 - u, 3),
+    i: (u) => u * u * u
+  };
+  const rnd = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+  // chip / endcard copy
+  $("chip").querySelector(".l1").textContent =
+    `TECHNIQUE ${CFG.meta.id}/7 · ${CFG.meta.technique}`;
+  $("chip").querySelector(".l2").textContent = CFG.meta.detail;
+  $("ecBrand").textContent = CFG.endCopy.brand;
+  $("ecPillW").querySelector("span").textContent = CFG.endCopy.url;
+  $("ecTag").textContent = CFG.endCopy.tagline;
+  $("ecPills").innerHTML = CFG.endCopy.pills.map((p) => `<div>${p}</div>`).join("");
+
+  // dust motes (pure f(t) parallax)
+  const dust = [];
+  for (let i = 0; i < 26; i++) {
+    const d = document.createElement("div");
+    d.className = "dust";
+    const s = 2 + rnd(i) * 4;
+    d.style.width = d.style.height = s + "px";
+    d.style.opacity = .14 + rnd(i + 40) * .22;
+    $("bgfx").appendChild(d);
+    dust.push({ el: d, x: rnd(i + 7) * 1080, y0: rnd(i + 13) * 2080, v: 6 + rnd(i + 23) * 16 });
+  }
+
+  // ---------- assets & scene building ----------
+  const sceneDefs = [
+    { id: "scHome", key: "home" },
+    { id: "scInc", key: "inc" },
+    { id: "scFaq", key: "faq" }
+  ];
+  const scenes = {};      // key -> { el, strips:[{el,depth,y}], pageH, depths[] }
+  let slabImgs = [], preload = [];
+
+  const loadImg = (src) => {
+    const im = new Image();
+    im.src = src;
+    preload.push(im.decode ? im.decode().catch(() => {}) : Promise.resolve());
+    return im;
+  };
+
+  function buildScene(def, theme) {
+    const el = $(def.id);
+    el.innerHTML = "";
+    const g = GEO[theme][def.key];
+    const pageH = g.pageH * K;
+    const tex = `assets/tex-${def.key}-${theme}.png`;
+    loadImg(tex);
+    const heroRects = (CFG.scenes[def.key].heroKeys || [])
+      .map((k) => g[k]).filter(Boolean)
+      .map((r) => ({ y0: r.y * K - 26, y1: (r.y + r.h) * K + 26 }));
+    const n = Math.ceil(pageH / ST.h);
+    const strips = [], depths = [];
+    for (let i = 0; i < n; i++) {
+      const y = i * ST.h;
+      const isHero = heroRects.some((r) => y < r.y1 && y + ST.h > r.y0);
+      const depth = isHero
+        ? ST.heroDepth + (rnd(i + 71) - .5) * ST.heroJitter
+        : ST.baseDepth + ST.waveAmp * Math.sin(i * .61) + (rnd(i) - .5) * ST.jitter;
+      depths.push(depth);
+      const s = document.createElement("div");
+      s.className = "strip";
+      s.style.top = y - ST.overlap + "px";
+      s.style.height = ST.h + 2 * ST.overlap + "px";
+      s.style.backgroundImage = `url(${tex})`;
+      s.style.backgroundPosition = `0 ${-(y - ST.overlap)}px`;
+      const m = `linear-gradient(transparent 0, black ${ST.overlap}px, black calc(100% - ${ST.overlap}px), transparent 100%)`;
+      s.style.webkitMaskImage = m; s.style.maskImage = m;
+      s.style.transform = `translateZ(${depth}px)`;
+      s.style.display = "none";
+      el.appendChild(s);
+      strips.push({ el: s, depth, y });
+    }
+    scenes[def.key] = { el, strips, depths, pageH };
+  }
+
+  const morphVid = $("morphVid");
+  let vidOk = [false, false], vidSrc = ["", ""];
+  function probeVideos() {
+    CFG.clips.forEach((c, i) => {
+      const v = document.createElement("video");
+      v.muted = true; v.preload = "auto";
+      v.src = `assets/${c.name}.mp4`;
+      v.addEventListener("loadeddata", () => { vidOk[i] = true; vidSrc[i] = v.src; });
+      v.addEventListener("error", () => { vidOk[i] = false; });
+    });
+  }
+
+  async function setTheme(theme) {
+    THEME = theme;
+    document.body.classList.toggle("theme-light", theme === "light");
+    $("btnTheme").textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+    preload = [];
+    sceneDefs.forEach((d) => buildScene(d, theme));
+    // morph plates + slabs share the viewport top plates
+    const tops = ["home", "inc", "faq"].map((k) => `assets/top-${k}-${theme}.png`);
+    tops.forEach(loadImg);
+    $("slabL").children[0].src = tops[0]; $("slabL").children[1].src = tops[0];
+    $("slabC").children[0].src = tops[1]; $("slabC").children[1].src = tops[1];
+    $("slabR").children[0].src = tops[2]; $("slabR").children[1].src = tops[2];
+    await Promise.all(preload);
+  }
+
+  // ---------- camera ----------
+  function camAt(key, t) {
+    const keys = CFG.scenes[key].cam;
+    if (t <= keys[0].t) return keys[0];
+    if (t >= keys[keys.length - 1].t) return keys[keys.length - 1];
+    for (let i = 0; i < keys.length - 1; i++) {
+      const a = keys[i], b = keys[i + 1];
+      if (t >= a.t && t <= b.t) {
+        const u = EASE.io(norm(t, a.t, b.t));
+        return {
+          y: lerp(a.y, b.y, u), rx: lerp(a.rx, b.rx, u),
+          sc: lerp(a.sc, b.sc, u), focus: lerp(a.focus, b.focus, u)
+        };
+      }
+    }
+    return keys[0];
+  }
+
+  const q05 = (v) => Math.round(v * 2) / 2;
+
+  function renderScene(key, t) {
+    const S = scenes[key], cam = camAt(key, t);
+    S.el.style.display = "block";
+    S.el.style.transformOrigin = `540px ${cam.y + 960}px`;
+    S.el.style.transform =
+      `translateY(${-cam.y}px) rotateX(${cam.rx}deg) scale(${cam.sc})`;
+    const fi = Math.max(0, Math.min(S.depths.length - 1, Math.floor(cam.focus / ST.h)));
+    const fd = S.depths[fi];
+    const lo = cam.y - ST.cullPad, hi = cam.y + 1920 + ST.cullPad;
+    for (const s of S.strips) {
+      if (s.y + ST.h < lo || s.y > hi) {
+        if (s.el.style.display !== "none") s.el.style.display = "none";
+        continue;
+      }
+      if (s.el.style.display !== "block") s.el.style.display = "block";
+      const bl = q05(Math.min(ST.blurMax, ST.blurPerPx * Math.abs(s.depth - fd)));
+      s.el.style.filter = bl > 0.4 ? `blur(${bl}px)` : "none";
+    }
+    // focus glow band
+    const gl = CFG.scenes[key].glow;
+    if (gl && t >= gl.from && t <= gl.to) {
+      const r = GEO[THEME][key][gl.rectKey];
+      const gy = (r.y + r.h / 2) * K;
+      const op = .9 * EASE.o(norm(t, gl.from, gl.from + .8));
+      const glowEl = $("glow");
+      glowEl.style.display = "block";
+      glowEl.style.opacity = op;
+      // glow lives in stage space (above persp) — convert page y to screen y
+      glowEl.style.top = (gy - cam.y) - 230 + "px";
+    } else if (key !== "home") { /* only one glow at a time */ }
+  }
+
+  // ---------- morph ----------
+  const morphPlates = {
+    0: ["home", "inc"],
+    1: ["inc", "faq"]
+  };
+  function renderMorph(i, t) {
+    const c = CFG.clips[i], fx = CFG.morphFx;
+    const u = norm(t, c.start, c.start + c.dur);
+    const env = Math.min(EASE.o(norm(t, c.start, c.start + .45)),
+      1 - EASE.i(norm(t, c.start + c.dur - .45, c.start + c.dur)));
+    const L = $("morphL");
+    L.style.display = "block";
+    L.style.opacity = env;
+    const [a, b] = morphPlates[i];
+    const outI = $("morphOut"), inI = $("morphIn");
+    const sa = `assets/top-${a}-${THEME}.png`, sb = `assets/top-${b}-${THEME}.png`;
+    if (!outI.src.endsWith(sa)) outI.src = sa;
+    if (!inI.src.endsWith(sb)) inI.src = sb;
+    if (vidOk[i]) {
+      morphVid.style.display = "block";
+      if (!morphVid.src || morphVid.src !== vidSrc[i]) morphVid.src = vidSrc[i];
+      $("morphSlot").style.display = "none";
+      outI.style.display = "none"; inI.style.display = "none";
+      syncMorphVid(i, t);
+      return;
+    }
+    morphVid.style.display = "none";
+    $("morphSlot").style.display = "block";
+    $("slotName").textContent = `drop assets/${c.name}.mp4`;
+    // stepped hallucination beneath the slot
+    const p = Math.min(1, Math.floor(u * fx.steps) / (fx.steps - 1));
+    const bl = q05(fx.blurMax * Math.sin(Math.PI * u));
+    const sc = lerp(fx.scaleFrom, 1, u);
+    const hue = fx.hueDeg * Math.sin(Math.PI * u);
+    outI.style.display = "block"; inI.style.display = "block";
+    outI.style.opacity = 1 - p; inI.style.opacity = p;
+    const f = `blur(${bl}px) hue-rotate(${hue}deg)`;
+    outI.style.filter = f; inI.style.filter = f;
+    outI.style.transform = `scale(${sc})`; inI.style.transform = `scale(${2 - sc})`;
+  }
+  function syncMorphVid(i, t) {
+    const c = CFG.clips[i];
+    const want = Math.max(0, Math.min(c.dur - .04, t - c.start));
+    if (playing) {
+      if (morphVid.paused) { try { morphVid.currentTime = want; morphVid.play().catch(() => {}); } catch {} }
+      else if (Math.abs(morphVid.currentTime - want) > .15) morphVid.currentTime = want;
+    } else {
+      if (!morphVid.paused) morphVid.pause();
+      if (Math.abs(morphVid.currentTime - want) > .02) { try { morphVid.currentTime = want; } catch {} }
+    }
+  }
+
+  // ---------- slabs ----------
+  const SL = CFG.slabs;
+  const slabPose = [
+    { el: $("slabL"), x: -SL.gapX, ry: SL.sideRotY, z: SL.sideZ },
+    { el: $("slabC"), x: 0, ry: 0, z: 40 },
+    { el: $("slabR"), x: SL.gapX, ry: -SL.sideRotY, z: SL.sideZ }
+  ];
+  function renderSlabs(t) {
+    const env = Math.min(EASE.o(norm(t, B.pullStart, B.pullFull)),
+      1 - EASE.io(norm(t, B.pullEnd - .5, B.pullEnd)));
+    $("slabs").style.display = "block";
+    $("slabs").style.opacity = env;
+    const orbit = SL.orbitDeg * Math.sin((t - B.pullStart) * SL.orbitHz * Math.PI * 2);
+    const dolly = lerp(.97, 1.03, norm(t, B.pullStart, B.pullEnd));
+    $("slabOrbit").style.transform = `rotateY(${orbit}deg) scale(${dolly})`;
+    $("slabOrbit").style.transformOrigin = `540px ${SL.cy}px`;
+    slabPose.forEach((p, i) => {
+      const inU = EASE.o(norm(t, B.pullStart + i * .16, B.pullStart + i * .16 + .8));
+      const sc = SL.scale * lerp(1.5, 1, inU);
+      p.el.style.opacity = inU;
+      p.el.style.transform =
+        `translate(${p.x * inU}px, ${(SL.cy - 880) + (1 - inU) * 60}px) ` +
+        `translateZ(${p.z}px) rotateY(${p.ry * inU}deg) scale(${sc})`;
+    });
+  }
+
+  // ---------- endcard ----------
+  const ecEls = [$("ecMark"), $("ecBrand"), $("ecPillW"), $("ecTag"), $("ecPills")];
+  function renderEndcard(t) {
+    ecEls.forEach((el, i) => {
+      const inU = EASE.o(norm(t, B.endcardIn + i * .14, B.endcardIn + i * .14 + .6));
+      el.style.opacity = inU;
+      el.style.display = inU > .01 ? (el === $("ecPills") ? "flex" : "block") : "none";
+      el.style.transform = `translate(-50%,-50%) translateY(${(1 - inU) * 60}px)`;
+    });
+  }
+
+  // ---------- master render ----------
+  function renderFrame(ms) {
+    const t = ms / 1000;
+
+    // backdrop
+    $("orbA").style.transform =
+      `translate(${-160 + 40 * Math.sin(t * .10)}px, ${80 + 50 * Math.sin(t * .07 + 2)}px)`;
+    $("orbB").style.transform =
+      `translate(${620 + 46 * Math.sin(t * .08 + 4)}px, ${1150 + 44 * Math.sin(t * .09 + 1)}px)`;
+    for (const d of dust) {
+      const y = ((d.y0 + t * d.v) % 2080 + 2080) % 2080 - 80;
+      d.el.style.transform = `translate(${d.x}px, ${y}px)`;
+    }
+
+    // reset per-frame layers
+    $("glow").style.display = "none";
+    $("morphL").style.display = "none";
+    $("slabs").style.display = "none";
+    for (const k in scenes) scenes[k].el.style.display = "none";
+
+    // frozen moments (kept visible beneath the morph envelopes)
+    if (t < B.m1.end - .4) renderScene("home", Math.min(t, B.s1End));
+    if (t >= B.s2Start - .4 && t < B.m2.end - .4)
+      renderScene("inc", Math.max(B.s2Start, Math.min(t, B.s2End)));
+    if (t >= B.s3Start - .4 && t < B.s3End + .5)
+      renderScene("faq", Math.max(B.s3Start, Math.min(t, B.s3End)));
+
+    // morphs
+    if (t >= B.m1.start && t <= B.m1.end) renderMorph(0, t);
+    else if (t >= B.m2.start && t <= B.m2.end) renderMorph(1, t);
+    else if (!morphVid.paused) morphVid.pause();
+
+    // pull-back + endcard
+    if (t >= B.pullStart && t <= B.pullEnd) renderSlabs(t);
+    if (t >= B.endcardIn) renderEndcard(t);
+    else ecEls.forEach((el) => { el.style.display = "none"; });
+
+    // captions
+    let cap = null;
+    for (const c of CFG.captions) if (t >= c.t0 && t <= c.t1) { cap = c; break; }
+    const capEl = $("caption");
+    if (cap) {
+      const inU = EASE.o(norm(t, cap.t0, cap.t0 + .3));
+      const outU = EASE.i(clamp01((cap.t1 - t) / .26));
+      capEl.style.opacity = Math.min(inU, outU);
+      capEl.style.transform = `translateX(-50%) translateY(${(1 - inU) * 42}px)`;
+      if ($("capBig").textContent !== cap.big) {
+        $("capBig").textContent = cap.big;
+        $("capSub").textContent = cap.sub;
+        $("capSub").style.display = cap.sub ? "" : "none";
+      }
+    } else capEl.style.opacity = 0;
+  }
+
+  // ---------- master clock ----------
+  let playing = false, t0 = 0, tAcc = 0, stopAt = null;
+  const now = () => performance.now();
+  const curT = () => (playing ? Math.min(D, tAcc + now() - t0) : tAcc);
+  function seek(ms) { tAcc = Math.max(0, Math.min(D, ms)); t0 = now(); renderFrame(tAcc); sync(); }
+  function play() {
+    if (playing) return;
+    if (tAcc >= D) tAcc = 0;
+    playing = true; t0 = now(); $("btnPlay").textContent = "⏸ Pause"; tick();
+  }
+  function pause() {
+    tAcc = curT(); playing = false; $("btnPlay").textContent = "▶ Play";
+    if (!morphVid.paused) morphVid.pause();
+  }
+  function tick() {
+    if (!playing) return;
+    const t = curT();
+    renderFrame(t); sync();
+    if (stopAt != null && t >= stopAt) { stopAt = null; pause(); return; }
+    if (t >= D) { pause(); return; }
+    requestAnimationFrame(tick);
+  }
+  function sync() {
+    const t = curT();
+    $("scrub").value = t; $("tlabel").textContent = (t / 1000).toFixed(2) + "s";
+  }
+
+  // ---------- controls ----------
+  $("btnPlay").onclick = () => (playing ? pause() : play());
+  $("btnRestart").onclick = () => { pause(); seek(0); };
+  $("btnTheme").onclick = () => setTheme(THEME === "dark" ? "light" : "dark")
+    .then(() => renderFrame(curT()));
+  $("scrub").oninput = (e) => { pause(); seek(+e.target.value); };
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === "r" || e.key === "R") { pause(); seek(0); }
+  });
+  if (REC) $("controls").style.display = "none";
+
+  // fit stage to window (robust centering — never rely on grid overflow)
+  function fit() {
+    const s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    frame.style.transform = `translate(-50%,-50%) scale(${s})`;
+    frame.style.transformOrigin = "center center";
+  }
+  addEventListener("resize", fit); fit();
+
+  const videoSeeked = (v) => new Promise((res) => {
+    if (v.readyState < 2) return res();
+    const to = setTimeout(done, 800);
+    function done() { clearTimeout(to); v.removeEventListener("seeked", done); res(); }
+    if (v.seeking) v.addEventListener("seeked", done); else done();
+  });
+
+  // QA hook
+  window.__f6Seek = async (sec, theme) => {
+    if (theme && theme !== THEME) await setTheme(theme);
+    pause(); seek(sec * 1000);
+    if (morphVid.style.display !== "none" && morphVid.src) await videoSeeked(morphVid);
+    renderFrame(sec * 1000);
+    return true;
+  };
+
+  // ---------- boot ----------
+  probeVideos();
+  setTheme(THEME).then(() => {
+    $("loading").style.display = "none";
+    const tq = Q.get("t"), stq = Q.get("stop");
+    if (stq) stopAt = +stq;
+    seek(tq ? +tq : 0);
+    if (!tq || stq) { if (!Q.has("pause")) play(); }
+  });
+})();
+</script>
+</body>
+</html>

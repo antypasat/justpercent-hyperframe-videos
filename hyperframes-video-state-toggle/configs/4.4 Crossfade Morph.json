@@ -1,0 +1,125 @@
+{
+  "name": "4.4 Crossfade Morph",
+  "technique": "State Toggle / Crossfade",
+  "duration": 8,
+  "layers": {
+    "a": {
+      "asset": "assets/faqs-index.png",
+      "h": 900
+    },
+    "b": {
+      "asset": "assets/faq-bill-splitting.png",
+      "h": 1055
+    }
+  },
+  "cam": {
+    "easing": "ease-in-out-cubic",
+    "keys": [
+      {
+        "t": 0,
+        "s": 1,
+        "fx": 800,
+        "fy": 420
+      },
+      {
+        "t": 2.4,
+        "s": 1.15,
+        "fx": 800,
+        "fy": 560
+      },
+      {
+        "t": 2.6,
+        "s": 1.15,
+        "fx": 800,
+        "fy": 560
+      },
+      {
+        "t": 2.7,
+        "s": 1.2,
+        "fx": 801,
+        "fy": 580,
+        "e": "ease-out-cubic"
+      },
+      {
+        "t": 2.8,
+        "s": 1.15,
+        "fx": 800,
+        "fy": 560
+      },
+      {
+        "t": 3.4,
+        "s": 1.12,
+        "fx": 800,
+        "fy": 400
+      },
+      {
+        "t": 7.2,
+        "s": 1.12,
+        "fx": 800,
+        "fy": 680,
+        "e": "ease-in-out-sine"
+      },
+      {
+        "t": 8,
+        "s": 1.12,
+        "fx": 800,
+        "fy": 680
+      }
+    ]
+  },
+  "cursor": {
+    "easing": "ease-in-out-cubic",
+    "layer": "a",
+    "path": [
+      {
+        "t": 0.7,
+        "x": 1250,
+        "y": 260
+      },
+      {
+        "t": 2.3,
+        "x": 801,
+        "y": 615
+      },
+      {
+        "t": 3,
+        "x": 801,
+        "y": 615
+      }
+    ],
+    "clickAt": 2.6
+  },
+  "toggle": {
+    "type": "fade",
+    "at": 2.8,
+    "dur": 0.6,
+    "bump": 0.05
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "STATE TOGGLE · CROSSFADE MORPH",
+      "in": 0.4,
+      "out": 2.7
+    },
+    {
+      "kind": "caption",
+      "text": "64 interactive FAQs — real questions, live math.",
+      "in": 0.8,
+      "out": 2.6
+    },
+    {
+      "kind": "chip",
+      "text": "justpercent.com/faqs/bill-splitting-calculator/",
+      "in": 3.6,
+      "out": 7.8
+    },
+    {
+      "kind": "caption",
+      "text": "Split the bills 60/40 — you owe $150, they owe $100.",
+      "emphasis": true,
+      "in": 4.6,
+      "out": 7.7
+    }
+  ]
+}

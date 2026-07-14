@@ -1,0 +1,198 @@
+window.F4GEO = {
+  "dark": {
+    "faqs": {
+      "pageH": 13153,
+      "billScrollY": 1044,
+      "billRow": {
+        "x": 12,
+        "y": 300,
+        "w": 411,
+        "h": 182
+      }
+    },
+    "bill": {
+      "pageH": 1124,
+      "h1": {
+        "x": 8,
+        "y": 74,
+        "w": 416,
+        "h": 73
+      },
+      "question": {
+        "x": 25,
+        "y": 280,
+        "w": 382,
+        "h": 92
+      },
+      "answer": {
+        "x": 25,
+        "y": 388,
+        "w": 382,
+        "h": 92
+      },
+      "example": {
+        "x": 8,
+        "y": 263,
+        "w": 416,
+        "h": 663
+      },
+      "values": {
+        "myPercent": "60",
+        "roommatePercent": "40",
+        "billAmount": "250",
+        "myResult": "150",
+        "roommateResult": "100"
+      }
+    },
+    "dec": {
+      "pu": {
+        "scrollY": 816,
+        "row": {
+          "x": 40,
+          "y": 300,
+          "w": 368,
+          "h": 120
+        }
+      },
+      "banner": {
+        "x": 33,
+        "y": 165,
+        "w": 366,
+        "h": 144
+      },
+      "bannerTitle": {
+        "x": 70,
+        "y": 178,
+        "w": 230,
+        "h": 16
+      },
+      "original": {
+        "x": 57,
+        "y": 403,
+        "w": 85,
+        "h": 42
+      },
+      "percent": {
+        "x": 270,
+        "y": 403,
+        "w": 85,
+        "h": 42
+      },
+      "result": {
+        "x": 168,
+        "y": 508,
+        "w": 116,
+        "h": 32
+      },
+      "values": {
+        "original": "300",
+        "percent": "30",
+        "result": "210"
+      },
+      "resultClip": {
+        "x": 156,
+        "y": 496,
+        "w": 140,
+        "h": 56
+      }
+    }
+  },
+  "light": {
+    "faqs": {
+      "pageH": 13153,
+      "billScrollY": 1044,
+      "billRow": {
+        "x": 12,
+        "y": 300,
+        "w": 411,
+        "h": 182
+      }
+    },
+    "bill": {
+      "pageH": 1124,
+      "h1": {
+        "x": 8,
+        "y": 74,
+        "w": 416,
+        "h": 73
+      },
+      "question": {
+        "x": 25,
+        "y": 280,
+        "w": 382,
+        "h": 92
+      },
+      "answer": {
+        "x": 25,
+        "y": 388,
+        "w": 382,
+        "h": 92
+      },
+      "example": {
+        "x": 8,
+        "y": 263,
+        "w": 416,
+        "h": 663
+      },
+      "values": {
+        "myPercent": "60",
+        "roommatePercent": "40",
+        "billAmount": "250",
+        "myResult": "150",
+        "roommateResult": "100"
+      }
+    },
+    "dec": {
+      "pu": {
+        "scrollY": 816,
+        "row": {
+          "x": 40,
+          "y": 300,
+          "w": 368,
+          "h": 120
+        }
+      },
+      "banner": {
+        "x": 33,
+        "y": 165,
+        "w": 366,
+        "h": 144
+      },
+      "bannerTitle": {
+        "x": 70,
+        "y": 178,
+        "w": 230,
+        "h": 16
+      },
+      "original": {
+        "x": 57,
+        "y": 403,
+        "w": 85,
+        "h": 42
+      },
+      "percent": {
+        "x": 270,
+        "y": 403,
+        "w": 85,
+        "h": 42
+      },
+      "result": {
+        "x": 168,
+        "y": 508,
+        "w": 116,
+        "h": 32
+      },
+      "values": {
+        "original": "300",
+        "percent": "30",
+        "result": "210"
+      },
+      "resultClip": {
+        "x": 156,
+        "y": 496,
+        "w": 140,
+        "h": 56
+      }
+    }
+  }
+};

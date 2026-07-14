@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <link rel="stylesheet" href="assets/jp-app.css" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        margin: 0; width: 1080px; height: 1920px;
+        overflow: hidden; background: #05060d;
+      }
+
+      /* ================= shared film system (.f-*) ================= */
+      /* stage backdrop */
+      .f-stage { position: absolute; inset: 0; overflow: hidden; }
+      .f-bg-light { background: linear-gradient(160deg, #e6e3f2 0%, #dcdaea 45%, #d5e6ee 100%); }
+      .f-bg-dark { background: radial-gradient(120% 90% at 50% 0%, #0b0d1c 0%, #05060d 60%, #070812 100%); }
+      .f-orb { position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none; }
+      .f-orb-v { background: radial-gradient(circle, rgba(139,92,246,.55) 0%, rgba(139,92,246,0) 70%); }
+      .f-orb-c { background: radial-gradient(circle, rgba(34,211,238,.4) 0%, rgba(34,211,238,0) 70%); }
+      .f-vignette {
+        position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(120% 100% at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,.38) 100%);
+      }
+
+      /* browser URL pill */
+      .f-url {
+        position: absolute; top: 74px; left: 50%; transform: translateX(-50%);
+        display: flex; align-items: center; gap: 14px;
+        min-width: 560px; max-width: 940px;
+        padding: 18px 34px; border-radius: 999px;
+        background: rgba(10, 12, 26, 0.82);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,.08);
+        backdrop-filter: blur(10px);
+        will-change: transform, opacity;
+      }
+      .f-url-lock { flex: 0 0 auto; width: 26px; height: 26px; }
+      .f-url-text {
+        font-family: "JetBrains Mono", monospace; font-size: 26px; font-weight: 400;
+        color: rgba(255,255,255,.92); letter-spacing: -0.01em; white-space: nowrap;
+        overflow: hidden; text-overflow: ellipsis;
+      }
+      .f-url-text b { color: #c4b5fd; font-weight: 500; }
+
+      /* page device window (the recreated app UI) */
+      .f-win {
+        position: absolute; left: 27px; width: 1026px;
+        top: 200px; height: 1330px;
+        overflow: hidden; border-radius: 34px;
+        border: 1px solid rgba(148,163,184,.28);
+        box-shadow: 0 30px 90px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
+        will-change: transform, opacity;
+        transform-style: preserve-3d;
+      }
+      /* .f-pg gets a transform (scale) => it is the containing block for the
+         app's position:fixed header + floating buttons, i.e. it behaves as the
+         page's visual viewport. Height = window height in page CSS px. */
+      .f-pg {
+        position: absolute; left: 0; top: 0;
+        width: 432px; height: 560px;
+        transform: scale(2.375); transform-origin: 0 0;
+      }
+      /* scroll layer: offset with top (NOT transform) so fixed elements stay pinned */
+      .f-off { position: relative; top: 0; }
+
+      /* captions on glass panels */
+      .f-cap {
+        position: absolute; left: 50%; transform: translateX(-50%);
+        bottom: 250px;
+        max-width: 960px;
+        padding: 26px 44px; border-radius: 26px;
+        background: rgba(8, 10, 22, 0.80);
+        border: 1px solid rgba(148, 163, 184, 0.30);
+        box-shadow: 0 16px 50px rgba(0,0,0,.45);
+        backdrop-filter: blur(8px);
+        text-align: center; white-space: nowrap;
+        will-change: transform, opacity;
+      }
+      .f-cap-t {
+        font-family: "Space Grotesk", sans-serif; font-weight: 700;
+        font-size: 52px; line-height: 1.14; letter-spacing: -0.015em;
+        color: #ffffff;
+      }
+      .f-cap-t em {
+        font-style: normal;
+        background: linear-gradient(92deg, #a78bfa 0%, #8b5cf6 40%, #22d3ee 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+      .f-cap-t code {
+        font-family: "JetBrains Mono", monospace; font-weight: 400; font-size: 0.92em;
+        color: #a5f3fc;
+      }
+
+      /* full-screen flash frame plates */
+      .f-flash {
+        position: absolute; inset: 0; z-index: 60;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; pointer-events: none;
+      }
+      .f-flash span {
+        font-family: "Space Grotesk", sans-serif; font-weight: 700;
+        font-size: 300px; letter-spacing: -0.04em; line-height: 1;
+      }
+
+      /* tap cursor */
+      .f-cursor {
+        position: absolute; z-index: 55; width: 56px; height: 56px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.98), rgba(226,232,240,.85));
+        box-shadow: 0 6px 24px rgba(0,0,0,.5), 0 0 0 3px rgba(255,255,255,.35);
+        opacity: 0; will-change: transform, opacity;
+      }
+      .f-ripple {
+        position: absolute; z-index: 54; width: 56px; height: 56px;
+        border-radius: 50%; border: 4px solid rgba(167,139,250,.9);
+        opacity: 0; will-change: transform, opacity;
+      }
+
+      /* highlight ring for UI targets */
+      .f-ring {
+        position: absolute; z-index: 53; border-radius: 28px;
+        border: 5px solid rgba(139,92,246,.95);
+        box-shadow: 0 0 0 8px rgba(139,92,246,.28), 0 0 42px rgba(139,92,246,.55);
+        opacity: 0; pointer-events: none; will-change: transform, opacity;
+      }
+
+      /* ============ brand bar (persistent, in root composition) ============ */
+      #brand-bar {
+        position: absolute; left: 0; right: 0; bottom: 0; height: 150px;
+        z-index: 80;
+        display: flex; align-items: center; justify-content: center; gap: 20px;
+        background: linear-gradient(180deg, rgba(5,6,13,0) 0%, rgba(5,6,13,.72) 40%, rgba(5,6,13,.92) 100%);
+        will-change: transform, opacity;
+      }
+      #brand-bar img { width: 62px; height: 62px; filter: drop-shadow(0 4px 14px rgba(0,0,0,.45)); }
+      #brand-bar .bb-name {
+        font-family: "Space Grotesk", sans-serif; font-weight: 300; font-size: 46px;
+        letter-spacing: -0.02em; color: #fff;
+      }
+      #brand-bar .bb-dot { width: 9px; height: 9px; border-radius: 50%; background: #22d3ee; }
+      #brand-bar .bb-url {
+        font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: 34px;
+        background: linear-gradient(92deg, #a78bfa, #22d3ee);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div id="s1" class="clip" data-composition-id="s1-hook"
+           data-composition-src="compositions/s1-hook.html"
+           data-start="0" data-track-index="1"></div>
+
+      <div id="s2" class="clip" data-composition-id="s2-home"
+           data-composition-src="compositions/s2-home.html"
+           data-start="s1" data-track-index="1"></div>
+
+      <div id="s3" class="clip" data-composition-id="s3-calc"
+           data-composition-src="compositions/s3-calc.html"
+           data-start="s2" data-track-index="1"></div>
+
+      <div id="s4" class="clip" data-composition-id="s4-flip"
+           data-composition-src="compositions/s4-flip.html"
+           data-start="s3" data-track-index="1"></div>
+
+      <div id="s5" class="clip" data-composition-id="s5-practical"
+           data-composition-src="compositions/s5-practical.html"
+           data-start="s4" data-track-index="1"></div>
+
+      <div id="s6" class="clip" data-composition-id="s6-faq"
+           data-composition-src="compositions/s6-faq.html"
+           data-start="s5" data-track-index="1"></div>
+
+      <div id="s7" class="clip" data-composition-id="s7-endcard"
+           data-composition-src="compositions/s7-endcard.html"
+           data-start="s6" data-track-index="1"></div>
+
+      <div id="brand-bar" class="clip" data-start="0" data-duration="33.2" data-track-index="2">
+        <img src="assets/app-images/percentage.webp" alt="Just Percent logo" />
+        <span class="bb-name">Just Percent</span>
+        <span class="bb-dot"></span>
+        <span class="bb-url">justpercent.com</span>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+
+        tl.fromTo("#brand-bar",
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, ease: "power2.out", immediateRender: true },
+          0.25
+        );
+        tl.to("#brand-bar",
+          { y: 60, opacity: 0, duration: 0.45, ease: "power2.in" },
+          32.7
+        );
+
+        // total film length
+        tl.set({}, {}, 37.0);
+
+        window.__timelines["main"] = tl;
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,447 @@
+{
+  "s-home-top": {
+    "searchBox": {
+      "x": 461,
+      "y": 191,
+      "w": 678,
+      "h": 50
+    },
+    "grid": {
+      "x": 436,
+      "y": 348,
+      "w": 728,
+      "h": 807
+    },
+    "heading": {
+      "x": 436,
+      "y": 106,
+      "w": 728,
+      "h": 36
+    },
+    "__scrollY": 0,
+    "cards": [
+      {
+        "cta": "Apply My Coupon",
+        "x": 436,
+        "y": 348,
+        "w": 360,
+        "h": 155,
+        "ctaX": 681,
+        "ctaY": 471
+      },
+      {
+        "cta": "See My Savings",
+        "x": 804,
+        "y": 348,
+        "w": 360,
+        "h": 155,
+        "ctaX": 1049,
+        "ctaY": 471
+      },
+      {
+        "cta": "Calculate Total Price",
+        "x": 436,
+        "y": 511,
+        "w": 360,
+        "h": 155,
+        "ctaX": 681,
+        "ctaY": 634
+      },
+      {
+        "cta": "Calculate My Tip",
+        "x": 804,
+        "y": 511,
+        "w": 360,
+        "h": 155,
+        "ctaX": 1049,
+        "ctaY": 634
+      },
+      {
+        "cta": "See My Commission",
+        "x": 436,
+        "y": 674,
+        "w": 360,
+        "h": 155,
+        "ctaX": 681,
+        "ctaY": 797
+      },
+      {
+        "cta": "See % Change",
+        "x": 804,
+        "y": 674,
+        "w": 360,
+        "h": 155,
+        "ctaX": 1049,
+        "ctaY": 797
+      },
+      {
+        "cta": "See My New Pay",
+        "x": 436,
+        "y": 837,
+        "w": 360,
+        "h": 155,
+        "ctaX": 681,
+        "ctaY": 960
+      },
+      {
+        "cta": "Find Pre-Tax Price",
+        "x": 804,
+        "y": 837,
+        "w": 360,
+        "h": 155,
+        "ctaX": 1049,
+        "ctaY": 960
+      },
+      {
+        "cta": "Calculate My Score",
+        "x": 436,
+        "y": 1000,
+        "w": 360,
+        "h": 155,
+        "ctaX": 681,
+        "ctaY": 1123
+      }
+    ]
+  },
+  "s-home-search-focus": {
+    "searchBox": {
+      "x": 461,
+      "y": 115,
+      "w": 678,
+      "h": 50
+    },
+    "__scrollY": 76
+  },
+  "s-home-search-tip": {
+    "searchBox": {
+      "x": 461,
+      "y": 115,
+      "w": 678,
+      "h": 50
+    },
+    "results": {
+      "x": 463,
+      "y": 193,
+      "w": 674,
+      "h": 395
+    },
+    "__scrollY": 76,
+    "firstResult": {
+      "text": "Practical Uses",
+      "x": 475,
+      "y": 193,
+      "w": 650,
+      "h": 17
+    }
+  },
+  "s-home-tip-scrolled": {
+    "activeCard": {
+      "x": 436,
+      "y": -244,
+      "w": 728,
+      "h": 1377
+    },
+    "pinnedUse": {
+      "x": 493,
+      "y": 387,
+      "w": 630,
+      "h": 90
+    },
+    "__scrollY": 2103
+  },
+  "s-dec-arrived": {
+    "card": {
+      "x": 436,
+      "y": 203,
+      "w": 728,
+      "h": 412
+    },
+    "original": {
+      "x": 506,
+      "y": 396,
+      "w": 128,
+      "h": 42
+    },
+    "percent": {
+      "x": 763,
+      "y": 396,
+      "w": 128,
+      "h": 42
+    },
+    "result": {
+      "x": 961,
+      "y": 401,
+      "w": 116,
+      "h": 32
+    },
+    "copyBtn": {
+      "x": 926,
+      "y": 440,
+      "w": 60,
+      "h": 24
+    },
+    "saveBtn": {
+      "x": 989,
+      "y": 442,
+      "w": 58,
+      "h": 20
+    },
+    "heading": {
+      "x": 517,
+      "y": 238,
+      "w": 610,
+      "h": 28
+    },
+    "__scrollY": 0
+  },
+  "s-dec-saved": {
+    "saveBtn": {
+      "x": 989,
+      "y": 442,
+      "w": 58,
+      "h": 20
+    },
+    "memosList": {
+      "x": 461,
+      "y": 692,
+      "w": 678,
+      "h": 66
+    },
+    "result": {
+      "x": 961,
+      "y": 401,
+      "w": 116,
+      "h": 32
+    },
+    "copyBtn": {
+      "x": 926,
+      "y": 440,
+      "w": 60,
+      "h": 24
+    },
+    "__scrollY": 0
+  },
+  "s-inc-empty": {
+    "card": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 412
+    },
+    "original": {
+      "x": 509,
+      "y": 303,
+      "w": 128,
+      "h": 42
+    },
+    "percent": {
+      "x": 760,
+      "y": 303,
+      "w": 128,
+      "h": 42
+    },
+    "result": {
+      "x": 958,
+      "y": 308,
+      "w": 116,
+      "h": 32
+    },
+    "heading": {
+      "x": 517,
+      "y": 145,
+      "w": 610,
+      "h": 28
+    },
+    "__scrollY": 0
+  },
+  "s-inc-final": {
+    "card": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 412
+    },
+    "original": {
+      "x": 509,
+      "y": 303,
+      "w": 128,
+      "h": 42
+    },
+    "percent": {
+      "x": 760,
+      "y": 303,
+      "w": 128,
+      "h": 42
+    },
+    "result": {
+      "x": 958,
+      "y": 308,
+      "w": 116,
+      "h": 32
+    },
+    "heading": {
+      "x": 517,
+      "y": 145,
+      "w": 610,
+      "h": 28
+    },
+    "__scrollY": 0
+  },
+  "s-inc-tax-arrived": {
+    "original": {
+      "x": 509,
+      "y": 396,
+      "w": 128,
+      "h": 42
+    },
+    "percent": {
+      "x": 760,
+      "y": 396,
+      "w": 128,
+      "h": 42
+    },
+    "result": {
+      "x": 958,
+      "y": 401,
+      "w": 116,
+      "h": 32
+    },
+    "heading": {
+      "x": 517,
+      "y": 238,
+      "w": 610,
+      "h": 28
+    },
+    "__scrollY": 0
+  },
+  "s-inc-pu": {
+    "helpPanel": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "__scrollY": 437,
+    "budgetRow": {
+      "text": "Budget Boost:\n        A $5000 [Original] theme park vacation budget\n        increased by 2",
+      "x": 468,
+      "y": 390,
+      "w": 680,
+      "h": 120
+    }
+  },
+  "s-inc-pu-pinned": {
+    "pinned": {
+      "x": 468,
+      "y": 388,
+      "w": 680,
+      "h": 120
+    },
+    "__scrollY": 522
+  },
+  "s-inc-pu-result": {
+    "original": {
+      "x": 509,
+      "y": 481,
+      "w": 128,
+      "h": 42
+    },
+    "percent": {
+      "x": 760,
+      "y": 481,
+      "w": 128,
+      "h": 42
+    },
+    "result": {
+      "x": 958,
+      "y": 486,
+      "w": 116,
+      "h": 32
+    },
+    "__scrollY": 0
+  },
+  "s-basic-tip-arrived": {
+    "result": {
+      "x": 913,
+      "y": 401,
+      "w": 116,
+      "h": 32
+    },
+    "copyBtn": {
+      "x": 878,
+      "y": 440,
+      "w": 60,
+      "h": 24
+    },
+    "heading": {
+      "x": 517,
+      "y": 238,
+      "w": 610,
+      "h": 28
+    },
+    "__scrollY": 0
+  },
+  "s-faqs-top": {
+    "heading": {
+      "x": 436,
+      "y": 114,
+      "w": 728,
+      "h": 60
+    },
+    "__scrollY": 0
+  },
+  "s-faqs-tip-row": {
+    "row": {
+      "text": "",
+      "x": 440,
+      "y": 672,
+      "w": 723,
+      "h": 145
+    }
+  },
+  "s-faq-tip": {
+    "heading": {
+      "x": 436,
+      "y": 114,
+      "w": 728,
+      "h": 60
+    },
+    "answer": {
+      "x": 678,
+      "y": 449,
+      "w": 44,
+      "h": 46
+    },
+    "__scrollY": 0
+  },
+  "s-dec-saved-open": {
+    "memosList": {
+      "x": 461,
+      "y": 688,
+      "w": 678,
+      "h": 66
+    },
+    "__scrollY": 0
+  },
+  "s-dec-copied": {
+    "memosList": {
+      "x": 461,
+      "y": 692,
+      "w": 678,
+      "h": 66
+    },
+    "copyBtn": {
+      "x": 917,
+      "y": 440,
+      "w": 76,
+      "h": 24
+    },
+    "result": {
+      "x": 961,
+      "y": 401,
+      "w": 116,
+      "h": 32
+    },
+    "__scrollY": 0
+  }
+}

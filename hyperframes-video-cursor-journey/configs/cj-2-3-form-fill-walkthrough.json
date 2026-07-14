@@ -1,0 +1,308 @@
+{
+  "hyperframes": "1.0",
+  "name": "cj-2-3-form-fill-walkthrough",
+  "technique": "Cursor Journey / Form Fill Walkthrough",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/increased-value-calculator/",
+    "locale": "en-US",
+    "flow": "Value Increase Calculator greets you with a live example (240 + 15% = 276) → click field 1, typewriter “5000” — the answer recomputes on every keystroke → click field 2, typewriter “25” → 6250. No submit anywhere. Every keystroke state captured after full settle.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "perKeystrokeSettle": true,
+      "freshContext": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 10,
+  "states": {
+    "empty": {
+      "asset": "assets/s-inc-empty.png",
+      "w": 1600,
+      "h": 900
+    },
+    "c1": {
+      "asset": "assets/s-inc-type-5.png",
+      "w": 1600,
+      "h": 900
+    },
+    "c2": {
+      "asset": "assets/s-inc-type-50.png",
+      "w": 1600,
+      "h": 900
+    },
+    "c3": {
+      "asset": "assets/s-inc-type-500.png",
+      "w": 1600,
+      "h": 900
+    },
+    "c4": {
+      "asset": "assets/s-inc-type-5000.png",
+      "w": 1600,
+      "h": 900
+    },
+    "p1": {
+      "asset": "assets/s-inc-type-25-2.png",
+      "w": 1600,
+      "h": 900
+    },
+    "p2": {
+      "asset": "assets/s-inc-type-25-25.png",
+      "w": 1600,
+      "h": 900
+    }
+  },
+  "swaps": [
+    {
+      "t": 0,
+      "state": "empty",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 2.2,
+      "state": "c1",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 2.55,
+      "state": "c2",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 2.9,
+      "state": "c3",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 3.25,
+      "state": "c4",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 5.3,
+      "state": "p1",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 5.65,
+      "state": "p2",
+      "fx": "cut",
+      "dur": 0
+    }
+  ],
+  "cursor": [
+    {
+      "t": 0,
+      "x": 1180,
+      "y": 680
+    },
+    {
+      "t": 1.45,
+      "x": 573,
+      "y": 324,
+      "cp": [
+        [
+          -320,
+          -90
+        ],
+        [
+          130,
+          160
+        ]
+      ]
+    },
+    {
+      "t": 4.2,
+      "x": 573,
+      "y": 324
+    },
+    {
+      "t": 4.95,
+      "x": 824,
+      "y": 324,
+      "cp": [
+        [
+          80,
+          90
+        ],
+        [
+          -80,
+          90
+        ]
+      ]
+    },
+    {
+      "t": 6.4,
+      "x": 824,
+      "y": 324
+    },
+    {
+      "t": 7.6,
+      "x": 1016,
+      "y": 324,
+      "cp": [
+        [
+          60,
+          -80
+        ],
+        [
+          -70,
+          -80
+        ]
+      ]
+    },
+    {
+      "t": 10,
+      "x": 1016,
+      "y": 324
+    }
+  ],
+  "camera": {
+    "follow": {
+      "mode": "cursor",
+      "stiffness": 42,
+      "damping": "soft",
+      "offset": {
+        "x": -110,
+        "y": 0
+      }
+    },
+    "scaleTrack": [
+      {
+        "t": 0,
+        "s": 1.05
+      },
+      {
+        "t": 0.9,
+        "s": 1.05
+      },
+      {
+        "t": 1.8,
+        "s": 1.4,
+        "ease": "ease-in-out-cubic"
+      },
+      {
+        "t": 7.4,
+        "s": 1.4
+      },
+      {
+        "t": 8.4,
+        "s": 1.58,
+        "ease": "ease-in-out-cubic"
+      }
+    ]
+  },
+  "events": [
+    {
+      "kind": "click",
+      "t": 1.5,
+      "x": 573,
+      "y": 324
+    },
+    {
+      "kind": "glow",
+      "t0": 1.55,
+      "t1": 4.4,
+      "rect": {
+        "x": 509,
+        "y": 303,
+        "w": 128,
+        "h": 42
+      }
+    },
+    {
+      "kind": "type",
+      "t0": 2.2,
+      "t1": 3.25,
+      "x": 540,
+      "y": 324,
+      "text": "5000",
+      "msPerChar": 350
+    },
+    {
+      "kind": "click",
+      "t": 5,
+      "x": 824,
+      "y": 324
+    },
+    {
+      "kind": "glow",
+      "t0": 5.05,
+      "t1": 6.6,
+      "rect": {
+        "x": 760,
+        "y": 303,
+        "w": 128,
+        "h": 42
+      }
+    },
+    {
+      "kind": "type",
+      "t0": 5.3,
+      "t1": 5.65,
+      "x": 800,
+      "y": 324,
+      "text": "25",
+      "msPerChar": 350
+    },
+    {
+      "kind": "ring",
+      "t0": 7.7,
+      "t1": 9.9,
+      "rect": {
+        "x": 950,
+        "y": 296,
+        "w": 132,
+        "h": 52
+      }
+    }
+  ],
+  "fx": {
+    "letterbox": true,
+    "vignette": true,
+    "grain": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Value Increase Calculator — form walkthrough",
+      "in": 0.2,
+      "out": 9.9
+    },
+    {
+      "kind": "caption",
+      "text": "It greets you computing: 240 + 15% = 276.",
+      "in": 0.4,
+      "out": 1.8
+    },
+    {
+      "kind": "caption",
+      "text": "Type your budget — it recalculates every keystroke.",
+      "in": 2,
+      "out": 4.4
+    },
+    {
+      "kind": "caption",
+      "text": "The boost: 25%.",
+      "in": 4.9,
+      "out": 6.7
+    },
+    {
+      "kind": "caption",
+      "text": "No Enter. No submit. 6,250 — live.",
+      "in": 7.6,
+      "out": 9.9,
+      "emphasis": true
+    }
+  ]
+}

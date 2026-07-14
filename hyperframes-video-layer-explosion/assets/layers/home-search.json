@@ -1,0 +1,71 @@
+{
+  "scene": "home-search",
+  "url": "https://justpercent.com/?noredirect#all",
+  "viewport": {
+    "width": 1600,
+    "height": 900
+  },
+  "dpr": 2,
+  "layers": [
+    {
+      "id": "nav",
+      "sel": "nav",
+      "box": {
+        "x": 436,
+        "y": 0,
+        "w": 728,
+        "h": 61
+      }
+    },
+    {
+      "id": "search",
+      "sel": "#calculator-search",
+      "box": {
+        "x": 461,
+        "y": 115,
+        "w": 678,
+        "h": 50
+      }
+    },
+    {
+      "id": "portal",
+      "sel": "#search-results-list-portal",
+      "box": {
+        "x": 463,
+        "y": 193,
+        "w": 674,
+        "h": 395
+      }
+    },
+    {
+      "id": "row1",
+      "sel": "[data-le-row=\"row1\"]",
+      "box": {
+        "x": 471,
+        "y": 215,
+        "w": 658,
+        "h": 94
+      }
+    },
+    {
+      "id": "row2",
+      "sel": "[data-le-row=\"row2\"]",
+      "box": {
+        "x": 471,
+        "y": 311,
+        "w": 658,
+        "h": 94
+      }
+    },
+    {
+      "id": "row3",
+      "sel": "[data-le-row=\"row3\"]",
+      "box": {
+        "x": 471,
+        "y": 434,
+        "w": 658,
+        "h": 60
+      }
+    }
+  ]
+}

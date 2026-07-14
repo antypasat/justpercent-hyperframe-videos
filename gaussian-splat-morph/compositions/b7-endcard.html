@@ -1,0 +1,139 @@
+<template id="b7-endcard-template">
+  <div data-composition-id="b7-endcard" data-start="0" data-width="1080" data-height="1920">
+    <div class="b7-stage">
+      <div class="b7-orb b7-orb-a"></div>
+      <div class="b7-orb b7-orb-b"></div>
+      <div class="b7-splats" id="b7-splats"></div>
+      <div class="b7-lockup">
+        <img class="b7-logo" src="../assets/img/percentage.webp" alt="Percentage Symbol Logo" width="300" height="300" />
+        <div class="b7-brand">Just&nbsp;Percent</div>
+        <div class="b7-url">justpercent.com</div>
+        <div class="b7-tagline">Every percent problem — solved in seconds.</div>
+        <div class="b7-pills">
+          <span class="b7-pill">Free</span>
+          <span class="b7-pill">Instant</span>
+          <span class="b7-pill">No sign-up</span>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="b7-endcard"] {
+        position: relative; width: 1080px; height: 1920px;
+        background: radial-gradient(ellipse at 50% 22%, #170c2b 0%, #05060d 74%);
+        overflow: hidden;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+      }
+      [data-composition-id="b7-endcard"] .b7-stage { position: absolute; inset: 0; }
+      [data-composition-id="b7-endcard"] .b7-orb { position: absolute; border-radius: 50%; filter: blur(150px); }
+      [data-composition-id="b7-endcard"] .b7-orb-a {
+        width: 1000px; height: 1000px; top: -260px; left: -300px; opacity: .85;
+        background: radial-gradient(circle, rgba(124,58,237,.55) 0%, rgba(124,58,237,0) 70%);
+      }
+      [data-composition-id="b7-endcard"] .b7-orb-b {
+        width: 880px; height: 880px; bottom: -220px; right: -260px; opacity: .75;
+        background: radial-gradient(circle, rgba(34,211,238,.4) 0%, rgba(34,211,238,0) 70%);
+      }
+      [data-composition-id="b7-endcard"] .b7-splats { position: absolute; inset: 0; pointer-events: none; }
+      [data-composition-id="b7-endcard"] .b7-splat { position: absolute; top: 0; left: 0; border-radius: 50%; will-change: transform, opacity; }
+      [data-composition-id="b7-endcard"] .b7-lockup {
+        position: absolute; left: 0; right: 0; top: 470px;
+        display: flex; flex-direction: column; align-items: center; gap: 0;
+      }
+      [data-composition-id="b7-endcard"] .b7-logo {
+        width: 300px; height: 300px; object-fit: contain;
+        filter: drop-shadow(0 22px 60px rgba(124,58,237,.5));
+        will-change: transform, opacity;
+      }
+      [data-composition-id="b7-endcard"] .b7-brand {
+        margin-top: 40px;
+        font-family: "IBM Plex Sans", system-ui, sans-serif; font-weight: 300;
+        font-size: 118px; letter-spacing: -0.03em; color: #f5f3ff;
+        text-shadow: 0 4px 34px rgba(0,0,0,.5);
+        will-change: transform, opacity;
+      }
+      [data-composition-id="b7-endcard"] .b7-url {
+        margin-top: 44px;
+        font-family: "JetBrains Mono", monospace; font-size: 46px; color: #0b0d1a;
+        background: #ffffff; border-radius: 999px; padding: 22px 52px;
+        box-shadow: 0 18px 55px rgba(255,255,255,.18), 0 6px 20px rgba(0,0,0,.4);
+        will-change: transform, opacity;
+      }
+      [data-composition-id="b7-endcard"] .b7-tagline {
+        margin-top: 46px;
+        font-family: "Space Grotesk", sans-serif; font-weight: 700;
+        font-size: 52px; letter-spacing: -0.01em; text-align: center;
+        background: linear-gradient(90deg, #a78bfa 0%, #22d3ee 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="b7-endcard"] .b7-pills {
+        margin-top: 42px; display: flex; gap: 22px;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="b7-endcard"] .b7-pill {
+        font-family: "IBM Plex Sans", system-ui, sans-serif; font-weight: 600;
+        font-size: 34px; color: #e9e6ff;
+        border: 1.5px solid rgba(167,139,250,.55); border-radius: 999px;
+        padding: 14px 34px; background: rgba(124,58,237,.16);
+      }
+    </style>
+
+    <script>
+      (function () {
+        var root = document.querySelector('[data-composition-id="b7-endcard"]');
+        var beat = 4.3;
+        function rnd(i) { var x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+
+        var holder = root.querySelector('#b7-splats');
+        var palette = ['rgba(167,139,250,', 'rgba(124,58,237,', 'rgba(34,211,238,', 'rgba(245,243,255,'];
+        var dots = [];
+        for (var i = 0; i < 110; i++) {
+          var d = document.createElement('div');
+          d.className = 'b7-splat';
+          var s = 12 + rnd(i + 4100) * 70;
+          var c = palette[i % palette.length];
+          d.style.width = s + 'px'; d.style.height = s + 'px';
+          d.style.background = 'radial-gradient(circle, ' + c + (0.4 + rnd(i + 4107) * 0.45).toFixed(2) + ') 0%, ' + c + '0) 70%)';
+          holder.appendChild(d);
+          dots.push(d);
+        }
+
+        var tl = gsap.timeline({ paused: true });
+
+        tl.fromTo(root.querySelector('.b7-orb-a'), { x: -24 }, { x: 26, duration: beat, ease: 'sine.inOut' }, 0);
+        tl.fromTo(root.querySelector('.b7-orb-b'), { x: 24 }, { x: -26, duration: beat, ease: 'sine.inOut' }, 0);
+
+        // the dissolved UI re-condenses into the brand lockup
+        dots.forEach(function (el, i) {
+          tl.fromTo(el,
+            { x: 540 + (rnd(i + 331) - 0.5) * 1500, y: 960 + (rnd(i + 341) - 0.5) * 2500, opacity: 0, scale: 2.4 },
+            { x: 540 + (rnd(i + 351) - 0.5) * 360, y: 700 + (rnd(i + 361) - 0.5) * 460, opacity: 0.85, scale: 0.5, duration: 0.9, ease: 'power3.inOut' }, rnd(i + 371) * 0.3);
+          tl.to(el, { opacity: 0, scale: 0.12, x: 540, y: 640, duration: 0.5, ease: 'power2.in', immediateRender: false }, 1.05 + rnd(i + 381) * 0.25);
+        });
+
+        tl.fromTo(root.querySelector('.b7-logo'),
+          { opacity: 0, scale: 0.7, filter: 'blur(24px)' },
+          { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.6, ease: 'power2.out' }, 1.1);
+        tl.fromTo(root.querySelector('.b7-brand'),
+          { opacity: 0, y: 44, filter: 'blur(14px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.5, ease: 'power2.out' }, 1.45);
+        tl.fromTo(root.querySelector('.b7-url'),
+          { opacity: 0, y: 40, scale: 0.9 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: 'back.out(1.8)' }, 1.85);
+        tl.fromTo(root.querySelector('.b7-tagline'),
+          { opacity: 0, y: 36 },
+          { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, 2.2);
+        tl.fromTo(root.querySelector('.b7-pills'),
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.55);
+
+        // gentle presence till the last frame
+        tl.fromTo(root.querySelector('.b7-lockup'), { scale: 1 }, { scale: 1.02, duration: beat - 1.1, ease: 'sine.inOut', immediateRender: false }, 1.1);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines['b7-endcard'] = tl;
+      })();
+    </script>
+  </div>
+</template>

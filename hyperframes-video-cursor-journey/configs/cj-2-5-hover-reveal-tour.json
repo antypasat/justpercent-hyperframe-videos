@@ -1,0 +1,235 @@
+{
+  "hyperframes": "1.0",
+  "name": "cj-2-5-hover-reveal-tour",
+  "technique": "Cursor Journey / Hover-Reveal Tour",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/?noredirect",
+    "locale": "en-US",
+    "flow": "Homepage Solution Cards. The cursor glides A→B→C and pauses; each hover reveal (violet glow, border, arrow) was captured only after the hover transition fully settled. Coupon → Tip → Sales Tax.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "hoverRevealSettled": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 8.5,
+  "states": {
+    "base": {
+      "asset": "assets/s-home-top.png",
+      "w": 1600,
+      "h": 900
+    },
+    "coupon": {
+      "asset": "assets/s-home-hover-coupon.png",
+      "w": 1600,
+      "h": 900
+    },
+    "tip": {
+      "asset": "assets/s-home-hover-tip.png",
+      "w": 1600,
+      "h": 900
+    },
+    "tax": {
+      "asset": "assets/s-home-hover-tax.png",
+      "w": 1600,
+      "h": 900
+    }
+  },
+  "swaps": [
+    {
+      "t": 0,
+      "state": "base",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 1.55,
+      "state": "coupon",
+      "fx": "fade",
+      "dur": 0.3
+    },
+    {
+      "t": 3.75,
+      "state": "tip",
+      "fx": "fade",
+      "dur": 0.3
+    },
+    {
+      "t": 5.95,
+      "state": "tax",
+      "fx": "fade",
+      "dur": 0.3
+    }
+  ],
+  "cursor": [
+    {
+      "t": 0,
+      "x": 800,
+      "y": 150
+    },
+    {
+      "t": 1.55,
+      "x": 616,
+      "y": 430,
+      "cp": [
+        [
+          -260,
+          90
+        ],
+        [
+          120,
+          -150
+        ]
+      ]
+    },
+    {
+      "t": 3.3,
+      "x": 616,
+      "y": 430
+    },
+    {
+      "t": 3.75,
+      "x": 984,
+      "y": 588,
+      "cp": [
+        [
+          180,
+          -60
+        ],
+        [
+          -40,
+          -160
+        ]
+      ]
+    },
+    {
+      "t": 5.5,
+      "x": 984,
+      "y": 588
+    },
+    {
+      "t": 5.95,
+      "x": 616,
+      "y": 588,
+      "cp": [
+        [
+          -140,
+          120
+        ],
+        [
+          140,
+          120
+        ]
+      ]
+    },
+    {
+      "t": 7.7,
+      "x": 616,
+      "y": 588
+    },
+    {
+      "t": 8.5,
+      "x": 640,
+      "y": 560
+    }
+  ],
+  "camera": {
+    "follow": {
+      "mode": "cursor",
+      "stiffness": 60,
+      "damping": "critical"
+    },
+    "scaleTrack": [
+      {
+        "t": 0,
+        "s": 1.1
+      },
+      {
+        "t": 1.3,
+        "s": 1.5,
+        "ease": "ease-in-out-cubic"
+      },
+      {
+        "t": 8.5,
+        "s": 1.5
+      }
+    ]
+  },
+  "events": [
+    {
+      "kind": "ring",
+      "t0": 1.7,
+      "t1": 3.6,
+      "rect": {
+        "x": 436,
+        "y": 348,
+        "w": 360,
+        "h": 155
+      }
+    },
+    {
+      "kind": "ring",
+      "t0": 3.9,
+      "t1": 5.8,
+      "rect": {
+        "x": 804,
+        "y": 511,
+        "w": 360,
+        "h": 155
+      }
+    },
+    {
+      "kind": "ring",
+      "t0": 6.1,
+      "t1": 8.3,
+      "rect": {
+        "x": 436,
+        "y": 511,
+        "w": 360,
+        "h": 155
+      }
+    }
+  ],
+  "fx": {
+    "letterbox": true,
+    "vignette": true,
+    "grain": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Homepage — hover the Solution Cards",
+      "in": 0.2,
+      "out": 8.4
+    },
+    {
+      "kind": "caption",
+      "text": "Coupons.",
+      "in": 1.8,
+      "out": 3.5
+    },
+    {
+      "kind": "caption",
+      "text": "Tips.",
+      "in": 4,
+      "out": 5.7
+    },
+    {
+      "kind": "caption",
+      "text": "Sales tax.",
+      "in": 6.2,
+      "out": 7.6
+    },
+    {
+      "kind": "caption",
+      "text": "Every card is a real-life answer.",
+      "in": 7.8,
+      "out": 8.45
+    }
+  ]
+}

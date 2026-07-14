@@ -1,0 +1,10 @@
+{
+  "name": "justpercent-hyper-mixed-media",
+  "private": true,
+  "type": "module",
+  "description": "JustPercent teaser — Hyper-Mixed Media (digital scrapbooking: paper cutouts, stop-motion UI, marker annotations, glitch/datamosh). 1080x1920, ~36 s, 30 fps, silent. Light -> 3D flip -> dark.",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.6.44 preview",
+    "check": "npx --yes hyperframes@0.6.44 lint && npx --yes hyperframes@0.6.44 inspect"
+  }
+}

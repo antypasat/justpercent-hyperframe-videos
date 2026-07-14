@@ -1,0 +1,343 @@
+{
+  "hyperframes": "1.0",
+  "name": "cj-2-7-onboarding-path",
+  "technique": "Cursor Journey / Onboarding Path",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/increased-value-calculator/",
+    "locale": "en-US",
+    "flow": "3-step onboarding: STEP 1 — pick the “Calculate Total Price” Solution Card on the homepage → STEP 2 — the Value Increase Calculator lands pre-filled $100 + 8% = $108 → STEP 3 — click the “Budget Boost” practical use below the calculator: $5,000 + 25% = $6,250 fills itself. DOM stability re-verified between every step.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "afterClick": true,
+      "betweenStepsRecheck": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 12,
+  "states": {
+    "home": {
+      "asset": "assets/s-home-top.png",
+      "w": 1600,
+      "h": 900
+    },
+    "tax": {
+      "asset": "assets/s-inc-tax-arrived.png",
+      "w": 1600,
+      "h": 900
+    },
+    "pu": {
+      "asset": "assets/s-inc-pu.png",
+      "w": 1600,
+      "h": 900
+    },
+    "pinned": {
+      "asset": "assets/s-inc-pu-pinned.png",
+      "w": 1600,
+      "h": 900
+    },
+    "result": {
+      "asset": "assets/s-inc-pu-result.png",
+      "w": 1600,
+      "h": 900
+    }
+  },
+  "swaps": [
+    {
+      "t": 0,
+      "state": "home",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 3.05,
+      "state": "tax",
+      "fx": "zoom",
+      "dur": 0.6
+    },
+    {
+      "t": 6.15,
+      "state": "pu",
+      "fx": "slide-up",
+      "dur": 0.7
+    },
+    {
+      "t": 8.45,
+      "state": "pinned",
+      "fx": "fade",
+      "dur": 0.4
+    },
+    {
+      "t": 9.85,
+      "state": "result",
+      "fx": "slide-down",
+      "dur": 0.7
+    }
+  ],
+  "cursor": [
+    {
+      "t": 0,
+      "x": 360,
+      "y": 210
+    },
+    {
+      "t": 2.4,
+      "x": 681,
+      "y": 634,
+      "cp": [
+        [
+          260,
+          40
+        ],
+        [
+          -140,
+          -200
+        ]
+      ]
+    },
+    {
+      "t": 2.85,
+      "x": 681,
+      "y": 634
+    },
+    {
+      "t": 3.15,
+      "x": 730,
+      "y": 300,
+      "jump": true
+    },
+    {
+      "t": 4.3,
+      "x": 1016,
+      "y": 417,
+      "cp": [
+        [
+          160,
+          30
+        ],
+        [
+          -120,
+          -70
+        ]
+      ]
+    },
+    {
+      "t": 5.6,
+      "x": 1016,
+      "y": 417
+    },
+    {
+      "t": 6.25,
+      "x": 900,
+      "y": 560,
+      "jump": true
+    },
+    {
+      "t": 7.3,
+      "x": 808,
+      "y": 450,
+      "cp": [
+        [
+          -120,
+          60
+        ],
+        [
+          110,
+          60
+        ]
+      ]
+    },
+    {
+      "t": 8.35,
+      "x": 808,
+      "y": 450
+    },
+    {
+      "t": 9.4,
+      "x": 808,
+      "y": 448
+    },
+    {
+      "t": 9.95,
+      "x": 850,
+      "y": 560,
+      "jump": true
+    },
+    {
+      "t": 11,
+      "x": 1016,
+      "y": 507,
+      "cp": [
+        [
+          90,
+          -60
+        ],
+        [
+          -90,
+          60
+        ]
+      ]
+    },
+    {
+      "t": 12,
+      "x": 1016,
+      "y": 507
+    }
+  ],
+  "camera": {
+    "follow": {
+      "mode": "cursor",
+      "stiffness": 60,
+      "damping": "critical",
+      "offset": {
+        "x": -110,
+        "y": 0
+      }
+    },
+    "scaleTrack": [
+      {
+        "t": 0,
+        "s": 1
+      },
+      {
+        "t": 1,
+        "s": 1
+      },
+      {
+        "t": 2,
+        "s": 1.5,
+        "ease": "ease-in-out-cubic"
+      },
+      {
+        "t": 5.9,
+        "s": 1.5
+      },
+      {
+        "t": 6.6,
+        "s": 1.38,
+        "ease": "ease-in-out-sine"
+      },
+      {
+        "t": 10.4,
+        "s": 1.38
+      },
+      {
+        "t": 11.4,
+        "s": 1.55,
+        "ease": "ease-in-out-cubic"
+      }
+    ]
+  },
+  "events": [
+    {
+      "kind": "step",
+      "t0": 0.5,
+      "t1": 3,
+      "text": "STEP 1 — Pick your moment",
+      "x": 360,
+      "y": 700
+    },
+    {
+      "kind": "click",
+      "t": 2.85,
+      "x": 681,
+      "y": 634
+    },
+    {
+      "kind": "step",
+      "t0": 3.6,
+      "t1": 6.1,
+      "text": "STEP 2 — Land pre-filled: $100 + 8% = $108",
+      "x": 360,
+      "y": 700
+    },
+    {
+      "kind": "glow",
+      "t0": 4.4,
+      "t1": 5.9,
+      "rect": {
+        "x": 958,
+        "y": 401,
+        "w": 116,
+        "h": 32
+      }
+    },
+    {
+      "kind": "step",
+      "t0": 6.8,
+      "t1": 11.9,
+      "text": "STEP 3 — Try a practical use",
+      "x": 360,
+      "y": 700
+    },
+    {
+      "kind": "ring",
+      "t0": 7.4,
+      "t1": 8.4,
+      "rect": {
+        "x": 468,
+        "y": 390,
+        "w": 680,
+        "h": 120
+      }
+    },
+    {
+      "kind": "click",
+      "t": 8.35,
+      "x": 808,
+      "y": 450
+    },
+    {
+      "kind": "ring",
+      "t0": 10.9,
+      "t1": 11.9,
+      "rect": {
+        "x": 950,
+        "y": 479,
+        "w": 132,
+        "h": 48
+      }
+    }
+  ],
+  "fx": {
+    "letterbox": true,
+    "vignette": true,
+    "grain": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Onboarding — three clicks to mastery",
+      "in": 0.2,
+      "out": 11.9
+    },
+    {
+      "kind": "caption",
+      "text": "In-store shopping? Start with a card.",
+      "in": 0.5,
+      "out": 2.8
+    },
+    {
+      "kind": "caption",
+      "text": "Sales tax, pre-filled: $100 + 8% = $108.",
+      "in": 3.7,
+      "out": 5.9
+    },
+    {
+      "kind": "caption",
+      "text": "Practical uses live under every calculator.",
+      "in": 6.7,
+      "out": 8.3
+    },
+    {
+      "kind": "caption",
+      "text": "$5,000 + 25% = $6,250. You're ready.",
+      "in": 10.1,
+      "out": 11.9
+    }
+  ]
+}

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Film 7 — Edu-Tainment (SaaS Brain Rot) · justpercent.com</title>
+<style>
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 300; src: url(fonts/ibm-plex-sans-latin-300-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; src: url(fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; src: url(fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 700; src: url(fonts/ibm-plex-sans-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 500; src: url(fonts/space-grotesk-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 700; src: url(fonts/space-grotesk-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400; src: url(fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 700; src: url(fonts/jetbrains-mono-latin-700-normal.woff2) format("woff2"); }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+  #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+  #frame { position: absolute; left: 50%; top: 50%;
+    width: 1080px; height: 1920px; overflow: hidden;
+    border-radius: 8px; transform-origin: center center; background: #0a0a12; }
+  .theme-light #frame { background: #d7d5e6; }
+
+  #bgfx { position: absolute; inset: -80px; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(100px); }
+  #orbA { width: 820px; height: 820px; background: rgba(182, 255, 61, .07); }
+  #orbB { width: 700px; height: 700px; background: rgba(255, 61, 138, .08); }
+  .theme-light #orbA { background: rgba(120, 200, 40, .12); }
+  .theme-light #orbB { background: rgba(255, 61, 138, .12); }
+
+  /* plate stack under a 2D camera */
+  #cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+    transform-origin: 0 0; will-change: transform; }
+  .plate { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+    display: none; }
+  #ghost { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+    transform-origin: 0 0; will-change: transform; opacity: 0; }
+  #ghost img { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+
+  /* overlays */
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0;
+    pointer-events: none; z-index: 26; }
+  #vig { position: absolute; inset: 0; opacity: 0; z-index: 20;
+    background: radial-gradient(ellipse at center,
+      rgba(255,30,30,0) 38%, rgba(255,30,30,.38) 100%); }
+  .xbar { position: absolute; left: 50%; top: 46%; width: 460px; height: 74px;
+    margin: -37px 0 0 -230px; background: #ff2e2e; border-radius: 20px;
+    box-shadow: 0 0 60px rgba(255,46,46,.65); opacity: 0; z-index: 21; }
+  #hl { position: absolute; border: 6px solid #b6ff3d; border-radius: 18px;
+    box-shadow: 0 0 40px rgba(182,255,61,.55); opacity: 0; z-index: 20; }
+  #ring { position: absolute; left: 50%; top: 50%; width: 400px; height: 400px;
+    margin: -200px 0 0 -200px; border: 10px solid rgba(255,255,255,.9);
+    border-radius: 50%; opacity: 0; z-index: 22; }
+  #cursor { position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px;
+    border-radius: 50%; background: #fff; border: 5px solid #14121f;
+    box-shadow: 0 6px 24px rgba(0,0,0,.5); opacity: 0; z-index: 24; }
+
+  #combo { position: absolute; right: 60px; top: 280px; z-index: 24;
+    font: 700 84px/1 "JetBrains Mono"; color: #b6ff3d;
+    text-shadow: 0 4px 0 rgba(0,0,0,.55), 0 0 34px rgba(182,255,61,.5);
+    opacity: 0; }
+  #comboSub { position: absolute; right: 60px; top: 375px; z-index: 24;
+    font: 700 30px/1 "JetBrains Mono"; color: rgba(255,255,255,.85);
+    letter-spacing: .12em; opacity: 0; }
+
+  #xp { position: absolute; left: 50%; top: 1560px; transform: translate(-50%,-50%);
+    background: linear-gradient(180deg, #ffd76a, #ffc63d);
+    border-radius: 48px; padding: 26px 52px; z-index: 25; opacity: 0;
+    box-shadow: 0 14px 50px rgba(255,198,61,.45); }
+  #xp span { font: 700 42px/1 "Space Grotesk"; color: #40300a; white-space: nowrap; }
+  .spark { position: absolute; left: 50%; top: 1560px; width: 14px; height: 14px;
+    border-radius: 50%; background: #ffd76a; opacity: 0; z-index: 24; }
+
+  /* persistent facecam */
+  #fc { position: absolute; left: 60px; bottom: 60px; width: 300px; height: 300px;
+    z-index: 30; }
+  #fcRing { position: absolute; inset: 0; border-radius: 50%;
+    border: 6px solid rgba(255,255,255,.92);
+    box-shadow: 0 10px 44px rgba(0,0,0,.5), 0 0 0 4px rgba(0,0,0,.25); }
+  #fcSlot { position: absolute; inset: 6px; border-radius: 50%;
+    border: 3px dashed rgba(255,255,255,.5); background: rgba(10,10,20,.72);
+    display: grid; place-items: center; text-align: center; }
+  #fcSlot b { display: block; font: 700 22px/1.3 "JetBrains Mono"; color: #fff; }
+  #fcSlot span { display: block; font: 400 17px/1.4 "JetBrains Mono";
+    color: rgba(255,255,255,.72); margin-top: 6px; }
+  #fcVid { position: absolute; inset: 6px; width: 288px; height: 288px;
+    border-radius: 50%; object-fit: cover; display: none; }
+
+  /* chip / captions */
+  #chip { position: absolute; left: 40px; top: 40px; z-index: 40;
+    background: rgba(10, 10, 22, .58); border: 1px solid rgba(255,255,255,.09);
+    border-radius: 14px; padding: 18px 24px; }
+  #chip .l1 { font: 700 27px/1.25 "JetBrains Mono"; color: #fff; letter-spacing: .03em; }
+  #chip .l2 { font: 400 22px/1.3 "JetBrains Mono"; color: rgba(255,255,255,.62); margin-top: 4px; }
+
+  #caption { position: absolute; left: 50%; bottom: 430px; z-index: 40;
+    transform: translateX(-50%); width: max-content; max-width: 950px;
+    text-align: center; background: rgba(8, 8, 16, .70); border-radius: 20px;
+    padding: 24px 38px; opacity: 0; }
+  #caption.alert { background: rgba(140, 12, 12, .82); }
+  #caption.low { bottom: 150px; }
+  #capBig { font: 700 52px/1.15 "Space Grotesk"; color: #fff;
+    text-shadow: 0 4px 0 rgba(0,0,0,.4); }
+
+  /* endcard */
+  .ecEl { position: absolute; left: 50%; transform: translate(-50%,-50%);
+    display: none; z-index: 32; }
+  #ecMark { top: 620px; font: 700 290px/1 "Space Grotesk";
+    background: linear-gradient(135deg, #a78bfa 20%, #22d3ee 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #ecBrand { top: 880px; font: 700 116px/1 "Space Grotesk"; color: #fff; white-space: nowrap; }
+  .theme-light #ecBrand { color: #191430; }
+  #ecPillW { top: 1120px; background: #fff; border-radius: 46px; padding: 26px 62px;
+    box-shadow: 0 18px 60px rgba(0,0,0,.35); }
+  #ecPillW span { font: 700 46px/1 "JetBrains Mono"; color: #14121f; }
+  #ecTag { top: 1280px; font: 300 44px/1.3 "IBM Plex Sans"; color: rgba(255,255,255,.85);
+    white-space: nowrap; }
+  .theme-light #ecTag { color: rgba(25, 20, 48, .85); }
+  #ecPills { top: 1410px; display: none; gap: 26px; }
+  #ecPills div { font: 600 34px/1 "IBM Plex Sans"; color: rgba(255,255,255,.9);
+    border: 2px solid rgba(255,255,255,.35); border-radius: 40px; padding: 18px 34px;
+    white-space: nowrap; }
+  .theme-light #ecPills div { color: rgba(25,20,48,.9); border-color: rgba(25,20,48,.35); }
+
+  #controls { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+    z-index: 90; display: flex; gap: 10px; align-items: center;
+    background: rgba(16,16,28,.85); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px; padding: 10px 16px; }
+  #controls button { font: 600 15px/1 "IBM Plex Sans", sans-serif; color: #fff;
+    background: rgba(255,255,255,.12); border: 0; border-radius: 9px;
+    padding: 10px 16px; cursor: pointer; }
+  #scrub { width: 260px; accent-color: #b6ff3d; }
+  #tlabel { font: 400 14px/1 "JetBrains Mono"; color: #fff; min-width: 64px; }
+  #loading { position: fixed; inset: 0; display: grid; place-items: center;
+    background: #0a0a12; color: #889; font: 400 18px/1 "JetBrains Mono", monospace;
+    z-index: 99; }
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="frame">
+    <div id="bgfx"><div class="orb" id="orbA"></div><div class="orb" id="orbB"></div></div>
+
+    <div id="ghost"><img id="ghostImg" alt="" /></div>
+    <div id="cam"></div>
+
+    <div id="vig"></div>
+    <div class="xbar" id="xb1"></div>
+    <div class="xbar" id="xb2"></div>
+    <div id="hl"></div>
+    <div id="ring"></div>
+    <div id="cursor"></div>
+    <div id="flash"></div>
+
+    <div id="combo">×1</div>
+    <div id="comboSub">KEYSTROKE COMBO</div>
+    <div id="xp"><span></span></div>
+
+    <div class="ecEl" id="ecMark">%</div>
+    <div class="ecEl" id="ecBrand"></div>
+    <div class="ecEl" id="ecPillW"><span></span></div>
+    <div class="ecEl" id="ecTag"></div>
+    <div class="ecEl" id="ecPills"></div>
+
+    <div id="fc">
+      <div id="fcSlot"><div><b>VIDEO PLACEHOLDER</b><span>drop assets/facecam.mp4</span></div></div>
+      <video id="fcVid" muted playsinline preload="auto"></video>
+      <div id="fcRing"></div>
+    </div>
+
+    <div id="chip"><div class="l1"></div><div class="l2"></div></div>
+    <div id="caption"><div id="capBig"></div></div>
+  </div>
+</div>
+
+<div id="controls">
+  <button id="btnPlay">▶ Play</button>
+  <button id="btnRestart">↺</button>
+  <button id="btnTheme">🌙 Dark</button>
+  <input id="scrub" type="range" min="0" max="40000" value="0" step="33" />
+  <span id="tlabel">0.00s</span>
+</div>
+<div id="loading">loading the brain rot…</div>
+
+<script src="configs.js"></script>
+<script src="geometry.js"></script>
+<script>
+(() => {
+  const CFG = window.F7, GEO = window.F7GEO;
+  const B = CFG.beats, P = CFG.punch, K = CFG.meta.cssToStage;
+  const D = CFG.meta.duration * 1000, FPS = CFG.meta.fps;
+  const $ = (id) => document.getElementById(id);
+  const frame = $("frame");
+
+  const Q = new URLSearchParams(location.search);
+  const REC = Q.has("rec");
+  let THEME = Q.get("theme") === "light" ? "light" : "dark";
+
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const norm = (t, a, b) => clamp01((t - a) / (b - a));
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const EASE = {
+    io: (u) => (u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2),
+    o: (u) => 1 - Math.pow(1 - u, 3),
+    i: (u) => u * u * u,
+    back: (u) => { const c = 1.70158; return 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2); }
+  };
+  const rnd = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+  $("chip").querySelector(".l1").textContent =
+    `TECHNIQUE ${CFG.meta.id}/7 · ${CFG.meta.technique}`;
+  $("chip").querySelector(".l2").textContent = CFG.meta.detail;
+  $("ecBrand").textContent = CFG.endCopy.brand;
+  $("ecPillW").querySelector("span").textContent = CFG.endCopy.url;
+  $("ecTag").textContent = CFG.endCopy.tagline;
+  $("ecPills").innerHTML = CFG.endCopy.pills.map((p) => `<div>${p}</div>`).join("");
+  $("xp").querySelector("span").textContent = CFG.xp.text;
+
+  // sparks around the XP badge
+  const sparks = [];
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement("div");
+    s.className = "spark";
+    $("frame").appendChild(s);
+    sparks.push(s);
+  }
+
+  // ---------- plates ----------
+  const PLATES = ["home", "home-cards", "key-t", "key-ti", "key-tip",
+    "selected", "selected-calc", "inc-pinned", "faq"];
+  const plateEls = {};
+  let preload = [];
+  function buildPlates(theme) {
+    $("cam").innerHTML = "";
+    for (const p of PLATES) {
+      const im = new Image();
+      im.className = "plate";
+      im.src = `assets/${p}-${theme}.png`;
+      preload.push(im.decode ? im.decode().catch(() => {}) : Promise.resolve());
+      $("cam").appendChild(im);
+      plateEls[p] = im;
+    }
+  }
+
+  // facecam video (optional)
+  const fcVid = $("fcVid");
+  let fcOk = false;
+  fcVid.addEventListener("loadeddata", () => {
+    fcOk = true; fcVid.style.display = "block"; $("fcSlot").style.display = "none";
+  });
+  fcVid.addEventListener("error", () => { fcOk = false; });
+  fcVid.src = "assets/facecam.mp4";
+
+  async function setTheme(theme) {
+    THEME = theme;
+    document.body.classList.toggle("theme-light", theme === "light");
+    $("btnTheme").textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+    preload = [];
+    buildPlates(theme);
+    await Promise.all(preload);
+  }
+
+  // geometry helpers (CSS px viewport rects → stage px)
+  const R = (path) => {
+    let o = GEO[THEME];
+    for (const k of path.split(".")) { o = o?.[k]; if (!o) return null; }
+    return { x: o.x * K, y: o.y * K, w: o.w * K, h: o.h * K };
+  };
+  const rc = (r) => ({ cx: r.x + r.w / 2, cy: r.y + r.h / 2 });
+
+  // ---------- camera poses ----------
+  // pose = { plate, s, cx, cy, screenCy (default 880 for punches / 960 fits), rz }
+  const FIT = (plate) => ({ plate, s: 1, cx: 540, cy: 960, screenCy: 960, rz: 0 });
+
+  function applyPose(pose, shakeSeed, shakeAmp) {
+    const sy = pose.screenCy ?? 880;
+    let tx = 540 - pose.cx * pose.s;
+    let ty = sy - pose.cy * pose.s;
+    if (shakeAmp) {
+      tx += (rnd(shakeSeed) - .5) * 2 * shakeAmp;
+      ty += (rnd(shakeSeed + 50) - .5) * 2 * shakeAmp;
+    }
+    const cam = $("cam");
+    cam.style.transform =
+      `translate(${tx}px, ${ty}px) rotate(${pose.rz || 0}deg) scale(${pose.s})`;
+    for (const p of PLATES) {
+      plateEls[p].style.display = p === pose.plate ? "block" : "none";
+    }
+    return { tx, ty };
+  }
+
+  // punch dynamics: hard cut to overshoot, settle over settleFrames
+  function punched(t, at, base, target, sMax) {
+    if (t < at) return base;
+    const f = (t - at) * FPS;
+    const { cx, cy } = rc(target);
+    let s, rz = 0, shake = 0;
+    if (f < P.cutFrames) { s = sMax * P.overshoot; shake = P.shakePx; }
+    else {
+      const u = clamp01((f - P.cutFrames) / P.settleFrames);
+      s = sMax * lerp(P.overshoot, 1, EASE.o(u));
+      rz = P.rot * (1 - u) * (rnd(Math.floor(at * 97)) > .5 ? 1 : -1);
+      shake = P.shakePx * (1 - u) * .6;
+    }
+    return { plate: base.plate, s, cx, cy, screenCy: 880, rz, shake };
+  }
+
+  function sweepPose(t) {
+    const keys = CFG.sweep;
+    let plate = "home";
+    if (t >= B.keyTip) plate = "key-tip";
+    else if (t >= B.keyTi) plate = "key-ti";
+    else if (t >= B.keyT) plate = "key-t";
+    if (t <= keys[0].t) return { plate, ...keys[0] };
+    if (t >= keys[keys.length - 1].t) return { plate, ...keys[keys.length - 1] };
+    for (let i = 0; i < keys.length - 1; i++) {
+      const a = keys[i], b = keys[i + 1];
+      if (t >= a.t && t <= b.t) {
+        const u = EASE.io(norm(t, a.t, b.t));
+        return {
+          plate, s: lerp(a.s, b.s, u), cx: lerp(a.cx, b.cx, u),
+          cy: lerp(a.cy, b.cy, u), rz: lerp(a.rz, b.rz, u), screenCy: 880,
+          vel: Math.abs(b.cy - a.cy) / (b.t - a.t)
+        };
+      }
+    }
+    return { plate, ...keys[0] };
+  }
+
+  // ---------- effect renderers ----------
+  function showRing(t, at) {
+    const u = norm(t, at, at + P.ringDur);
+    if (u <= 0 || u >= 1) { $("ring").style.opacity = 0; return; }
+    $("ring").style.opacity = (1 - u) * .9;
+    $("ring").style.transform = `scale(${lerp(.25, 1.7, EASE.o(u))})`;
+  }
+
+  function comboTick(t) {
+    const c = $("combo"), cs = $("comboSub");
+    let n = 0;
+    if (t >= B.keyT) n = 1;
+    if (t >= B.keyTi) n = 2;
+    if (t >= B.keyTip) n = 3;
+    if (n === 0 || t > B.sweepEnd + .6) { c.style.opacity = 0; cs.style.opacity = 0; return; }
+    const last = n === 3 ? B.keyTip : n === 2 ? B.keyTi : B.keyT;
+    const pop = 1 + .45 * (1 - EASE.o(norm(t, last, last + .3)));
+    c.textContent = "×" + n;
+    c.style.opacity = 1; cs.style.opacity = .9;
+    c.style.transform = `scale(${pop})`;
+    c.style.transformOrigin = "100% 50%";
+  }
+
+  function keyFlash(t) {
+    const f = $("flash");
+    let op = 0;
+    for (const at of [B.keyT, B.keyTi, B.keyTip, B.gagSnap, B.selectedIn,
+      B.incIn, B.faqIn, ...B.recap]) {
+      if (t >= at && t < at + 1 / FPS) op = .28;
+    }
+    f.style.opacity = op;
+  }
+
+  // ---------- master render ----------
+  function renderFrame(ms) {
+    const t = ms / 1000;
+
+    $("orbA").style.transform =
+      `translate(${-120 + 50 * Math.sin(t * .13)}px, ${1200 + 60 * Math.sin(t * .09 + 2)}px)`;
+    $("orbB").style.transform =
+      `translate(${640 + 55 * Math.sin(t * .11 + 4)}px, ${140 + 46 * Math.sin(t * .08)}px)`;
+
+    // defaults each frame
+    $("vig").style.opacity = 0;
+    $("xb1").style.opacity = 0; $("xb2").style.opacity = 0;
+    $("hl").style.opacity = 0;
+    $("cursor").style.opacity = 0;
+    $("ring").style.opacity = 0;
+    $("xp").style.opacity = 0;
+    sparks.forEach((s) => (s.style.opacity = 0));
+    $("ghost").style.opacity = 0;
+    $("cam").style.opacity = 1;
+
+    let pose = FIT("home");
+    let shakeAmp = 0, shakeSeed = Math.floor(ms / 33);
+
+    if (t < B.openEnd) {
+      // 1 · cold open: two stepped punches into the search box
+      const search = R("home.search");
+      pose = FIT("home");
+      if (search) {
+        const c = rc(search);
+        if (t >= B.openPunch2) {
+          const p = punched(t, B.openPunch2, pose, search, 1.5);
+          pose = p; shakeAmp = p.shake || 0;
+        } else if (t >= B.openPunch1) {
+          const p = punched(t, B.openPunch1, pose, search, 1.3);
+          pose = p; shakeAmp = p.shake || 0;
+        } else {
+          const u = EASE.o(norm(t, 0, B.openPunch1));
+          pose = { plate: "home", s: lerp(1, 1.08, u), cx: lerp(540, c.cx, u),
+            cy: lerp(960, c.cy, u), screenCy: 900, rz: 0 };
+        }
+      }
+    } else if (t < B.sweepEnd) {
+      // 2 · FPV sweep + keystroke snaps
+      pose = sweepPose(t);
+      // motion-blur ghost during fast vertical moves
+      if (pose.vel > 400) {
+        const g = $("ghost");
+        g.style.opacity = .22;
+        $("ghostImg").src = plateEls[pose.plate].src;
+        const off = Math.min(26, pose.vel * .02);
+        g.style.transform = $("cam").style.transform + ` translate(0px, ${off}px)`;
+      }
+    } else if (t < B.gagEnd) {
+      // 3 · wrong-way gag
+      if (t < B.gagSnap) {
+        const cta = R("gag.totalPrice.cta") || { x: 300, y: 1000, w: 700, h: 100 };
+        const c = rc(cta);
+        const uPush = EASE.io(norm(t, B.sweepEnd, B.gagFreeze));
+        pose = { plate: "home-cards", s: lerp(1.12, 1.34, uPush),
+          cx: lerp(540, c.cx, uPush), cy: lerp(960, c.cy, uPush), screenCy: 880, rz: 0 };
+        // cursor drifts toward the WRONG card
+        const cu = EASE.io(norm(t, B.sweepEnd + .2, B.gagFreeze - .05));
+        const from = CFG.gag.cursorFrom;
+        // cursor in SCREEN space: project plate point through the pose
+        const px = lerp(from.x, 540, cu);       // ends at screen center (target centered)
+        const py = lerp(from.y, 880, cu);
+        $("cursor").style.opacity = 1;
+        $("cursor").style.left = px + "px";
+        $("cursor").style.top = py + "px";
+        if (t >= B.gagFreeze) {
+          // freeze-frame: red vignette + ✕ + shake
+          $("vig").style.opacity = EASE.o(norm(t, B.gagFreeze, B.gagFreeze + .12));
+          const xu = EASE.o(norm(t, B.gagFreeze + .05, B.gagFreeze + .25));
+          $("xb1").style.opacity = xu;
+          $("xb2").style.opacity = xu;
+          $("xb1").style.transform = `rotate(45deg) scaleX(${xu})`;
+          $("xb2").style.transform = `rotate(-45deg) scaleX(${xu})`;
+          if ((t - B.gagFreeze) * FPS < 2) shakeAmp = 10;
+        }
+      } else if (t < B.selectedIn) {
+        // snap-cut: dropdown with the Restaurant Tip row highlighted
+        const row = GEO[THEME].tipRow?.rect;
+        const rr = row ? { x: row.x * K, y: row.y * K, w: row.w * K, h: row.h * K }
+          : { x: 80, y: 400, w: 920, h: 280 };
+        const c = rc(rr);
+        pose = { plate: "key-tip", s: 1.55, cx: c.cx, cy: c.cy, screenCy: 860, rz: 0 };
+        // highlight box around the row (screen space)
+        const hw = rr.w * pose.s, hh = rr.h * pose.s;
+        const hl = $("hl");
+        const pulse = 1 + .02 * Math.sin(t * 14);
+        hl.style.opacity = 1;
+        hl.style.left = 540 - (hw * pulse) / 2 + "px";
+        hl.style.top = 860 - (hh * pulse) / 2 + "px";
+        hl.style.width = hw * pulse + "px";
+        hl.style.height = hh * pulse + "px";
+        if (t >= B.rowPress) {
+          hl.style.background = "rgba(182,255,61,.18)";
+          pose.s = 1.55 * (1 - .025 * EASE.o(norm(t, B.rowPress, B.rowPress + .15)));
+        } else hl.style.background = "transparent";
+      } else {
+        // landed: answer region of the pinned basic calculator
+        const u = EASE.o(norm(t, B.selectedIn, B.selectedIn + .6));
+        pose = { plate: "selected", s: lerp(1.18, 1.06, u), cx: 540,
+          cy: lerp(700, 860, u), screenCy: 880, rz: 0 };
+      }
+    } else if (t < B.incIn) {
+      // 4a · zoom punches on the re-framed calculator
+      pose = FIT("selected-calc");
+      pose.screenCy = 880;
+      const pct = R("calc.pct"), num = R("calc.num"), res = R("calc.result");
+      if (t >= B.punch9 && res) {
+        const again = t >= B.punch9 + .25 ? .06 : 0;   // double punch
+        const p = punched(t, B.punch9, pose, res, P.scale + again);
+        pose = p; shakeAmp = p.shake || 0;
+        showRing(t, B.punch9); showRing(t, B.punch9 + .25);
+      } else if (t >= B.punch60 && num) {
+        const p = punched(t, B.punch60, pose, num, P.scale);
+        pose = p; shakeAmp = p.shake || 0; showRing(t, B.punch60);
+      } else if (t >= B.punch15 && pct) {
+        const p = punched(t, B.punch15, pose, pct, P.scale);
+        pose = p; shakeAmp = p.shake || 0; showRing(t, B.punch15);
+      } else {
+        const u = EASE.o(norm(t, B.gagEnd, B.punch15));
+        pose = { plate: "selected-calc", s: lerp(1.0, 1.1, u), cx: 540, cy: 700,
+          screenCy: 880, rz: 0 };
+      }
+      // XP badge
+      if (t >= B.xpIn && t <= B.xpOut) {
+        const xu = EASE.back(norm(t, B.xpIn, B.xpIn + .45));
+        const xo = 1 - EASE.i(norm(t, B.xpOut - .3, B.xpOut));
+        const xp = $("xp");
+        xp.style.opacity = Math.min(1, xu) * xo;
+        xp.style.transform = `translate(-50%,-50%) scale(${Math.max(.2, xu)})`;
+        sparks.forEach((s, i) => {
+          const su = norm(t, B.xpIn + .1, B.xpIn + .8);
+          if (su <= 0 || su >= 1) return;
+          const a = (i / 8) * Math.PI * 2 + rnd(i) * .5;
+          const rr2 = lerp(60, 240, EASE.o(su));
+          s.style.opacity = (1 - su) * xo;
+          s.style.transform =
+            `translate(${Math.cos(a) * rr2}px, ${Math.sin(a) * rr2 - 0}px)`;
+        });
+      }
+    } else if (t < B.faqIn) {
+      // 4b · the raise flow
+      pose = FIT("inc-pinned");
+      pose.screenCy = 880;
+      const res = R("inc.result");
+      if (t >= B.punch6250 && res) {
+        const p = punched(t, B.punch6250, pose, res, P.scale);
+        pose = p; shakeAmp = p.shake || 0; showRing(t, B.punch6250);
+      } else {
+        const u = EASE.o(norm(t, B.incIn, B.punch6250));
+        pose = { plate: "inc-pinned", s: lerp(1.0, 1.08, u), cx: 540,
+          cy: lerp(960, 800, u), screenCy: 900, rz: 0 };
+      }
+    } else if (t < B.recap[0]) {
+      // 5 · FAQ flex
+      pose = FIT("faq");
+      const res = R("faq.result");
+      if (t >= B.faqPunch && res) {
+        if (t < B.faqPunch + 1.6) {
+          const p = punched(t, B.faqPunch, pose, res, P.scale);
+          pose = p; shakeAmp = p.shake || 0; showRing(t, B.faqPunch);
+        } else {
+          const u = EASE.io(norm(t, B.faqPunch + 1.6, B.faqEnd));
+          const c = rc(res);
+          pose = { plate: "faq", s: lerp(P.scale, 1.25, u), cx: lerp(c.cx, 540, u),
+            cy: lerp(c.cy, 820, u), screenCy: 880, rz: 0 };
+        }
+      } else {
+        const u = EASE.io(norm(t, B.faqIn, B.faqPunch));
+        pose = { plate: "faq", s: lerp(1.0, 1.22, u), cx: 540,
+          cy: lerp(960, 760, u), screenCy: 900, rz: 0 };
+      }
+    } else if (t < B.endcardIn) {
+      // 6 · recap montage
+      const plates = ["key-tip", "selected-calc", "inc-pinned", "faq"];
+      const rects = [
+        GEO[THEME].tipRow?.rect
+          ? { x: GEO[THEME].tipRow.rect.x * K, y: GEO[THEME].tipRow.rect.y * K,
+              w: GEO[THEME].tipRow.rect.w * K, h: GEO[THEME].tipRow.rect.h * K }
+          : null,
+        R("calc.result"), R("inc.result"), R("faq.result")
+      ];
+      let i = 0;
+      for (let k = B.recap.length - 1; k >= 0; k--) {
+        if (t >= B.recap[k]) { i = k; break; }
+      }
+      const base = FIT(plates[i]);
+      base.screenCy = 880;
+      if (rects[i]) {
+        const p = punched(t, B.recap[i], base, rects[i], 1.5);
+        pose = p; shakeAmp = p.shake || 0;
+      } else pose = base;
+      if (t > B.recapEnd) {
+        $("cam").style.opacity = 1 - norm(t, B.recapEnd, B.endcardIn);
+      }
+    } else {
+      // 7 · endcard (no plate)
+      $("cam").style.opacity = 0;
+      pose = null;
+    }
+
+    if (pose) applyPose(pose, shakeSeed, shakeAmp);
+    keyFlash(t);
+    comboTick(t);
+
+    // endcard
+    const ecEls = [$("ecMark"), $("ecBrand"), $("ecPillW"), $("ecTag"), $("ecPills")];
+    if (t >= B.endcardIn) {
+      ecEls.forEach((el, i) => {
+        const inU = EASE.o(norm(t, B.endcardIn + .2 + i * .14, B.endcardIn + .2 + i * .14 + .6));
+        el.style.opacity = inU;
+        el.style.display = inU > .01 ? (el === $("ecPills") ? "flex" : "block") : "none";
+        el.style.transform = `translate(-50%,-50%) translateY(${(1 - inU) * 60}px)`;
+      });
+    } else ecEls.forEach((el) => (el.style.display = "none"));
+
+    // facecam slide-out
+    const fc = $("fc");
+    const fu = EASE.i(norm(t, CFG.facecam.outStart, CFG.facecam.outEnd));
+    fc.style.transform = `translateY(${fu * 430}px)`;
+    fc.style.opacity = 1 - fu;
+    syncFacecam(t);
+
+    // captions
+    let cap = null;
+    for (const c of CFG.captions) if (t >= c.t0 && t <= c.t1) { cap = c; break; }
+    const capEl = $("caption");
+    if (cap) {
+      const inU = EASE.o(norm(t, cap.t0, cap.t0 + .22));
+      const outU = EASE.i(clamp01((cap.t1 - t) / .2));
+      capEl.style.opacity = Math.min(inU, outU);
+      capEl.classList.toggle("alert", cap.style === "alert");
+      capEl.classList.toggle("low", cap.style === "low");
+      const kick = cap.style === "alert" && (t - cap.t0) * FPS < 2 ? 8 : 0;
+      capEl.style.transform =
+        `translateX(calc(-50% + ${(rnd(shakeSeed) - .5) * 2 * kick}px)) ` +
+        `translateY(${(1 - inU) * 36 + (rnd(shakeSeed + 9) - .5) * 2 * kick}px)`;
+      if ($("capBig").textContent !== cap.big) $("capBig").textContent = cap.big;
+    } else capEl.style.opacity = 0;
+  }
+
+  function syncFacecam(t) {
+    if (!fcOk) return;
+    const dur = fcVid.duration || 0;
+    if (!dur) return;
+    const want = Math.min(dur - .05, t);
+    if (playing) {
+      if (fcVid.paused) { try { fcVid.currentTime = want; fcVid.play().catch(() => {}); } catch {} }
+      else if (Math.abs(fcVid.currentTime - want) > .2) fcVid.currentTime = want;
+    } else {
+      if (!fcVid.paused) fcVid.pause();
+      if (Math.abs(fcVid.currentTime - want) > .03) { try { fcVid.currentTime = want; } catch {} }
+    }
+  }
+
+  // ---------- master clock ----------
+  let playing = false, t0 = 0, tAcc = 0, stopAt = null;
+  const now = () => performance.now();
+  const curT = () => (playing ? Math.min(D, tAcc + now() - t0) : tAcc);
+  function seek(ms) { tAcc = Math.max(0, Math.min(D, ms)); t0 = now(); renderFrame(tAcc); sync(); }
+  function play() {
+    if (playing) return;
+    if (tAcc >= D) tAcc = 0;
+    playing = true; t0 = now(); $("btnPlay").textContent = "⏸ Pause"; tick();
+  }
+  function pause() {
+    tAcc = curT(); playing = false; $("btnPlay").textContent = "▶ Play";
+    if (!fcVid.paused) fcVid.pause();
+  }
+  function tick() {
+    if (!playing) return;
+    const t = curT();
+    renderFrame(t); sync();
+    if (stopAt != null && t >= stopAt) { stopAt = null; pause(); return; }
+    if (t >= D) { pause(); return; }
+    requestAnimationFrame(tick);
+  }
+  function sync() {
+    const t = curT();
+    $("scrub").value = t; $("tlabel").textContent = (t / 1000).toFixed(2) + "s";
+  }
+
+  $("btnPlay").onclick = () => (playing ? pause() : play());
+  $("btnRestart").onclick = () => { pause(); seek(0); };
+  $("btnTheme").onclick = () => setTheme(THEME === "dark" ? "light" : "dark")
+    .then(() => renderFrame(curT()));
+  $("scrub").oninput = (e) => { pause(); seek(+e.target.value); };
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === "r" || e.key === "R") { pause(); seek(0); }
+  });
+  if (REC) $("controls").style.display = "none";
+
+  // fit stage to window (robust centering)
+  function fit() {
+    const s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    frame.style.transform = `translate(-50%,-50%) scale(${s})`;
+    frame.style.transformOrigin = "center center";
+  }
+  addEventListener("resize", fit); fit();
+
+  const videoSeeked = (v) => new Promise((res) => {
+    if (v.readyState < 2) return res();
+    const to = setTimeout(done, 800);
+    function done() { clearTimeout(to); v.removeEventListener("seeked", done); res(); }
+    if (v.seeking) v.addEventListener("seeked", done); else done();
+  });
+
+  window.__f7Seek = async (sec, theme) => {
+    if (theme && theme !== THEME) await setTheme(theme);
+    pause(); seek(sec * 1000);
+    if (fcOk) await videoSeeked(fcVid);
+    renderFrame(sec * 1000);
+    return true;
+  };
+
+  setTheme(THEME).then(() => {
+    $("loading").style.display = "none";
+    const tq = Q.get("t"), stq = Q.get("stop");
+    if (stq) stopAt = +stq;
+    seek(tq ? +tq : 0);
+    if (!tq || stq) { if (!Q.has("pause")) play(); }
+  });
+})();
+</script>
+</body>
+</html>

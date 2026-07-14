@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Film 4 — Hyper-Mixed Media · justpercent.com</title>
+<style>
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 300; src: url(fonts/ibm-plex-sans-latin-300-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; src: url(fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; src: url(fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 700; src: url(fonts/ibm-plex-sans-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 500; src: url(fonts/space-grotesk-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 700; src: url(fonts/space-grotesk-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400; src: url(fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 700; src: url(fonts/jetbrains-mono-latin-700-normal.woff2) format("woff2"); }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+  #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+  #frame { position: absolute; left: 50%; top: 50%;
+    width: 1080px; height: 1920px; overflow: hidden;
+    border-radius: 8px; transform-origin: center center; background: #1a140e; }
+  .theme-light #frame { background: #efe3c8; }
+
+  /* paper backdrop (deterministic SVG noise, baked as data URI) */
+  #paper { position: absolute; inset: 0; opacity: .55; }
+  .theme-light #paper { opacity: .8; }
+
+  .doodle { position: absolute; font: 700 34px/1 "JetBrains Mono";
+    color: rgba(255,255,255,.10); transform: rotate(-14deg); }
+  .theme-light .doodle { color: rgba(40,28,10,.14); }
+
+  /* scrapbook paper frames */
+  .pframe { position: absolute; left: 70px; top: 220px; width: 940px; height: 1500px;
+    background: #f6efdd; padding: 26px; display: none;
+    box-shadow: 0 30px 80px rgba(0,0,0,.45);
+    will-change: transform; }
+  .pframe .ph { position: relative; width: 888px; height: 1448px; overflow: hidden;
+    background: #ddd; }
+  .pframe img, .pframe .pan { position: absolute; left: 0; top: 0; width: 888px; }
+  .pframe .pan { height: 1448px; background-repeat: no-repeat;
+    background-size: 888px auto; }
+  .tape { position: absolute; width: 220px; height: 64px;
+    background: linear-gradient(180deg, rgba(255,255,240,.5), rgba(255,255,240,.34));
+    box-shadow: 0 4px 14px rgba(0,0,0,.18); z-index: 5; }
+
+  /* photocopy treatment for scene 2 */
+  #frameA .ph img { filter: grayscale(1) contrast(1.35) brightness(1.06); }
+
+  svg.marker { position: absolute; inset: 0; z-index: 6; overflow: visible;
+    pointer-events: none; }
+  svg.marker path, svg.marker ellipse {
+    fill: none; stroke: #e0342b; stroke-width: 11; stroke-linecap: round; }
+
+  /* cutout paper captions */
+  .cutout { position: absolute; z-index: 26; background: #fbf5e4;
+    padding: 22px 38px; box-shadow: 0 14px 34px rgba(0,0,0,.35);
+    font: 700 58px/1 "Space Grotesk"; color: #221c14; display: none;
+    will-change: transform; white-space: nowrap; }
+
+  /* marker scribble captions */
+  .scribble { position: absolute; z-index: 27; font: 700 84px/1 Georgia, serif;
+    font-style: italic; color: #e0342b; display: none;
+    text-shadow: 0 3px 0 rgba(0,0,0,.18); white-space: nowrap; }
+
+  /* video placeholders */
+  #slotFull { position: absolute; inset: 0; z-index: 18; display: none;
+    background: #17110c; }
+  #slotFull .box { position: absolute; inset: 60px;
+    border: 3px dashed rgba(255,255,255,.4); border-radius: 24px; }
+  #slotFull .lbl { position: absolute; left: 50%; top: 46%;
+    transform: translate(-50%,-50%); text-align: center;
+    background: rgba(8,8,16,.7); border-radius: 16px; padding: 26px 36px; }
+  #slotFull b { display: block; font: 700 36px/1.3 "JetBrains Mono"; color: #fff; }
+  #slotFull span { display: block; font: 400 26px/1.5 "JetBrains Mono";
+    color: rgba(255,255,255,.75); margin-top: 8px; }
+  #slotCorner { position: absolute; left: 56px; bottom: 210px; width: 470px;
+    height: 350px; z-index: 26; background: #fbf5e4; padding: 16px;
+    box-shadow: 0 18px 44px rgba(0,0,0,.4); display: none; will-change: transform; }
+  #slotCorner .inner { position: absolute; inset: 16px;
+    border: 3px dashed rgba(30,20,10,.45); background: #241c12;
+    display: grid; place-items: center; text-align: center; }
+  #slotCorner b { display: block; font: 700 24px/1.3 "JetBrains Mono"; color: #fff; }
+  #slotCorner span { display: block; font: 400 19px/1.4 "JetBrains Mono";
+    color: rgba(255,255,255,.7); margin-top: 6px; }
+
+  /* datamosh layer */
+  #mosh { position: absolute; inset: 0; z-index: 30; display: none;
+    background: #0a0a10; overflow: hidden; }
+  #mosh .rgb { position: absolute; inset: 0; width: 1080px; height: 1920px;
+    object-fit: cover; }
+  #moshR { mix-blend-mode: screen; filter: saturate(3) hue-rotate(-50deg) brightness(.9); }
+  #moshG { mix-blend-mode: screen; filter: saturate(3) hue-rotate(90deg) brightness(.65); }
+  #moshB { mix-blend-mode: screen; filter: saturate(3) hue-rotate(190deg) brightness(.7); }
+  .slice { position: absolute; left: 0; width: 1080px; overflow: hidden; z-index: 4; }
+  .slice img { position: absolute; left: 0; width: 1080px; height: 1920px;
+    object-fit: cover; }
+  #scan { position: absolute; inset: 0; z-index: 6;
+    background: repeating-linear-gradient(0deg,
+      rgba(255,255,255,.09) 0 3px, transparent 3px 9px); }
+
+  #chip { position: absolute; left: 40px; top: 40px; z-index: 40;
+    background: rgba(10, 10, 22, .62); border: 1px solid rgba(255,255,255,.09);
+    border-radius: 14px; padding: 18px 24px; }
+  #chip .l1 { font: 700 27px/1.25 "JetBrains Mono"; color: #fff; letter-spacing: .03em; }
+  #chip .l2 { font: 400 22px/1.3 "JetBrains Mono"; color: rgba(255,255,255,.62); margin-top: 4px; }
+
+  #caption { position: absolute; left: 50%; bottom: 240px; z-index: 40;
+    transform: translateX(-50%); width: max-content; max-width: 950px;
+    text-align: center; background: rgba(8, 8, 16, .72); border-radius: 20px;
+    padding: 24px 38px; opacity: 0; }
+  #capBig { font: 600 50px/1.2 "IBM Plex Sans"; color: #fff; }
+  #capSub { font: 300 32px/1.35 "IBM Plex Sans"; color: rgba(255,255,255,.78); margin-top: 6px; }
+
+  /* endcard + torn paper edge */
+  #ecPaper { position: absolute; left: -20px; right: -20px; top: -14px; height: 150px;
+    background: #f6efdd; z-index: 31; display: none;
+    clip-path: polygon(0 0, 100% 0, 100% 58%, 96% 72%, 91% 55%, 85% 76%, 79% 58%,
+      72% 80%, 65% 60%, 58% 78%, 50% 58%, 43% 80%, 36% 62%, 29% 78%, 22% 58%,
+      15% 76%, 9% 58%, 4% 74%, 0 60%); }
+  .ecEl { position: absolute; left: 50%; transform: translate(-50%,-50%);
+    display: none; z-index: 32; }
+  #ecMark { top: 640px; font: 700 290px/1 "Space Grotesk";
+    background: linear-gradient(135deg, #a78bfa 20%, #22d3ee 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #ecBrand { top: 900px; font: 700 116px/1 "Space Grotesk"; color: #fff; white-space: nowrap; }
+  .theme-light #ecBrand { color: #191430; }
+  #ecPillW { top: 1140px; background: #fff; border-radius: 46px; padding: 26px 62px;
+    box-shadow: 0 18px 60px rgba(0,0,0,.35); }
+  #ecPillW span { font: 700 46px/1 "JetBrains Mono"; color: #14121f; }
+  #ecTag { top: 1300px; font: 300 44px/1.3 "IBM Plex Sans"; color: rgba(255,255,255,.85);
+    white-space: nowrap; }
+  .theme-light #ecTag { color: rgba(25, 20, 48, .85); }
+  #ecPills { top: 1430px; display: none; gap: 26px; }
+  #ecPills div { font: 600 34px/1 "IBM Plex Sans"; color: rgba(255,255,255,.9);
+    border: 2px solid rgba(255,255,255,.35); border-radius: 40px; padding: 18px 34px;
+    white-space: nowrap; }
+  .theme-light #ecPills div { color: rgba(25,20,48,.9); border-color: rgba(25,20,48,.35); }
+
+  #controls { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+    z-index: 90; display: flex; gap: 10px; align-items: center;
+    background: rgba(16,16,28,.85); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px; padding: 10px 16px; }
+  #controls button { font: 600 15px/1 "IBM Plex Sans", sans-serif; color: #fff;
+    background: rgba(255,255,255,.12); border: 0; border-radius: 9px;
+    padding: 10px 16px; cursor: pointer; }
+  #scrub { width: 260px; accent-color: #e0342b; }
+  #tlabel { font: 400 14px/1 "JetBrains Mono"; color: #fff; min-width: 64px; }
+  #loading { position: fixed; inset: 0; display: grid; place-items: center;
+    background: #1a140e; color: #a89; font: 400 18px/1 "JetBrains Mono", monospace;
+    z-index: 99; }
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="frame">
+    <div id="paper"></div>
+    <div class="doodle" style="left:70px; top:1700px;">15% of 60 = ?</div>
+    <div class="doodle" style="left:760px; top:180px; transform:rotate(9deg);">÷ × %</div>
+
+    <div id="slotFull">
+      <div class="box"></div>
+      <div class="lbl"><b>VIDEO PLACEHOLDER</b><span>drop assets/opening-live-action.mp4</span></div>
+      <video id="vidFull" muted playsinline preload="auto"
+        style="position:absolute; inset:0; width:1080px; height:1920px;
+        object-fit:cover; display:none;"></video>
+    </div>
+
+    <div class="pframe" id="frameA"><div class="ph">
+      <img id="imgA" alt="" />
+      <svg class="marker" id="mkA" viewBox="0 0 888 1448"></svg>
+    </div>
+      <div class="tape" style="left:-40px; top:-26px; transform:rotate(-8deg);"></div>
+      <div class="tape" style="right:-46px; top:-20px; transform:rotate(6deg);"></div>
+    </div>
+
+    <div class="pframe" id="frameB"><div class="ph">
+      <div class="pan" id="panB"></div>
+    </div>
+      <div class="tape" style="left:330px; top:-30px; transform:rotate(-2deg);"></div>
+    </div>
+
+    <div class="pframe" id="frameC"><div class="ph">
+      <img id="imgC" alt="" />
+      <svg class="marker" id="mkC" viewBox="0 0 888 1448"></svg>
+    </div>
+      <div class="tape" style="left:-40px; top:520px; transform:rotate(84deg);"></div>
+      <div class="tape" style="right:-44px; top:-24px; transform:rotate(7deg);"></div>
+    </div>
+
+    <div class="cutout" id="cut1" style="left:560px; top:420px; transform:rotate(-5deg);"></div>
+    <div class="cutout" id="cut2" style="left:90px; top:560px; transform:rotate(3deg);"></div>
+    <div class="scribble" id="scrib1" style="left:170px; top:1560px; transform:rotate(-6deg);"></div>
+    <div class="scribble" id="scrib2" style="left:250px; top:520px; font-size:130px; transform:rotate(-8deg);"></div>
+
+    <div id="slotCorner">
+      <div class="inner"><div><b>VIDEO PLACEHOLDER</b><span>drop assets/hands-cutout.mp4</span></div></div>
+      <video id="vidCorner" muted playsinline preload="auto"
+        style="position:absolute; inset:16px; width:438px; height:318px;
+        object-fit:cover; display:none;"></video>
+    </div>
+
+    <div id="mosh">
+      <img class="rgb" id="moshBase" alt="" />
+      <img class="rgb" id="moshR" alt="" />
+      <img class="rgb" id="moshG" alt="" />
+      <img class="rgb" id="moshB" alt="" />
+      <div id="slices"></div>
+      <div id="scan"></div>
+    </div>
+
+    <div id="ecPaper"></div>
+    <div class="ecEl" id="ecMark">%</div>
+    <div class="ecEl" id="ecBrand"></div>
+    <div class="ecEl" id="ecPillW"><span></span></div>
+    <div class="ecEl" id="ecTag"></div>
+    <div class="ecEl" id="ecPills"></div>
+
+    <div id="chip"><div class="l1"></div><div class="l2"></div></div>
+    <div id="caption"><div id="capBig"></div><div id="capSub"></div></div>
+  </div>
+</div>
+
+<div id="controls">
+  <button id="btnPlay">▶ Play</button>
+  <button id="btnRestart">↺</button>
+  <button id="btnTheme">🌙 Dark</button>
+  <input id="scrub" type="range" min="0" max="35000" value="0" step="33" />
+  <span id="tlabel">0.00s</span>
+</div>
+<div id="loading">cutting paper…</div>
+
+<script src="configs.js"></script>
+<script src="geometry.js"></script>
+<script>
+(() => {
+  const CFG = window.F4, GEO = window.F4GEO;
+  const B = CFG.beats, K = CFG.meta.cssToStage, FPS = CFG.meta.fps;
+  const D = CFG.meta.duration * 1000;
+  const $ = (id) => document.getElementById(id);
+  const frame = $("frame");
+
+  const Q = new URLSearchParams(location.search);
+  const REC = Q.has("rec");
+  let THEME = Q.get("theme") === "light" ? "light" : "dark";
+
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const norm = (t, a, b) => clamp01((t - a) / (b - a));
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const EASE = {
+    io: (u) => (u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2),
+    o: (u) => 1 - Math.pow(1 - u, 3),
+    i: (u) => u * u * u
+  };
+  const rnd = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  const q8 = (t) => Math.floor(t * CFG.stopFps) / CFG.stopFps; // stop-motion clock
+
+  // deterministic paper noise as data-URI (baked once — not per frame)
+  $("paper").style.backgroundImage = `url("data:image/svg+xml;utf8,${encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'>
+      <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9'
+        numOctaves='2' seed='7'/><feColorMatrix type='saturate' values='0'/></filter>
+      <rect width='300' height='300' filter='url(%23n)' opacity='.5'/></svg>`
+  )}")`;
+
+  $("chip").querySelector(".l1").textContent =
+    `TECHNIQUE ${CFG.meta.id}/7 · ${CFG.meta.technique}`;
+  $("chip").querySelector(".l2").textContent = CFG.meta.detail;
+  $("ecBrand").textContent = CFG.endCopy.brand;
+  $("ecPillW").querySelector("span").textContent = CFG.endCopy.url;
+  $("ecTag").textContent = CFG.endCopy.tagline;
+  $("ecPills").innerHTML = CFG.endCopy.pills.map((p) => `<div>${p}</div>`).join("");
+
+  // ---------- assets ----------
+  const A = (n) => `assets/${n}-${THEME}.png`;
+  let preload = [];
+  const loadImg = (el, src) => {
+    el.src = src;
+    preload.push(el.decode ? el.decode().catch(() => {}) : Promise.resolve());
+  };
+  // mosh slices built once
+  const sliceEls = [];
+  (function buildSlices() {
+    const hs = [260, 340, 300, 420, 600];
+    let y = 60;
+    for (let i = 0; i < CFG.mosh.blocks; i++) {
+      const d = document.createElement("div");
+      d.className = "slice";
+      d.style.top = y + "px"; d.style.height = hs[i] + "px";
+      const im = new Image();
+      im.style.top = -y + "px";
+      d.appendChild(im);
+      $("slices").appendChild(d);
+      sliceEls.push({ d, im, y });
+      y += hs[i] + 40;
+    }
+  })();
+
+  async function setTheme(theme) {
+    THEME = theme;
+    document.body.classList.toggle("theme-light", theme === "light");
+    $("btnTheme").textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+    preload = [];
+    loadImg($("imgA"), A("faqs-top"));
+    loadImg($("imgC"), A("dec-pu"));
+    $("panB").style.backgroundImage = `url(${A("bill-full")})`;
+    const pre = new Image(); loadImg(pre, A("bill-full"));
+    const pre2 = new Image(); loadImg(pre2, A("faqs-bill"));
+    const pre3 = new Image(); loadImg(pre3, A("dec-pinned"));
+    loadImg($("moshBase"), A("dec-pinned"));
+    loadImg($("moshR"), A("dec-pinned"));
+    loadImg($("moshG"), A("dec-pinned"));
+    loadImg($("moshB"), A("dec-pinned"));
+    sliceEls.forEach((s) => loadImg(s.im, A("dec-pinned")));
+    await Promise.all(preload);
+  }
+
+  // videos (optional placeholders)
+  const vidFull = $("vidFull"), vidCorner = $("vidCorner");
+  let fullOk = false, cornerOk = false;
+  vidFull.addEventListener("loadeddata", () => {
+    fullOk = true; vidFull.style.display = "block";
+    $("slotFull").querySelector(".box").style.display = "none";
+    $("slotFull").querySelector(".lbl").style.display = "none";
+  });
+  vidCorner.addEventListener("loadeddata", () => {
+    cornerOk = true; vidCorner.style.display = "block";
+    $("slotCorner").querySelector(".inner").style.display = "none";
+  });
+  vidFull.src = "assets/opening-live-action.mp4";
+  vidCorner.src = "assets/hands-cutout.mp4";
+
+  const FR = 888 / 1080; // plate → frame scale
+  const cssToFrame = (r) => ({
+    x: r.x * K * FR, y: r.y * K * FR, w: r.w * K * FR, h: r.h * K * FR
+  });
+
+  // rough marker ellipse (two passes) around a rect — returns SVG elements
+  function markerCircle(svg, r, cls) {
+    svg.innerHTML = "";
+    const cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+    const rx = r.w / 2 + 30, ry = r.h / 2 + 26;
+    for (let i = 0; i < 2; i++) {
+      const e = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+      e.setAttribute("cx", cx + (i ? 6 : 0)); e.setAttribute("cy", cy + (i ? 5 : 0));
+      e.setAttribute("rx", rx + (i ? -7 : 0)); e.setAttribute("ry", ry + (i ? 6 : 0));
+      const len = 2 * Math.PI * Math.sqrt((rx * rx + ry * ry) / 2);
+      e.dataset.len = len;
+      e.style.strokeDasharray = len;
+      svg.appendChild(e);
+    }
+  }
+  function markerArrow(svg, x1, y1, x2, y2) {
+    const mk = (d) => {
+      const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", d);
+      const len = 900;
+      p.dataset.len = len;
+      p.style.strokeDasharray = len;
+      svg.appendChild(p);
+      return p;
+    };
+    const mx = (x1 + x2) / 2 + 40, my = (y1 + y2) / 2 - 60;
+    mk(`M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`);
+    const a = Math.atan2(y2 - my, x2 - mx);
+    const ah = (da) =>
+      `M ${x2} ${y2} L ${x2 - 46 * Math.cos(a + da)} ${y2 - 46 * Math.sin(a + da)}`;
+    mk(ah(.5)); mk(ah(-.5));
+  }
+  const drawStroke = (svg, u) => {
+    [...svg.children].forEach((el, i) => {
+      const local = clamp01(u * (svg.children.length) - i);
+      el.style.strokeDashoffset = (1 - local) * (+el.dataset.len);
+      el.style.opacity = local > 0 ? 1 : 0;
+    });
+  };
+
+  // stop-motion jitter transform for an element
+  const jit = (base, seed, t, amp = 1) => {
+    const step = Math.floor(q8(t) * CFG.stopFps);
+    const r = (rnd(seed + step * 13.7) - .5) * 2.6 * amp;
+    const dx = (rnd(seed + step * 31.1) - .5) * 6 * amp;
+    const dy = (rnd(seed + step * 47.3) - .5) * 6 * amp;
+    return `${base} translate(${dx}px, ${dy}px) rotate(${r}deg)`;
+  };
+
+  // ---------- master render ----------
+  function renderFrame(ms) {
+    const t = ms / 1000;
+
+    // defaults
+    $("slotFull").style.display = "none";
+    ["frameA", "frameB", "frameC"].forEach((id) => ($(id).style.display = "none"));
+    ["cut1", "cut2", "scrib1", "scrib2"].forEach((id) => ($(id).style.display = "none"));
+    $("slotCorner").style.display = "none";
+    $("mosh").style.display = "none";
+    $("ecPaper").style.display = "none";
+    frame.style.filter = "none";
+
+    // 1 · opening live-action placeholder
+    if (t < B.openEnd) {
+      $("slotFull").style.display = "block";
+      $("slotFull").style.opacity = 1 - EASE.i(norm(t, B.openEnd - .35, B.openEnd));
+      syncVid(vidFull, fullOk, t, CFG.clips[0]);
+      const s1 = $("scrib1");
+      const c = CFG.captions[0];
+      if (t >= c.t0 && t <= c.t1) {
+        s1.style.display = "block";
+        s1.textContent = c.text;
+        s1.style.transform = jit("rotate(-6deg)", 3, t);
+        s1.style.opacity = Math.min(norm(t, c.t0, c.t0 + .3), clamp01((c.t1 - t) / .25));
+      }
+    }
+
+    // 2 · photocopied /faqs/ scan
+    if (t >= B.faqsIn && t < B.billIn) {
+      const fA = $("frameA");
+      fA.style.display = "block";
+      const inU = EASE.o(norm(t, B.faqsIn, B.faqsIn + .5));
+      fA.style.transform =
+        jit(`rotate(-2deg) scale(${lerp(1.12, 1, inU)})`, 11, t, .5);
+      fA.style.opacity = 1;
+      // swap to the bill-row scroll state (stop-motion snap)
+      const want = t >= B.faqsBillAt ? A("faqs-bill") : A("faqs-top");
+      if (!$("imgA").src.endsWith(want)) $("imgA").src = want;
+      // marker circle around the Bill Splitting row
+      if (t >= B.faqsBillAt) {
+        const rr = cssToFrame(GEO[THEME].faqs.billRow);
+        if (!$("mkA").childElementCount) markerCircle($("mkA"), rr);
+        drawStroke($("mkA"), EASE.io(norm(t, B.circleAt, B.circleAt + .8)));
+      } else $("mkA").innerHTML = "";
+    }
+
+    // 3 · bill-splitting page (paper pan + cutouts + corner placeholder)
+    if (t >= B.billIn && t < B.decPuIn) {
+      const fB = $("frameB");
+      fB.style.display = "block";
+      fB.style.transform = jit("rotate(1.6deg)", 23, t, .5);
+      // pan the full-page texture down to the worked answer
+      const panU = EASE.io(norm(t, B.billScrollAt, B.billAnswerAt));
+      const texH = GEO[THEME].bill.pageH * K * FR; // native display height
+      const maxPan = Math.max(0, texH - 1448);
+      $("panB").style.backgroundPosition = `0 ${-Math.min(maxPan, panU * 620)}px`;
+      // cutout captions (stop-motion)
+      const c1 = CFG.captions[2], c2 = CFG.captions[3];
+      if (t >= c1.t0 && t <= c1.t1) {
+        $("cut1").style.display = "block";
+        $("cut1").textContent = c1.text;
+        $("cut1").style.transform = jit("rotate(-5deg)", 31, t);
+      }
+      if (t >= c2.t0 && t <= c2.t1) {
+        $("cut2").style.display = "block";
+        $("cut2").textContent = c2.text;
+        $("cut2").style.transform = jit("rotate(3deg)", 37, t);
+      }
+      $("slotCorner").style.display = "block";
+      $("slotCorner").style.transform = jit("rotate(-4deg)", 41, t, .6);
+      syncVid(vidCorner, cornerOk, t, CFG.clips[1]);
+    }
+
+    // 4 · decreased-value flow
+    if (t >= B.decPuIn && t < B.moshIn) {
+      const fC = $("frameC");
+      fC.style.display = "block";
+      const press = t >= B.pressAt && t < B.pinnedIn
+        ? 1 - .025 * EASE.o(norm(t, B.pressAt, B.pressAt + .2)) : 1;
+      fC.style.transform = jit(`rotate(-1.4deg) scale(${press})`, 53, t, .5);
+      const want = t >= B.pinnedIn ? A("dec-pinned") : A("dec-pu");
+      if (!$("imgC").src.endsWith(want)) $("imgC").src = want;
+      const mk = $("mkC");
+      if (t < B.pinnedIn) {
+        // marker arrow to the Sale Discount PU row
+        if (mk.dataset.mode !== "arrow") {
+          mk.innerHTML = "";
+          const rr = cssToFrame(GEO[THEME].dec.pu.row);
+          markerArrow(mk, 140, rr.y + rr.h + 260, rr.x + rr.w * .35, rr.y + rr.h + 8);
+          mk.dataset.mode = "arrow";
+        }
+        drawStroke(mk, EASE.io(norm(t, B.arrowAt, B.arrowAt + .7)));
+      } else {
+        // pinned: marker circle on the banner
+        if (mk.dataset.mode !== "banner") {
+          markerCircle(mk, cssToFrame(GEO[THEME].dec.banner));
+          mk.dataset.mode = "banner";
+        }
+        drawStroke(mk, EASE.io(norm(t, B.pinnedIn + .3, B.pinnedIn + 1.0)));
+      }
+      // $90 SAVED scribble
+      const c = CFG.captions[6];
+      if (t >= c.t0 && t <= c.t1) {
+        $("scrib2").style.display = "block";
+        $("scrib2").textContent = c.text;
+        $("scrib2").style.transform = jit("rotate(-8deg)", 61, t);
+      }
+    }
+
+    // 5 · datamosh → clean answer
+    if (t >= B.moshIn && t < B.endcardIn + .4) {
+      $("mosh").style.display = "block";
+      const fi = Math.floor(t * FPS);
+      const peak = t < B.moshPeak
+        ? EASE.i(norm(t, B.moshIn, B.moshPeak))
+        : 1 - EASE.o(norm(t, B.moshPeak, B.resolveAt));
+      const amp = Math.max(0, peak);
+      const off = (s) => (rnd(fi * 7.7 + s) - .5) * 2 * CFG.mosh.rgbMax * amp;
+      $("moshR").style.transform = `translate(${off(1)}px, ${off(2) * .4}px)`;
+      $("moshG").style.transform = `translate(${off(3)}px, ${off(4) * .4}px)`;
+      $("moshB").style.transform = `translate(${off(5)}px, ${off(6) * .4}px)`;
+      $("moshR").style.opacity = .55 * amp;
+      $("moshG").style.opacity = .5 * amp;
+      $("moshB").style.opacity = .5 * amp;
+      sliceEls.forEach((s, i) => {
+        const so = (rnd(fi * 3.3 + i * 17) - .5) * 2 * CFG.mosh.blockMax * amp;
+        s.d.style.transform = `translateX(${so}px)`;
+        s.d.style.opacity = amp > .05 ? 1 : 0;
+      });
+      $("scan").style.opacity = CFG.mosh.scanOpacity * amp *
+        (rnd(fi * 1.3) > .25 ? 1 : .3);
+      // resolve: zoom toward the clean result
+      const zu = EASE.io(norm(t, B.resolveAt, B.cleanAt + .6));
+      const r = GEO[THEME].dec.result;
+      if (r && zu > 0) {
+        const cx = (r.x + r.w / 2) * K, cy = (r.y + r.h / 2) * K;
+        const s = lerp(1, 2.1, zu);
+        $("mosh").style.transformOrigin = `${cx}px ${cy}px`;
+        $("mosh").style.transform = `scale(${s})`;
+      } else $("mosh").style.transform = "none";
+      // fade out under the endcard
+      $("mosh").style.opacity = 1 - EASE.i(norm(t, B.endcardIn - .2, B.endcardIn + .4));
+    }
+
+    // 6 · endcard + torn paper + glitch blink
+    const ecEls = [$("ecMark"), $("ecBrand"), $("ecPillW"), $("ecTag"), $("ecPills")];
+    if (t >= B.endcardIn) {
+      $("ecPaper").style.display = "block";
+      ecEls.forEach((el, i) => {
+        const inU = EASE.o(norm(t, B.endcardIn + .2 + i * .14, B.endcardIn + .2 + i * .14 + .6));
+        el.style.opacity = inU;
+        el.style.display = inU > .01 ? (el === $("ecPills") ? "flex" : "block") : "none";
+        el.style.transform = `translate(-50%,-50%) translateY(${(1 - inU) * 60}px)`;
+      });
+      // 2-frame glitch blink
+      const gf = (t - B.glitchBlinkAt) * FPS;
+      if (gf >= 0 && gf < 2) frame.style.filter = "invert(.85) hue-rotate(160deg)";
+    } else ecEls.forEach((el) => (el.style.display = "none"));
+
+    // plate captions
+    let cap = null;
+    for (const c of CFG.captions)
+      if (c.kind === "plate" && t >= c.t0 && t <= c.t1) { cap = c; break; }
+    const capEl = $("caption");
+    if (cap) {
+      const inU = EASE.o(norm(t, cap.t0, cap.t0 + .22));
+      const outU = EASE.i(clamp01((cap.t1 - t) / .2));
+      capEl.style.opacity = Math.min(inU, outU);
+      capEl.style.transform = `translateX(-50%) translateY(${(1 - inU) * 36}px)`;
+      if ($("capBig").textContent !== cap.big) {
+        $("capBig").textContent = cap.big;
+        $("capSub").textContent = cap.sub || "";
+        $("capSub").style.display = cap.sub ? "" : "none";
+      }
+    } else capEl.style.opacity = 0;
+  }
+
+  function syncVid(v, ok, t, clip) {
+    if (!ok) return;
+    const want = Math.max(0, Math.min(clip.dur - .05, t - clip.start));
+    if (playing) {
+      if (v.paused) { try { v.currentTime = want; v.play().catch(() => {}); } catch {} }
+      else if (Math.abs(v.currentTime - want) > .15) v.currentTime = want;
+    } else {
+      if (!v.paused) v.pause();
+      if (Math.abs(v.currentTime - want) > .03) { try { v.currentTime = want; } catch {} }
+    }
+  }
+
+  // ---------- master clock ----------
+  let playing = false, t0 = 0, tAcc = 0, stopAt = null;
+  const now = () => performance.now();
+  const curT = () => (playing ? Math.min(D, tAcc + now() - t0) : tAcc);
+  function seek(ms) { tAcc = Math.max(0, Math.min(D, ms)); t0 = now(); renderFrame(tAcc); sync(); }
+  function play() {
+    if (playing) return;
+    if (tAcc >= D) tAcc = 0;
+    playing = true; t0 = now(); $("btnPlay").textContent = "⏸ Pause"; tick();
+  }
+  function pause() {
+    tAcc = curT(); playing = false; $("btnPlay").textContent = "▶ Play";
+    [vidFull, vidCorner].forEach((v) => { if (!v.paused) v.pause(); });
+  }
+  function tick() {
+    if (!playing) return;
+    const t = curT();
+    renderFrame(t); sync();
+    if (stopAt != null && t >= stopAt) { stopAt = null; pause(); return; }
+    if (t >= D) { pause(); return; }
+    requestAnimationFrame(tick);
+  }
+  function sync() {
+    const t = curT();
+    $("scrub").value = t; $("tlabel").textContent = (t / 1000).toFixed(2) + "s";
+  }
+
+  $("btnPlay").onclick = () => (playing ? pause() : play());
+  $("btnRestart").onclick = () => { pause(); seek(0); };
+  $("btnTheme").onclick = () => setTheme(THEME === "dark" ? "light" : "dark")
+    .then(() => renderFrame(curT()));
+  $("scrub").oninput = (e) => { pause(); seek(+e.target.value); };
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === "r" || e.key === "R") { pause(); seek(0); }
+  });
+  if (REC) $("controls").style.display = "none";
+
+  function fit() {
+    const s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    frame.style.transform = `translate(-50%,-50%) scale(${s})`;
+    frame.style.transformOrigin = "center center";
+  }
+  addEventListener("resize", fit); fit();
+
+  const videoSeeked = (v) => new Promise((res) => {
+    if (v.readyState < 2) return res();
+    const to = setTimeout(done, 800);
+    function done() { clearTimeout(to); v.removeEventListener("seeked", done); res(); }
+    if (v.seeking) v.addEventListener("seeked", done); else done();
+  });
+
+  window.__f4Seek = async (sec, theme) => {
+    if (theme && theme !== THEME) await setTheme(theme);
+    pause(); seek(sec * 1000);
+    if (fullOk) await videoSeeked(vidFull);
+    if (cornerOk) await videoSeeked(vidCorner);
+    renderFrame(sec * 1000);
+    return true;
+  };
+
+  setTheme(THEME).then(() => {
+    $("loading").style.display = "none";
+    const tq = Q.get("t"), stq = Q.get("stop");
+    if (stq) stopAt = +stq;
+    seek(tq ? +tq : 0);
+    if (!tq || stq) { if (!Q.has("pause")) play(); }
+  });
+})();
+</script>
+</body>
+</html>

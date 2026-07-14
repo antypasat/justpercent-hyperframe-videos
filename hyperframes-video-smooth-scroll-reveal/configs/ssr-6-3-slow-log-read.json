@@ -1,0 +1,68 @@
+{
+  "hyperframes": "1.0",
+  "name": "ssr-6-3-slow-log-read",
+  "technique": "Smooth Scroll Reveal / Slow Log Read",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/faqs/",
+    "displayUrl": "justpercent.com/faqs",
+    "locale": "en-US",
+    "flow": "Interactive FAQs index — a long ledger of real-life percentage questions, read slowly line by line.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 5,
+  "page": {
+    "asset": "assets/us-faqs-index.png",
+    "w": 1600,
+    "h": 13044
+  },
+  "camera": {
+    "easing": "ease-in-out-sine",
+    "path": [
+      {
+        "t": 0,
+        "y": 0,
+        "s": 1.25
+      },
+      {
+        "t": 5,
+        "y": 1200,
+        "s": 1.25
+      }
+    ]
+  },
+  "cursor": null,
+  "highlights": [],
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "justpercent.com/faqs — Interactive FAQs",
+      "in": 0.2,
+      "out": 4.9
+    },
+    {
+      "kind": "caption",
+      "text": "Read it slow — every line is a real question.",
+      "in": 0.6,
+      "out": 2.5
+    },
+    {
+      "kind": "caption",
+      "text": "And every question is a live calculator.",
+      "in": 2.9,
+      "out": 4.8
+    }
+  ]
+}

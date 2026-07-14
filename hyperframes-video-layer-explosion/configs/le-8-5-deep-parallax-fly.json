@@ -1,0 +1,90 @@
+{
+  "name": "le-8-5-deep-parallax-fly",
+  "technique": "Layer Explosion / Deep Parallax Fly",
+  "story": "The FAQ index (64 interactive FAQs) explodes into 5 layers up to Z=600 while the camera performs a wide 30° orbit.",
+  "duration": 9,
+  "captureGuard": {
+    "networkIdleMs": 500,
+    "documentFontsReady": true,
+    "imagesDecoded": true,
+    "noActiveAnimations": true,
+    "layoutShiftQuietMs": 500,
+    "postClickSettle": "wait for triggered animation + DOM mutation to finish before capture"
+  },
+  "shots": [
+    {
+      "scene": "faqs",
+      "perspective": 900,
+      "tilt": {
+        "rotateX": 50,
+        "rotateZ": -40,
+        "intro": {
+          "start": 0.4,
+          "dur": 0.9,
+          "easing": "ease-in-out-cubic"
+        }
+      },
+      "explode": {
+        "start": 1.1,
+        "dur": 1.6,
+        "easing": "ease-out-quint",
+        "stagger": 0
+      },
+      "layers": [
+        {
+          "id": "bg",
+          "z": 0,
+          "blurMax": 3
+        },
+        {
+          "id": "block3",
+          "z": 150
+        },
+        {
+          "id": "block2",
+          "z": 300
+        },
+        {
+          "id": "block1",
+          "z": 450
+        },
+        {
+          "id": "nav",
+          "z": 600
+        }
+      ],
+      "camera": {
+        "arcDeg": 30,
+        "start": 1.1,
+        "dur": 7.4,
+        "easing": "ease-in-out-sine"
+      },
+      "dolly": {
+        "from": 1,
+        "to": 1.1
+      },
+      "shadow": 1.2
+    }
+  ],
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "8.5 DEEP PARALLAX · persp 900 · 5 layers → Z600 · 30° orbit",
+      "in": 0.4,
+      "out": 8.6
+    },
+    {
+      "kind": "caption",
+      "text": "64 interactive FAQs. Change any number.",
+      "in": 2.4,
+      "out": 5.2
+    },
+    {
+      "kind": "caption",
+      "text": "The answer updates instantly.",
+      "in": 5.7,
+      "out": 8.4,
+      "emphasis": true
+    }
+  ]
+}

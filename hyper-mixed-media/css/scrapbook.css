@@ -1,0 +1,207 @@
+/* ============================================================
+   scrapbook.css — Hyper-Mixed Media layers:
+   paper backdrop, washi tape, cutout chips, marker annotations,
+   stop-motion paper hand, glitch/datamosh, torn-paper wipes.
+   ============================================================ */
+
+/* ---------- paper backdrop ---------- */
+#paper {
+  position: absolute; inset: 0;
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.045' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.52 0 0 0 0 0.47 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, #F4EFE4 0%, #EBE4D5 55%, #E4DBC9 100%);
+  z-index: 0;
+}
+#stage.dark #paper {
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.045' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.32 0 0 0 0 0.72 0 0 0 0.13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, #1B1130 0%, #150C27 55%, #0F081D 100%);
+}
+/* faint notebook doodle grid on the paper */
+#paper::after {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.10) 1px, transparent 1px);
+  background-size: 27px 27px;
+  opacity: 0.16;
+}
+#stage.dark #paper::after { opacity: 0.12; }
+
+/* loose paper scraps pinned behind the phone */
+.scrap {
+  position: absolute;
+  background: linear-gradient(140deg, #ffffff 0%, #f2ecdd 100%);
+  box-shadow: 0 6px 0 rgba(15, 23, 42, 0.10), 0 16px 34px rgba(23, 12, 51, 0.18);
+  clip-path: polygon(1% 4%, 12% 0%, 30% 3%, 52% 0%, 74% 3%, 92% 1%, 100% 8%, 98% 34%, 100% 62%, 97% 88%, 99% 97%, 80% 100%, 55% 97%, 30% 100%, 8% 98%, 0% 92%, 2% 60%, 0% 30%);
+  z-index: 1;
+  will-change: transform, opacity;
+}
+#stage.dark .scrap { background: linear-gradient(140deg, #2A1B4A 0%, #1E1238 100%); }
+
+/* ---------- washi tape ---------- */
+.tape {
+  position: absolute;
+  width: 92px; height: 26px;
+  background: linear-gradient(90deg, rgba(196, 181, 253, 0.85), rgba(147, 197, 253, 0.85));
+  opacity: 0.92;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+  clip-path: polygon(3% 0%, 97% 2%, 100% 22%, 98% 50%, 100% 78%, 97% 100%, 3% 98%, 0% 74%, 2% 46%, 0% 20%);
+  z-index: 34;
+  will-change: transform, opacity;
+}
+.tape.mint { background: linear-gradient(90deg, rgba(134, 239, 172, 0.85), rgba(103, 232, 249, 0.85)); }
+.tape.rose { background: linear-gradient(90deg, rgba(249, 168, 212, 0.85), rgba(253, 224, 71, 0.85)); }
+#stage.dark .tape { opacity: 0.75; }
+
+/* ---------- intro headline panels (photocopy paper, sequential) ---------- */
+.headline {
+  position: absolute; left: 50%; top: 386px;
+  width: max-content; max-width: 496px;
+  padding: 24px 34px;
+  background: #ffffff;
+  border: 2.5px solid #0F172A;
+  box-shadow: 9px 9px 0 rgba(15, 23, 42, 0.85), 0 22px 50px rgba(23, 12, 51, 0.25);
+  text-align: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; font-size: 37px; line-height: 1.18;
+  color: #0F172A;
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 20;
+}
+.headline em {
+  font-style: normal;
+  background-image: linear-gradient(105deg, rgba(254,240,138,0) 0%, rgba(254,240,138,1) 5%, rgba(253,224,71,1) 100%);
+  border-radius: 0.8em 0.3em 0.9em 0.2em;
+  padding: 0.02em 0.14em;
+}
+.headline .hl-violet {
+  font-style: normal;
+  background-image: linear-gradient(105deg, rgba(221,214,254,0) 0%, rgba(196,181,253,1) 5%, rgba(167,139,250,1) 100%);
+  border-radius: 0.8em 0.3em 0.9em 0.2em;
+  padding: 0.02em 0.14em;
+}
+
+/* ---------- intro cutout chips (paper cutouts, stop-motion) ---------- */
+.chip {
+  position: absolute;
+  padding: 12px 20px;
+  background: #fff;
+  border: 2.5px solid #0F172A;
+  box-shadow: 6px 6px 0 rgba(15, 23, 42, 0.85);
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; font-size: 30px; color: #0F172A;
+  white-space: nowrap;
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 21;
+}
+.chip.gold  { background: linear-gradient(105deg, #fef9c3, #fde047); }
+.chip.lime  { background: linear-gradient(105deg, #ecfccb, #a3e635); }
+.chip.pink  { background: linear-gradient(105deg, #fce7f3, #f472b6); }
+
+/* ---------- marker annotations (SVG overlays) ---------- */
+.marker-svg {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+.marker-svg path {
+  fill: none;
+  stroke: #E11D48;
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#stage.dark .marker-svg path { stroke: #F472B6; }
+
+/* ---------- paper-cutout pointing hand (stop-motion) ---------- */
+#hand {
+  position: absolute; left: 0; top: 0;
+  width: 120px; height: 132px;
+  opacity: 0;
+  will-change: transform, opacity;
+  filter: drop-shadow(5px 9px 0 rgba(15, 23, 42, 0.30));
+  z-index: 40;
+}
+#hand svg { width: 100%; height: 100%; overflow: visible; }
+
+/* impact ripple ring */
+.ripple {
+  position: absolute;
+  width: 90px; height: 90px;
+  margin: -45px 0 0 -45px;
+  border-radius: 50%;
+  border: 4px solid rgba(124, 58, 237, 0.75);
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.4), inset 0 0 16px rgba(124,58,237,0.25);
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 39;
+}
+
+/* ---------- glitch / datamosh ---------- */
+/* slice bars flashing over the phone during bursts */
+#glitch {
+  position: absolute; left: 10px; top: 50px;
+  width: 520px; height: 720px;
+  pointer-events: none;
+  z-index: 28;
+}
+#glitch .gs {
+  position: absolute; left: 0;
+  width: 100%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+#glitch .gs.r { background: rgba(255, 42, 84, 0.55); mix-blend-mode: screen; }
+#glitch .gs.c { background: rgba(34, 211, 238, 0.55); mix-blend-mode: screen; }
+#glitch .gs.g { background: rgba(163, 230, 53, 0.45); mix-blend-mode: screen; }
+#glitch .gs.w { background: rgba(248, 249, 254, 0.9); }
+#glitch .gs.d { background: rgba(10, 5, 20, 0.85); }
+/* pixel-block noise strip */
+#glitch .gs.px {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='q'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.9 0.4' numOctaves='1' seed='7'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 1 0 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23q)'/%3E%3C/svg%3E");
+  background-size: 120px 8px;
+  mix-blend-mode: exclusion;
+}
+/* full-stage white/black flash frames */
+#flash {
+  position: absolute; inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 55;
+  will-change: opacity;
+}
+
+/* ---------- torn-paper page wipe (sweeps across the phone) ---------- */
+#wipe {
+  position: absolute; left: -650px; top: 40px;
+  width: 620px; height: 740px;
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.6 0 0 0 0 0.57 0 0 0 0 0.5 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"),
+    linear-gradient(120deg, #fbf8f0 0%, #efe8d8 100%);
+  clip-path: polygon(0% 0%, 96% 0%, 99% 5%, 96.5% 11%, 100% 17%, 97% 24%, 99.5% 31%, 96% 38%, 99% 45%, 97.5% 52%, 100% 59%, 96.5% 66%, 99% 73%, 97% 80%, 100% 87%, 96% 94%, 98.5% 100%, 0% 100%);
+  box-shadow: 18px 0 44px rgba(23, 12, 51, 0.35);
+  will-change: transform;
+  z-index: 29;
+}
+#stage.dark #wipe {
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.36 0 0 0 0 0.8 0 0 0 0.12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"),
+    linear-gradient(120deg, #2A1B4A 0%, #1B1130 100%);
+}
+
+/* ---------- endcard torn paper backing ---------- */
+#outro .paperback {
+  position: absolute; inset: 0;
+  background: linear-gradient(150deg, #ffffff 0%, #f4eede 100%);
+  clip-path: polygon(2% 5%, 10% 1%, 26% 4%, 45% 0%, 66% 3%, 84% 0%, 97% 4%, 100% 14%, 97% 32%, 100% 52%, 97% 70%, 99% 88%, 94% 98%, 74% 100%, 52% 97%, 30% 100%, 12% 97%, 2% 99%, 0% 84%, 3% 62%, 0% 40%, 2% 18%);
+  box-shadow: 0 8px 0 rgba(15, 23, 42, 0.16), 0 30px 70px rgba(23, 12, 51, 0.35);
+  z-index: -1;
+}
+#stage.dark #outro .paperback {
+  background: linear-gradient(150deg, #241740 0%, #170E2C 100%);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.5), 0 30px 70px rgba(0, 0, 0, 0.6), 0 0 60px rgba(124, 58, 237, 0.25);
+}

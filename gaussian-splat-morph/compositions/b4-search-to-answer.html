@@ -1,0 +1,216 @@
+<template id="b4-search-to-answer-template">
+  <div data-composition-id="b4-search-to-answer" data-start="0" data-width="1080" data-height="1920">
+    <div class="b4-stage">
+      <div class="b4-orb b4-orb-a"></div>
+      <div class="b4-orb b4-orb-b"></div>
+      <div class="b4-splats" id="b4-splats"></div>
+      <div class="b4-persp">
+        <div class="b4-cam">
+          <div class="b4-frame b4-frame-a">
+            <iframe class="b4-iframe b4-iframe-a" src="../assets/screens/home-light-search.html" scrolling="no" title="justpercent.com home — search (light)"></iframe>
+          </div>
+          <div class="b4-frame b4-frame-b">
+            <iframe class="b4-iframe b4-iframe-b" src="../assets/screens/home-light-pinned.html" scrolling="no" title="justpercent.com home — pinned practical use (light)"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="b4-search-to-answer"] {
+        position: relative; width: 1080px; height: 1920px;
+        background: linear-gradient(180deg, #e4e2f1 0%, #dcdaea 55%, #d5d8ec 100%);
+        overflow: hidden;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+      }
+      [data-composition-id="b4-search-to-answer"] .b4-stage { position: absolute; inset: 0; }
+      [data-composition-id="b4-search-to-answer"] .b4-orb { position: absolute; border-radius: 50%; filter: blur(130px); }
+      [data-composition-id="b4-search-to-answer"] .b4-orb-a {
+        width: 900px; height: 900px; top: -280px; left: -280px; opacity: .7;
+        background: radial-gradient(circle, rgba(168,85,247,.32) 0%, rgba(168,85,247,0) 70%);
+      }
+      [data-composition-id="b4-search-to-answer"] .b4-orb-b {
+        width: 820px; height: 820px; bottom: -240px; right: -240px; opacity: .65;
+        background: radial-gradient(circle, rgba(34,211,238,.28) 0%, rgba(34,211,238,0) 70%);
+      }
+      [data-composition-id="b4-search-to-answer"] .b4-splats { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+      [data-composition-id="b4-search-to-answer"] .b4-splat { position: absolute; top: 0; left: 0; border-radius: 50%; will-change: transform, opacity; }
+      [data-composition-id="b4-search-to-answer"] .b4-persp { position: absolute; inset: 0; perspective: 1600px; perspective-origin: 50% 42%; }
+      [data-composition-id="b4-search-to-answer"] .b4-cam { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+      [data-composition-id="b4-search-to-answer"] .b4-frame {
+        position: absolute; left: 27px; top: 170px; width: 1026px; height: 1500px;
+        border-radius: 40px; overflow: hidden;
+        border: 2px solid rgba(255,255,255,.55);
+        box-shadow: 0 50px 120px rgba(31,38,135,.35), 0 8px 30px rgba(31,38,135,.22);
+        background: #f8f9fe;
+        will-change: transform, opacity, filter;
+      }
+      [data-composition-id="b4-search-to-answer"] .b4-iframe {
+        width: 432px; height: 632px; border: 0;
+        transform: scale(2.375); transform-origin: 0 0;
+        pointer-events: none;
+      }
+    </style>
+
+    <script>
+      (function () {
+        var root = document.querySelector('[data-composition-id="b4-search-to-answer"]');
+        var beat = 6.2;
+        function rnd(i) { var x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+
+        var frameA = root.querySelector('.b4-frame-a');
+        var frameB = root.querySelector('.b4-frame-b');
+        var ifA = root.querySelector('.b4-iframe-a');
+        var ifB = root.querySelector('.b4-iframe-b');
+        function docA() { var d = ifA.contentDocument; return d && d.body ? d : null; }
+        function docB() { var d = ifB.contentDocument; return d && d.body ? d : null; }
+        function tipRow() {
+          var d = docA(); if (!d) return null;
+          return d.getElementById('search-item-0');
+        }
+        function touchDot() {
+          var d = docA(); if (!d) return null;
+          var t = d.getElementById('gsm-touch');
+          if (!t) {
+            var row = tipRow(); if (!row) return null;
+            var r = row.getBoundingClientRect();
+            t = d.createElement('div');
+            t.id = 'gsm-touch';
+            t.style.cssText = 'position:absolute;width:56px;height:56px;border-radius:50%;' +
+              'background:radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,255,255,.25) 55%, rgba(255,255,255,0) 72%);' +
+              'box-shadow:0 0 0 2px rgba(124,58,237,.5), 0 6px 18px rgba(0,0,0,.3);' +
+              'pointer-events:none;z-index:999999;opacity:0;' +
+              'left:' + (r.left + d.defaultView.scrollX + r.width * 0.5 - 28) + 'px;' +
+              'top:' + (r.top + d.defaultView.scrollY + r.height * 0.5 - 28) + 'px;';
+            d.body.appendChild(t);
+          }
+          return t;
+        }
+
+        // ---- state proxies + single render fn per document ----
+        var V = { typed: 0, drop: 0, rowK: 0 };
+        function RA() {
+          var d = docA(); if (!d) return;
+          var input = d.getElementById('calculator-search');
+          if (input) input.value = 'tip'.slice(0, Math.round(V.typed));
+          var clear = d.getElementById('calculator-search-clear');
+          if (clear) clear.style.opacity = V.typed > 0.5 ? '1' : '0';
+          var portal = d.getElementById('search-results-dropdown-portal');
+          if (portal) {
+            portal.style.opacity = V.drop.toFixed(3);
+            portal.style.transform = 'translateY(' + ((1 - V.drop) * -10).toFixed(2) + 'px) scale(' + (0.97 + 0.03 * V.drop).toFixed(4) + ')';
+            portal.style.transformOrigin = '50% 0%';
+            portal.style.visibility = V.drop > 0.01 ? 'visible' : 'hidden';
+          }
+          var row = tipRow();
+          if (row) {
+            row.style.background = 'rgba(124,58,237,' + (0.16 * V.rowK).toFixed(3) + ')';
+            row.style.boxShadow = V.rowK > 0.01 ? 'inset 0 0 0 2px rgba(124,58,237,' + (0.55 * V.rowK).toFixed(3) + ')' : 'none';
+          }
+        }
+        var W = { glow: 0 };
+        function RB() {
+          var d = docB(); if (!d) return;
+          var x = d.getElementById('percentage-input');
+          var y = d.getElementById('number');
+          var z = d.getElementById('basic-percentage-result');
+          if (x) x.value = '15';
+          if (y) y.value = '60';
+          if (z) z.value = '9';
+          var card = d.querySelector('[data-calculator-id="basic-percentage"]');
+          if (card) {
+            var pres = card.querySelector('.practical-use-presentation-container');
+            if (pres) pres.style.boxShadow = W.glow > 0.01 ? '0 0 0 3px rgba(124,58,237,' + (0.4 * W.glow).toFixed(3) + '), 0 8px 26px rgba(124,58,237,' + (0.3 * W.glow).toFixed(3) + ')' : 'none';
+          }
+        }
+
+        // ---- splats ----
+        var holder = root.querySelector('#b4-splats');
+        var palette = ['rgba(168,85,247,', 'rgba(124,58,237,', 'rgba(34,211,238,', 'rgba(255,255,255,'];
+        var dots = [];
+        for (var i = 0; i < 40; i++) {
+          var d = document.createElement('div');
+          d.className = 'b4-splat';
+          var s = 14 + rnd(i + 1500) * 60;
+          var c = palette[i % palette.length];
+          d.style.width = s + 'px'; d.style.height = s + 'px';
+          d.style.background = 'radial-gradient(circle, ' + c + (0.35 + rnd(i + 1507) * 0.4).toFixed(2) + ') 0%, ' + c + '0) 70%)';
+          holder.appendChild(d);
+          dots.push(d);
+        }
+
+        var tl = gsap.timeline({ paused: true });
+
+        tl.fromTo(root.querySelector('.b4-orb-a'), { x: -18 }, { x: 22, duration: beat, ease: 'sine.inOut' }, 0);
+        tl.fromTo(root.querySelector('.b4-orb-b'), { x: 18 }, { x: -22, duration: beat, ease: 'sine.inOut' }, 0);
+
+        dots.forEach(function (el, i) {
+          tl.fromTo(el,
+            { x: 540 + (rnd(i + 121) - 0.5) * 1500, y: 960 + (rnd(i + 131) - 0.5) * 2400, opacity: 0, scale: 2 },
+            { x: -40 + rnd(i + 141) * 1160, y: -40 + rnd(i + 151) * 2000, opacity: 0.3, scale: 0.8, duration: 0.8, ease: 'power3.out' }, rnd(i + 161) * 0.25);
+          tl.to(el, { y: '-=' + (24 + rnd(i + 171) * 55), opacity: 0.12, duration: beat - 1.2, ease: 'none' }, 1.0);
+        });
+
+        // camera
+        tl.fromTo(root.querySelector('.b4-cam'),
+          { rotateY: -6, rotateX: 3, z: -180, y: 14 },
+          { rotateY: 3, rotateX: -2, z: 30, y: -12, duration: 5.0, ease: 'sine.inOut' }, 0.2);
+        tl.to(root.querySelector('.b4-cam'), { z: 160, rotateY: 0, rotateX: 0, duration: 1.0, ease: 'power2.in' }, beat - 1.0);
+
+        // entry condense (screen A — home with the search box)
+        tl.fromTo(frameA,
+          { opacity: 0, filter: 'blur(26px) saturate(2) hue-rotate(12deg)', scale: 1.07 },
+          { opacity: 1, filter: 'blur(0px) saturate(1) hue-rotate(0deg)', scale: 1, duration: 0.65, ease: 'power2.out' }, 0.05);
+
+        // screen B waits underneath, fully transparent
+        tl.fromTo(frameB, { opacity: 0, filter: 'blur(30px) saturate(1.9)' }, { opacity: 0, duration: 0.05, ease: 'none' }, 0);
+
+        // scroll anchors
+        var PA = { y: 0 };
+        function applyScrollA() { var d = docA(); if (d) d.defaultView.scrollTo(0, PA.y); }
+        tl.fromTo(PA, { y: 0 }, { y: 0, duration: 0.1, ease: 'none', onUpdate: applyScrollA }, 0);
+        var PB = { y: 980 };
+        function applyScrollB() { var d = docB(); if (d) d.defaultView.scrollTo(0, PB.y); }
+        tl.fromTo(PB, { y: 980 }, { y: 980, duration: 0.1, ease: 'none', onUpdate: applyScrollB }, 0);
+
+        // baseline renders (restore state on any seek)
+        tl.fromTo(V, { typed: 0, drop: 0, rowK: 0 }, { typed: 0, duration: 0.05, ease: 'none', onUpdate: RA }, 0);
+        tl.fromTo(W, { glow: 0 }, { glow: 0, duration: 0.05, ease: 'none', onUpdate: RB }, 0);
+
+        // type "tip" (per keystroke), dropdown materializes, row highlighted
+        tl.to(V, { typed: 3, duration: 0.55, ease: 'steps(3)', onUpdate: RA, immediateRender: false }, 0.75);
+        tl.to(V, { drop: 1, duration: 0.45, ease: 'power2.out', onUpdate: RA, immediateRender: false }, 1.55);
+        tl.to(V, { rowK: 1, duration: 0.35, ease: 'power2.out', onUpdate: RA, immediateRender: false }, 2.2);
+
+        // touch tap on the "Restaurant Tip" practical use in the dropdown
+        var T = { o: 0, s: 1, r: 0 };
+        function applyTouch() {
+          var t = touchDot(); if (!t) return;
+          t.style.opacity = T.o.toFixed(3);
+          t.style.transform = 'scale(' + T.s.toFixed(3) + ')';
+          t.style.boxShadow = '0 0 0 ' + (2 + T.r * 26) + 'px rgba(124,58,237,' + (0.5 * Math.max(0, 1 - T.r)).toFixed(3) + '), 0 6px 18px rgba(0,0,0,.3)';
+        }
+        tl.fromTo(T, { o: 0, s: 1, r: 0 }, { o: 0, duration: 2.3, ease: 'none', onUpdate: applyTouch }, 0);
+        tl.to(T, { o: 1, duration: 0.22, ease: 'power2.out', onUpdate: applyTouch }, 2.45);
+        tl.to(T, { s: 0.72, duration: 0.13, ease: 'power2.in', onUpdate: applyTouch }, 2.72);
+        tl.to(T, { s: 1.15, r: 1, o: 0, duration: 0.4, ease: 'power2.out', onUpdate: applyTouch }, 2.85);
+
+        // hallucinatory morph A -> B while B glides down to the Basic Percentage calculator
+        tl.to(frameA, { opacity: 0, filter: 'blur(26px) saturate(2.4) hue-rotate(-10deg)', scale: 1.05, duration: 0.55, ease: 'power2.inOut', immediateRender: false }, 3.05);
+        tl.to(frameB, { opacity: 1, filter: 'blur(0px) saturate(1)', duration: 0.6, ease: 'power2.out', immediateRender: false }, 3.15);
+        // scroll fully settles (power3.out -> zero velocity), then the frame HOLDS still
+        tl.to(PB, { y: 2020, duration: 1.25, ease: 'power3.out', onUpdate: applyScrollB, immediateRender: false }, 3.2);
+
+        // settled: gentle glow on the pinned example above the form
+        tl.to(W, { glow: 1, duration: 0.4, ease: 'power2.out', onUpdate: RB, immediateRender: false }, 4.85);
+        tl.to(W, { glow: 0, duration: 0.55, ease: 'power2.inOut', onUpdate: RB, immediateRender: false }, 5.5);
+
+        // exit bloom
+        tl.to(frameB, { filter: 'blur(22px) saturate(2.2)', scale: 1.07, opacity: 0, duration: 0.45, ease: 'power2.in', immediateRender: false }, beat - 0.45);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines['b4-search-to-answer'] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JustPercent — Hyper-Mixed Media teaser (HyperFrames composition)</title>
+<link rel="stylesheet" href="css/cinema.css">
+<link rel="stylesheet" href="css/scrapbook.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<div id="stage" data-composition-id="jp-hyper-mixed-media" data-start="0" data-width="1080" data-height="1920" data-duration="36">
+<div id="view">
+
+  <!-- SVG defs: deterministic datamosh displacement filters -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <filter id="mosh1" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="turbulence" baseFrequency="0.012 0.09" numOctaves="1" seed="3" result="t"/>
+        <feDisplacementMap in="SourceGraphic" in2="t" scale="16" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="mosh2" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="turbulence" baseFrequency="0.004 0.22" numOctaves="1" seed="11" result="t"/>
+        <feDisplacementMap in="SourceGraphic" in2="t" scale="36" xChannelSelector="R" yChannelSelector="B"/>
+      </filter>
+      <filter id="mosh3" x="-14%" y="-14%" width="128%" height="128%">
+        <feTurbulence type="turbulence" baseFrequency="0.002 0.4" numOctaves="2" seed="27" result="t"/>
+        <feDisplacementMap in="SourceGraphic" in2="t" scale="64" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ============ scrapbook backdrop ============ -->
+  <div id="paper"></div>
+  <div class="scrap" id="scrap1" style="left:-36px;top:26px;width:220px;height:150px;transform:rotate(-7deg)"></div>
+  <div class="scrap" id="scrap2" style="right:-44px;top:520px;width:200px;height:180px;transform:rotate(6deg)"></div>
+  <div class="scrap" id="scrap3" style="left:-30px;bottom:110px;width:180px;height:140px;transform:rotate(4deg)"></div>
+
+  <!-- intro cutout chips (stop-motion paper cutouts) -->
+  <div class="chip gold" id="chip1" style="left:56px;top:214px;transform:rotate(-6deg)">20% OFF</div>
+  <div class="chip lime" id="chip2" style="left:206px;top:282px;transform:rotate(3deg)">+ 8% TAX</div>
+  <div class="chip pink" id="chip3" style="left:104px;top:352px;transform:rotate(-2deg)">18% TIP</div>
+
+  <!-- intro headlines — sequential, never simultaneous -->
+  <div class="headline" id="head1">Percent problems are <em>everywhere</em>.</div>
+  <div class="headline" id="head2">Stop hunting for <span class="hl-violet">formulas</span>.</div>
+
+  <!-- ============ the phone (the app, taped into the scrapbook) ============ -->
+  <div id="phone-tilt">
+  <div id="phone">
+    <div id="app-bg-light"></div>
+    <div id="app-bg-dark"></div>
+
+    <div id="phone-scale">
+
+      <!-- ========== SCREEN A: justpercent.com/ (home) ========== -->
+      <section class="screen jp" id="scr-home">
+        <div class="layer navlayer">
+          <nav class="jp-nav">
+            <div class="jp-nav-row">
+              <span class="jp-logo">
+                <img src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+                <span class="brand">Just Percent</span>
+              </span>
+              <button class="jp-menu-btn">
+                Menu
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+              </button>
+            </div>
+            <div class="jp-breadcrumb"><a>Calculators</a><span class="sep">›</span><span class="cur">All</span></div>
+          </nav>
+        </div>
+
+        <div class="layer" style="padding:12px 10px 4px">
+          <h1 class="jp-h1">Free, online percentage calculators</h1>
+        </div>
+
+        <div class="layer" id="hl-search" style="padding:6px 8px;position:relative;z-index:5">
+          <div class="jp-glass jp-search">
+            <div class="box">
+              <svg class="mag" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+              <input id="home-search" type="text" aria-label="Search calculators">
+              <div class="ph"><span class="typed" id="search-typed"></span><span id="search-ghost">Calculate anything...</span><span class="tcursor" id="search-cursor">|</span></div>
+            </div>
+          </div>
+          <!-- search results dropdown (the app portals it under the input) -->
+          <div class="jp jp-dropdown" id="dropdown" style="top:76px;z-index:9;opacity:0">
+            <div class="sep">Practical Uses</div>
+            <div class="jp-dd-item hover" id="dd-pu-tip">
+              <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+              <span class="jp-dd-pu-txt"><b>Restaurant <mark class="shl">Tip</mark>:</b><span class="gap"></span>A <span class="hl-x">15% <b>[X]</b> <mark class="shl">tip</mark></span> on a <span class="hl-y">$60 <b>[Y]</b> Italian chain dinner bill</span> comes to <span class="hl-z">how much <b>[Z]</b>?</span><span class="gap"></span><span class="hl-z">$9</span></span>
+              <svg class="jp-dd-heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </div>
+            <div class="sep">Related FAQs</div>
+            <div class="jp-dd-item jp-dd-faq">
+              <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="jp-dd-faq-txt"><span class="t"><mark class="shl">Tip</mark> Calculation</span><br><span class="s">How do I calculate the <mark class="shl">tip</mark> amount from a percentage of the bill?</span></span>
+            </div>
+            <div class="sep">Suggested solutions</div>
+            <div class="jp-dd-item jp-dd-sol">
+              <img src="assets/images/tip.webp" alt="">
+              <span style="flex:1">Dining out or ordering in? Calculate the perfect <mark class="shl">tip</mark> for your server.</span>
+              <span class="pill orange">Calculate My Tip</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="layer">
+          <div class="jp-filter">
+            <div class="seg">
+              <button class="on">All</button>
+              <button class="fav">
+                <svg class="st" viewBox="0 0 24 24" fill="currentColor"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                Favorites
+                <svg class="hr" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="layer">
+          <div class="jp-sec-label">What Can You Calculate?</div>
+        </div>
+
+        <!-- solution cards — real en-US copy, real homepage order (solution-notes.ts) -->
+        <div class="jp-cards" style="position:relative">
+          <div class="layer" id="card-coupon">
+            <div class="jp-note" data-row="0">
+              <div class="imgwrap">
+                <img src="assets/images/coupon.webp" alt="">
+                <span class="star"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>
+              </div>
+              <div class="txt">Have a coupon — e.g. '20% off'? See what you'll actually pay at the register.</div>
+              <button class="cta" id="cta-coupon">Apply My Coupon</button>
+            </div>
+          </div>
+          <div class="layer">
+            <div class="jp-note" data-row="1">
+              <div class="imgwrap">
+                <img src="assets/images/sale.webp" alt="">
+                <span class="star"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>
+              </div>
+              <div class="txt">Shopping the clearance rack? Find out exactly how much you save.</div>
+              <button class="cta">See My Savings</button>
+            </div>
+          </div>
+          <div class="layer">
+            <div class="jp-note" data-row="2">
+              <div class="imgwrap">
+                <img src="assets/images/tax-calc.webp" alt="">
+                <span class="star"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>
+              </div>
+              <div class="txt">In-store shopping? Calculate the total price with Sales Tax.</div>
+              <button class="cta">Calculate Total Price</button>
+            </div>
+          </div>
+          <div class="layer">
+            <div class="jp-note" data-row="3">
+              <div class="imgwrap">
+                <img src="assets/images/tip.webp" alt="">
+                <span class="star"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>
+              </div>
+              <div class="txt">Dining out or ordering in? Calculate the perfect tip for your server.</div>
+              <button class="cta">Calculate My Tip</button>
+            </div>
+          </div>
+          <div class="layer">
+            <div class="jp-note" data-row="4">
+              <div class="imgwrap">
+                <img src="assets/images/commission.webp" alt="">
+                <span class="star"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>
+              </div>
+              <div class="txt">Closing a deal? Calculate your estimated commission check.</div>
+              <button class="cta">See My Commission</button>
+            </div>
+          </div>
+          <div class="layer">
+            <div class="jp-note" data-row="5">
+              <div class="imgwrap">
+                <img src="assets/images/payroll.webp" alt="">
+                <span class="star"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>
+              </div>
+              <div class="txt">Got a raise at work? See how much your new paycheck will be.</div>
+              <button class="cta">See My New Pay</button>
+            </div>
+          </div>
+          <!-- marker circle around the coupon card (drawn by the timeline) -->
+          <svg class="marker-svg" id="marker-coupon" style="left:-6px;top:-8px;width:426px;height:140px" viewBox="0 0 426 140">
+            <path id="marker-coupon-path" d="M 213 6 C 330 2, 420 22, 419 66 C 418 116, 320 136, 205 133 C 92 130, 8 114, 9 68 C 10 24, 96 4, 196 7"/>
+          </svg>
+        </div>
+
+        <!-- Basic Percentage calculator card (further down the home page) -->
+        <div class="layer" id="hl-basic" style="padding:16px 8px 8px">
+          <div class="jp-calc">
+            <div class="dots"><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="corner-star"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>
+            <button class="clear-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Clear</button>
+            <h2>Basic Percentage</h2>
+            <p class="subtitle">What is <b>X</b>% of <b>Y</b>?</p>
+            <!-- "Selected Practical Use Example" — appears ABOVE the form after pinning -->
+            <div class="jp-presentation" id="pres-basic">
+              <div class="pwrap">
+                <div class="phead-row">
+                  <span class="ppin"><span class="ppin-head"></span><span class="ppin-needle"></span></span>
+                  <p class="ptitle">Selected Practical Use Example</p>
+                </div>
+                <button class="pclose"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                <div class="pcontent"><span class="t">Restaurant Tip:</span><span class="gap"></span>A <span class="mk-x">15% <b>[X]</b> tip</span> on a <span class="mk-y">$60 <b>[Y]</b> Italian chain dinner bill</span> comes to <span class="mk-z">how much <b>[Z]</b>?</span><span class="gap"></span><span class="mk-z">$9</span></div>
+              </div>
+            </div>
+            <div class="jp-form">
+              <span class="jp-input" id="basic-x" data-ph="X"></span>
+              <span class="word">% of</span>
+              <span class="jp-input" id="basic-y" data-ph="Y"></span>
+              <span class="word">is</span>
+              <span class="jp-answer empty" id="basic-z"><span class="rlabel">read-only Answer/Result</span><span id="basic-z-val">Z</span></span>
+            </div>
+            <div class="jp-controls">
+              <button class="eq"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8h14M5 16h14"/></svg>Equation</button>
+              <span class="jp-check"><span class="boxx"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>Round</span>
+            </div>
+            <button class="jp-pu-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              Practical Uses
+            </button>
+            <p class="jp-disclaimer">For informational purposes only.</p>
+          </div>
+        </div>
+
+        <div class="layer" style="padding:8px 10px 0">
+          <div class="jp-footer">
+            Privacy Policy &nbsp;·&nbsp; Terms of Use &nbsp;·&nbsp; Cookie Policy<br>
+            © 2026 Bilargo. All rights reserved.<br>
+            App updated: July 2026
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== SCREEN B: /decreased-value-calculator/ ========== -->
+      <section class="screen jp" id="scr-calc" style="display:none">
+        <div class="layer navlayer">
+          <nav class="jp-nav">
+            <div class="jp-nav-row">
+              <span class="jp-logo">
+                <img src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+                <span class="brand">Just Percent</span>
+              </span>
+              <button class="jp-menu-btn">
+                Menu
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+              </button>
+            </div>
+            <div class="jp-breadcrumb"><a>Calculators</a><span class="sep">›</span><span class="cur">Value Decrease Calculator</span></div>
+          </nav>
+        </div>
+
+        <div class="layer" id="cl-card" style="padding:12px 8px 6px">
+          <div class="jp-calc">
+            <div class="dots"><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="corner-star"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>
+            <button class="clear-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Clear</button>
+            <h2>Value Decrease</h2>
+            <p class="subtitle"><b>Original</b> decreased by <b>Decrease</b>% is what?</p>
+            <!-- "Selected Practical Use Example" — appears ABOVE the form after pinning -->
+            <div class="jp-presentation" id="pres-dec">
+              <div class="pwrap">
+                <div class="phead-row">
+                  <span class="ppin"><span class="ppin-head"></span><span class="ppin-needle"></span></span>
+                  <p class="ptitle">Selected Practical Use Example</p>
+                </div>
+                <button class="pclose"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                <div class="pcontent"><span class="t">Sale Discount:</span><span class="gap"></span>A <span class="mk-x">$300 <b>[Original]</b> winter parka</span> <span class="mk-y">with a 30% <b>[Decrease]</b> discount</span> <span class="mk-z">costs what <b>[New]</b>?</span><span class="gap"></span><span class="mk-z">$210</span></div>
+              </div>
+            </div>
+            <div class="jp-form">
+              <span class="jp-input" id="dec-original" data-ph="Original"></span>
+              <span class="word">decreased by</span>
+              <span class="jp-input" id="dec-decrease" data-ph="Decrease"></span>
+              <span class="word">% is</span>
+              <span class="jp-answer empty" id="dec-new"><span class="rlabel">read-only Answer/Result</span><span id="dec-new-val">New</span></span>
+            </div>
+            <div class="jp-controls">
+              <button class="eq"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8h14M5 16h14"/></svg>Equation</button>
+              <span class="jp-check"><span class="boxx"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>Round</span>
+            </div>
+            <button class="jp-pu-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              Practical Uses
+            </button>
+            <p class="jp-disclaimer">For informational purposes only.</p>
+          </div>
+        </div>
+
+        <!-- Practical Uses below the calculator (real en-US decreased-value data) -->
+        <div class="layer" id="cl-practical" style="padding:10px 10px 4px">
+          <div class="jp-practical">
+            <h3>Practical Uses</h3>
+            <p class="desc">Calculate the new value after decreasing an original amount by a specific percentage.</p>
+            <div class="jp-pu-item" id="pu-sale">
+              <span class="jp-pin"><span class="head"></span><span class="needle" style="display:block"></span></span>
+              <span class="t">Sale Discount:</span>
+              A <span class="hl-x">$300 <b>[Original]</b> winter parka</span> <span class="hl-y">with a 30% <b>[Decrease]</b> discount</span> <span class="hl-z">costs what <b>[New]</b>?</span>
+              <button class="jp-pu-heart"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></button>
+              <span class="gap"></span><span class="hl-z ansline">$210</span>
+            </div>
+            <div class="jp-pu-item" id="pu-budget">
+              <span class="jp-pin"><span class="head"></span><span class="needle" style="display:block"></span></span>
+              <span class="t">Budget Cut:</span>
+              A <span class="hl-x">$10,000 <b>[Original]</b> party budget</span> <span class="hl-y">cut by 25% <b>[Decrease]</b></span> <span class="hl-z">becomes what <b>[New]</b>?</span>
+              <button class="jp-pu-heart"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></button>
+              <span class="gap"></span><span class="hl-z ansline">$7,500</span>
+            </div>
+            <div class="jp-pu-item" id="pu-energy">
+              <span class="jp-pin"><span class="head"></span><span class="needle" style="display:block"></span></span>
+              <span class="t">Energy Savings:</span>
+              A <span class="hl-x">$200 <b>[Original]</b> summer AC bill</span> <span class="hl-y">reduced by 18% <b>[Decrease]</b></span> <span class="hl-z">becomes what <b>[New]</b>?</span>
+              <button class="jp-pu-heart"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></button>
+              <span class="gap"></span><span class="hl-z ansline">$164</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="layer" style="padding:8px 10px 0">
+          <div class="jp-footer">
+            Privacy Policy &nbsp;·&nbsp; Terms of Use &nbsp;·&nbsp; Cookie Policy<br>
+            © 2026 Bilargo. All rights reserved.
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== SCREEN C: /faqs/ hub ========== -->
+      <section class="screen jp" id="scr-hub" style="display:none">
+        <div class="layer navlayer">
+          <nav class="jp-nav">
+            <div class="jp-nav-row">
+              <span class="jp-logo">
+                <img src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+                <span class="brand">Just Percent</span>
+              </span>
+              <button class="jp-menu-btn">
+                Menu
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+              </button>
+            </div>
+            <div class="jp-breadcrumb"><a>Calculators</a><span class="sep">›</span><span class="cur">FAQs</span></div>
+          </nav>
+        </div>
+
+        <div class="layer" style="padding:12px 10px 2px">
+          <h1 class="jp-h1">How to Calculate Percentages in Everyday Life</h1>
+          <div class="jp-faq-sub">Interactive FAQ Calculators</div>
+        </div>
+
+        <div class="layer" style="padding:8px 10px 0">
+          <div class="jp-faqctl">
+            <div class="fsearch">
+              <svg class="mag" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+              <span class="fph">Search FAQs...</span>
+              <svg class="gear" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div class="ffav">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="layer" style="padding:8px 10px 0">
+          <div class="jp-cat-h">
+            <span class="cico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg></span>
+            Shopping and Promotions
+          </div>
+          <p class="jp-cat-desc">Tips, coupons, discounts, and everyday retail percentage math.</p>
+        </div>
+
+        <div class="layer" style="padding:2px 10px">
+          <div class="jp-hubcard" id="hub-tip">
+            <span class="bar"></span>
+            <svg class="heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            <p class="ht">Tip Calculation</p>
+            <p class="hs">How much tip should I leave based on percentage?</p>
+            <p class="hq">"The restaurant bill is <span class="var">$150</span>. I want to leave a <span class="var">10</span>% tip..."</p>
+            <p class="hb">Percentage of a number</p>
+            <svg class="arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+        <div class="layer" style="padding:2px 10px">
+          <div class="jp-hubcard">
+            <span class="bar"></span>
+            <svg class="heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            <p class="ht">Product Discount</p>
+            <p class="hs">How much will I pay for a product after applying a percentage discount?</p>
+            <p class="hb">Discounted price</p>
+            <svg class="arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+        <div class="layer" style="padding:2px 10px">
+          <div class="jp-hubcard">
+            <span class="bar"></span>
+            <svg class="heart" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            <p class="ht">Coupon Discount</p>
+            <p class="hs">How much will I save with a percentage discount coupon?</p>
+            <p class="hb">Percentage of a number</p>
+            <svg class="arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== SCREEN D: /faqs/tip-calculation-calculator/ ========== -->
+      <section class="screen jp" id="scr-tip" style="display:none">
+        <div class="layer navlayer">
+          <nav class="jp-nav">
+            <div class="jp-nav-row">
+              <span class="jp-logo">
+                <img src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+                <span class="brand">Just Percent</span>
+              </span>
+              <button class="jp-menu-btn">
+                Menu
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+              </button>
+            </div>
+            <div class="jp-breadcrumb"><a>Calculators</a><span class="sep">›</span><a>FAQs</a><span class="sep">›</span><span class="cur">Tip Calculation</span></div>
+          </nav>
+        </div>
+
+        <div class="layer" style="padding:12px 10px 2px">
+          <h1 class="jp-h1">Tip Calculation</h1>
+          <div class="jp-faq-sub">How much tip should I leave based on percentage?</div>
+        </div>
+
+        <div class="layer" id="tl-card" style="padding:10px 10px;position:relative">
+          <div class="jp-faqcard">
+            <div class="q">
+              The restaurant bill is $<span class="jp-mini" id="tip-bill">150</span>. I want to leave a <span class="jp-mini" id="tip-pct">10</span>% tip...
+              <span class="ask">How much should I leave?</span>
+            </div>
+            <div class="jp-faq-hints">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              <span>Hold &amp; Drag <span class="jp-kbd">←</span> <span class="jp-kbd">→</span> &#160;Adjust value</span>
+            </div>
+            <div class="ans" id="tip-ansline">
+              <b>Answer:</b> The tip should be $<span class="jp-mini ro" id="tip-result">15</span>.
+            </div>
+            <div class="details">
+              <p><b>Type of calculation:</b> Calculating a percentage of a number.</p>
+              <p style="margin-top:6px"><b>How to use the calculator:</b> Use the <span class="lnk">Basic Percentage CALCULATOR</span> ("What is X% of Y?"). Enter the tip percentage as <span id="det-x">10</span> [X] and the bill amount as <span id="det-y">150</span> [Y]. It will calculate <span id="det-x2">10</span>% of <span id="det-y2">150</span>.</p>
+              <p style="margin-top:6px"><b>The formula:</b> Formula: (Percentage / 100) × Whole. Tip amount = (<span id="det-fx">10</span> / 100) × <span id="det-fy">150</span> = <span id="det-fr">15</span></p>
+            </div>
+          </div>
+          <!-- marker underline beneath the live answer -->
+          <svg class="marker-svg" id="marker-answer" style="left:24px;top:0;width:340px;height:26px" viewBox="0 0 340 26">
+            <path id="marker-answer-path" d="M 6 10 C 80 4, 200 6, 332 9 M 40 19 C 130 14, 240 16, 320 18"/>
+          </svg>
+        </div>
+      </section>
+
+    </div><!-- /phone-scale -->
+
+    <!-- fixed viewport chrome (the app's floating theme toggle) -->
+    <div id="phone-fixed">
+      <button class="jp-toggle" id="theme-toggle" style="right:14px;bottom:14px">
+        <svg class="moon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <svg class="sun" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      </button>
+    </div>
+  </div><!-- /phone -->
+  </div><!-- /phone-tilt -->
+
+  <!-- washi tape holding the phone in the scrapbook -->
+  <div class="tape" id="tape1" style="left:2px;top:46px;transform:rotate(-38deg)"></div>
+  <div class="tape mint" id="tape2" style="left:452px;top:44px;transform:rotate(34deg)"></div>
+
+  <!-- glitch slice overlay + torn-paper wipe -->
+  <div id="glitch"></div>
+  <div id="wipe"></div>
+
+  <!-- ==================== SCREEN-SPACE UI ==================== -->
+  <div id="urlpill">
+    <svg class="lock" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd"/></svg>
+    <span><b>justpercent.com</b><span class="path" id="url-path">/</span></span>
+  </div>
+
+  <div class="caption" id="cap1"><span class="tape rose" style="width:64px;height:18px;transform:rotate(-4deg)"></span>Start from <em>your life</em> — not from a formula.</div>
+  <div class="caption" id="cap2"><span class="tape mint" style="width:64px;height:18px;transform:rotate(3deg)"></span>One tap opens the right calculator — <em>pre-filled</em>.</div>
+  <div class="caption" id="cap3"><span class="tape" style="width:64px;height:18px;transform:rotate(-3deg)"></span>Real-life examples <em>fill it in for you</em>.</div>
+  <div class="caption" id="cap4"><span class="tape rose" style="width:64px;height:18px;transform:rotate(2deg)"></span>Or search <em>your situation</em> — it scrolls you to the answer.</div>
+  <div class="caption" id="cap5"><span class="tape mint" style="width:64px;height:18px;transform:rotate(-2deg)"></span>Day or night.</div>
+  <div class="caption" id="cap6"><span class="tape" style="width:64px;height:18px;transform:rotate(3deg)"></span>64 real-life FAQs — <em>each one is a live calculator</em>.</div>
+
+  <div id="brandbar">
+    <img src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+    <span class="site">justpercent.com</span>
+  </div>
+
+  <div class="ripple" id="ripple"></div>
+
+  <!-- paper-cutout pointing hand (stop-motion) -->
+  <div id="hand">
+    <svg viewBox="0 0 120 132">
+      <path d="M50 8 C58 6 64 12 64 22 L64 52 L72 50 C80 48 84 54 83 60 L92 58 C99 57 103 62 102 68 L108 67 C114 66 118 72 116 79 L110 108 C107 122 96 130 80 130 L58 130 C46 130 38 124 32 114 L12 82 C8 74 12 66 20 66 C25 66 28 68 32 73 L38 82 L38 24 C38 13 43 9 50 8 Z"
+        fill="#ffffff" stroke="#0F172A" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M64 52 L64 70 M83 60 L82 72 M102 68 L100 78" stroke="#0F172A" stroke-width="4" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+
+  <div id="flash"></div>
+
+  <!-- ==================== ENDCARD ==================== -->
+  <div id="outro">
+    <div class="card">
+      <div class="paperback"></div>
+      <span class="tape" style="left:-26px;top:-14px;transform:rotate(-40deg)"></span>
+      <span class="tape rose" style="right:-26px;top:-12px;left:auto;transform:rotate(38deg)"></span>
+      <div class="logo-wrap">
+        <img src="assets/images/percentage.webp" alt="Percentage Symbol Logo">
+        <span class="brand">Just Percent</span>
+      </div>
+      <div class="site">justpercent.com</div>
+      <div class="tagline">From your problem to your answer. <b>Instantly.</b></div>
+      <div class="pills"><span>Free</span><span>Instant</span><span>No sign-up</span></div>
+    </div>
+  </div>
+
+  <div id="vignette"></div>
+  <div id="grain"></div>
+</div><!-- /view -->
+</div>
+
+<script src="lib/timeline.js"></script>
+<script src="js/scenes.js"></script>
+</body>
+</html>

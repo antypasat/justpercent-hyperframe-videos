@@ -1,0 +1,140 @@
+{
+  "name": "4.5 Empty-State to Data",
+  "technique": "State Toggle / Empty → Data",
+  "duration": 8,
+  "layers": {
+    "pre": {
+      "asset": "assets/home-search-focused.png",
+      "h": 900
+    },
+    "a": {
+      "asset": "assets/home-search-portal.png",
+      "h": 900
+    },
+    "b": {
+      "asset": "assets/home-search-selected.png",
+      "h": 900
+    }
+  },
+  "cam": {
+    "easing": "ease-in-out-cubic",
+    "keys": [
+      {
+        "t": 0,
+        "s": 1.15,
+        "fx": 800,
+        "fy": 330
+      },
+      {
+        "t": 1.4,
+        "s": 1.22,
+        "fx": 800,
+        "fy": 330
+      },
+      {
+        "t": 3.1,
+        "s": 1.5,
+        "fx": 800,
+        "fy": 330
+      },
+      {
+        "t": 3.3,
+        "s": 1.5,
+        "fx": 800,
+        "fy": 320
+      },
+      {
+        "t": 3.4,
+        "s": 1.56,
+        "fx": 800,
+        "fy": 310,
+        "e": "ease-out-cubic"
+      },
+      {
+        "t": 3.5,
+        "s": 1.8,
+        "fx": 950,
+        "fy": 330
+      },
+      {
+        "t": 5.6,
+        "s": 1,
+        "fx": 800,
+        "fy": 450,
+        "e": "ease-in-out-quart"
+      }
+    ]
+  },
+  "cursor": {
+    "easing": "ease-in-out-cubic",
+    "layer": "a",
+    "path": [
+      {
+        "t": 1.8,
+        "x": 1230,
+        "y": 720
+      },
+      {
+        "t": 3,
+        "x": 800,
+        "y": 264
+      },
+      {
+        "t": 3.5,
+        "x": 800,
+        "y": 264
+      }
+    ],
+    "clickAt": 3.3
+  },
+  "toggle": {
+    "type": "cut-seq",
+    "seq": [
+      {
+        "at": 0,
+        "show": "pre"
+      },
+      {
+        "at": 1.4,
+        "show": "a"
+      },
+      {
+        "at": 3.5,
+        "show": "b"
+      }
+    ]
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "STATE TOGGLE · EMPTY STATE → DATA",
+      "in": 0.4,
+      "out": 3.3
+    },
+    {
+      "kind": "caption",
+      "text": "One search box. Type “tip”…",
+      "in": 0.7,
+      "out": 2
+    },
+    {
+      "kind": "caption",
+      "text": "Practical uses, solutions and FAQs — instantly.",
+      "in": 2.2,
+      "out": 3.4
+    },
+    {
+      "kind": "chip",
+      "text": "search → pinned example on the home calculator",
+      "in": 4,
+      "out": 7.8
+    },
+    {
+      "kind": "caption",
+      "text": "15% of a $60 dinner bill → $9. Pinned and computed.",
+      "emphasis": true,
+      "in": 4.7,
+      "out": 7.7
+    }
+  ]
+}

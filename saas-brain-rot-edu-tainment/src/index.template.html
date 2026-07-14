@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>justpercent.com — SaaS Brain Rot teaser (1080x1920, 36s)</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+/* __STAGE_CSS__ */
+    </style>
+    <style>
+/* __APP_CSS__ */
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="36" data-width="1080" data-height="1920">
+
+      <!-- backdrop -->
+      <div class="bg">
+        <div class="bg-ghost">%</div>
+        <div class="bg-orb violet"></div>
+        <div class="bg-orb cyan"></div>
+        <div class="bg-orb rose"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-vignette"></div>
+      </div>
+
+      <!-- cold-open headlines (sequential, same spot) -->
+      <div class="intro" data-layout-allow-overflow>
+        <div class="intro-line" id="intro-1">POV: <span class="hl">percent math</span> strikes again</div>
+        <div class="intro-line" id="intro-2">watch the <span class="hl">cheat code</span>.</div>
+      </div>
+
+      <!-- compact browser URL bar -->
+      <div class="urlbar" data-layout-allow-overflow>
+        <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="url"><span class="host">justpercent.com/</span><span class="path" id="url-path"></span></span>
+      </div>
+
+      <!-- phone rig with 1:1 captured app states -->
+      <div class="rig">
+        <div class="phone-unit" data-layout-allow-overflow>
+          <div class="floaty">
+            <div class="phone">
+              <div class="whip">
+                <div class="zoom">
+                  <div class="phone-scale">
+                    <div class="snap" id="S1"><!-- __SNAP_home-light__ --></div>
+                    <div class="snap" id="S2"><!-- __SNAP_home-light-search__ --></div>
+                    <div class="snap" id="S3"><!-- __SNAP_home-light-pinned__ --></div>
+                    <div class="snap" id="S4"><!-- __SNAP_calc-decreased-light__ --></div>
+                    <div class="snap" id="S5"><!-- __SNAP_calc-decreased-dark__ --></div>
+                    <div class="snap" id="S6"><!-- __SNAP_calc-decreased-dark-pinned__ --></div>
+                    <div class="snap" id="S7"><!-- __SNAP_faqs-dark__ --></div>
+                    <div class="snap" id="S8"><!-- __SNAP_faq-salary-dark__ --></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- captions (glass plates, above the brand bar) -->
+      <div class="caps" data-layout-allow-overflow>
+        <div class="cap" id="cap-1">a calculator for <span class="hl">YOUR</span> exact problem</div>
+        <div class="cap" id="cap-2">8 calculators. <span class="hl">zero formulas.</span></div>
+        <div class="cap" id="cap-3">just type your life&hellip;</div>
+        <div class="cap" id="cap-4">it already <span class="hl">knows the move</span></div>
+        <div class="cap" id="cap-5">one tap &rarr; the right calculator. <span class="hl">preloaded.</span></div>
+        <div class="cap" id="cap-6"><span class="money">$60</span> dinner. 15% tip &rarr; <span class="money">$9</span>. zero brain cells.</div>
+        <div class="cap" id="cap-7">dark mode? <span class="hl">obviously.</span></div>
+        <div class="cap" id="cap-8">tap a real-life example&hellip;</div>
+        <div class="cap" id="cap-9">&hellip;it pins it right <span class="hl">above the calculator</span></div>
+        <div class="cap" id="cap-10">fills it in. solves it. <span class="hl">LIVE.</span></div>
+        <div class="cap" id="cap-11">64 everyday questions &mdash; <span class="hl">secretly calculators</span></div>
+        <div class="cap" id="cap-12">ask for 8%. watch the math <span class="hl">flex.</span></div>
+      </div>
+
+      <!-- persistent brand bar -->
+      <div class="brandbar" data-layout-allow-overflow>
+        <img src="assets/images/percentage.webp" alt="Just Percent logo" />
+        <span class="bb-domain">justpercent.com</span>
+      </div>
+
+      <!-- endcard -->
+      <div class="endcard" data-layout-allow-overflow>
+        <img class="ec-logo" src="assets/images/percentage.webp" alt="Just Percent logo" />
+        <div class="ec-name">Just <span class="pct">Percent</span></div>
+        <div class="ec-domain">justpercent.com</div>
+        <div class="ec-tag">Every percent problem &mdash; solved in seconds.</div>
+        <div class="ec-chips">
+          <div class="ec-chip">Free</div>
+          <div class="ec-chip">Instant</div>
+          <div class="ec-chip">No sign-up</div>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+/* __TIMELINE_JS__ */
+    </script>
+    <script>
+/* QA harness: only active when the page is opened directly with ?t=<seconds>.
+   Inert under `npx hyperframes preview` / render (no ?t param there). */
+(function(){
+  try {
+    /* deterministic-scrub self-test: open index.html?selftest=1 and read the tab title */
+    if (/[?&]selftest=1/.test(location.search)) {
+      var fp = function(){
+        var g = function(s){ var e=document.querySelector(s); return e? (e.value!==undefined&&e.tagName==='INPUT'? e.value : getComputedStyle(e).visibility) : '?'; };
+        var z = document.querySelector('.zoom');
+        return [g('#S1 #calculator-search'), g('#S6 #decreased-value-original-input'), g('#S8 #raise-percent'),
+                g('#S1'), g('#S2'), g('#S6'), g('.ec-name'), g('.phone-unit'),
+                document.getElementById('url-path').textContent, getComputedStyle(z).transform,
+                getComputedStyle(document.querySelector('#S1 .jp-body')).marginTop].join('|');
+      };
+      var run = function(){
+        var probes = [9.4, 14.7, 23.0, 30.9];
+        var fwd = {}, bad = [];
+        probes.forEach(function(p){ window.__brSeek(p); fwd[p] = fp(); });
+        window.__brSeek(35.9);
+        probes.slice().reverse().forEach(function(p){ window.__brSeek(p); if (fp() !== fwd[p]) bad.push(p); });
+        window.__brSeek(0); window.__brSeek(23.0);
+        if (fp() !== fwd[23]) bad.push('23-after-0');
+        document.title = bad.length ? ('SELFTEST FAIL ' + bad.join(',')) : 'SELFTEST OK deterministic';
+      };
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ setTimeout(run, 200); });
+      else setTimeout(run, 500);
+      return;
+    }
+    var m = location.search.match(/[?&]t=([0-9.]+)/);
+    if (!m) return;
+    var t = parseFloat(m[1]);
+    var go = function(){ if (window.__brSeek) window.__brSeek(t); };
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function(){ setTimeout(go, 120); }); }
+    else { setTimeout(go, 400); }
+    window.addEventListener('keydown', function(e){
+      var cur = window.__timelines && window.__timelines.main ? window.__timelines.main.time() : 0;
+      if (e.key === 'ArrowRight') window.__brSeek(cur + (e.shiftKey ? 1 : 1/30));
+      if (e.key === 'ArrowLeft')  window.__brSeek(cur - (e.shiftKey ? 1 : 1/30));
+      if (e.key === ' ') { e.preventDefault(); var tl = window.__timelines.main; tl.paused() ? tl.play() : tl.pause(); }
+    });
+  } catch (e) {}
+})();
+    </script>
+  </body>
+</html>

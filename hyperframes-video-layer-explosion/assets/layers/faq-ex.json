@@ -1,0 +1,51 @@
+{
+  "scene": "faq-ex",
+  "url": "https://justpercent.com/faqs/tip-calculation-calculator/?noredirect",
+  "viewport": {
+    "width": 1600,
+    "height": 900
+  },
+  "dpr": 2,
+  "layers": [
+    {
+      "id": "nav",
+      "sel": "nav",
+      "box": {
+        "x": 436,
+        "y": 0,
+        "w": 728,
+        "h": 61
+      }
+    },
+    {
+      "id": "heading",
+      "sel": "main h1",
+      "box": {
+        "x": 436,
+        "y": 114,
+        "w": 728,
+        "h": 60
+      }
+    },
+    {
+      "id": "block1",
+      "sel": "[data-le-block=\"block1\"]",
+      "box": {
+        "x": 436,
+        "y": 114,
+        "w": 728,
+        "h": 60
+      }
+    },
+    {
+      "id": "block2",
+      "sel": "[data-le-block=\"block2\"]",
+      "box": {
+        "x": 436,
+        "y": 246,
+        "w": 728,
+        "h": 535
+      }
+    }
+  ]
+}

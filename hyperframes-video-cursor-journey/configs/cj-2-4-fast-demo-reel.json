@@ -1,0 +1,276 @@
+{
+  "hyperframes": "1.0",
+  "name": "cj-2-4-fast-demo-reel",
+  "technique": "Cursor Journey / Fast Demo Reel",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/faqs/tip-calculation-calculator/",
+    "locale": "en-US",
+    "flow": "Rapid 4-hop reel: (1) click “Calculate My Tip” card → (2) Basic Percentage Calculator lands pre-filled 15% of $60 = $9 → (3) click the “Tip Calculation” question on the Interactive FAQs index → (4) the FAQ subpage answers live: $150 bill, 10% tip → $15. Each post-click DOM captured after full settle.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "afterClick": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 6.2,
+  "states": {
+    "home": {
+      "asset": "assets/s-home-top.png",
+      "w": 1600,
+      "h": 900
+    },
+    "basic": {
+      "asset": "assets/s-basic-tip-arrived.png",
+      "w": 1600,
+      "h": 900
+    },
+    "faqs": {
+      "asset": "assets/s-faqs-tip-row.png",
+      "w": 1600,
+      "h": 900
+    },
+    "faq": {
+      "asset": "assets/s-faq-tip.png",
+      "w": 1600,
+      "h": 900
+    }
+  },
+  "swaps": [
+    {
+      "t": 0,
+      "state": "home",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 1.45,
+      "state": "basic",
+      "fx": "whip",
+      "dur": 0.28
+    },
+    {
+      "t": 3.05,
+      "state": "faqs",
+      "fx": "whip",
+      "dur": 0.28
+    },
+    {
+      "t": 4.45,
+      "state": "faq",
+      "fx": "whip",
+      "dur": 0.28
+    }
+  ],
+  "cursor": [
+    {
+      "t": 0,
+      "x": 520,
+      "y": 260
+    },
+    {
+      "t": 0.95,
+      "x": 1049,
+      "y": 634,
+      "cp": [
+        [
+          330,
+          60
+        ],
+        [
+          -120,
+          -220
+        ]
+      ]
+    },
+    {
+      "t": 1.35,
+      "x": 1049,
+      "y": 634
+    },
+    {
+      "t": 1.6,
+      "x": 900,
+      "y": 380,
+      "jump": true
+    },
+    {
+      "t": 2.3,
+      "x": 971,
+      "y": 417,
+      "cp": [
+        [
+          60,
+          60
+        ],
+        [
+          -60,
+          30
+        ]
+      ]
+    },
+    {
+      "t": 2.85,
+      "x": 971,
+      "y": 417
+    },
+    {
+      "t": 3.2,
+      "x": 820,
+      "y": 520,
+      "jump": true
+    },
+    {
+      "t": 3.85,
+      "x": 801,
+      "y": 744,
+      "cp": [
+        [
+          -120,
+          90
+        ],
+        [
+          110,
+          -80
+        ]
+      ]
+    },
+    {
+      "t": 4.25,
+      "x": 801,
+      "y": 744
+    },
+    {
+      "t": 4.6,
+      "x": 750,
+      "y": 350,
+      "jump": true
+    },
+    {
+      "t": 5.25,
+      "x": 700,
+      "y": 472,
+      "cp": [
+        [
+          -90,
+          40
+        ],
+        [
+          80,
+          -60
+        ]
+      ]
+    },
+    {
+      "t": 5.55,
+      "x": 700,
+      "y": 472
+    },
+    {
+      "t": 6.2,
+      "x": 700,
+      "y": 472
+    }
+  ],
+  "camera": {
+    "follow": {
+      "mode": "cursor",
+      "stiffness": 110,
+      "damping": "tight"
+    },
+    "scaleTrack": [
+      {
+        "t": 0,
+        "s": 1.3
+      },
+      {
+        "t": 0.8,
+        "s": 1.7,
+        "ease": "ease-out-quart"
+      },
+      {
+        "t": 6.2,
+        "s": 1.7
+      }
+    ]
+  },
+  "events": [
+    {
+      "kind": "click",
+      "t": 1.35,
+      "x": 1049,
+      "y": 634
+    },
+    {
+      "kind": "click",
+      "t": 2.85,
+      "x": 971,
+      "y": 417
+    },
+    {
+      "kind": "click",
+      "t": 4.25,
+      "x": 801,
+      "y": 744
+    },
+    {
+      "kind": "click",
+      "t": 5.55,
+      "x": 700,
+      "y": 472
+    },
+    {
+      "kind": "ring",
+      "t0": 5.6,
+      "t1": 6.15,
+      "rect": {
+        "x": 656,
+        "y": 444,
+        "w": 90,
+        "h": 56
+      }
+    }
+  ],
+  "fx": {
+    "letterbox": true,
+    "vignette": true,
+    "grain": true,
+    "trail": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Four hops. One answer machine.",
+      "in": 0.15,
+      "out": 6.1
+    },
+    {
+      "kind": "caption",
+      "text": "Tip?",
+      "in": 0.3,
+      "out": 1.4
+    },
+    {
+      "kind": "caption",
+      "text": "$9. Done.",
+      "in": 1.9,
+      "out": 2.95
+    },
+    {
+      "kind": "caption",
+      "text": "Real questions…",
+      "in": 3.3,
+      "out": 4.35
+    },
+    {
+      "kind": "caption",
+      "text": "…answered live. $15.",
+      "in": 4.8,
+      "out": 6.15
+    }
+  ]
+}

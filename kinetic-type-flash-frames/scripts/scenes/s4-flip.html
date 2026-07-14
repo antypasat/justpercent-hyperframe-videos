@@ -1,0 +1,73 @@
+<template id="s4-flip-template">
+  <div data-composition-id="s4-flip" data-start="0" data-width="1080" data-height="1920">
+    <div class="f-stage f-bg-light"></div>
+    <div class="f-stage f-bg-dark s4-darkbg" style="opacity:0">
+      <div class="f-orb f-orb-v" style="width:900px;height:900px;top:-260px;left:-280px;opacity:.55"></div>
+      <div class="f-orb f-orb-c" style="width:760px;height:760px;bottom:-180px;right:-220px;opacity:.4"></div>
+      <div class="f-vignette" style="opacity:.5"></div>
+    </div>
+
+    <div class="s4-persp">
+      <div class="f-url s4-url">
+        <svg class="f-url-lock" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="f-url-text"><b>justpercent.com</b>/increased-value-calculator/</span>
+      </div>
+
+      <div class="s4-card">
+        <div class="f-win s4-face s4-front">
+          <div class="f-pg"><div class="f-off" data-jp-scope>{{FRAG:calc-top-light}}</div></div>
+        </div>
+        <div class="f-win s4-face s4-back">
+          <div class="f-pg"><div class="f-off" data-jp-scope>{{FRAG:calc-top-dark}}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-cap s4-cap"><div class="f-cap-t">LIGHT. DARK. <em>YOURS.</em></div></div>
+    <div class="f-flash s4-flash" style="background:#c4b5fd"></div>
+
+    <style>
+      [data-composition-id="s4-flip"] { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      [data-composition-id="s4-flip"] .s4-persp { position: absolute; inset: 0; perspective: 2600px; }
+      [data-composition-id="s4-flip"] .s4-card {
+        position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform;
+      }
+      [data-composition-id="s4-flip"] .s4-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+      [data-composition-id="s4-flip"] .s4-back { transform: rotateY(180deg); }
+      [data-composition-id="s4-flip"] .s4-front { transform: rotateY(0deg); }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var R = '[data-composition-id="s4-flip"] ';
+        var tl = gsap.timeline({ paused: true });
+
+        tl.set(R + '.s4-url', { opacity: 1 }, 0);
+
+        // the big 3D theme flip
+        tl.fromTo(R + '.s4-card',
+          { rotationY: 0, scale: 1 },
+          { rotationY: 180, duration: 1.25, ease: "power2.inOut", immediateRender: true }, 0.30);
+        tl.to(R + '.s4-card', { scale: 0.86, duration: 0.62, ease: "power2.in" }, 0.30);
+        tl.to(R + '.s4-card', { scale: 1.0, duration: 0.63, ease: "power2.out" }, 0.92);
+
+        // background world flips with it
+        tl.fromTo(R + '.s4-darkbg', { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0.72);
+
+        // flash exactly at the apex (2 frames)
+        tl.set(R + '.s4-flash', { opacity: 1 }, 0.90);
+        tl.set(R + '.s4-flash', { opacity: 0 }, 0.965);
+
+        // caption
+        tl.fromTo(R + '.s4-cap', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.35);
+        tl.to(R + '.s4-cap', { y: -40, opacity: 0, duration: 0.24, ease: "power2.in" }, 1.72);
+
+        tl.set({}, {}, 2.0);
+        window.__timelines["s4-flip"] = tl;
+      })();
+    </script>
+  </div>
+</template>

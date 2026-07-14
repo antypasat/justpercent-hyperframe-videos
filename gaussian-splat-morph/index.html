@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:300;font-display:block;src:url('assets/fonts/ibm-plex-sans-latin-300-normal.woff2') format('woff2')}
+      @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:block;src:url('assets/fonts/ibm-plex-sans-latin-400-normal.woff2') format('woff2')}
+      @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:block;src:url('assets/fonts/ibm-plex-sans-latin-500-normal.woff2') format('woff2')}
+      @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:700;font-display:block;src:url('assets/fonts/ibm-plex-sans-latin-700-normal.woff2') format('woff2')}
+      @font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300;font-display:block;src:url('assets/fonts/space-grotesk-latin-300-normal.woff2') format('woff2')}
+      @font-face{font-family:'Space Grotesk';font-style:normal;font-weight:700;font-display:block;src:url('assets/fonts/space-grotesk-latin-700-normal.woff2') format('woff2')}
+      @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:block;src:url('assets/fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2')}
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #070812;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="36.5"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div id="b1" class="clip"
+        data-composition-id="b1-hook"
+        data-composition-src="compositions/b1-hook.html"
+        data-start="0" data-duration="3.4" data-track-index="1"></div>
+
+      <div id="b2" class="clip"
+        data-composition-id="b2-home-flythrough"
+        data-composition-src="compositions/b2-home-flythrough.html"
+        data-start="3.4" data-duration="5.8" data-track-index="1"></div>
+
+      <div id="b3" class="clip"
+        data-composition-id="b3-calc-practical-use"
+        data-composition-src="compositions/b3-calc-practical-use.html"
+        data-start="9.2" data-duration="7.0" data-track-index="1"></div>
+
+      <div id="b4" class="clip"
+        data-composition-id="b4-search-to-answer"
+        data-composition-src="compositions/b4-search-to-answer.html"
+        data-start="16.2" data-duration="6.2" data-track-index="1"></div>
+
+      <div id="b5" class="clip"
+        data-composition-id="b5-theme-flip"
+        data-composition-src="compositions/b5-theme-flip.html"
+        data-start="22.4" data-duration="2.8" data-track-index="1"></div>
+
+      <div id="b6" class="clip"
+        data-composition-id="b6-faq-live"
+        data-composition-src="compositions/b6-faq-live.html"
+        data-start="25.2" data-duration="7.0" data-track-index="1"></div>
+
+      <div id="b7" class="clip"
+        data-composition-id="b7-endcard"
+        data-composition-src="compositions/b7-endcard.html"
+        data-start="32.2" data-duration="4.3" data-track-index="1"></div>
+
+      <div id="chrome" class="clip"
+        data-composition-id="chrome-overlay"
+        data-composition-src="compositions/chrome-overlay.html"
+        data-start="0" data-duration="32.6" data-track-index="2"></div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

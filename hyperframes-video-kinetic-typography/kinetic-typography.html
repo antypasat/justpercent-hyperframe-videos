@@ -1,0 +1,659 @@
+<!doctype html>
+<!-- Film 2 — Kinetic Typography & Font Bending — justpercent.com (US)
+     Deterministic master-clock player: every pixel is a pure function of t.
+     Open via file://. Controls: Space pause · R restart · theme toggle.
+     URL: ?t=<ms> seek · ?stop=<ms> autopause · ?rec hide controls · ?theme=light
+     QA hook: window.__f2Seek(sec, theme) -> Promise (images decoded) -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Film 2 — Kinetic Typography &amp; Font Bending — Just Percent</title>
+<style>
+  @font-face { font-family: "Space Grotesk"; font-weight: 700;
+    src: url("fonts/space-grotesk-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 500;
+    src: url("fonts/space-grotesk-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 300;
+    src: url("fonts/ibm-plex-sans-latin-300-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400;
+    src: url("fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600;
+    src: url("fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 700;
+    src: url("fonts/ibm-plex-sans-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400;
+    src: url("fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 700;
+    src: url("fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2"); }
+
+  html, body { margin: 0; height: 100%; background: #05060d; overflow: hidden;
+    font-family: "IBM Plex Sans", sans-serif; }
+  #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+
+  /* ---- 1080×1920 stage ---- */
+  #frame { position: absolute; left: 50%; top: 50%;
+    width: 1080px; height: 1920px;
+    overflow: hidden; border-radius: 8px; transform-origin: center center;
+    background: #070812; --ink: #fff; --accent: #a78bfa; --accent2: #22d3ee; }
+  .theme-light #frame { background: #d9d7e8; --ink: #191430;
+    --accent: #6d28d9; --accent2: #0e7490; }
+
+  /* void backdrop */
+  #bgfx { position: absolute; inset: -60px; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(90px); }
+  #orbA { width: 900px; height: 900px; background: rgba(124, 58, 237, .34); }
+  #orbB { width: 760px; height: 760px; background: rgba(34, 211, 238, .17); }
+  .theme-light #orbA { background: rgba(139, 92, 246, .35); }
+  .theme-light #orbB { background: rgba(96, 165, 250, .30); }
+  .dot { position: absolute; border-radius: 50%; background: #cdd3ff; filter: blur(1px); }
+  .theme-light .dot { background: #6d5fd0; }
+  #vignette { position: absolute; inset: 0;
+    background: radial-gradient(120% 90% at 50% 42%, transparent 55%, rgba(2,3,8,.55) 100%); }
+  .theme-light #vignette {
+    background: radial-gradient(120% 90% at 50% 42%, transparent 60%, rgba(30,20,70,.28) 100%); }
+
+  /* scene 1 — Frankenstein hook words */
+  #hook { position: absolute; inset: 0; }
+  .hw { position: absolute; left: 0; top: 0; white-space: nowrap;
+    will-change: transform; line-height: 1; }
+  .hw-grotesk { font-family: "Space Grotesk"; color: var(--ink);
+    text-shadow: 0 24px 60px rgba(3,5,16,.5); }
+  .hw-georgia { font-family: Georgia, "Times New Roman", serif;
+    font-style: italic; color: var(--accent); }
+  .hw-mono { font-family: "JetBrains Mono"; color: var(--accent2); }
+  .hw-plex { font-family: "IBM Plex Sans"; color: var(--ink);
+    letter-spacing: 26px; }
+
+  /* scene 2 — flash frames + beat pause */
+  #strobe { position: absolute; inset: 0; display: grid; place-items: center;
+    font-family: "Space Grotesk"; font-weight: 700; visibility: hidden; }
+  #oneAns { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; opacity: 0; }
+  #oaSmall { font-family: "JetBrains Mono"; font-weight: 700; font-size: 46px;
+    letter-spacing: 8px; color: rgba(255,255,255,.75); }
+  .theme-light #oaSmall { color: rgba(20,16,50,.75); }
+  #oaBig { font-family: "Space Grotesk"; font-weight: 700; font-size: 148px;
+    margin-top: 26px; background: linear-gradient(100deg, #a78bfa, #22d3ee);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  /* scenes 3–4 — real UI plates */
+  #shakeWrap { position: absolute; inset: 0; will-change: transform; }
+  #uiGrp, #selGrp { position: absolute; left: 0; top: 0; width: 1080px;
+    height: 1920px; will-change: transform; visibility: hidden; }
+  #uiGrp img, #selGrp img { position: absolute; left: 0; top: 0;
+    width: 1080px; height: 1920px; display: block; -webkit-user-drag: none;
+    visibility: hidden; }
+  #flyLetter { position: absolute; left: 0; top: 0; opacity: 0;
+    font-family: "Space Grotesk"; font-weight: 700; color: var(--ink);
+    line-height: 1; will-change: transform, filter;
+    text-shadow: 0 0 60px rgba(167,139,250,.65), 0 26px 60px rgba(3,5,16,.45); }
+  .theme-light #flyLetter { text-shadow: 0 0 60px rgba(109,40,217,.4),
+    0 26px 60px rgba(40,30,90,.3); }
+
+  /* scene 5 — font bending */
+  #bendWrap { position: absolute; inset: 0; visibility: hidden; }
+  .bend { position: absolute; left: 0; top: 0; white-space: nowrap;
+    font-family: "IBM Plex Sans"; line-height: 1; will-change: transform;
+    color: var(--ink); }
+  .bendEcho { color: transparent; -webkit-text-stroke: 3px var(--accent); }
+  .bendEcho2 { -webkit-text-stroke: 2px var(--accent2); }
+
+  /* kinetic captions */
+  #cap { position: absolute; left: 50%; top: 1470px; transform: translateX(-50%);
+    width: 960px; text-align: center; opacity: 0; }
+  #capPlate { display: inline-block; background: rgba(8,10,22,.74);
+    border: 1px solid rgba(255,255,255,.14); border-radius: 26px;
+    padding: 30px 46px; backdrop-filter: blur(6px); }
+  #capL1 { font-family: "Space Grotesk"; font-weight: 700; font-size: 64px;
+    line-height: 1.08; color: #fff; letter-spacing: .5px; }
+  #capL1 .kw, #capL2 .kw { display: inline-block; will-change: transform;
+    margin: 0 12px; }
+  #capL1 .hl, #capL2 .hl { color: #a78bfa; }
+  #capL2 { font-family: "Space Grotesk"; font-weight: 700; font-size: 54px;
+    color: rgba(255,255,255,.92); margin-top: 14px; }
+
+  /* technique chip */
+  #chip { position: absolute; left: 40px; top: 40px; background: rgba(8,10,22,.55);
+    border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 16px 22px; }
+  #chipL1 { font-family: "JetBrains Mono"; font-weight: 700; font-size: 24px;
+    color: rgba(255,255,255,.82); letter-spacing: 1px; }
+  #chipL2 { font-size: 21px; color: rgba(255,255,255,.5); margin-top: 5px; }
+
+  /* flash */
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+
+  /* end card */
+  #endcard { position: absolute; inset: 0; opacity: 0;
+    background: linear-gradient(180deg, rgba(7,8,18,.9), rgba(11,8,30,.96));
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; }
+  #ecMark { font-family: "Space Grotesk"; font-weight: 700; font-size: 150px;
+    background: linear-gradient(100deg, #a78bfa, #22d3ee);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #ecBrand { font-family: "Space Grotesk"; font-weight: 700; font-size: 92px; color: #fff; }
+  #ecUrl { font-family: "JetBrains Mono"; font-weight: 700; font-size: 46px;
+    color: #0b0c18; background: #fff; border-radius: 60px; padding: 20px 52px;
+    margin-top: 46px; }
+  #ecTag { font-size: 36px; color: rgba(255,255,255,.78); margin-top: 42px; }
+  #ecPills { display: flex; gap: 22px; margin-top: 34px; }
+  .ecPill { font-size: 30px; font-weight: 600; color: #e9e6ff;
+    border: 1px solid rgba(255,255,255,.28); border-radius: 40px; padding: 12px 34px; }
+
+  /* controls (never recorded: hidden by ?rec) */
+  #controls { position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%);
+    display: flex; gap: 10px; align-items: center; background: rgba(10,12,26,.85);
+    border: 1px solid rgba(255,255,255,.15); border-radius: 14px; padding: 10px 14px;
+    z-index: 50; color: #cfd3ec; font-size: 14px; }
+  #controls button { background: #262a4a; color: #e8eaff; border: 0; border-radius: 9px;
+    padding: 8px 14px; font-size: 14px; cursor: pointer; font-family: inherit; }
+  #controls button:hover { background: #34396199; }
+  #controls input[type=range] { width: 260px; accent-color: #8b5cf6; }
+  #loading { position: fixed; inset: 0; display: grid; place-items: center;
+    background: #05060d; color: #aab; z-index: 90; font-size: 18px;
+    font-family: "JetBrains Mono", monospace; }
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="frame">
+    <div id="bgfx">
+      <div class="orb" id="orbA"></div>
+      <div class="orb" id="orbB"></div>
+    </div>
+    <div id="vignette"></div>
+
+    <div id="shakeWrap">
+      <div id="uiGrp"></div>
+      <div id="selGrp"></div>
+      <div id="flyLetter"></div>
+    </div>
+
+    <div id="hook"></div>
+    <div id="strobe"><span id="strobeWord"></span></div>
+    <div id="oneAns">
+      <div id="oaSmall"></div>
+      <div id="oaBig"></div>
+    </div>
+
+    <div id="bendWrap">
+      <div class="bend bendEcho2" id="bendE2"></div>
+      <div class="bend bendEcho" id="bendE1"></div>
+      <div class="bend" id="bendMain"></div>
+    </div>
+
+    <div id="flash"></div>
+    <div id="cap"><div id="capPlate">
+      <div id="capL1"></div><div id="capL2"></div>
+    </div></div>
+    <div id="endcard">
+      <div id="ecMark">%</div>
+      <div id="ecBrand"></div>
+      <div id="ecUrl"></div>
+      <div id="ecTag"></div>
+      <div id="ecPills"></div>
+    </div>
+    <div id="chip"><div id="chipL1"></div><div id="chipL2"></div></div>
+  </div>
+</div>
+
+<div id="controls">
+  <button id="btnPlay">▶ Play</button>
+  <button id="btnRestart">↺</button>
+  <button id="btnTheme">☀️ Light</button>
+  <input type="range" id="scrub" min="0" max="30000" value="0" step="33">
+  <span id="tlabel">0.00s</span>
+</div>
+<div id="loading">loading frames…</div>
+
+<script src="configs.js"></script>
+<script src="geometry.js"></script>
+<script>
+(() => {
+  const CFG = window.F2, GEO = window.F2GEO;
+  const Q = new URLSearchParams(location.search);
+  const REC = Q.has("rec");
+  let THEME = Q.get("theme") === "light" ? "light" : "dark";
+  const D = CFG.meta.duration * 1000;
+  const K = CFG.meta.cssToStage;
+
+  // ---------- helpers ----------
+  const $ = (id) => document.getElementById(id);
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const EASE = {
+    l: (u) => u,
+    i: (u) => u * u * u,
+    o: (u) => 1 - Math.pow(1 - u, 3),
+    io: (u) => (u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2),
+    back: (u) => 1 + 2.2 * Math.pow(u - 1, 3) + 1.2 * Math.pow(u - 1, 2)
+  };
+  const rnd = (i) => {
+    const v = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+    return v - Math.floor(v);
+  };
+
+  // ---------- build scene ----------
+  const frame = $("frame");
+
+  // UI plates (real captured states) — all stacked, one visible per frame
+  const imgs = [];
+  const plates = {};
+  const mkPlate = (grp, key, src) => {
+    const img = new Image();
+    grp.appendChild(img);
+    plates[key] = img;
+    imgs.push({ el: img, src });
+  };
+  mkPlate($("uiGrp"), "focused", (t) => `assets/search-focused-${t}.png`);
+  mkPlate($("uiGrp"), "t",   (t) => `assets/key-t-${t}.png`);
+  mkPlate($("uiGrp"), "ti",  (t) => `assets/key-ti-${t}.png`);
+  mkPlate($("uiGrp"), "tip", (t) => `assets/key-tip-${t}.png`);
+  mkPlate($("selGrp"), "selected", (t) => `assets/selected-${t}.png`);
+
+  // hook words
+  const hookEls = CFG.hook.words.map((w) => {
+    const d = document.createElement("div");
+    d.className = "hw hw-" + w.font;
+    d.textContent = w.w;
+    d.style.fontSize = w.size + "px";
+    d.style.fontWeight = w.weight;
+    $("hook").appendChild(d);
+    return d;
+  });
+
+  // strobe word sizes (precomputed, deterministic)
+  const strobeSize = (w) => Math.min(230, Math.round(960 / (0.62 * w.length)));
+
+  // bend copy
+  $("bendMain").textContent = CFG.bend.text;
+  $("bendE1").textContent = CFG.bend.text;
+  $("bendE2").textContent = CFG.bend.text;
+  for (const id of ["bendMain", "bendE1", "bendE2"])
+    $(id).style.fontSize = CFG.bend.size + "px";
+
+  // captions: spans built once per caption index
+  let capIdx = -1;
+  const capWordEls = [];
+  let capL2El = null;
+  function buildCap(c) {
+    const l1 = $("capL1"), l2 = $("capL2");
+    l1.innerHTML = ""; l2.innerHTML = ""; capWordEls.length = 0; capL2El = null;
+    for (const w of c.words) {
+      const s = document.createElement("span");
+      s.className = "kw" + (w.hl ? " hl" : "");
+      s.textContent = w.w;
+      l1.appendChild(s);
+      capWordEls.push({ el: s, at: w.at });
+    }
+    if (c.line2) {
+      const s = document.createElement("span");
+      s.className = "kw" + (c.line2.hl ? " hl" : "");
+      s.textContent = c.line2.w;
+      l2.appendChild(s);
+      capL2El = { el: s, at: c.line2.at };
+      l2.style.display = "";
+    } else l2.style.display = "none";
+  }
+
+  // particles
+  const dots = [];
+  for (let i = 0; i < 34; i++) {
+    const d = document.createElement("div");
+    d.className = "dot";
+    const s = 3 + rnd(i) * 6;
+    d.style.width = d.style.height = s + "px";
+    $("bgfx").appendChild(d);
+    dots.push({ el: d, x: rnd(i + 50) * 1080, y0: rnd(i + 99) * 1920,
+      sp: 14 + rnd(i + 7) * 26, f: 0.6 + rnd(i + 3) * 1.6, ph: rnd(i + 31) * 6.28 });
+  }
+
+  // chip + endcard copy
+  $("chipL1").textContent = `TECHNIQUE ${CFG.meta.id}/7 · ${CFG.meta.technique}`;
+  $("chipL2").textContent = CFG.meta.detail;
+  $("ecBrand").textContent = CFG.endCopy.brand;
+  $("ecUrl").textContent = CFG.endCopy.url;
+  $("ecTag").textContent = CFG.endCopy.tagline;
+  for (const p of CFG.endCopy.pills) {
+    const d = document.createElement("div");
+    d.className = "ecPill"; d.textContent = p;
+    $("ecPills").appendChild(d);
+  }
+
+  // land position of a flying letter (stage px) — from captured geometry
+  function landPos(beatIdx) {
+    const beat = CFG.letters.beats[beatIdx];
+    const g = GEO[THEME].keys[beat.plate].search;
+    return {
+      x: g.x * K + CFG.letters.land.xBase + beatIdx * CFG.letters.land.charAdv,
+      y: (g.y + g.h / 2) * K
+    };
+  }
+
+  // ---------- theme ----------
+  function setTheme(t) {
+    THEME = t;
+    document.body.classList.toggle("theme-light", t === "light");
+    $("btnTheme").textContent = t === "dark" ? "☀️ Light" : "🌙 Dark";
+    for (const rec of imgs) rec.el.src = rec.src(t);
+    return Promise.all(imgs.map((r) => r.el.decode().catch(() => {})));
+  }
+
+  // ---------- render ----------
+  function renderFrame(ms) {
+    const t = ms / 1000;
+
+    // ---- backdrop drift ----
+    $("orbA").style.transform =
+      `translate(${-180 + Math.sin(t * .21) * 90}px, ${120 + Math.cos(t * .17) * 120}px)`;
+    $("orbB").style.transform =
+      `translate(${520 + Math.cos(t * .13) * 110}px, ${1150 + Math.sin(t * .19) * 140}px)`;
+    for (const d of dots) {
+      const y = ((d.y0 - t * d.sp) % 2040 + 2040) % 2040 - 60;
+      d.el.style.transform = `translate(${d.x}px, ${y}px)`;
+      d.el.style.opacity = .18 + .3 * (0.5 + 0.5 * Math.sin(t * d.f + d.ph));
+    }
+
+    // ---- scene 1: Frankenstein hook ----
+    const hk = CFG.hook;
+    $("hook").style.visibility = t < hk.t1 ? "visible" : "hidden";
+    if (t < hk.t1) {
+      hk.words.forEach((w, i) => {
+        const el = hookEls[i];
+        const dt = t - w.at;
+        if (dt < 0) { el.style.opacity = 0; return; }
+        const u = clamp01(dt / 0.38);
+        let x = w.x, y = w.y, sc = 1, rot = w.rot, op = 1;
+        if (w.enter === "slam") {
+          sc = lerp(5.5, 1, EASE.i(u));
+          op = clamp01(u / 0.3);
+          if (u >= 1) sc = 1 + 0.08 * Math.exp(-8 * (dt - 0.38)) *
+            Math.cos(14 * (dt - 0.38));
+        } else if (w.enter === "slide") {
+          x = w.x - (1 - EASE.o(u)) * 760;
+          op = clamp01(u / 0.25);
+        } else if (w.enter === "spin") {
+          rot = lerp(w.rot - 130, w.rot, EASE.o(u));
+          sc = lerp(0.25, 1, EASE.o(u));
+          op = clamp01(u / 0.25);
+        } else { // rise
+          y = w.y + (1 - EASE.back(u)) * 340;
+          op = clamp01(u / 0.25);
+        }
+        // tiny deterministic jitter once landed
+        const jx = Math.sin(t * 13 + i * 2.1) * hk.jitter.amp * u;
+        const jy = Math.cos(t * 11 + i * 1.7) * hk.jitter.amp * u;
+        const jr = Math.sin(t * 7 + i * 3.3) * hk.jitter.rotAmp * u;
+        el.style.opacity = op;
+        el.style.transform =
+          `translate(${x + jx}px, ${y + jy}px) translate(-50%,-50%) ` +
+          `rotate(${rot + jr}deg) scale(${sc})`;
+      });
+    }
+
+    // ---- scene 2: flash frames ----
+    const st = CFG.strobe;
+    const stEnd = st.start + st.words.length * st.per;
+    const strobing = t >= st.start && t < stEnd;
+    $("strobe").style.visibility = strobing ? "visible" : "hidden";
+    if (strobing) {
+      const k = Math.min(st.words.length - 1, Math.floor((t - st.start) / st.per));
+      const w = st.words[k];
+      const el = $("strobe"), sw = $("strobeWord");
+      if (sw.textContent !== w || sw.dataset.k !== String(k)) {
+        sw.textContent = w; sw.dataset.k = String(k);
+        sw.style.fontSize = strobeSize(w) + "px";
+        const inv = k % 2 === 1;
+        el.style.background = inv ? "#05060d" : "#f4f2ff";
+        sw.style.color = inv ? "#f4f2ff" : "#05060d";
+      }
+    }
+
+    // ---- scene 2b: ONE ANSWER beat pause ----
+    const oa = CFG.oneAnswer;
+    const oaIn = EASE.o(clamp01((t - oa.t0) / 0.25));
+    const oaOut = clamp01((oa.t1 - t) / 0.2);
+    const oaOp = Math.min(oaIn, oaOut);
+    $("oneAns").style.opacity = oaOp;
+    if (oaOp > 0) {
+      $("oaSmall").textContent = oa.small;
+      $("oaBig").textContent = oa.big;
+      const pop = lerp(1.3, 1, EASE.o(clamp01((t - oa.t0) / 0.4)));
+      const breathe = 1 + 0.012 * Math.sin((t - oa.t0) * 5.2);
+      $("oaBig").style.transform = `scale(${pop * breathe})`;
+    }
+
+    // ---- scenes 3–4: UI plates ----
+    const L = CFG.letters, sel = CFG.selected;
+    // hard per-frame reset — child inline visibility survives a hidden parent,
+    // so stale plates leak into later scenes and break seek-determinism
+    for (const k of ["focused", "t", "ti", "tip", "selected"])
+      plates[k].style.visibility = "hidden";
+    $("uiGrp").style.opacity = 0;
+    $("selGrp").style.opacity = 0;
+    const uiOn = t >= CFG.ui.snapAt && t < sel.t0;
+    $("uiGrp").style.visibility = uiOn ? "visible" : "hidden";
+    if (uiOn) {
+      // which typed state is real right now
+      let key = "focused";
+      if (t >= L.beats[2].land) key = "tip";
+      else if (t >= L.beats[1].land) key = "ti";
+      else if (t >= L.beats[0].land) key = "t";
+      for (const k of ["focused", "t", "ti", "tip"])
+        plates[k].style.visibility = k === key ? "visible" : "hidden";
+      // snap-in pop (finishes before the first letter flies)
+      const su = EASE.o(clamp01((t - CFG.ui.snapAt) / 0.35));
+      const sc = lerp(1.16, 1, su);
+      $("uiGrp").style.transform = `scale(${sc})`;
+      $("uiGrp").style.transformOrigin = "540px 420px";
+      $("uiGrp").style.opacity = clamp01(su * 3);
+    }
+
+    // flying letters
+    const fl = $("flyLetter");
+    let flShown = false;
+    for (let i = 0; i < L.beats.length; i++) {
+      const b = L.beats[i];
+      if (t < b.fly0 || t > b.land + 0.3) continue;
+      const P = landPos(i);
+      const u = EASE.i(clamp01((t - b.fly0) / (b.land - b.fly0)));
+      const mx = (L.from.x + P.x) / 2;
+      const iu = 1 - u;
+      const x = iu * iu * L.from.x + 2 * iu * u * mx + u * u * P.x;
+      const y = iu * iu * L.from.y + 2 * iu * u * L.ctrlY + u * u * P.y;
+      const sc = lerp(L.from.scale, L.land.scale, u);
+      let sx = sc, sy = sc, op = clamp01((t - b.fly0) / 0.15);
+      const dt = t - b.land;
+      if (dt > 0) { // squash + hand-off to the real typed glyph
+        const spr = Math.exp(-9 * dt);
+        sy = sc * (1 - 0.38 * spr * Math.cos(18 * dt));
+        sx = sc * (1 + 0.26 * spr * Math.cos(18 * dt));
+        op = clamp01(1 - (dt - 0.06) / 0.2);
+      }
+      fl.textContent = b.ch;
+      fl.style.fontSize = L.font + "px";
+      fl.style.left = x + "px";
+      fl.style.top = y + "px";
+      fl.style.opacity = op;
+      fl.style.filter = u < 1 ? `blur(${(14 * (1 - u)).toFixed(1)}px)` : "";
+      fl.style.transform =
+        `translate(-50%,-54%) rotate(${lerp(-10, 0, u)}deg) scale(${sx}, ${sy})`;
+      flShown = true;
+    }
+    if (!flShown) fl.style.opacity = 0;
+
+    // impact shake (letter landings + selected cut)
+    let shx = 0, shy = 0;
+    const impacts = [...L.beats.map((b) => b.land), sel.t0];
+    for (const at of impacts) {
+      const dt = t - at;
+      if (dt > 0 && dt < 0.8) {
+        const k = Math.exp(-6 * dt) * CFG.shakeAmp;
+        shx += Math.sin(dt * 43) * k;
+        shy += Math.cos(dt * 35) * k * 0.8;
+      }
+    }
+    $("shakeWrap").style.transform = `translate(${shx}px, ${shy}px)`;
+
+    // selected plate (scene 4) + exit into the finale
+    const selOn = t >= sel.t0 && t < sel.t1 + 0.45;
+    $("selGrp").style.visibility = selOn ? "visible" : "hidden";
+    if (selOn) {
+      plates.selected.style.visibility = "visible";
+      const pu = EASE.io(clamp01((t - sel.t0) / (sel.t1 - sel.t0)));
+      let sc = lerp(sel.punch.from, sel.punch.to, pu);
+      let op = 1;
+      const xdt = t - sel.t1;
+      if (xdt > 0) { sc += xdt * 0.45; op = clamp01(1 - xdt / 0.4); }
+      $("selGrp").style.transformOrigin = `${sel.punch.ox}px ${sel.punch.oy}px`;
+      $("selGrp").style.transform = `scale(${sc})`;
+      $("selGrp").style.opacity = op;
+    }
+
+    // ---- scene 5: font bending ----
+    const B = CFG.bend;
+    const bendOn = t >= B.t0 && t <= B.t1 + 0.2;
+    $("bendWrap").style.visibility = bendOn ? "visible" : "hidden";
+    if (bendOn) {
+      const eu = EASE.o(clamp01((t - (B.t0 + 0.15)) / 0.5));
+      const xu = clamp01((t - (B.t1 - 0.35)) / 0.35); // exit
+      const base = (0.6 + 0.4 * eu) * (1 - 0.25 * EASE.i(xu));
+      const op = eu * (1 - xu);
+      const bt = Math.max(0, t - B.beat0);
+      const idx = Math.floor(bt / B.beatLen);
+      const frac = bt > 0 ? (bt % B.beatLen) / B.beatLen : 0;
+      const weight = B.weights[idx % B.weights.length];
+      const pulse = B.pulse * Math.exp(-5 * frac) * (bt > 0 ? 1 : 0);
+      const sy = 1 + pulse, sx = 1 - pulse * 0.55;
+      const skew = idx > 0 ? (idx % 2 ? 1 : -1) * B.skew * Math.exp(-6 * frac) : 0;
+      const main = $("bendMain");
+      main.style.fontWeight = weight;
+      main.style.opacity = op;
+      main.style.left = B.x + "px"; main.style.top = B.y + "px";
+      main.style.transform =
+        `translate(-50%,-50%) scale(${sx * base}, ${sy * base}) skewX(${skew}deg)`;
+      [["bendE1", B.echoes[0]], ["bendE2", B.echoes[1]]].forEach(([id, e]) => {
+        const el = $(id);
+        el.style.fontWeight = weight;
+        el.style.left = B.x + "px"; el.style.top = B.y + "px";
+        el.style.opacity = (1 - frac) * e.op * eu * (1 - xu) * (bt > 0 ? 1 : 0);
+        el.style.transform =
+          `translate(-50%,-50%) scale(${base * (1 + frac * e.grow)}) skewX(${skew}deg)`;
+      });
+    }
+
+    // ---- flashes ----
+    let fv = 0;
+    for (const f of CFG.flashes) {
+      const fdt = t - f.at;
+      if (fdt > 0 && fdt < f.len) fv = Math.max(fv, f.peak * (1 - fdt / f.len));
+    }
+    $("flash").style.opacity = fv;
+
+    // ---- kinetic captions ----
+    let cap = null, cIdx = -1;
+    CFG.captions.forEach((c, i) => {
+      if (t >= c.t0 && t <= c.t1) { cap = c; cIdx = i; }
+    });
+    if (cap) {
+      if (cIdx !== capIdx) { capIdx = cIdx; buildCap(cap); }
+      const inU = EASE.o(clamp01((t - cap.t0) / 0.28));
+      const outU = EASE.i(clamp01((cap.t1 - t) / 0.25));
+      $("cap").style.opacity = Math.min(inU, outU);
+      $("cap").style.transform =
+        `translateX(-50%) translateY(${(1 - inU) * 42}px)`;
+      capWordEls.forEach((w, i) => {
+        const wu = clamp01((t - w.at) / 0.3);
+        const e = EASE.o(wu);
+        w.el.style.opacity = e;
+        w.el.style.transform =
+          `scale(${1.7 - 0.7 * e}) rotate(${(1 - e) * (i % 2 ? 7 : -7)}deg)`;
+      });
+      if (capL2El) {
+        const wu = clamp01((t - capL2El.at) / 0.32);
+        const e = EASE.back(wu);
+        capL2El.el.style.opacity = wu > 0 ? clamp01(wu / 0.3) : 0;
+        capL2El.el.style.transform = `scale(${0.4 + 0.6 * e})`;
+      }
+    } else { $("cap").style.opacity = 0; capIdx = -1; }
+
+    // ---- end card ----
+    const ec = $("endcard");
+    const eu = EASE.o(clamp01((t - CFG.endcard.start) / 0.8));
+    ec.style.opacity = eu;
+    if (eu > 0) {
+      const els = ["ecMark", "ecBrand", "ecUrl", "ecTag", "ecPills"];
+      els.forEach((id, i) => {
+        const uu = EASE.o(clamp01((t - CFG.endcard.start - i * 0.14) / 0.6));
+        const el = $(id);
+        el.style.opacity = uu;
+        el.style.transform = `translateY(${(1 - uu) * 60}px)`;
+      });
+    }
+  }
+
+  // ---------- master clock ----------
+  let playing = false, t0 = 0, tAcc = 0, stopAt = null;
+  function now() { return performance.now(); }
+  function curT() { return playing ? Math.min(D, tAcc + now() - t0) : tAcc; }
+  function seek(ms) { tAcc = Math.max(0, Math.min(D, ms)); t0 = now(); renderFrame(tAcc); sync(); }
+  function play() {
+    if (playing) return;
+    if (tAcc >= D) tAcc = 0;
+    playing = true; t0 = now(); $("btnPlay").textContent = "⏸ Pause"; tick();
+  }
+  function pause() { tAcc = curT(); playing = false; $("btnPlay").textContent = "▶ Play"; }
+  function tick() {
+    if (!playing) return;
+    const t = curT();
+    renderFrame(t); sync();
+    if (stopAt != null && t >= stopAt) { stopAt = null; pause(); return; }
+    if (t >= D) { pause(); return; }
+    requestAnimationFrame(tick);
+  }
+  function sync() {
+    const t = curT();
+    $("scrub").value = t; $("tlabel").textContent = (t / 1000).toFixed(2) + "s";
+  }
+
+  // ---------- controls ----------
+  $("btnPlay").onclick = () => (playing ? pause() : play());
+  $("btnRestart").onclick = () => { pause(); seek(0); };
+  $("btnTheme").onclick = () => setTheme(THEME === "dark" ? "light" : "dark")
+    .then(() => renderFrame(curT()));
+  $("scrub").oninput = (e) => { pause(); seek(+e.target.value); };
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === "r" || e.key === "R") { pause(); seek(0); }
+  });
+  if (REC) $("controls").style.display = "none";
+
+  // fit stage to window
+  function fit() {
+    const s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    frame.style.transform = `translate(-50%,-50%) scale(${s})`;
+    frame.style.transformOrigin = "center center";
+  }
+  addEventListener("resize", fit); fit();
+
+  // QA hook
+  window.__f2Seek = async (sec, theme) => {
+    if (theme && theme !== THEME) await setTheme(theme);
+    pause(); seek(sec * 1000);
+    await Promise.all(imgs.map((r) => r.el.decode().catch(() => {})));
+    await document.fonts.ready;
+    renderFrame(sec * 1000);
+    return true;
+  };
+
+  // ---------- boot ----------
+  setTheme(THEME).then(() => {
+    $("loading").style.display = "none";
+    const tq = Q.get("t"), stq = Q.get("stop");
+    if (stq) stopAt = +stq;
+    seek(tq ? +tq : 0);
+    if (!tq || stq) { if (!Q.has("pause")) play(); }
+  });
+})();
+</script>
+</body>
+</html>

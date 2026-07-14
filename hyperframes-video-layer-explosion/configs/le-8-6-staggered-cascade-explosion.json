@@ -1,0 +1,145 @@
+{
+  "name": "le-8-6-staggered-cascade-explosion",
+  "technique": "Layer Explosion / Staggered Cascade",
+  "story": "Type 'tip' in the homepage search: results pop outward bottom-to-top with a 150ms stagger; then the page scrolls to the matched Tip calculator.",
+  "duration": 11,
+  "captureGuard": {
+    "networkIdleMs": 500,
+    "documentFontsReady": true,
+    "imagesDecoded": true,
+    "noActiveAnimations": true,
+    "layoutShiftQuietMs": 500,
+    "postClickSettle": "wait for triggered animation + DOM mutation to finish before capture"
+  },
+  "shots": [
+    {
+      "scene": "home-search",
+      "endAt": 7.4,
+      "perspective": 1200,
+      "tilt": {
+        "rotateX": 52,
+        "rotateZ": -42,
+        "intro": {
+          "start": 0.4,
+          "dur": 0.9,
+          "easing": "ease-in-out-cubic"
+        }
+      },
+      "explode": {
+        "start": 1.2,
+        "dur": 0.9,
+        "easing": "ease-out-back",
+        "stagger": 0.15,
+        "order": "bottom-up"
+      },
+      "layers": [
+        {
+          "id": "bg",
+          "z": 0,
+          "blurMax": 4
+        },
+        {
+          "id": "search",
+          "z": 150
+        },
+        {
+          "id": "portal",
+          "z": 260
+        },
+        {
+          "id": "row3",
+          "z": 340
+        },
+        {
+          "id": "row2",
+          "z": 400
+        },
+        {
+          "id": "row1",
+          "z": 460,
+          "highlight": true
+        }
+      ],
+      "camera": {
+        "arcDeg": 14,
+        "start": 1.2,
+        "dur": 5.8,
+        "easing": "ease-in-out-sine"
+      },
+      "dolly": {
+        "from": 1,
+        "to": 1.08
+      },
+      "shadow": 1.1
+    },
+    {
+      "scene": "home-scrolled",
+      "at": 7.4,
+      "perspective": 1300,
+      "tilt": {
+        "rotateX": 18,
+        "rotateZ": -8,
+        "intro": {
+          "start": 7.5,
+          "dur": 0.8,
+          "easing": "ease-in-out-cubic"
+        }
+      },
+      "explode": {
+        "start": 7.8,
+        "dur": 1,
+        "easing": "ease-out-back",
+        "stagger": 0
+      },
+      "layers": [
+        {
+          "id": "bg",
+          "z": 0
+        },
+        {
+          "id": "activecard",
+          "z": 140,
+          "highlight": true
+        }
+      ],
+      "camera": {
+        "arcDeg": 6,
+        "start": 7.8,
+        "dur": 3,
+        "easing": "ease-in-out-sine"
+      },
+      "dolly": {
+        "from": 1,
+        "to": 1.05
+      },
+      "shadow": 1
+    }
+  ],
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "8.6 STAGGERED CASCADE · 150ms stagger · bottom-up · ease-out-back",
+      "in": 0.4,
+      "out": 10.6
+    },
+    {
+      "kind": "caption",
+      "text": "Search 'tip' — Practical Uses surface first.",
+      "in": 2.2,
+      "out": 5.2
+    },
+    {
+      "kind": "caption",
+      "text": "A 15% tip on $60 — that's $9.",
+      "in": 5.5,
+      "out": 7.2,
+      "emphasis": true
+    },
+    {
+      "kind": "caption",
+      "text": "…and the page scrolls straight to the calculator.",
+      "in": 8.4,
+      "out": 10.5
+    }
+  ]
+}

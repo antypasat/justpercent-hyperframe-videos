@@ -1,0 +1,291 @@
+{
+  "hyperframes": "1.0",
+  "name": "cj-2-1-classic-guided-flow",
+  "technique": "Cursor Journey / Classic Guided Flow",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/?noredirect",
+    "locale": "en-US",
+    "flow": "Homepage → click Search (A) → typewriter “tip” (B) → click the “Restaurant Tip” practical use (C) → the page scrolls to the Basic Percentage Calculator, pre-filled 15% of $60 = $9 with the practical use pinned below.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "perKeystrokeSettle": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 9.5,
+  "states": {
+    "home": {
+      "asset": "assets/s-home-top.png",
+      "w": 1600,
+      "h": 900
+    },
+    "focus": {
+      "asset": "assets/s-home-search-focus.png",
+      "w": 1600,
+      "h": 900
+    },
+    "t1": {
+      "asset": "assets/s-home-search-t.png",
+      "w": 1600,
+      "h": 900
+    },
+    "t2": {
+      "asset": "assets/s-home-search-ti.png",
+      "w": 1600,
+      "h": 900
+    },
+    "t3": {
+      "asset": "assets/s-home-search-tip.png",
+      "w": 1600,
+      "h": 900
+    },
+    "scrolled": {
+      "asset": "assets/s-home-tip-scrolled.png",
+      "w": 1600,
+      "h": 900
+    }
+  },
+  "swaps": [
+    {
+      "t": 0,
+      "state": "home",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 1.35,
+      "state": "focus",
+      "fx": "fade",
+      "dur": 0.22
+    },
+    {
+      "t": 2.45,
+      "state": "t1",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 2.95,
+      "state": "t2",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 3.45,
+      "state": "t3",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 6.35,
+      "state": "scrolled",
+      "fx": "slide-up",
+      "dur": 0.75
+    }
+  ],
+  "cursor": [
+    {
+      "t": 0,
+      "x": 1230,
+      "y": 690
+    },
+    {
+      "t": 1.3,
+      "x": 800,
+      "y": 216,
+      "cp": [
+        [
+          -260,
+          -60
+        ],
+        [
+          150,
+          120
+        ]
+      ]
+    },
+    {
+      "t": 1.36,
+      "x": 800,
+      "y": 140,
+      "jump": true
+    },
+    {
+      "t": 4.3,
+      "x": 800,
+      "y": 140
+    },
+    {
+      "t": 5.6,
+      "x": 700,
+      "y": 255,
+      "cp": [
+        [
+          -140,
+          40
+        ],
+        [
+          90,
+          -60
+        ]
+      ]
+    },
+    {
+      "t": 6.3,
+      "x": 700,
+      "y": 255
+    },
+    {
+      "t": 6.41,
+      "x": 813,
+      "y": 737,
+      "jump": true
+    },
+    {
+      "t": 7.3,
+      "x": 813,
+      "y": 737
+    },
+    {
+      "t": 8.6,
+      "x": 971,
+      "y": 124,
+      "cp": [
+        [
+          60,
+          -300
+        ],
+        [
+          -180,
+          150
+        ]
+      ]
+    },
+    {
+      "t": 9.5,
+      "x": 971,
+      "y": 124
+    }
+  ],
+  "camera": {
+    "follow": {
+      "mode": "cursor",
+      "stiffness": 60,
+      "damping": "critical"
+    },
+    "scaleTrack": [
+      {
+        "t": 0,
+        "s": 1
+      },
+      {
+        "t": 0.9,
+        "s": 1
+      },
+      {
+        "t": 1.9,
+        "s": 1.5,
+        "ease": "ease-in-out-cubic"
+      },
+      {
+        "t": 5.9,
+        "s": 1.5
+      },
+      {
+        "t": 6.6,
+        "s": 1.32,
+        "ease": "ease-in-out-sine"
+      },
+      {
+        "t": 8.4,
+        "s": 1.32
+      },
+      {
+        "t": 9.3,
+        "s": 1.55,
+        "ease": "ease-in-out-cubic"
+      }
+    ]
+  },
+  "events": [
+    {
+      "kind": "click",
+      "t": 1.35,
+      "x": 800,
+      "y": 216
+    },
+    {
+      "kind": "glow",
+      "t0": 1.4,
+      "t1": 4.3,
+      "rect": {
+        "x": 461,
+        "y": 115,
+        "w": 678,
+        "h": 50
+      }
+    },
+    {
+      "kind": "type",
+      "t0": 2.45,
+      "t1": 3.45,
+      "x": 560,
+      "y": 140,
+      "text": "tip",
+      "msPerChar": 500
+    },
+    {
+      "kind": "click",
+      "t": 6.3,
+      "x": 700,
+      "y": 255
+    },
+    {
+      "kind": "ring",
+      "t0": 7,
+      "t1": 9.4,
+      "rect": {
+        "x": 501,
+        "y": 693,
+        "w": 624,
+        "h": 88
+      }
+    }
+  ],
+  "fx": {
+    "letterbox": true,
+    "vignette": true,
+    "grain": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "justpercent.com — Search “tip”",
+      "in": 0.2,
+      "out": 9.4
+    },
+    {
+      "kind": "caption",
+      "text": "Type what you need. Like “tip”.",
+      "in": 1.6,
+      "out": 3.9
+    },
+    {
+      "kind": "caption",
+      "text": "Real practical uses appear before you finish.",
+      "in": 4.2,
+      "out": 6.1
+    },
+    {
+      "kind": "caption",
+      "text": "One click — the right calculator, already filled in.",
+      "in": 6.9,
+      "out": 9.3
+    }
+  ]
+}

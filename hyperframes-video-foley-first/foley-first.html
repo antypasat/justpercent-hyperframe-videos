@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Film 3 — Foley-First Editing · justpercent.com</title>
+<style>
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 300; src: url(fonts/ibm-plex-sans-latin-300-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; src: url(fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; src: url(fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 700; src: url(fonts/ibm-plex-sans-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 500; src: url(fonts/space-grotesk-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 700; src: url(fonts/space-grotesk-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400; src: url(fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 700; src: url(fonts/jetbrains-mono-latin-700-normal.woff2) format("woff2"); }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+  #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+  #frame { position: absolute; left: 50%; top: 50%;
+    width: 1080px; height: 1920px; overflow: hidden;
+    border-radius: 8px; transform-origin: center center; background: #0a0a10; }
+  .theme-light #frame { background: #d9d7e6; }
+
+  #bgfx { position: absolute; inset: -80px; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(100px); }
+  #orbA { width: 840px; height: 840px; background: rgba(98, 230, 180, .07); }
+  #orbB { width: 720px; height: 720px; background: rgba(90, 60, 190, .12); }
+  .theme-light #orbA { background: rgba(30, 160, 120, .14); }
+  .theme-light #orbB { background: rgba(130, 100, 230, .16); }
+
+  #cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+    transform-origin: 0 0; will-change: transform; }
+  .plate { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+    display: none; }
+  #ghost { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+    transform-origin: 0 0; opacity: 0; }
+  #ghost img { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 26; }
+  #ring { position: absolute; left: 50%; top: 50%; width: 420px; height: 420px;
+    margin: -210px 0 0 -210px; border: 10px solid rgba(98,230,180,.9);
+    border-radius: 50%; opacity: 0; z-index: 22; }
+  #bass { position: absolute; left: 50%; top: 50%; width: 300px; height: 300px;
+    margin: -150px 0 0 -150px; border: 14px solid rgba(255,255,255,.8);
+    border-radius: 50%; opacity: 0; z-index: 22; }
+
+  /* SFX caption plates */
+  .sfx { position: absolute; z-index: 25; transform: translate(-50%,-50%);
+    background: rgba(8, 8, 16, .78); border-radius: 14px; padding: 16px 26px;
+    font: 700 46px/1 "JetBrains Mono"; color: #fff; letter-spacing: .04em;
+    opacity: 0; white-space: nowrap; }
+  .sfx.accent { color: #62e6b4; }
+
+  /* waveform HUD */
+  #wave { position: absolute; left: 60px; right: 60px; bottom: 150px;
+    height: 130px; display: flex; align-items: flex-end; gap: 4px; z-index: 24; }
+  #wave div { flex: 1; background: rgba(98, 230, 180, .75); border-radius: 3px; }
+  .theme-light #wave div { background: rgba(20, 140, 100, .75); }
+  #dots { position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%);
+    display: flex; gap: 18px; z-index: 24; }
+  #dots div { width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(255,255,255,.25); }
+  #dots div.on { background: #62e6b4; }
+  .theme-light #dots div { background: rgba(30,25,60,.25); }
+  .theme-light #dots div.on { background: #0d8f66; }
+
+  #intro { position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%);
+    z-index: 30; background: rgba(8,8,16,.8); border-radius: 24px;
+    padding: 38px 54px; font: 700 64px/1.2 "Space Grotesk"; color: #fff;
+    opacity: 0; white-space: nowrap; }
+
+  #chip { position: absolute; left: 40px; top: 40px; z-index: 40;
+    background: rgba(10, 10, 22, .58); border: 1px solid rgba(255,255,255,.09);
+    border-radius: 14px; padding: 18px 24px; }
+  #chip .l1 { font: 700 27px/1.25 "JetBrains Mono"; color: #fff; letter-spacing: .03em; }
+  #chip .l2 { font: 400 22px/1.3 "JetBrains Mono"; color: rgba(255,255,255,.62); margin-top: 4px; }
+
+  #caption { position: absolute; left: 50%; bottom: 330px; z-index: 40;
+    transform: translateX(-50%); width: max-content; max-width: 950px;
+    text-align: center; background: rgba(8, 8, 16, .68); border-radius: 20px;
+    padding: 24px 38px; opacity: 0; }
+  #capBig { font: 600 50px/1.2 "IBM Plex Sans"; color: #fff; }
+  #capSub { font: 300 32px/1.35 "IBM Plex Sans"; color: rgba(255,255,255,.78); margin-top: 6px; }
+
+  .ecEl { position: absolute; left: 50%; transform: translate(-50%,-50%);
+    display: none; z-index: 32; }
+  #ecMark { top: 620px; font: 700 290px/1 "Space Grotesk";
+    background: linear-gradient(135deg, #a78bfa 20%, #22d3ee 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #ecBrand { top: 880px; font: 700 116px/1 "Space Grotesk"; color: #fff; white-space: nowrap; }
+  .theme-light #ecBrand { color: #191430; }
+  #ecPillW { top: 1120px; background: #fff; border-radius: 46px; padding: 26px 62px;
+    box-shadow: 0 18px 60px rgba(0,0,0,.35); }
+  #ecPillW span { font: 700 46px/1 "JetBrains Mono"; color: #14121f; }
+  #ecTag { top: 1280px; font: 300 44px/1.3 "IBM Plex Sans"; color: rgba(255,255,255,.85);
+    white-space: nowrap; }
+  .theme-light #ecTag { color: rgba(25, 20, 48, .85); }
+  #ecPills { top: 1410px; display: none; gap: 26px; }
+  #ecPills div { font: 600 34px/1 "IBM Plex Sans"; color: rgba(255,255,255,.9);
+    border: 2px solid rgba(255,255,255,.35); border-radius: 40px; padding: 18px 34px;
+    white-space: nowrap; }
+  .theme-light #ecPills div { color: rgba(25,20,48,.9); border-color: rgba(25,20,48,.35); }
+
+  #controls { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+    z-index: 90; display: flex; gap: 10px; align-items: center;
+    background: rgba(16,16,28,.85); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px; padding: 10px 16px; }
+  #controls button { font: 600 15px/1 "IBM Plex Sans", sans-serif; color: #fff;
+    background: rgba(255,255,255,.12); border: 0; border-radius: 9px;
+    padding: 10px 16px; cursor: pointer; }
+  #scrub { width: 260px; accent-color: #62e6b4; }
+  #tlabel { font: 400 14px/1 "JetBrains Mono"; color: #fff; min-width: 64px; }
+  #loading { position: fixed; inset: 0; display: grid; place-items: center;
+    background: #0a0a10; color: #889; font: 400 18px/1 "JetBrains Mono", monospace;
+    z-index: 99; }
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="frame">
+    <div id="bgfx"><div class="orb" id="orbA"></div><div class="orb" id="orbB"></div></div>
+    <div id="ghost"><img id="ghostImg" alt="" /></div>
+    <div id="cam"></div>
+
+    <div id="ring"></div>
+    <div id="bass"></div>
+    <div id="flash"></div>
+    <div id="sfxA" class="sfx"></div>
+    <div id="sfxB" class="sfx"></div>
+
+    <div id="wave"></div>
+    <div id="dots"><div></div><div></div><div></div><div></div></div>
+    <div id="intro"></div>
+
+    <div class="ecEl" id="ecMark">%</div>
+    <div class="ecEl" id="ecBrand"></div>
+    <div class="ecEl" id="ecPillW"><span></span></div>
+    <div class="ecEl" id="ecTag"></div>
+    <div class="ecEl" id="ecPills"></div>
+
+    <div id="chip"><div class="l1"></div><div class="l2"></div></div>
+    <div id="caption"><div id="capBig"></div><div id="capSub"></div></div>
+  </div>
+</div>
+
+<div id="controls">
+  <button id="btnPlay">▶ Play</button>
+  <button id="btnRestart">↺</button>
+  <button id="btnTheme">🌙 Dark</button>
+  <input id="scrub" type="range" min="0" max="32000" value="0" step="33" />
+  <span id="tlabel">0.00s</span>
+</div>
+<div id="loading">tuning the beat grid…</div>
+
+<script src="configs.js"></script>
+<script src="geometry.js"></script>
+<script>
+(() => {
+  const CFG = window.F3, GEO = window.F3GEO;
+  const S = CFG.sections, K = CFG.meta.cssToStage, FPS = CFG.meta.fps;
+  const D = CFG.meta.duration * 1000;
+  const BEAT = 60 / CFG.meta.bpm;
+  const $ = (id) => document.getElementById(id);
+  const frame = $("frame");
+
+  const Q = new URLSearchParams(location.search);
+  const REC = Q.has("rec");
+  let THEME = Q.get("theme") === "light" ? "light" : "dark";
+
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const norm = (t, a, b) => clamp01((t - a) / (b - a));
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const EASE = {
+    io: (u) => (u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2),
+    o: (u) => 1 - Math.pow(1 - u, 3),
+    i: (u) => u * u * u,
+    back: (u) => { const c = 1.70158; return 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2); }
+  };
+  const rnd = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+  $("chip").querySelector(".l1").textContent =
+    `TECHNIQUE ${CFG.meta.id}/7 · ${CFG.meta.technique}`;
+  $("chip").querySelector(".l2").textContent = CFG.meta.detail;
+  $("ecBrand").textContent = CFG.endCopy.brand;
+  $("ecPillW").querySelector("span").textContent = CFG.endCopy.url;
+  $("ecTag").textContent = CFG.endCopy.tagline;
+  $("ecPills").innerHTML = CFG.endCopy.pills.map((p) => `<div>${p}</div>`).join("");
+  $("intro").textContent = CFG.intro.text;
+
+  // waveform bars
+  const bars = [];
+  for (let i = 0; i < CFG.waveform.bars; i++) {
+    const b = document.createElement("div");
+    $("wave").appendChild(b);
+    bars.push(b);
+  }
+
+  // ---------- plates ----------
+  const FILE = {
+    default: "ff-inc-default", k5: "ff-inc-k5", k50: "ff-inc-k50",
+    k500: "ff-inc-k500", k5000: "ff-inc-k5000", p2: "ff-inc-p2",
+    p25: "ff-inc-p25", arrival: "ff-inc-arrival", home: "ff-home",
+    presave: "ff-inc-presave", saved: "ff-inc-saved", copied: "ff-inc-copied"
+  };
+  const plateEls = {};
+  let preload = [];
+  function buildPlates(theme) {
+    $("cam").innerHTML = "";
+    for (const id in FILE) {
+      const im = new Image();
+      im.className = "plate";
+      im.src = `assets/${FILE[id]}-${theme}.png`;
+      preload.push(im.decode ? im.decode().catch(() => {}) : Promise.resolve());
+      $("cam").appendChild(im);
+      plateEls[id] = im;
+    }
+  }
+  async function setTheme(theme) {
+    THEME = theme;
+    document.body.classList.toggle("theme-light", theme === "light");
+    $("btnTheme").textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+    preload = [];
+    buildPlates(theme);
+    await Promise.all(preload);
+  }
+
+  // ---------- geometry & poses ----------
+  const zoneRect = (zone) => {
+    const [a, b] = CFG.zones[zone].geo.split(".");
+    const r = GEO[THEME]?.[a]?.[b];
+    if (!r) return null;
+    return { x: r.x * K, y: r.y * K, w: r.w * K, h: r.h * K };
+  };
+  const zonePose = (zone) => {
+    const r = zoneRect(zone);
+    if (!r) return { s: 1, cx: 540, cy: 960 };
+    return { s: CFG.zones[zone].pad, cx: r.x + r.w / 2, cy: r.y + r.h / 2 };
+  };
+  const FITP = { s: 1, cx: 540, cy: 960 };
+  const mix = (a, b, u) => ({
+    s: lerp(a.s, b.s, u), cx: lerp(a.cx, b.cx, u), cy: lerp(a.cy, b.cy, u)
+  });
+  function applyPose(plate, pose, dx = 0, dy = 0) {
+    const tx = 540 - pose.cx * pose.s + dx;
+    const ty = 880 - pose.cy * pose.s + dy;
+    $("cam").style.transform = `translate(${tx}px, ${ty}px) scale(${pose.s})`;
+    for (const id in plateEls)
+      plateEls[id].style.display = id === plate ? "block" : "none";
+    return { tx, ty };
+  }
+
+  // camera program: piecewise (plate, from-pose, to-pose, t0, t1)
+  function cameraAt(t) {
+    const zp = zonePose;
+    if (t < S.typingStart) return { plate: "default", pose: mix(FITP, zp("original"), EASE.io(norm(t, .9, S.typingStart))) };
+    if (t < CFG.bt(11)) {
+      let plate = "default";
+      if (t >= CFG.bt(10)) plate = "k5000";
+      else if (t >= CFG.bt(9)) plate = "k500";
+      else if (t >= CFG.bt(8)) plate = "k50";
+      else if (t >= CFG.bt(7)) plate = "k5";
+      return { plate, pose: zp("original") };
+    }
+    if (t < S.dingHold) {
+      let plate = "k5000";
+      if (t >= CFG.bt(13)) plate = "p25";
+      else if (t >= CFG.bt(12)) plate = "p2";
+      return { plate, pose: mix(zp("original"), zp("percent"), EASE.io(norm(t, CFG.bt(11), CFG.bt(11.6)))) };
+    }
+    if (t < S.pullBack)
+      return { plate: "p25", pose: mix(zp("percent"), zp("result"), EASE.o(norm(t, S.dingHold, S.dingHold + .3))) };
+    if (t < S.whipStart)
+      return { plate: "p25", pose: mix(zp("result"), FITP, EASE.io(norm(t, S.pullBack, S.whipStart - .1))) };
+    if (t < S.whipEnd) { // whip: fly out / in
+      const u = EASE.i(norm(t, S.whipStart, S.whipEnd));
+      if (u < .5) return { plate: "p25", pose: FITP, dx: -u * 2 * 1300, whip: u };
+      return { plate: "home", pose: zp("homeCta"), dx: (1 - u) * 2 * 1300, whip: 1 - u };
+    }
+    if (t < S.arrivalAt) {
+      const f = Math.max(0, (t - S.whipEnd) * FPS);
+      const drop = f < 5 ? 16 * Math.exp(-f * .7) : 0; // THUNK camera drop
+      return { plate: "home", pose: zp("homeCta"), dy: drop };
+    }
+    if (t < S.saveAt) {
+      const pop = 1 + .12 * (1 - EASE.o(norm(t, S.arrivalAt, S.arrivalAt + .3)));
+      const p = zp("arrivalResult");
+      return { plate: "arrival", pose: { s: p.s * pop, cx: p.cx, cy: p.cy } };
+    }
+    if (t < S.tickAt)
+      return { plate: "presave", pose: mix(zp("saveBtn"), zp("saveBtn"), 0) };
+    if (t < S.copyZoomAt)
+      return { plate: "saved", pose: zp("savedPanel") };
+    if (t < S.snapAt)
+      return { plate: "saved", pose: mix(zp("savedPanel"), zp("copied"), EASE.io(norm(t, S.copyZoomAt, S.copyZoomAt + .5))) };
+    if (t < S.recapStart)
+      return { plate: "copied", pose: zp("copied") };
+    if (t < S.recapEnd) {
+      const ev = [...CFG.events].reverse().find((e) => e.recap && t >= e.at);
+      if (ev) {
+        const f = (t - ev.at) * FPS;
+        const punch = 1 + .08 * Math.exp(-f * .5);
+        const p = zonePose(ev.zone);
+        return { plate: ev.plate, pose: { s: p.s * punch, cx: p.cx, cy: p.cy } };
+      }
+      return { plate: "copied", pose: zp("copied") };
+    }
+    return null; // endcard territory
+  }
+
+  // ---------- master render ----------
+  function renderFrame(ms) {
+    const t = ms / 1000;
+
+    $("orbA").style.transform =
+      `translate(${-140 + 46 * Math.sin(t * .11)}px, ${180 + 52 * Math.sin(t * .08 + 2)}px)`;
+    $("orbB").style.transform =
+      `translate(${600 + 50 * Math.sin(t * .09 + 4)}px, ${1250 + 44 * Math.sin(t * .07)}px)`;
+
+    $("ghost").style.opacity = 0;
+    $("ring").style.opacity = 0;
+    $("bass").style.opacity = 0;
+
+    // camera + plates
+    const cam = cameraAt(t);
+    if (cam) {
+      $("cam").style.opacity = t > S.recapEnd
+        ? 1 - norm(t, S.recapEnd, S.bassHit - .2) : 1;
+      const applied = applyPose(cam.plate, cam.pose, cam.dx || 0, cam.dy || 0);
+      if (cam.whip > 0.08) { // directional motion-blur ghost
+        $("ghost").style.opacity = .3;
+        $("ghostImg").src = plateEls[cam.plate].src;
+        $("ghost").style.transform = $("cam").style.transform +
+          ` translate(${cam.dx > 0 ? -46 : 46}px, 0px)`;
+      }
+    } else {
+      $("cam").style.opacity = 0;
+    }
+
+    // event-driven fx: flash, sfx captions, ring
+    let flash = 0;
+    let sfxShown = 0;
+    const sfxEls = [$("sfxA"), $("sfxB")];
+    sfxEls.forEach((el) => (el.style.opacity = 0));
+    for (const e of CFG.events) {
+      const dt = t - e.at;
+      if (dt >= 0 && dt < 1 / FPS) flash = Math.max(flash, .22);
+      if (e.sfx && dt >= 1 / FPS && dt < .55 && sfxShown < 2) {
+        const el = sfxEls[sfxShown++];
+        el.textContent = e.sfx;
+        el.classList.toggle("accent",
+          /DING|TICK|SNAP|POP/.test(e.sfx));
+        const u = norm(dt, 1 / FPS, .5);
+        el.style.opacity = 1 - EASE.i(u);
+        el.style.transform =
+          `translate(-50%,-50%) scale(${1.18 - .18 * EASE.o(Math.min(1, dt * 6))})`;
+        // near the zone target on screen (zone is centered by the camera)
+        el.style.left = 540 + (rnd(e.at * 37) - .5) * 90 + "px";
+        el.style.top = (e.zone ? 620 : 900) + (rnd(e.at * 91) - .5) * 60 + "px";
+      }
+      if (e.ding && dt >= 0 && dt < .6) {
+        const u = norm(dt, 0, .6);
+        $("ring").style.opacity = (1 - u) * .9;
+        $("ring").style.transform = `scale(${lerp(.3, 1.8, EASE.o(u))})`;
+      }
+    }
+    $("flash").style.opacity = flash;
+
+    // waveform HUD (visible until the endcard)
+    const hudOn = t < S.bassHit - .1;
+    $("wave").style.opacity = hudOn ? 1 : 0;
+    $("dots").style.opacity = hudOn ? 1 : 0;
+    if (hudOn) {
+      let amp = CFG.waveform.idle;
+      const beatPhase = (t % BEAT) / BEAT;
+      amp += CFG.waveform.beatKick * Math.exp(-beatPhase * 6) * (t > CFG.bt(1) ? 1 : 0);
+      let spike = 0;
+      for (const e of CFG.events) {
+        const dt = t - e.at;
+        if (dt >= 0) spike = Math.max(spike, Math.exp(-dt / CFG.waveform.decay));
+      }
+      amp += CFG.waveform.eventKick * spike * .8;
+      const fIdx = Math.floor(t * FPS);
+      for (let i = 0; i < bars.length; i++) {
+        const center = Math.exp(-Math.pow((i - bars.length / 2) / 14, 2));
+        const noise = .35 + .65 * rnd(i * 997 + fIdx);
+        const h = Math.min(1, amp * noise * (0.55 + .45 * center) + spike * center * .55);
+        bars[i].style.height = Math.max(3, h * CFG.waveform.h) + "px";
+        bars[i].style.opacity = .45 + .55 * h;
+      }
+      const beatIdx = Math.max(0, Math.floor(t / BEAT)) % 4;
+      [...$("dots").children].forEach((d, i) =>
+        d.classList.toggle("on", i === beatIdx));
+    }
+
+    // intro
+    const iv = Math.min(EASE.o(norm(t, CFG.intro.t0, CFG.intro.t0 + .25)),
+      1 - EASE.i(norm(t, CFG.intro.t1 - .25, CFG.intro.t1)));
+    $("intro").style.opacity = iv;
+    $("intro").style.transform =
+      `translate(-50%,-50%) scale(${.92 + .08 * EASE.o(norm(t, CFG.intro.t0, CFG.intro.t0 + .3))})`;
+
+    // endcard + bass pulse
+    if (t >= S.bassHit) {
+      const u = norm(t, S.bassHit, S.bassHit + .8);
+      if (u < 1) {
+        $("bass").style.opacity = (1 - u) * .85;
+        $("bass").style.transform = `scale(${lerp(.4, 5.2, EASE.o(u))})`;
+      }
+    }
+    const ecEls = [$("ecMark"), $("ecBrand"), $("ecPillW"), $("ecTag"), $("ecPills")];
+    if (t >= S.bassHit) {
+      ecEls.forEach((el, i) => {
+        const inU = EASE.o(norm(t, S.bassHit + .15 + i * .14, S.bassHit + .15 + i * .14 + .6));
+        el.style.opacity = inU;
+        el.style.display = inU > .01 ? (el === $("ecPills") ? "flex" : "block") : "none";
+        el.style.transform = `translate(-50%,-50%) translateY(${(1 - inU) * 60}px)`;
+      });
+    } else ecEls.forEach((el) => (el.style.display = "none"));
+
+    // captions
+    let cap = null;
+    for (const c of CFG.captions) if (t >= c.t0 && t <= c.t1) { cap = c; break; }
+    const capEl = $("caption");
+    if (cap) {
+      const inU = EASE.o(norm(t, cap.t0, cap.t0 + .22));
+      const outU = EASE.i(clamp01((cap.t1 - t) / .2));
+      capEl.style.opacity = Math.min(inU, outU);
+      capEl.style.transform = `translateX(-50%) translateY(${(1 - inU) * 36}px)`;
+      if ($("capBig").textContent !== cap.big) {
+        $("capBig").textContent = cap.big;
+        $("capSub").textContent = cap.sub;
+        $("capSub").style.display = cap.sub ? "" : "none";
+      }
+    } else capEl.style.opacity = 0;
+  }
+
+  // ---------- master clock ----------
+  let playing = false, t0 = 0, tAcc = 0, stopAt = null;
+  const now = () => performance.now();
+  const curT = () => (playing ? Math.min(D, tAcc + now() - t0) : tAcc);
+  function seek(ms) { tAcc = Math.max(0, Math.min(D, ms)); t0 = now(); renderFrame(tAcc); sync(); }
+  function play() {
+    if (playing) return;
+    if (tAcc >= D) tAcc = 0;
+    playing = true; t0 = now(); $("btnPlay").textContent = "⏸ Pause"; tick();
+  }
+  function pause() { tAcc = curT(); playing = false; $("btnPlay").textContent = "▶ Play"; }
+  function tick() {
+    if (!playing) return;
+    const t = curT();
+    renderFrame(t); sync();
+    if (stopAt != null && t >= stopAt) { stopAt = null; pause(); return; }
+    if (t >= D) { pause(); return; }
+    requestAnimationFrame(tick);
+  }
+  function sync() {
+    const t = curT();
+    $("scrub").value = t; $("tlabel").textContent = (t / 1000).toFixed(2) + "s";
+  }
+
+  $("btnPlay").onclick = () => (playing ? pause() : play());
+  $("btnRestart").onclick = () => { pause(); seek(0); };
+  $("btnTheme").onclick = () => setTheme(THEME === "dark" ? "light" : "dark")
+    .then(() => renderFrame(curT()));
+  $("scrub").oninput = (e) => { pause(); seek(+e.target.value); };
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === "r" || e.key === "R") { pause(); seek(0); }
+  });
+  if (REC) $("controls").style.display = "none";
+
+  function fit() {
+    const s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    frame.style.transform = `translate(-50%,-50%) scale(${s})`;
+    frame.style.transformOrigin = "center center";
+  }
+  addEventListener("resize", fit); fit();
+
+  window.__f3Seek = async (sec, theme) => {
+    if (theme && theme !== THEME) await setTheme(theme);
+    pause(); seek(sec * 1000);
+    renderFrame(sec * 1000);
+    return true;
+  };
+
+  setTheme(THEME).then(() => {
+    $("loading").style.display = "none";
+    const tq = Q.get("t"), stq = Q.get("stop");
+    if (stq) stopAt = +stq;
+    seek(tq ? +tq : 0);
+    if (!tq || stq) { if (!Q.has("pause")) play(); }
+  });
+})();
+</script>
+</body>
+</html>

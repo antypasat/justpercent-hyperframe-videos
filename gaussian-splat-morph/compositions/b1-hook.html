@@ -1,0 +1,156 @@
+<template id="b1-hook-template">
+  <div data-composition-id="b1-hook" data-start="0" data-width="1080" data-height="1920">
+    <div class="b1-stage">
+      <div class="b1-orb b1-orb-a"></div>
+      <div class="b1-orb b1-orb-b"></div>
+      <div class="b1-splats" id="b1-splats"></div>
+      <div class="b1-brand">
+        <img class="b1-logo" src="../assets/img/percentage.webp" alt="Percentage Symbol Logo" width="240" height="240" />
+        <div class="b1-wordmark">Just&nbsp;Percent</div>
+      </div>
+      <div class="b1-caption-slot">
+        <div class="b1-row"><div class="b1-panel b1-h1"><span>Percent problems?</span></div></div>
+        <div class="b1-row"><div class="b1-panel b1-h2"><span>Meet <em>JustPercent</em>.</span></div></div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="b1-hook"] {
+        position: relative; width: 1080px; height: 1920px;
+        background: radial-gradient(ellipse at 50% 20%, #140a26 0%, #05060d 72%);
+        overflow: hidden;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+      }
+      [data-composition-id="b1-hook"] .b1-stage { position: absolute; inset: 0; }
+      [data-composition-id="b1-hook"] .b1-orb { position: absolute; border-radius: 50%; filter: blur(140px); }
+      [data-composition-id="b1-hook"] .b1-orb-a {
+        width: 980px; height: 980px; top: -260px; left: -300px; opacity: .8;
+        background: radial-gradient(circle, rgba(124,58,237,.55) 0%, rgba(124,58,237,0) 70%);
+      }
+      [data-composition-id="b1-hook"] .b1-orb-b {
+        width: 860px; height: 860px; bottom: -220px; right: -260px; opacity: .7;
+        background: radial-gradient(circle, rgba(34,211,238,.4) 0%, rgba(34,211,238,0) 70%);
+      }
+      [data-composition-id="b1-hook"] .b1-splats { position: absolute; inset: 0; }
+      [data-composition-id="b1-hook"] .b1-splat {
+        position: absolute; top: 0; left: 0; border-radius: 50%;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="b1-hook"] .b1-brand {
+        position: absolute; left: 0; right: 0; top: 560px;
+        display: flex; flex-direction: column; align-items: center; gap: 34px;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="b1-hook"] .b1-logo {
+        width: 240px; height: 240px; object-fit: contain;
+        filter: drop-shadow(0 18px 46px rgba(124,58,237,.45));
+      }
+      [data-composition-id="b1-hook"] .b1-wordmark {
+        font-family: "IBM Plex Sans", system-ui, sans-serif; font-weight: 300;
+        font-size: 108px; letter-spacing: -0.03em; color: #f5f3ff;
+        text-shadow: 0 4px 30px rgba(0,0,0,.5);
+      }
+      [data-composition-id="b1-hook"] .b1-caption-slot {
+        position: absolute; left: 0; right: 0; top: 1280px; height: 220px;
+      }
+      [data-composition-id="b1-hook"] .b1-row {
+        position: absolute; left: 0; right: 0; top: 0;
+        display: flex; justify-content: center;
+      }
+      [data-composition-id="b1-hook"] .b1-panel {
+        background: rgba(8,10,22,.78); border: 1px solid rgba(167,139,250,.35);
+        border-radius: 26px; padding: 34px 54px;
+        box-shadow: 0 22px 60px rgba(0,0,0,.5);
+        backdrop-filter: blur(6px);
+        white-space: nowrap;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="b1-hook"] .b1-panel span {
+        font-family: "Space Grotesk", sans-serif; font-weight: 700;
+        font-size: 76px; letter-spacing: -0.02em; color: #ffffff;
+      }
+      [data-composition-id="b1-hook"] .b1-panel em {
+        font-style: normal;
+        background: linear-gradient(90deg, #a78bfa 0%, #22d3ee 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+    </style>
+
+    <script>
+      (function () {
+        var root = document.querySelector('[data-composition-id="b1-hook"]');
+        var beat = 3.4;
+
+        function rnd(i) { var x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+
+        // --- gaussian splat cloud that condenses into a "%" glyph ---
+        var N = 150;
+        var holder = root.querySelector('#b1-splats');
+        var palette = ['rgba(167,139,250,', 'rgba(124,58,237,', 'rgba(34,211,238,', 'rgba(244,114,182,', 'rgba(245,243,255,'];
+        var dots = [];
+        function glyphPoint(i) {
+          // "%" = two rings + slash, centered near the logo position
+          var f = i % 3, t = rnd(i * 3 + 1) * Math.PI * 2;
+          if (f === 0) return { x: 425 + Math.cos(t) * 88, y: 600 + Math.sin(t) * 88 };
+          if (f === 1) return { x: 665 + Math.cos(t) * 88, y: 860 + Math.sin(t) * 88 };
+          var u = rnd(i * 7 + 2);
+          return { x: 700 - u * 320, y: 540 + u * 420 };
+        }
+        for (var i = 0; i < N; i++) {
+          var d = document.createElement('div');
+          d.className = 'b1-splat';
+          var s = 14 + rnd(i) * 64;
+          var c = palette[i % palette.length];
+          d.style.width = s + 'px'; d.style.height = s + 'px';
+          d.style.background = 'radial-gradient(circle, ' + c + (0.5 + rnd(i + 9) * 0.5).toFixed(2) + ') 0%, ' + c + '0) 70%)';
+          holder.appendChild(d);
+          var g = glyphPoint(i);
+          dots.push({
+            el: d,
+            sx: 540 + (rnd(i + 11) - 0.5) * 1400,
+            sy: 960 + (rnd(i + 23) - 0.5) * 2300,
+            gx: g.x + (rnd(i + 31) - 0.5) * 26,
+            gy: g.y + (rnd(i + 41) - 0.5) * 26
+          });
+        }
+
+        var tl = gsap.timeline({ paused: true });
+
+        // orbs breathe
+        tl.fromTo(root.querySelector('.b1-orb-a'), { x: -20, y: -10 }, { x: 30, y: 20, duration: beat, ease: 'sine.inOut' }, 0);
+        tl.fromTo(root.querySelector('.b1-orb-b'), { x: 20, y: 10 }, { x: -30, y: -20, duration: beat, ease: 'sine.inOut' }, 0);
+
+        // splats: scattered fog -> condensed "%" glyph -> absorbed by the real logo
+        dots.forEach(function (o, i) {
+          var dl = rnd(i + 51) * 0.35;
+          tl.fromTo(o.el,
+            { x: o.sx, y: o.sy, opacity: 0, scale: 2.2 },
+            { x: o.gx, y: o.gy, opacity: 0.9, scale: 0.8, duration: 1.15, ease: 'power3.inOut' }, 0.1 + dl);
+          tl.to(o.el, { x: 540, y: 690, opacity: 0, scale: 0.15, duration: 0.55, ease: 'power2.in' }, 1.55 + dl * 0.6);
+        });
+
+        // real logo + wordmark materialize out of the condensed cloud
+        tl.fromTo(root.querySelector('.b1-brand'),
+          { opacity: 0, scale: 0.82, filter: 'blur(26px)' },
+          { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.7, ease: 'power2.out' }, 1.6);
+
+        // sequential headlines — same slot, never simultaneous
+        tl.fromTo(root.querySelector('.b1-h1'),
+          { opacity: 0, y: 46, filter: 'blur(14px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.4, ease: 'power2.out' }, 0.5);
+        tl.to(root.querySelector('.b1-h1'),
+          { opacity: 0, y: -40, filter: 'blur(12px)', duration: 0.32, ease: 'power2.in' }, 1.55);
+        tl.fromTo(root.querySelector('.b1-h2'),
+          { opacity: 0, y: 46, filter: 'blur(14px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.4, ease: 'power2.out' }, 2.0);
+
+        // exit morph: everything blooms toward the camera
+        tl.to([root.querySelector('.b1-brand'), root.querySelector('.b1-caption-slot')],
+          { scale: 1.14, opacity: 0, filter: 'blur(22px)', duration: 0.4, ease: 'power2.in' }, beat - 0.4);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines['b1-hook'] = tl;
+      })();
+    </script>
+  </div>
+</template>

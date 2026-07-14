@@ -1,0 +1,41 @@
+{
+  "scene": "calc",
+  "url": "https://justpercent.com/decreased-value-calculator/#all",
+  "viewport": {
+    "width": 1600,
+    "height": 900
+  },
+  "dpr": 2,
+  "layers": [
+    {
+      "id": "nav",
+      "sel": "nav",
+      "box": {
+        "x": 436,
+        "y": 0,
+        "w": 728,
+        "h": 61
+      }
+    },
+    {
+      "id": "heading",
+      "sel": "main h1",
+      "box": {
+        "x": 517,
+        "y": 238,
+        "w": 610,
+        "h": 28
+      }
+    },
+    {
+      "id": "panel",
+      "sel": "[data-calculator-id]",
+      "box": {
+        "x": 436,
+        "y": 203,
+        "w": 728,
+        "h": 412
+      }
+    }
+  ]
+}

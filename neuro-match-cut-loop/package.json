@@ -1,0 +1,9 @@
+{
+  "name": "neuro-match-cut-loop",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.6.44 preview",
+    "check": "npx --yes hyperframes@0.6.44 lint && npx --yes hyperframes@0.6.44 validate && npx --yes hyperframes@0.6.44 inspect"
+  }
+}

@@ -1,0 +1,244 @@
+{
+  "hyperframes": "1.0",
+  "name": "cj-2-6-two-step-success-flow",
+  "technique": "Cursor Journey / Two-Step Success Flow",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/decreased-value-calculator/",
+    "locale": "en-US",
+    "flow": "Value Decrease Calculator ($100 − 20% = $80, via the Coupon card) → click “+ Save” → success: the calculation lands in the Saved panel with its full equation → click “Copy” → success: green “Copied!”. Each success frame captured after the post-click DOM fully settled.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "afterClick": true,
+      "successStateSettled": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 8,
+  "states": {
+    "arrived": {
+      "asset": "assets/s-dec-arrived.png",
+      "w": 1600,
+      "h": 900
+    },
+    "saved": {
+      "asset": "assets/s-dec-saved.png",
+      "w": 1600,
+      "h": 900
+    },
+    "copied": {
+      "asset": "assets/s-dec-copied.png",
+      "w": 1600,
+      "h": 900
+    }
+  },
+  "swaps": [
+    {
+      "t": 0,
+      "state": "arrived",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 2.85,
+      "state": "saved",
+      "fx": "fade",
+      "dur": 0.35
+    },
+    {
+      "t": 5.85,
+      "state": "copied",
+      "fx": "cut",
+      "dur": 0
+    }
+  ],
+  "cursor": [
+    {
+      "t": 0,
+      "x": 1019,
+      "y": 417
+    },
+    {
+      "t": 0.9,
+      "x": 1019,
+      "y": 417
+    },
+    {
+      "t": 1.9,
+      "x": 1018,
+      "y": 452,
+      "cp": [
+        [
+          40,
+          30
+        ],
+        [
+          40,
+          -20
+        ]
+      ]
+    },
+    {
+      "t": 2.75,
+      "x": 1018,
+      "y": 452
+    },
+    {
+      "t": 3.6,
+      "x": 800,
+      "y": 728,
+      "cp": [
+        [
+          -120,
+          140
+        ],
+        [
+          160,
+          -60
+        ]
+      ]
+    },
+    {
+      "t": 4.5,
+      "x": 800,
+      "y": 728
+    },
+    {
+      "t": 5.4,
+      "x": 955,
+      "y": 452,
+      "cp": [
+        [
+          120,
+          -160
+        ],
+        [
+          -60,
+          90
+        ]
+      ]
+    },
+    {
+      "t": 5.8,
+      "x": 955,
+      "y": 452
+    },
+    {
+      "t": 6.6,
+      "x": 1019,
+      "y": 417,
+      "cp": [
+        [
+          50,
+          -30
+        ],
+        [
+          40,
+          40
+        ]
+      ]
+    },
+    {
+      "t": 8,
+      "x": 1019,
+      "y": 417
+    }
+  ],
+  "camera": {
+    "follow": {
+      "mode": "cursor",
+      "stiffness": 60,
+      "damping": "critical",
+      "offset": {
+        "x": -130,
+        "y": 0
+      }
+    },
+    "scaleTrack": [
+      {
+        "t": 0,
+        "s": 1.25
+      },
+      {
+        "t": 1.4,
+        "s": 1.5,
+        "ease": "ease-in-out-cubic"
+      },
+      {
+        "t": 8,
+        "s": 1.5
+      }
+    ]
+  },
+  "events": [
+    {
+      "kind": "click",
+      "t": 2.75,
+      "x": 1018,
+      "y": 452
+    },
+    {
+      "kind": "glow",
+      "t0": 3.3,
+      "t1": 5.2,
+      "rect": {
+        "x": 461,
+        "y": 688,
+        "w": 678,
+        "h": 66
+      }
+    },
+    {
+      "kind": "click",
+      "t": 5.8,
+      "x": 955,
+      "y": 452
+    },
+    {
+      "kind": "ring",
+      "t0": 5.9,
+      "t1": 7.9,
+      "rect": {
+        "x": 1146,
+        "y": 436,
+        "w": 100,
+        "h": 34
+      }
+    }
+  ],
+  "fx": {
+    "letterbox": true,
+    "vignette": true,
+    "grain": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Value Decrease — Save & Copy",
+      "in": 0.2,
+      "out": 7.9
+    },
+    {
+      "kind": "caption",
+      "text": "$100 − 20% = $80. Keep it.",
+      "in": 0.4,
+      "out": 2.6
+    },
+    {
+      "kind": "caption",
+      "text": "Saved — with the full equation.",
+      "in": 3.3,
+      "out": 5.4
+    },
+    {
+      "kind": "caption",
+      "text": "Copied. Green means done.",
+      "in": 6,
+      "out": 7.9
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+<template id="b6-faq-live-template">
+  <div data-composition-id="b6-faq-live" data-start="0" data-width="1080" data-height="1920">
+    <div class="b6-stage">
+      <div class="b6-orb b6-orb-a"></div>
+      <div class="b6-orb b6-orb-b"></div>
+      <div class="b6-splats" id="b6-splats"></div>
+      <div class="b6-persp">
+        <div class="b6-cam">
+          <div class="b6-frame b6-frame-c">
+            <iframe class="b6-iframe b6-iframe-c" src="../assets/screens/faqs-dark.html" scrolling="no" title="justpercent.com/faqs/ (dark)"></iframe>
+          </div>
+          <div class="b6-frame b6-frame-d">
+            <iframe class="b6-iframe b6-iframe-d" src="../assets/screens/faq-billsplit-dark.html" scrolling="no" title="justpercent.com/faqs/bill-splitting-calculator/ (dark)"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="b6-faq-live"] {
+        position: relative; width: 1080px; height: 1920px;
+        background: radial-gradient(ellipse at 50% 25%, #170c2b 0%, #05060d 74%);
+        overflow: hidden;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+      }
+      [data-composition-id="b6-faq-live"] .b6-stage { position: absolute; inset: 0; }
+      [data-composition-id="b6-faq-live"] .b6-orb { position: absolute; border-radius: 50%; filter: blur(140px); }
+      [data-composition-id="b6-faq-live"] .b6-orb-a {
+        width: 940px; height: 940px; top: -280px; left: -300px; opacity: .8;
+        background: radial-gradient(circle, rgba(124,58,237,.5) 0%, rgba(124,58,237,0) 70%);
+      }
+      [data-composition-id="b6-faq-live"] .b6-orb-b {
+        width: 840px; height: 840px; bottom: -240px; right: -260px; opacity: .7;
+        background: radial-gradient(circle, rgba(34,211,238,.35) 0%, rgba(34,211,238,0) 70%);
+      }
+      [data-composition-id="b6-faq-live"] .b6-splats { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+      [data-composition-id="b6-faq-live"] .b6-splat { position: absolute; top: 0; left: 0; border-radius: 50%; will-change: transform, opacity; }
+      [data-composition-id="b6-faq-live"] .b6-persp { position: absolute; inset: 0; perspective: 1600px; perspective-origin: 50% 42%; }
+      [data-composition-id="b6-faq-live"] .b6-cam { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+      [data-composition-id="b6-faq-live"] .b6-frame {
+        position: absolute; left: 27px; top: 170px; width: 1026px; height: 1500px;
+        border-radius: 40px; overflow: hidden;
+        border: 2px solid rgba(255,255,255,.14);
+        box-shadow: 0 50px 120px rgba(0,0,0,.55), 0 8px 30px rgba(0,0,0,.35), 0 0 80px rgba(124,58,237,.18);
+        background: #0a0514;
+        will-change: transform, opacity, filter;
+      }
+      [data-composition-id="b6-faq-live"] .b6-iframe {
+        width: 432px; height: 632px; border: 0;
+        transform: scale(2.375); transform-origin: 0 0;
+        pointer-events: none;
+      }
+    </style>
+
+    <script>
+      (function () {
+        var root = document.querySelector('[data-composition-id="b6-faq-live"]');
+        var beat = 7.0;
+        function rnd(i) { var x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+
+        var frameC = root.querySelector('.b6-frame-c');
+        var frameD = root.querySelector('.b6-frame-d');
+        var ifC = root.querySelector('.b6-iframe-c');
+        var ifD = root.querySelector('.b6-iframe-d');
+        function docC() { var d = ifC.contentDocument; return d && d.body ? d : null; }
+        function docD() { var d = ifD.contentDocument; return d && d.body ? d : null; }
+        function billCard() {
+          var d = docC(); if (!d) return null;
+          var cards = d.querySelectorAll('.sentence');
+          for (var i = 0; i < cards.length; i++) if (/Bill Splitting/.test(cards[i].textContent)) return cards[i];
+          return null;
+        }
+        function billCardY() {
+          var d = docC(); var c = billCard();
+          if (!d || !c) return 2600;
+          return Math.round(c.getBoundingClientRect().top + d.defaultView.scrollY - 150);
+        }
+        function touchDot() {
+          var d = docC(); if (!d) return null;
+          var t = d.getElementById('gsm-touch');
+          if (!t) {
+            var card = billCard(); if (!card) return null;
+            var r = card.getBoundingClientRect();
+            t = d.createElement('div');
+            t.id = 'gsm-touch';
+            t.style.cssText = 'position:absolute;width:56px;height:56px;border-radius:50%;' +
+              'background:radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,255,255,.25) 55%, rgba(255,255,255,0) 72%);' +
+              'box-shadow:0 0 0 2px rgba(167,139,250,.6), 0 6px 18px rgba(0,0,0,.5);' +
+              'pointer-events:none;z-index:999999;opacity:0;' +
+              'left:' + (r.left + d.defaultView.scrollX + r.width * 0.5 - 28) + 'px;' +
+              'top:' + (r.top + d.defaultView.scrollY + r.height * 0.45 - 28) + 'px;';
+            d.body.appendChild(t);
+          }
+          return t;
+        }
+
+        // ---- state ----
+        var V = { hlC: 0 };
+        function RC() {
+          var card = billCard(); if (!card) return;
+          card.style.boxShadow = V.hlC > 0.01
+            ? '0 0 0 ' + (V.hlC * 3).toFixed(2) + 'px rgba(167,139,250,' + (0.75 * V.hlC).toFixed(3) + '), 0 12px 40px rgba(124,58,237,' + (0.45 * V.hlC).toFixed(3) + ')'
+            : '';
+          card.style.transform = 'scale(' + (1 + 0.02 * V.hlC).toFixed(4) + ')';
+        }
+        var W = { billTyped: 3, my: 150, rm: 100, glow: 0, mode: 0 };
+        function RD() {
+          var d = docD(); if (!d) return;
+          var bill = d.getElementById('bill-amount');
+          var my = d.getElementById('my-result');
+          var rm = d.getElementById('roommate-result');
+          var mp = d.getElementById('my-percent');
+          var rp = d.getElementById('roommate-percent');
+          if (mp) mp.value = '60';
+          if (rp) rp.value = '40';
+          if (bill) {
+            bill.value = (W.mode < 0.5) ? '250' : '300'.slice(0, Math.max(0, Math.round(W.billTyped)));
+            bill.style.boxShadow = 'inset 0 0 0 2px rgba(167,139,250,' + (0.9 * W.glow).toFixed(3) + ')';
+          }
+          if (my) { my.value = String(Math.round(W.my)); my.style.textShadow = '0 0 ' + (12 * W.glow).toFixed(1) + 'px rgba(167,139,250,' + (0.8 * W.glow).toFixed(3) + ')'; }
+          if (rm) { rm.value = String(Math.round(W.rm)); rm.style.textShadow = '0 0 ' + (12 * W.glow).toFixed(1) + 'px rgba(167,139,250,' + (0.8 * W.glow).toFixed(3) + ')'; }
+        }
+
+        // ---- splats ----
+        var holder = root.querySelector('#b6-splats');
+        var palette = ['rgba(167,139,250,', 'rgba(124,58,237,', 'rgba(34,211,238,', 'rgba(245,243,255,'];
+        var dots = [];
+        for (var i = 0; i < 44; i++) {
+          var d = document.createElement('div');
+          d.className = 'b6-splat';
+          var s = 12 + rnd(i + 3100) * 62;
+          var c = palette[i % palette.length];
+          d.style.width = s + 'px'; d.style.height = s + 'px';
+          d.style.background = 'radial-gradient(circle, ' + c + (0.4 + rnd(i + 3107) * 0.4).toFixed(2) + ') 0%, ' + c + '0) 70%)';
+          holder.appendChild(d);
+          dots.push(d);
+        }
+
+        var tl = gsap.timeline({ paused: true });
+
+        tl.fromTo(root.querySelector('.b6-orb-a'), { y: -18 }, { y: 22, duration: beat, ease: 'sine.inOut' }, 0);
+        tl.fromTo(root.querySelector('.b6-orb-b'), { y: 18 }, { y: -22, duration: beat, ease: 'sine.inOut' }, 0);
+
+        dots.forEach(function (el, i) {
+          tl.fromTo(el,
+            { x: 540 + (rnd(i + 221) - 0.5) * 1500, y: 960 + (rnd(i + 231) - 0.5) * 2400, opacity: 0, scale: 2 },
+            { x: -40 + rnd(i + 241) * 1160, y: -40 + rnd(i + 251) * 2000, opacity: 0.4, scale: 0.8, duration: 0.8, ease: 'power3.out' }, rnd(i + 261) * 0.25);
+          tl.to(el, { y: '-=' + (26 + rnd(i + 271) * 60), opacity: 0.14, duration: beat - 1.2, ease: 'none' }, 1.0);
+        });
+
+        // camera
+        tl.fromTo(root.querySelector('.b6-cam'),
+          { rotateY: 6, rotateX: -3, z: -200, y: 12 },
+          { rotateY: -3, rotateX: 2, z: 40, y: -12, duration: 5.8, ease: 'sine.inOut' }, 0.2);
+        tl.to(root.querySelector('.b6-cam'), { z: 150, rotateY: 0, rotateX: 0, duration: 1.0, ease: 'power2.in' }, beat - 1.0);
+
+        // entry condense — FAQ hub
+        tl.fromTo(frameC,
+          { opacity: 0, filter: 'blur(26px) saturate(2) hue-rotate(16deg)', scale: 1.07 },
+          { opacity: 1, filter: 'blur(0px) saturate(1) hue-rotate(0deg)', scale: 1, duration: 0.6, ease: 'power2.out' }, 0.05);
+        tl.fromTo(frameD, { opacity: 0, filter: 'blur(28px) saturate(1.8)' }, { opacity: 0, duration: 0.05, ease: 'none' }, 0);
+
+        // baseline state renders
+        tl.fromTo(V, { hlC: 0 }, { hlC: 0, duration: 0.05, ease: 'none', onUpdate: RC }, 0);
+        tl.fromTo(W, { billTyped: 3, my: 150, rm: 100, glow: 0, mode: 0 }, { mode: 0, duration: 0.05, ease: 'none', onUpdate: RD }, 0);
+
+        // scrolls
+        var PC = { y: 0 };
+        function applyScrollC() { var d = docC(); if (d) d.defaultView.scrollTo(0, PC.y); }
+        tl.fromTo(PC, { y: 0 }, { y: 0, duration: 0.6, ease: 'none', onUpdate: applyScrollC }, 0);
+        // glide down the hub to the Bill Splitting card (dynamic target, settles fully)
+        var PCT = { k: 0 };
+        function applyScrollCK() { var d = docC(); if (!d) return; var target = billCardY(); d.defaultView.scrollTo(0, Math.round(PCT.k * target)); }
+        tl.to(PCT, { k: 1, duration: 1.5, ease: 'power3.out', onUpdate: applyScrollCK, immediateRender: false }, 0.75);
+
+        var PD = { y: 60 };
+        function applyScrollD() { var d = docD(); if (d) d.defaultView.scrollTo(0, PD.y); }
+        tl.fromTo(PD, { y: 60 }, { y: 60, duration: 0.1, ease: 'none', onUpdate: applyScrollD }, 0);
+
+        // highlight + tap the Bill Splitting card
+        tl.to(V, { hlC: 1, duration: 0.35, ease: 'power2.out', onUpdate: RC, immediateRender: false }, 2.35);
+        var T = { o: 0, s: 1, r: 0 };
+        function applyTouch() {
+          var t = touchDot(); if (!t) return;
+          t.style.opacity = T.o.toFixed(3);
+          t.style.transform = 'scale(' + T.s.toFixed(3) + ')';
+          t.style.boxShadow = '0 0 0 ' + (2 + T.r * 26) + 'px rgba(167,139,250,' + (0.55 * Math.max(0, 1 - T.r)).toFixed(3) + '), 0 6px 18px rgba(0,0,0,.5)';
+        }
+        tl.fromTo(T, { o: 0, s: 1, r: 0 }, { o: 0, duration: 2.4, ease: 'none', onUpdate: applyTouch }, 0);
+        tl.to(T, { o: 1, duration: 0.22, ease: 'power2.out', onUpdate: applyTouch }, 2.55);
+        tl.to(T, { s: 0.72, duration: 0.13, ease: 'power2.in', onUpdate: applyTouch }, 2.82);
+        tl.to(T, { s: 1.15, r: 1, o: 0, duration: 0.4, ease: 'power2.out', onUpdate: applyTouch }, 2.95);
+
+        // hallucinatory morph: hub dissolves into the Bill Splitting FAQ page
+        tl.to(frameC, { opacity: 0, filter: 'blur(26px) saturate(2.4) hue-rotate(-14deg)', scale: 1.05, duration: 0.55, ease: 'power2.inOut', immediateRender: false }, 3.15);
+        tl.to(frameD, { opacity: 1, filter: 'blur(0px) saturate(1)', duration: 0.6, ease: 'power2.out', immediateRender: false }, 3.25);
+
+        // live interactivity: the bill becomes $300 -> shares update instantly
+        tl.to(W, { mode: 1, billTyped: 0, duration: 0.02, ease: 'none', onUpdate: RD, immediateRender: false }, 4.55);
+        tl.to(W, { billTyped: 3, duration: 0.5, ease: 'steps(3)', onUpdate: RD, immediateRender: false }, 4.65);
+        tl.to(W, { my: 180, rm: 120, duration: 0.5, ease: 'power2.out', onUpdate: RD, immediateRender: false }, 5.25);
+        tl.to(W, { glow: 1, duration: 0.3, ease: 'power2.out', onUpdate: RD, immediateRender: false }, 5.25);
+        tl.to(W, { glow: 0, duration: 0.6, ease: 'power2.inOut', onUpdate: RD, immediateRender: false }, 6.2);
+
+        // exit bloom into the endcard
+        tl.to(frameD, { filter: 'blur(24px) saturate(2.2)', scale: 1.07, opacity: 0, duration: 0.5, ease: 'power2.in', immediateRender: false }, beat - 0.5);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines['b6-faq-live'] = tl;
+      })();
+    </script>
+  </div>
+</template>

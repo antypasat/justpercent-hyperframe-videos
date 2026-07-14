@@ -1,0 +1,135 @@
+<template id="b5-theme-flip-template">
+  <div data-composition-id="b5-theme-flip" data-start="0" data-width="1080" data-height="1920">
+    <div class="b5-stage">
+      <div class="b5-bg b5-bg-light"></div>
+      <div class="b5-bg b5-bg-dark"></div>
+      <div class="b5-splats" id="b5-splats"></div>
+      <div class="b5-persp">
+        <div class="b5-cam">
+          <div class="b5-flip">
+            <div class="b5-face b5-face-front">
+              <iframe class="b5-iframe" src="../assets/screens/home-light.html" scrolling="no" title="justpercent.com home (light)"></iframe>
+            </div>
+            <div class="b5-face b5-face-back">
+              <iframe class="b5-iframe" src="../assets/screens/home-dark.html" scrolling="no" title="justpercent.com home (dark)"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="b5-theme-flip"] {
+        position: relative; width: 1080px; height: 1920px;
+        overflow: hidden; background: #05060d;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+      }
+      [data-composition-id="b5-theme-flip"] .b5-stage { position: absolute; inset: 0; }
+      [data-composition-id="b5-theme-flip"] .b5-bg { position: absolute; inset: 0; will-change: opacity; }
+      [data-composition-id="b5-theme-flip"] .b5-bg-light {
+        background: linear-gradient(180deg, #e4e2f1 0%, #dcdaea 55%, #d5d8ec 100%);
+      }
+      [data-composition-id="b5-theme-flip"] .b5-bg-dark {
+        background: radial-gradient(ellipse at 50% 25%, #170c2b 0%, #05060d 74%);
+      }
+      [data-composition-id="b5-theme-flip"] .b5-splats { position: absolute; inset: 0; pointer-events: none; z-index: 6; }
+      [data-composition-id="b5-theme-flip"] .b5-splat { position: absolute; top: 0; left: 0; border-radius: 50%; will-change: transform, opacity; }
+      [data-composition-id="b5-theme-flip"] .b5-persp { position: absolute; inset: 0; perspective: 2000px; perspective-origin: 50% 45%; }
+      [data-composition-id="b5-theme-flip"] .b5-cam { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+      [data-composition-id="b5-theme-flip"] .b5-flip {
+        position: absolute; left: 27px; top: 170px; width: 1026px; height: 1500px;
+        transform-style: preserve-3d; will-change: transform;
+      }
+      [data-composition-id="b5-theme-flip"] .b5-face {
+        position: absolute; inset: 0; border-radius: 40px; overflow: hidden;
+        border: 2px solid rgba(255,255,255,.4);
+        box-shadow: 0 50px 120px rgba(0,0,0,.45), 0 8px 30px rgba(0,0,0,.3);
+        background: #0a0514;
+      }
+      [data-composition-id="b5-theme-flip"] .b5-face-front { background: #f8f9fe; }
+      [data-composition-id="b5-theme-flip"] .b5-face-back { visibility: hidden; }
+      [data-composition-id="b5-theme-flip"] .b5-iframe {
+        width: 432px; height: 632px; border: 0;
+        transform: scale(2.375); transform-origin: 0 0;
+        pointer-events: none;
+      }
+    </style>
+
+    <script>
+      (function () {
+        var root = document.querySelector('[data-composition-id="b5-theme-flip"]');
+        var beat = 2.8;
+        function rnd(i) { var x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+
+        // splat burst ring released at the flip apex
+        var holder = root.querySelector('#b5-splats');
+        var palette = ['rgba(168,85,247,', 'rgba(124,58,237,', 'rgba(34,211,238,', 'rgba(255,255,255,'];
+        var dots = [];
+        for (var i = 0; i < 70; i++) {
+          var d = document.createElement('div');
+          d.className = 'b5-splat';
+          var s = 12 + rnd(i + 2100) * 66;
+          var c = palette[i % palette.length];
+          d.style.width = s + 'px'; d.style.height = s + 'px';
+          d.style.background = 'radial-gradient(circle, ' + c + (0.4 + rnd(i + 2107) * 0.45).toFixed(2) + ') 0%, ' + c + '0) 70%)';
+          holder.appendChild(d);
+          dots.push(d);
+        }
+
+        var tl = gsap.timeline({ paused: true });
+
+        // ambience: light gives way to dark exactly while the panel flips
+        tl.fromTo(root.querySelector('.b5-bg-light'), { opacity: 1 }, { opacity: 1, duration: 0.7, ease: 'none' }, 0);
+        tl.to(root.querySelector('.b5-bg-light'), { opacity: 0, duration: 0.9, ease: 'power2.inOut', immediateRender: false }, 0.8);
+        tl.fromTo(root.querySelector('.b5-bg-dark'), { opacity: 0 }, { opacity: 0, duration: 0.7, ease: 'none' }, 0);
+        tl.to(root.querySelector('.b5-bg-dark'), { opacity: 1, duration: 0.9, ease: 'power2.inOut', immediateRender: false }, 0.8);
+
+        // the 3D theme flip — half-turn + face swap at the apex (no mirrored
+        // backface: complex iframe layers don't respect backface-visibility)
+        var flip = root.querySelector('.b5-flip');
+        var faceFront = root.querySelector('.b5-face-front');
+        var faceBack = root.querySelector('.b5-face-back');
+        var F = { f: 0, s: 0.96 };
+        function RF() {
+          var f = F.f;
+          var ang = f < 0.5 ? f * 180 : f * 180 - 180;   // 0..90 | -90..0
+          var zz = -420 * Math.sin(Math.PI * f);
+          flip.style.transform = 'translateZ(' + zz.toFixed(1) + 'px) rotateY(' + ang.toFixed(2) + 'deg) scale(' + F.s.toFixed(4) + ')';
+          faceFront.style.visibility = f < 0.5 ? 'visible' : 'hidden';
+          faceBack.style.visibility = f < 0.5 ? 'hidden' : 'visible';
+        }
+
+        // entry condense
+        tl.fromTo(F, { s: 0.96 }, { s: 1, duration: 0.45, ease: 'power2.out', onUpdate: RF }, 0.05);
+        tl.fromTo(flip,
+          { opacity: 0, filter: 'blur(24px)' },
+          { opacity: 1, filter: 'blur(0px)', duration: 0.45, ease: 'power2.out' }, 0.05);
+
+        tl.to(F, { f: 1, duration: 1.35, ease: 'power2.inOut', onUpdate: RF, immediateRender: false }, 0.6);
+
+        // camera counter-move sells the volume
+        tl.fromTo(root.querySelector('.b5-cam'),
+          { rotateY: -4, rotateX: 2 },
+          { rotateY: 4, rotateX: -2, duration: beat, ease: 'sine.inOut' }, 0);
+
+        // splat burst at apex
+        dots.forEach(function (el, i) {
+          var a = rnd(i + 2200) * Math.PI * 2;
+          var rr = 240 + rnd(i + 2300) * 620;
+          tl.fromTo(el,
+            { x: 540, y: 920, opacity: 0, scale: 0.3 },
+            { x: 540 + Math.cos(a) * rr, y: 920 + Math.sin(a) * rr, opacity: 0.7, scale: 1.2, duration: 0.75, ease: 'power3.out', immediateRender: false }, 1.05 + rnd(i + 2400) * 0.15);
+          tl.to(el, { opacity: 0, scale: 0.4, duration: 0.5, ease: 'power2.in', immediateRender: false }, 1.85 + rnd(i + 2500) * 0.2);
+        });
+
+        // exit bloom into the FAQ scene
+        tl.to(F, { s: 1.06, duration: 0.4, ease: 'power2.in', onUpdate: RF, immediateRender: false }, beat - 0.4);
+        tl.to(flip,
+          { filter: 'blur(20px)', opacity: 0, duration: 0.4, ease: 'power2.in', immediateRender: false }, beat - 0.4);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines['b5-theme-flip'] = tl;
+      })();
+    </script>
+  </div>
+</template>

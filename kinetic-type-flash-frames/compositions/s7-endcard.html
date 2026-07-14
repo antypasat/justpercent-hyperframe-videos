@@ -1,0 +1,101 @@
+<template id="s7-endcard-template">
+  <div data-composition-id="s7-endcard" data-start="0" data-width="1080" data-height="1920">
+    <div class="f-stage f-bg-dark">
+      <div class="f-orb f-orb-v" style="width:1000px;height:1000px;top:-200px;left:-260px;opacity:.6"></div>
+      <div class="f-orb f-orb-c" style="width:860px;height:860px;bottom:-220px;right:-240px;opacity:.5"></div>
+      <div class="f-vignette" style="opacity:.55"></div>
+
+      <div class="s7-center">
+        <img class="s7-logo" src="assets/app-images/percentage.webp" alt="Just Percent logo" />
+        <div class="s7-name">Just&nbsp;Percent</div>
+        <div class="s7-urlpill">justpercent.com</div>
+        <div class="s7-tagline">Every percent problem &mdash; solved in seconds.</div>
+        <div class="s7-pills">
+          <span class="s7-pill">Free</span>
+          <span class="s7-pill">Instant</span>
+          <span class="s7-pill">No sign-up</span>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="s7-endcard"] { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      [data-composition-id="s7-endcard"] .s7-center {
+        position: absolute; left: 0; right: 0; top: 460px;
+        display: flex; flex-direction: column; align-items: center; gap: 46px;
+      }
+      [data-composition-id="s7-endcard"] .s7-logo {
+        width: 250px; height: 250px;
+        filter: drop-shadow(0 20px 60px rgba(124,58,237,.55));
+        will-change: transform, opacity;
+      }
+      [data-composition-id="s7-endcard"] .s7-name {
+        font-family: "Space Grotesk", sans-serif; font-weight: 700;
+        font-size: 150px; letter-spacing: -0.03em; line-height: 1;
+        background: linear-gradient(92deg, #a78bfa 0%, #8b5cf6 45%, #22d3ee 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="s7-endcard"] .s7-urlpill {
+        font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: 52px;
+        color: #0b0d1c; background: #ffffff;
+        padding: 22px 58px; border-radius: 999px;
+        box-shadow: 0 18px 60px rgba(255,255,255,.18);
+        will-change: transform, opacity;
+      }
+      [data-composition-id="s7-endcard"] .s7-tagline {
+        font-family: "IBM Plex Sans", sans-serif; font-weight: 400; font-size: 52px;
+        color: rgba(255,255,255,.88); text-align: center; max-width: 900px; line-height: 1.35;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="s7-endcard"] .s7-pills { display: flex; gap: 26px; will-change: transform, opacity; }
+      [data-composition-id="s7-endcard"] .s7-pill {
+        font-family: "IBM Plex Sans", sans-serif; font-weight: 600; font-size: 36px;
+        color: #e9d5ff; border: 1.5px solid rgba(167,139,250,.6);
+        background: rgba(124,58,237,.16);
+        padding: 14px 36px; border-radius: 999px;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var R = '[data-composition-id="s7-endcard"] ';
+        var tl = gsap.timeline({ paused: true });
+
+        tl.fromTo(R + '.s7-logo',
+          { scale: 0.2, opacity: 0, rotation: -18 },
+          { scale: 1, opacity: 1, rotation: 0, duration: 0.55, ease: "back.out(1.8)", immediateRender: true }, 0.05);
+
+        tl.fromTo(R + '.s7-name',
+          { y: 90, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.35);
+        // font-bend pulse (stepped weights + scaleY punch)
+        tl.set(R + '.s7-name', { fontWeight: 300 }, 0.78);
+        tl.set(R + '.s7-name', { fontWeight: 500 }, 0.86);
+        tl.set(R + '.s7-name', { fontWeight: 700 }, 0.94);
+        tl.fromTo(R + '.s7-name', { scaleY: 1 }, { scaleY: 1.1, duration: 0.09, yoyo: true, repeat: 1, ease: "power1.inOut" }, 0.88);
+
+        tl.fromTo(R + '.s7-urlpill',
+          { scale: 0.7, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.36, ease: "back.out(2)" }, 0.85);
+
+        tl.fromTo(R + '.s7-tagline',
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 1.15);
+
+        tl.fromTo(R + '.s7-pills',
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.36, ease: "power2.out" }, 1.5);
+
+        // gentle hold-breathing on the logo till the end
+        tl.to(R + '.s7-logo', { scale: 1.05, duration: 0.9, ease: "sine.inOut" }, 2.0);
+        tl.to(R + '.s7-logo', { scale: 1.0, duration: 0.9, ease: "sine.inOut" }, 2.9);
+
+        tl.set({}, {}, 3.8);
+        window.__timelines["s7-endcard"] = tl;
+      })();
+    </script>
+  </div>
+</template>

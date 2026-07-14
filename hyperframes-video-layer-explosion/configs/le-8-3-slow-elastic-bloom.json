@@ -1,0 +1,85 @@
+{
+  "name": "le-8-3-slow-elastic-bloom",
+  "technique": "Layer Explosion / Slow Elastic Bloom",
+  "story": "The Value Decrease calculator (opened from the 'Apply My Coupon' card, prefilled 100 − 20% → 80) blooms into floating layers.",
+  "duration": 9,
+  "captureGuard": {
+    "networkIdleMs": 500,
+    "documentFontsReady": true,
+    "imagesDecoded": true,
+    "noActiveAnimations": true,
+    "layoutShiftQuietMs": 500,
+    "postClickSettle": "wait for triggered animation + DOM mutation to finish before capture"
+  },
+  "shots": [
+    {
+      "scene": "calc",
+      "perspective": 1400,
+      "tilt": {
+        "rotateX": 60,
+        "rotateZ": -35,
+        "intro": {
+          "start": 0.5,
+          "dur": 1.1,
+          "easing": "ease-in-out-cubic"
+        }
+      },
+      "explode": {
+        "start": 1.4,
+        "dur": 2,
+        "easing": "ease-out-elastic",
+        "stagger": 0
+      },
+      "layers": [
+        {
+          "id": "bg",
+          "z": 0
+        },
+        {
+          "id": "panel",
+          "z": 200
+        },
+        {
+          "id": "heading",
+          "z": 320
+        },
+        {
+          "id": "nav",
+          "z": 420
+        }
+      ],
+      "camera": {
+        "arcDeg": 15,
+        "start": 1.4,
+        "dur": 7.1,
+        "easing": "ease-in-out-sine"
+      },
+      "dolly": {
+        "from": 1,
+        "to": 1.06
+      },
+      "shadow": 1.35
+    }
+  ],
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "8.3 ELASTIC BLOOM · persp 1400 · X60°/Z-35° · Z 200/320/420 · 2.0s",
+      "in": 0.4,
+      "out": 8.6
+    },
+    {
+      "kind": "caption",
+      "text": "Straight from the coupon card: 100 − 20% = 80.",
+      "in": 2.4,
+      "out": 5.4
+    },
+    {
+      "kind": "caption",
+      "text": "Decimal-exact. Always.",
+      "in": 5.9,
+      "out": 8.4,
+      "emphasis": true
+    }
+  ]
+}

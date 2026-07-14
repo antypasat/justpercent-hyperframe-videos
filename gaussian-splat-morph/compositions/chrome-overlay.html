@@ -1,0 +1,138 @@
+<template id="chrome-overlay-template">
+  <div data-composition-id="chrome-overlay" data-start="0" data-width="1080" data-height="1920">
+    <div class="ch-stage">
+      <div class="ch-urlbar">
+        <div class="ch-url-row"><div class="ch-url ch-u1"><svg class="ch-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>justpercent.com/</span></div></div>
+        <div class="ch-url-row"><div class="ch-url ch-u2"><svg class="ch-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>justpercent.com/decreased-value-calculator/</span></div></div>
+        <div class="ch-url-row"><div class="ch-url ch-u3"><svg class="ch-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>justpercent.com/</span></div></div>
+        <div class="ch-url-row"><div class="ch-url ch-u4"><svg class="ch-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>justpercent.com/faqs/</span></div></div>
+        <div class="ch-url-row"><div class="ch-url ch-u5"><svg class="ch-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>justpercent.com/faqs/bill-splitting-calculator/</span></div></div>
+      </div>
+
+      <div class="ch-captions">
+        <div class="ch-cap-row"><div class="ch-cap ch-c1"><span>Start from <em>your life</em> — not from a formula.</span></div></div>
+        <div class="ch-cap-row"><div class="ch-cap ch-c2"><span>Tap a real-life example under the calculator…</span></div></div>
+        <div class="ch-cap-row"><div class="ch-cap ch-c3"><span>…it fills in and solves itself — <em>live</em>.</span></div></div>
+        <div class="ch-cap-row"><div class="ch-cap ch-c4"><span>Or just type what happened: <em>“tip”</em>.</span></div></div>
+        <div class="ch-cap-row"><div class="ch-cap ch-c5"><span>It scrolls you straight to your answer.</span></div></div>
+        <div class="ch-cap-row"><div class="ch-cap ch-c6"><span>Light or dark — your call.</span></div></div>
+        <div class="ch-cap-row"><div class="ch-cap ch-c7"><span><em>64 everyday FAQs</em> — every one a live calculator.</span></div></div>
+        <div class="ch-cap-row"><div class="ch-cap ch-c8"><span>Change a number. The answer follows.</span></div></div>
+      </div>
+
+      <div class="ch-brand-row"><div class="ch-brandbar">
+        <img class="ch-logo" src="../assets/img/percentage.webp" alt="Percentage Symbol Logo" width="46" height="46" />
+        <span class="ch-domain">justpercent.com</span>
+      </div></div>
+    </div>
+
+    <style>
+      [data-composition-id="chrome-overlay"] {
+        position: relative; width: 1080px; height: 1920px;
+        overflow: hidden; pointer-events: none;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+        background: transparent;
+      }
+      [data-composition-id="chrome-overlay"] .ch-stage { position: absolute; inset: 0; }
+      [data-composition-id="chrome-overlay"] .ch-urlbar {
+        position: absolute; left: 0; right: 0; top: 58px; height: 84px;
+      }
+      [data-composition-id="chrome-overlay"] .ch-url-row {
+        position: absolute; left: 0; right: 0; top: 0;
+        display: flex; justify-content: center;
+      }
+      [data-composition-id="chrome-overlay"] .ch-url {
+        display: flex; align-items: center; gap: 14px;
+        background: rgba(8,10,22,.78); border: 1px solid rgba(167,139,250,.35);
+        border-radius: 999px; padding: 18px 34px;
+        box-shadow: 0 14px 40px rgba(0,0,0,.35);
+        backdrop-filter: blur(8px);
+        white-space: nowrap; opacity: 0;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="chrome-overlay"] .ch-lock { width: 26px; height: 26px; color: #34d399; flex-shrink: 0; }
+      [data-composition-id="chrome-overlay"] .ch-url span {
+        font-family: "JetBrains Mono", monospace; font-size: 27px; color: #f5f3ff; letter-spacing: -0.01em;
+      }
+      [data-composition-id="chrome-overlay"] .ch-captions {
+        position: absolute; left: 0; right: 0; top: 1650px; height: 150px;
+      }
+      [data-composition-id="chrome-overlay"] .ch-cap-row {
+        position: absolute; left: 0; right: 0; bottom: 0;
+        display: flex; justify-content: center; align-items: flex-end;
+      }
+      [data-composition-id="chrome-overlay"] .ch-cap {
+        max-width: 1000px; text-align: center;
+        background: rgba(8,10,22,.8); border: 1px solid rgba(167,139,250,.32);
+        border-radius: 26px; padding: 24px 42px;
+        box-shadow: 0 20px 55px rgba(0,0,0,.45);
+        backdrop-filter: blur(8px);
+        width: max-content; max-width: 1000px; opacity: 0;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="chrome-overlay"] .ch-cap span {
+        font-family: "Space Grotesk", sans-serif; font-weight: 700;
+        font-size: 42px; letter-spacing: -0.015em; color: #ffffff;
+      }
+      [data-composition-id="chrome-overlay"] .ch-cap em {
+        font-style: normal;
+        background: linear-gradient(90deg, #a78bfa 0%, #22d3ee 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+      [data-composition-id="chrome-overlay"] .ch-brand-row {
+        position: absolute; left: 0; right: 0; bottom: 26px;
+        display: flex; justify-content: center;
+      }
+      [data-composition-id="chrome-overlay"] .ch-brandbar {
+        display: flex; align-items: center; gap: 16px;
+        background: rgba(8,10,22,.72); border: 1px solid rgba(255,255,255,.14);
+        border-radius: 999px; padding: 12px 30px 12px 16px;
+        box-shadow: 0 12px 34px rgba(0,0,0,.35);
+        backdrop-filter: blur(8px);
+        opacity: 0;
+        will-change: transform, opacity;
+      }
+      [data-composition-id="chrome-overlay"] .ch-logo { width: 46px; height: 46px; object-fit: contain; }
+      [data-composition-id="chrome-overlay"] .ch-domain {
+        font-family: "JetBrains Mono", monospace; font-size: 30px; color: #f5f3ff; letter-spacing: 0.01em;
+      }
+    </style>
+
+    <script>
+      (function () {
+        var root = document.querySelector('[data-composition-id="chrome-overlay"]');
+        var tl = gsap.timeline({ paused: true });
+        var q = function (s) { return root.querySelector(s); };
+
+        function show(el, t0, t1, enterY) {
+          tl.fromTo(el, { opacity: 0, y: enterY }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', immediateRender: t0 === 0 }, t0);
+          tl.to(el, { opacity: 0, y: -enterY * 0.6, duration: 0.28, ease: 'power2.in', immediateRender: false }, t1 - 0.28);
+        }
+
+        // URL pill — always the real, verified address of what's on screen
+        show(q('.ch-u1'), 3.6, 9.25, -14);
+        show(q('.ch-u2'), 9.35, 16.2, -14);
+        show(q('.ch-u3'), 16.3, 25.2, -14);
+        show(q('.ch-u4'), 25.3, 28.4, -14);
+        show(q('.ch-u5'), 28.5, 32.2, -14);
+
+        // captions — big, sequential, on high-contrast glass panels
+        show(q('.ch-c1'), 4.3, 8.6, 30);
+        show(q('.ch-c2'), 10.4, 13.2, 30);
+        show(q('.ch-c3'), 13.55, 16.0, 30);
+        show(q('.ch-c4'), 17.1, 19.5, 30);
+        show(q('.ch-c5'), 19.9, 22.2, 30);
+        show(q('.ch-c6'), 23.0, 25.0, 30);
+        show(q('.ch-c7'), 26.0, 28.3, 30);
+        show(q('.ch-c8'), 28.85, 31.9, 30);
+
+        // discreet brand bar from the very start; makes way for the endcard
+        tl.fromTo(q('.ch-brandbar'), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.25);
+        tl.to(q('.ch-brandbar'), { opacity: 0, y: 22, duration: 0.45, ease: 'power2.in', immediateRender: false }, 31.95);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines['chrome-overlay'] = tl;
+      })();
+    </script>
+  </div>
+</template>

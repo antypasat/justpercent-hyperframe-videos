@@ -1,0 +1,66 @@
+<template id="s3-calc-template">
+  <div data-composition-id="s3-calc" data-start="0" data-width="1080" data-height="1920">
+    <div class="f-stage f-bg-light">
+      <div class="f-orb f-orb-v" style="width:820px;height:820px;top:-240px;right:-260px;opacity:.45"></div>
+      <div class="f-orb f-orb-c" style="width:700px;height:700px;bottom:-160px;left:-200px;opacity:.4"></div>
+      <div class="f-vignette" style="opacity:.3"></div>
+
+      <div class="f-url s3-url">
+        <svg class="f-url-lock" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="f-url-text"><b>justpercent.com</b>/increased-value-calculator/</span>
+      </div>
+
+      <div class="f-win s3-win">
+        <div class="f-pg">
+          <div class="f-off" data-jp-scope>
+            {{FRAG:calc-top-light}}
+          </div>
+        </div>
+      </div>
+
+      <div class="f-cap s3-cap1"><div class="f-cap-t">THE RIGHT CALCULATOR. <em>INSTANTLY.</em></div></div>
+      <div class="f-cap s3-cap2"><div class="f-cap-t"><code>240 + 15% = 276</code> &mdash; live, as you type</div></div>
+    </div>
+
+    <style>
+      [data-composition-id="s3-calc"] { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var R = '[data-composition-id="s3-calc"] ';
+        var tl = gsap.timeline({ paused: true });
+
+        // entrance: whip from the right (continuation of the s2 tap)
+        tl.fromTo(R + '.s3-win',
+          { x: 620, opacity: 0, filter: "blur(16px)", scale: 0.96 },
+          { x: 0, opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.5, ease: "power3.out", immediateRender: true }, 0.0);
+        tl.fromTo(R + '.s3-url',
+          { y: -120, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 0.1);
+
+        // caption 1
+        tl.fromTo(R + '.s3-cap1', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.32, ease: "back.out(1.6)" }, 0.5);
+        tl.to(R + '.s3-cap1', { y: -40, opacity: 0, duration: 0.26, ease: "power2.in" }, 2.3);
+
+        // punch-zoom onto the form
+        tl.to(R + '.s3-win', { scale: 1.07, y: -60, duration: 1.0, ease: "power2.inOut" }, 1.2);
+
+        // caption 2
+        tl.fromTo(R + '.s3-cap2', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.32, ease: "back.out(1.6)" }, 2.65);
+        tl.to(R + '.s3-cap2', { y: -40, opacity: 0, duration: 0.26, ease: "power2.in" }, 4.05);
+
+        // settle back before the 3D flip scene takes over
+        tl.to(R + '.s3-win', { scale: 1.0, y: 0, duration: 0.55, ease: "power2.inOut" }, 3.5);
+        tl.to(R + '.s3-url', { opacity: 1, duration: 0.1 }, 4.2);
+
+        tl.set({}, {}, 4.4);
+        window.__timelines["s3-calc"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,219 @@
+<template id="b3-calc-practical-use-template">
+  <div data-composition-id="b3-calc-practical-use" data-start="0" data-width="1080" data-height="1920">
+    <div class="b3-stage">
+      <div class="b3-orb b3-orb-a"></div>
+      <div class="b3-orb b3-orb-b"></div>
+      <div class="b3-splats" id="b3-splats"></div>
+      <div class="b3-persp">
+        <div class="b3-cam">
+          <div class="b3-frame">
+            <iframe class="b3-iframe" src="../assets/screens/calc-decreased-light.html" scrolling="no" title="justpercent.com/decreased-value-calculator/ (light)"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="b3-calc-practical-use"] {
+        position: relative; width: 1080px; height: 1920px;
+        background: linear-gradient(180deg, #e4e2f1 0%, #dcdaea 55%, #d5d8ec 100%);
+        overflow: hidden;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+      }
+      [data-composition-id="b3-calc-practical-use"] .b3-stage { position: absolute; inset: 0; }
+      [data-composition-id="b3-calc-practical-use"] .b3-orb { position: absolute; border-radius: 50%; filter: blur(130px); }
+      [data-composition-id="b3-calc-practical-use"] .b3-orb-a {
+        width: 900px; height: 900px; top: -280px; right: -280px; opacity: .7;
+        background: radial-gradient(circle, rgba(168,85,247,.32) 0%, rgba(168,85,247,0) 70%);
+      }
+      [data-composition-id="b3-calc-practical-use"] .b3-orb-b {
+        width: 800px; height: 800px; bottom: -240px; left: -240px; opacity: .65;
+        background: radial-gradient(circle, rgba(34,211,238,.28) 0%, rgba(34,211,238,0) 70%);
+      }
+      [data-composition-id="b3-calc-practical-use"] .b3-splats { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+      [data-composition-id="b3-calc-practical-use"] .b3-splat { position: absolute; top: 0; left: 0; border-radius: 50%; will-change: transform, opacity; }
+      [data-composition-id="b3-calc-practical-use"] .b3-persp { position: absolute; inset: 0; perspective: 1600px; perspective-origin: 50% 45%; }
+      [data-composition-id="b3-calc-practical-use"] .b3-cam { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+      [data-composition-id="b3-calc-practical-use"] .b3-frame {
+        position: absolute; left: 27px; top: 170px; width: 1026px; height: 1500px;
+        border-radius: 40px; overflow: hidden;
+        border: 2px solid rgba(255,255,255,.55);
+        box-shadow: 0 50px 120px rgba(31,38,135,.35), 0 8px 30px rgba(31,38,135,.22);
+        background: #f8f9fe;
+        will-change: transform, opacity, filter;
+      }
+      [data-composition-id="b3-calc-practical-use"] .b3-iframe {
+        width: 432px; height: 632px; border: 0;
+        transform: scale(2.375); transform-origin: 0 0;
+        pointer-events: none;
+      }
+    </style>
+
+    <script>
+      (function () {
+        var root = document.querySelector('[data-composition-id="b3-calc-practical-use"]');
+        var beat = 7.0;
+        function rnd(i) { var x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+
+        var frame = root.querySelector('.b3-frame');
+        var iframe = root.querySelector('.b3-iframe');
+        function doc() { var d = iframe.contentDocument; return d && d.body ? d : null; }
+        function q(sel) { var d = doc(); return d ? d.querySelector(sel) : null; }
+        function saleRow() {
+          var d = doc(); if (!d) return null;
+          var rows = d.querySelectorAll('li.practical-use--interactive');
+          for (var i = 0; i < rows.length; i++) if (/Sale Discount/.test(rows[i].textContent)) return rows[i];
+          return null;
+        }
+        function touchDot() {
+          var d = doc(); if (!d) return null;
+          var t = d.getElementById('gsm-touch');
+          if (!t) {
+            var row = saleRow(); if (!row) return null;
+            var r = row.getBoundingClientRect();
+            t = d.createElement('div');
+            t.id = 'gsm-touch';
+            t.style.cssText = 'position:absolute;width:56px;height:56px;border-radius:50%;' +
+              'background:radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,255,255,.25) 55%, rgba(255,255,255,0) 72%);' +
+              'box-shadow:0 0 0 2px rgba(124,58,237,.5), 0 6px 18px rgba(0,0,0,.3);' +
+              'pointer-events:none;z-index:99999;opacity:0;' +
+              'left:' + (r.left + d.defaultView.scrollX + r.width * 0.5 - 28) + 'px;' +
+              'top:' + (r.top + d.defaultView.scrollY + 26) + 'px;';
+            d.body.appendChild(t);
+          }
+          return t;
+        }
+
+        // ---- deterministic UI state (single render function over proxies) ----
+        var V = {
+          mode: 0,        // 0 = defaults (240 / 15 / 204), 1 = typing the practical use
+          o: 0,           // typed chars of "300"
+          p: 0,           // typed chars of "30"
+          res: 0,         // counted result -> 210
+          resPop: 0,      // answer pop scale
+          pres: 0,        // presentation container reveal 0..1
+          rowK: 0,        // sale row pin highlight
+          hlK: 0          // filled-fields glow
+        };
+        function R() {
+          var d = doc(); if (!d) return;
+          var oIn = d.getElementById('decreased-value-original-input');
+          var pIn = d.getElementById('decreased-value-percentage-input');
+          var rIn = d.getElementById('decreased-value-result');
+          if (oIn && pIn && rIn) {
+            if (V.mode < 0.5) {
+              oIn.value = '240'; pIn.value = '15'; rIn.value = '204';
+            } else {
+              var ot = '300'.slice(0, Math.round(V.o));
+              var pt = '30'.slice(0, Math.round(V.p));
+              oIn.value = ot; pIn.value = pt;
+              rIn.value = (V.res > 0.5) ? String(Math.round(V.res)) : '';
+            }
+            var glow = 'inset 0 0 0 2px rgba(124,58,237,' + (0.85 * V.hlK).toFixed(3) + '), 0 0 ' + (14 * V.hlK).toFixed(1) + 'px rgba(124,58,237,' + (0.5 * V.hlK).toFixed(3) + ')';
+            oIn.style.boxShadow = glow; pIn.style.boxShadow = glow;
+            rIn.style.transform = 'scale(' + (1 + 0.22 * V.resPop).toFixed(4) + ')';
+            rIn.style.transformOrigin = '50% 50%';
+          }
+          var pres = d.getElementById('gsm-pres');
+          if (pres) {
+            pres.style.opacity = V.pres.toFixed(3);
+            pres.style.maxHeight = Math.round(V.pres * 160) + 'px';
+            pres.style.transform = 'scale(' + (0.9 + 0.1 * V.pres).toFixed(4) + ')';
+            pres.style.transformOrigin = '50% 0%';
+          }
+          var row = saleRow();
+          if (row) {
+            row.style.background = 'rgba(255,255,255,' + (0.85 * V.rowK).toFixed(3) + ')';
+            row.style.boxShadow = V.rowK > 0.01
+              ? '0 2px 8px rgba(0,0,0,' + (0.12 * V.rowK).toFixed(3) + '), 0 0 0 1px rgba(124,58,237,' + (0.55 * V.rowK).toFixed(3) + ')'
+              : 'none';
+            row.style.borderRadius = '8px';
+          }
+        }
+
+        // ---- splats ----
+        var holder = root.querySelector('#b3-splats');
+        var palette = ['rgba(168,85,247,', 'rgba(124,58,237,', 'rgba(34,211,238,', 'rgba(255,255,255,'];
+        var dots = [];
+        for (var i = 0; i < 44; i++) {
+          var d = document.createElement('div');
+          d.className = 'b3-splat';
+          var s = 14 + rnd(i + 900) * 66;
+          var c = palette[i % palette.length];
+          d.style.width = s + 'px'; d.style.height = s + 'px';
+          d.style.background = 'radial-gradient(circle, ' + c + (0.35 + rnd(i + 907) * 0.4).toFixed(2) + ') 0%, ' + c + '0) 70%)';
+          holder.appendChild(d);
+          dots.push(d);
+        }
+
+        var tl = gsap.timeline({ paused: true });
+
+        tl.fromTo(root.querySelector('.b3-orb-a'), { y: -16 }, { y: 20, duration: beat, ease: 'sine.inOut' }, 0);
+        tl.fromTo(root.querySelector('.b3-orb-b'), { y: 16 }, { y: -20, duration: beat, ease: 'sine.inOut' }, 0);
+
+        dots.forEach(function (el, i) {
+          tl.fromTo(el,
+            { x: 540 + (rnd(i + 61) - 0.5) * 1500, y: 960 + (rnd(i + 71) - 0.5) * 2400, opacity: 0, scale: 2 },
+            { x: -40 + rnd(i + 81) * 1160, y: -40 + rnd(i + 91) * 2000, opacity: 0.34, scale: 0.8, duration: 0.8, ease: 'power3.out' }, rnd(i + 55) * 0.25);
+          tl.to(el, { y: '-=' + (26 + rnd(i + 65) * 60), opacity: 0.12, duration: beat - 1.2, ease: 'none' }, 1.0);
+        });
+
+        // hallucinatory entry: previous scene's bloom condenses into this page
+        tl.fromTo(frame,
+          { opacity: 0, filter: 'blur(26px) saturate(2) hue-rotate(-12deg)', scale: 1.07 },
+          { opacity: 1, filter: 'blur(0px) saturate(1) hue-rotate(0deg)', scale: 1, duration: 0.7, ease: 'power2.out' }, 0.05);
+
+        // camera drift
+        tl.fromTo(root.querySelector('.b3-cam'),
+          { rotateY: 7, rotateX: -3, z: -160, y: -10 },
+          { rotateY: -3, rotateX: 2, z: 40, y: 10, duration: 5.6, ease: 'sine.inOut' }, 0.2);
+        tl.to(root.querySelector('.b3-cam'), { z: 170, rotateY: 0, rotateX: 0, duration: 1.0, ease: 'power2.in' }, beat - 1.0);
+
+        // scroll: calculator -> practical uses list -> back to calculator
+        var P = { y: 16 };
+        function applyScroll() { var d = doc(); if (d) d.defaultView.scrollTo(0, P.y); }
+        tl.fromTo(P, { y: 16 }, { y: 16, duration: 0.9, ease: 'none', onUpdate: applyScroll }, 0);
+        tl.to(P, { y: 870, duration: 1.15, ease: 'power2.inOut', onUpdate: applyScroll }, 0.95);
+        tl.to(P, { y: 20, duration: 0.95, ease: 'power2.inOut', onUpdate: applyScroll }, 3.1);
+
+        // baseline state render across the whole beat (also restores on reverse scrub)
+        tl.fromTo(V, { mode: 0 }, { mode: 0, duration: 0.05, ease: 'none', onUpdate: R }, 0);
+
+        // touch: tap the "Sale Discount" practical use (a)
+        var T = { o: 0, s: 1, r: 0 };
+        function applyTouch() {
+          var t = touchDot(); if (!t) return;
+          t.style.opacity = T.o.toFixed(3);
+          t.style.transform = 'scale(' + T.s.toFixed(3) + ')';
+          t.style.boxShadow = '0 0 0 ' + (2 + T.r * 26) + 'px rgba(124,58,237,' + (0.5 * Math.max(0, 1 - T.r)).toFixed(3) + '), 0 6px 18px rgba(0,0,0,.3)';
+        }
+        tl.fromTo(T, { o: 0, s: 1, r: 0 }, { o: 0, duration: 2.0, ease: 'none', onUpdate: applyTouch }, 0);
+        tl.to(T, { o: 1, duration: 0.25, ease: 'power2.out', onUpdate: applyTouch }, 2.1);
+        tl.to(T, { s: 0.72, duration: 0.13, ease: 'power2.in', onUpdate: applyTouch }, 2.38);
+        tl.to(T, { s: 1.15, r: 1, o: 0, duration: 0.45, ease: 'power2.out', onUpdate: applyTouch }, 2.51);
+
+        // row pin highlight sticks after the tap
+        tl.to(V, { rowK: 1, duration: 0.3, ease: 'power2.out', onUpdate: R, immediateRender: false }, 2.45);
+
+        // (b) the selected practical use appears ABOVE the calculator — exactly like the app
+        tl.to(V, { pres: 1, duration: 0.55, ease: 'power2.out', onUpdate: R, immediateRender: false }, 3.9);
+
+        // (c) only then: the fields are filled and the answer is computed live
+        tl.to(V, { mode: 1, duration: 0.02, ease: 'none', onUpdate: R, immediateRender: false }, 4.55);
+        tl.to(V, { o: 3, duration: 0.5, ease: 'steps(3)', onUpdate: R, immediateRender: false }, 4.65);
+        tl.to(V, { p: 2, duration: 0.34, ease: 'steps(2)', onUpdate: R, immediateRender: false }, 5.25);
+        tl.to(V, { res: 210, duration: 0.4, ease: 'power2.out', onUpdate: R, immediateRender: false }, 5.68);
+        tl.to(V, { resPop: 1, duration: 0.22, ease: 'back.out(3)', onUpdate: R, immediateRender: false }, 5.68);
+        tl.to(V, { resPop: 0, duration: 0.3, ease: 'power2.inOut', onUpdate: R, immediateRender: false }, 5.95);
+        tl.to(V, { hlK: 1, duration: 0.3, ease: 'power2.out', onUpdate: R, immediateRender: false }, 5.6);
+        tl.to(V, { hlK: 0, duration: 0.5, ease: 'power2.inOut', onUpdate: R, immediateRender: false }, 6.4);
+
+        // exit bloom
+        tl.to(frame, { filter: 'blur(24px) saturate(2.2) hue-rotate(-14deg)', scale: 1.08, opacity: 0, duration: 0.5, ease: 'power2.in' }, beat - 0.5);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines['b3-calc-practical-use'] = tl;
+      })();
+    </script>
+  </div>
+</template>

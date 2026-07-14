@@ -1,0 +1,112 @@
+{
+  "hyperframes": "1.0",
+  "name": "ssr-6-5-cursor-assisted-scroll",
+  "technique": "Smooth Scroll Reveal / Cursor-Assisted Scroll",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/?noredirect",
+    "displayUrl": "justpercent.com",
+    "locale": "en-US",
+    "flow": "Homepage Search: typed 'tip', picked the first result — the app pins the 'Restaurant Tip' Practical Use and scrolls to the Basic Percentage Calculator, pre-filled: 15% of $60 = $9. A guiding cursor rides the right margin during the reveal.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "afterClick": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 4.3,
+  "page": {
+    "asset": "assets/us-home-tip-pinned-full.png",
+    "w": 1600,
+    "h": 6780
+  },
+  "camera": {
+    "easing": "ease-in-out-sine",
+    "path": [
+      {
+        "t": 0,
+        "y": 0,
+        "s": 1.3
+      },
+      {
+        "t": 0.5,
+        "y": 0,
+        "s": 1.3
+      },
+      {
+        "t": 3.8,
+        "y": 1880,
+        "s": 1.3
+      },
+      {
+        "t": 4.3,
+        "y": 1880,
+        "s": 1.3
+      }
+    ]
+  },
+  "cursor": {
+    "keys": [
+      {
+        "t": 0.3,
+        "x": 1180,
+        "y": 130,
+        "o": 0
+      },
+      {
+        "t": 0.7,
+        "x": 1180,
+        "y": 150,
+        "o": 0.9
+      },
+      {
+        "t": 3.8,
+        "x": 1180,
+        "y": 545,
+        "o": 0.9
+      },
+      {
+        "t": 4.2,
+        "x": 1180,
+        "y": 560,
+        "o": 0
+      }
+    ]
+  },
+  "highlights": [],
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Home → Search “tip”",
+      "in": 0.2,
+      "out": 4.2
+    },
+    {
+      "kind": "caption",
+      "text": "You searched “tip”.",
+      "in": 0.3,
+      "out": 1.3
+    },
+    {
+      "kind": "caption",
+      "text": "Just Percent walks you down the page…",
+      "in": 1.5,
+      "out": 2.8
+    },
+    {
+      "kind": "caption",
+      "text": "…to your example, pinned: 15% of $60 = $9.",
+      "in": 3,
+      "out": 4.2
+    }
+  ]
+}

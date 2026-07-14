@@ -20,3 +20,23 @@
 *.mxf
 *.hevc
 
+# Dependencies
+node_modules/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Logs / env
+*.log
+.env
+.env.local
+
+# Tool caches
+.tokensave/
+
+# Generated verification / capture frames (regenerable via build-qa.py / build-screens.py; videos don't read these)
+qa/
+capture/

@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Just Percent — Layer Explosion (Technique 8)</title>
+<style>
+  @font-face { font-family: "Space Grotesk"; font-weight: 700; src: url("fonts/space-grotesk-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 500; src: url("fonts/space-grotesk-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; src: url("fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; src: url("fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400; src: url("fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; background: #05060b; overflow: hidden; }
+  body { font-family: "IBM Plex Sans", system-ui, sans-serif; color: #e7e9f2;
+         display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+
+  /* ---------- stage ---------- */
+  #frame { position: relative; }
+  #stage { position: relative; width: 1600px; height: 900px; overflow: hidden;
+           background: radial-gradient(120% 90% at 50% 18%, #191430 0%, #0c0a1a 52%, #06070d 100%);
+           border-radius: 10px; transform-origin: top left; }
+  #stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: 10px;
+                  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+  #glow { position: absolute; inset: 0; pointer-events: none;
+          background: radial-gradient(58% 40% at 50% 50%, rgba(139,92,246,.16) 0%, rgba(139,92,246,0) 70%); }
+
+  #viewport { position: absolute; inset: 0; perspective-origin: 50% 45%; }
+  #rig { position: absolute; left: 50%; top: 52%; width: 0; height: 0; transform-style: preserve-3d; }
+  #plane { position: absolute; left: -800px; top: -450px; width: 1600px; height: 900px;
+           transform-style: preserve-3d; }
+  .layer { position: absolute; transform-style: preserve-3d; will-change: transform, filter; }
+  .layer img { display: block; width: 100%; height: 100%; }
+  .layer.bg img { border-radius: 12px; }
+  .layer .outline { position: absolute; inset: 0; pointer-events: none; opacity: 0;
+                    box-shadow: 0 0 0 1.5px rgba(167,139,250,.9), 0 0 22px rgba(139,92,246,.35); border-radius: 6px; }
+  .layer .tag { position: absolute; top: -30px; left: 0; pointer-events: none; opacity: 0; white-space: nowrap;
+                font-family: "JetBrains Mono", monospace; font-size: 15px; letter-spacing: .1em; color: #ddd6fe;
+                background: rgba(23,16,48,.85); border: 1px solid rgba(167,139,250,.55);
+                padding: 4px 10px; border-radius: 6px; }
+  .layer .hl { position: absolute; inset: -3px; pointer-events: none; opacity: 0; border-radius: 8px;
+               box-shadow: 0 0 0 2px rgba(167,139,250,.95), 0 0 34px rgba(139,92,246,.5); }
+
+  /* ---------- cursor ---------- */
+  #cursor { position: absolute; width: 46px; height: 46px; pointer-events: none; opacity: 0;
+            filter: drop-shadow(0 6px 14px rgba(0,0,0,.5)); }
+  #ripple { position: absolute; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%;
+            pointer-events: none; opacity: 0; border: 3px solid rgba(167,139,250,.95);
+            box-shadow: 0 0 30px rgba(139,92,246,.6); }
+
+  /* ---------- cinematic fx ---------- */
+  #vignette { position: absolute; inset: 0; pointer-events: none;
+              background: radial-gradient(115% 95% at 50% 46%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%); }
+  #grain { position: absolute; inset: -40px; pointer-events: none; opacity: .05;
+           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E"); }
+  #flash { position: absolute; inset: 0; pointer-events: none; background: #e9e6ff; opacity: 0; }
+  .bar { position: absolute; left: 0; right: 0; height: 84px; background: #030409; z-index: 6; }
+  #barTop { top: 0; } #barBottom { bottom: 0; }
+  #progress { position: absolute; bottom: 84px; left: 0; height: 3px; width: 0;
+              background: linear-gradient(90deg, #8b5cf6, #6366f1); z-index: 7; }
+
+  /* ---------- overlays ---------- */
+  #chip { position: absolute; top: 104px; left: 36px; z-index: 8; font-family: "JetBrains Mono", monospace;
+          font-size: 15px; letter-spacing: .04em; color: #cfd3ea; padding: 9px 16px; border-radius: 999px;
+          background: rgba(10,12,24,.62); border: 1px solid rgba(255,255,255,.14);
+          backdrop-filter: blur(6px); opacity: 0; }
+  #caption { position: absolute; bottom: 132px; left: 0; right: 0; text-align: center; z-index: 8;
+             font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 46px; line-height: 1.15;
+             color: #f4f5fb; text-shadow: 0 4px 30px rgba(0,0,0,.75), 0 1px 3px rgba(0,0,0,.6);
+             opacity: 0; padding: 0 120px; }
+  #caption.emphasis { font-size: 66px;
+             background: linear-gradient(92deg, #a78bfa, #818cf8 55%, #e0e7ff);
+             -webkit-background-clip: text; background-clip: text; color: transparent;
+             text-shadow: none; filter: drop-shadow(0 6px 26px rgba(99,102,241,.45)); }
+  #hud { position: absolute; bottom: 100px; right: 36px; z-index: 8; font-family: "JetBrains Mono", monospace;
+         font-size: 13px; color: rgba(207,211,234,.66); letter-spacing: .06em; text-align: right; }
+  #wm { position: absolute; top: 104px; right: 36px; z-index: 8; display: flex; align-items: center; gap: 10px;
+        font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 17px; color: rgba(231,233,242,.85); }
+  #wm img { width: 26px; height: 26px; }
+
+  /* ---------- controls ---------- */
+  #controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  #controls button { font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: #cfd3ea;
+    background: #101424; border: 1px solid rgba(255,255,255,.12); border-radius: 8px;
+    padding: 8px 13px; cursor: pointer; }
+  #controls button:hover { background: #1a2038; }
+  #controls button.active { background: linear-gradient(92deg, #6d28d9, #4f46e5); color: #fff; border-color: transparent; }
+  #vname { font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: rgba(207,211,234,.55); width: 100%;
+           text-align: center; }
+  body.rec #controls { display: none; }
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <div id="stage">
+    <div id="glow"></div>
+    <div id="viewport"><div id="rig"><div id="plane"></div></div></div>
+    <div id="vignette"></div>
+    <div id="grain"></div>
+    <div id="flash"></div>
+    <div class="bar" id="barTop"></div>
+    <div class="bar" id="barBottom"></div>
+    <div id="progress"></div>
+    <div id="chip"></div>
+    <div id="caption"></div>
+    <div id="wm"><img src="assets/logo-percentage.webp" alt="" /><span>Just Percent</span></div>
+    <div id="hud"></div>
+  </div>
+</div>
+
+<div id="controls">
+  <span id="vname"></span>
+</div>
+
+<script src="configs.js"></script>
+<script>
+(() => {
+  const CFG = window.LE_CONFIGS, SCENES = window.LE_SCENES;
+  const KEYS = Object.keys(CFG);
+  const FIT = 0.62;                 // base scale so the tilted 1600×900 slab fits the stage
+  const $ = (id) => document.getElementById(id);
+  const rig = $("rig"), plane = $("plane"), stage = $("stage"), viewport = $("viewport");
+  const chip = $("chip"), caption = $("caption"), hud = $("hud"), progress = $("progress"), flash = $("flash");
+
+  /* ---------- easings ---------- */
+  const E = {
+    "linear": (u) => u,
+    "ease-in-out-sine": (u) => -(Math.cos(Math.PI * u) - 1) / 2,
+    "ease-in-out-cubic": (u) => (u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2),
+    "ease-out-cubic": (u) => 1 - Math.pow(1 - u, 3),
+    "ease-out-quint": (u) => 1 - Math.pow(1 - u, 5),
+    "ease-out-expo": (u) => (u === 1 ? 1 : 1 - Math.pow(2, -10 * u)),
+    "ease-out-back": (u) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(u - 1, 3) + c1 * Math.pow(u - 1, 2); },
+    "ease-out-elastic": (u) => {
+      const c4 = (2 * Math.PI) / 3;
+      return u === 0 ? 0 : u === 1 ? 1 : Math.pow(2, -10 * u) * Math.sin((u * 10 - 0.75) * c4) + 1;
+    },
+  };
+  const ease = (name, u) => (E[name] || E.linear)(Math.min(1, Math.max(0, u)));
+  const win = (t, start, dur, name) => ease(name, (t - start) / (dur || 1e-6));
+  const lerp = (a, b, u) => a + (b - a) * u;
+
+  /* ---------- build a shot's DOM ---------- */
+  let built = null, imgReady = Promise.resolve();
+  function buildShot(shot) {
+    plane.innerHTML = "";
+    const sc = SCENES[shot.scene];
+    const nodes = {};
+    const decodes = [];
+    const addImg = (parent, src) => {
+      const img = document.createElement("img");
+      img.src = src;
+      if (img.decode) decodes.push(img.decode().catch(() => {}));
+      parent.appendChild(img);
+      return img;
+    };
+    // z-ascending order (bg first) so DOM stacking matches depth
+    const ordered = [...shot.layers].sort((a, b) => a.z - b.z);
+    for (const l of ordered) {
+      const div = document.createElement("div");
+      div.className = "layer" + (l.id === "bg" ? " bg" : "");
+      let box;
+      if (l.id === "bg") box = [0, 0, 1600, 900];
+      else box = sc.layers[l.id];
+      div.style.left = box[0] + "px";
+      div.style.top = box[1] + "px";
+      div.style.width = box[2] + "px";
+      div.style.height = box[3] + "px";
+      addImg(div, `assets/layers/${shot.scene}-${l.id === "bg" ? "bg" : l.id}.png`);
+      if (shot.labels && l.label) {
+        const o = document.createElement("div"); o.className = "outline"; div.appendChild(o);
+        const tg = document.createElement("div"); tg.className = "tag"; tg.textContent = l.label; div.appendChild(tg);
+      }
+      if (l.highlight) { const h = document.createElement("div"); h.className = "hl"; div.appendChild(h); }
+      plane.appendChild(div);
+      nodes[l.id] = div;
+    }
+    // cursor + ripple live in plane space, above everything
+    let cursorEl = null, rippleEl = null;
+    if (shot.cursor) {
+      rippleEl = document.createElement("div"); rippleEl.id = "ripple"; plane.appendChild(rippleEl);
+      cursorEl = document.createElement("div"); cursorEl.id = "cursor";
+      cursorEl.innerHTML = '<svg viewBox="0 0 24 24" width="46" height="46"><path d="M5 2 L5 20 L9.5 15.5 L12.5 22 L15 21 L12 14.5 L18.5 14.5 Z" fill="#fff" stroke="#1e1b4b" stroke-width="1.4"/></svg>';
+      plane.appendChild(cursorEl);
+    }
+    imgReady = Promise.all(decodes);
+    built = { shot, nodes, cursorEl, rippleEl };
+  }
+
+  /* ---------- render one frame of one shot ---------- */
+  function renderShot(cfg, shot, t) {
+    if (!built || built.shot !== shot) buildShot(shot);
+    const { nodes, cursorEl, rippleEl } = built;
+
+    viewport.style.perspective = shot.perspective + "px";
+
+    // tilt: intro 0→tilt, outro tilt→0, else constant
+    let tiltP = 1;
+    if (shot.tilt.intro) tiltP = win(t, shot.tilt.intro.start, shot.tilt.intro.dur, shot.tilt.intro.easing);
+    if (shot.tilt.outro) tiltP = 1 - win(t, shot.tilt.outro.start, shot.tilt.outro.dur, shot.tilt.outro.easing);
+    const rx = shot.tilt.rotateX * tiltP;
+    const rz = shot.tilt.rotateZ * tiltP;
+
+    // camera arc (+ optional continuous loop), dolly
+    const cam = shot.camera || {};
+    let ry = (cam.arcDeg || 0) * win(t, cam.start || 0, cam.dur || 1, cam.easing);
+    if (cam.settle) ry = (cam.arcDeg || 0) * (1 - win(t, cam.start || 0, cam.dur || 1, cam.easing));
+    if (cam.loop) ry += cam.loop.deg * Math.sin((t / cam.loop.period) * 2 * Math.PI) * tiltP;
+    const dolly = shot.dolly ? lerp(shot.dolly.from, shot.dolly.to, ease("ease-in-out-sine", t / cfg.duration)) : 1;
+
+    rig.style.transform = `scale(${(FIT * dolly).toFixed(4)}) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg)`;
+
+    // explode progress per layer (stagger over z-order, bottom-up = lowest z first)
+    const ordered = [...shot.layers].sort((a, b) => a.z - b.z);
+    ordered.forEach((l, i) => {
+      const el = nodes[l.id];
+      const st = shot.explode.start + (shot.explode.stagger || 0) * i;
+      let p = win(t, st, shot.explode.dur, shot.explode.easing);
+      if (shot.explode.reverse) p = 1 - p;
+      const z = l.z * p;
+      el.style.transform = `translateZ(${z.toFixed(1)}px)`;
+      const sMul = (shot.shadow || 1) * p;
+      if (l.id === "bg") {
+        const bl = (l.blurMax || 0) * p;
+        el.style.filter = `drop-shadow(0 30px 60px rgba(2,4,14,.6))` + (bl ? ` blur(${bl.toFixed(1)}px)` : "");
+      } else {
+        const d = Math.max(0, l.z / 30) * sMul;
+        el.style.filter = `drop-shadow(0 ${(6 + d).toFixed(1)}px ${(14 + d * 2.4).toFixed(1)}px rgba(2,4,14,${(0.5 * Math.min(1, sMul + .2)).toFixed(2)}))`;
+        const bl = (l.blurMax || 0) * p;
+        if (bl) el.style.filter += ` blur(${bl.toFixed(1)}px)`;
+      }
+      // labels / outlines fade in once its layer has (mostly) arrived
+      const deco = Math.min(1, Math.max(0, (p - .75) * 4));
+      const o = el.querySelector(".outline"), tg = el.querySelector(".tag");
+      if (o) o.style.opacity = deco.toFixed(2);
+      if (tg) tg.style.opacity = deco.toFixed(2);
+      const h = el.querySelector(".hl");
+      if (h) {
+        // with a cursor in the shot, the highlight ignites on click
+        const gate = shot.cursor && shot.cursor.clickAt !== undefined
+          ? Math.min(1, Math.max(0, (t - shot.cursor.clickAt) / .3)) : 1;
+        h.style.opacity = (deco * gate * (0.65 + 0.35 * Math.sin(t * 2.4))).toFixed(2);
+      }
+    });
+
+    // cursor
+    if (shot.cursor && cursorEl) {
+      const c = shot.cursor;
+      const p0 = c.path[0], pN = c.path[c.path.length - 1];
+      let x = p0.x, y = p0.y;
+      for (let i = 1; i < c.path.length; i++) {
+        const a = c.path[i - 1], b = c.path[i];
+        if (t >= a.t) {
+          const u = ease(c.easing || "ease-in-out-cubic", (t - a.t) / (b.t - a.t || 1e-6));
+          x = lerp(a.x, b.x, u); y = lerp(a.y, b.y, u);
+        }
+      }
+      const vis = t >= p0.t - .4 ? Math.min(1, (t - (p0.t - .4)) / .4) : 0;
+      // click: dip at clickAt
+      const ck = c.clickAt !== undefined ? Math.max(0, Math.min(1, (t - c.clickAt) / .18)) : 0;
+      const dip = c.clickAt !== undefined && t >= c.clickAt && t <= c.clickAt + .36
+        ? 1 - .18 * Math.sin(((t - c.clickAt) / .36) * Math.PI) : 1;
+      const zc = c.z * win(t, shot.explode.start, shot.explode.dur, shot.explode.easing);
+      cursorEl.style.opacity = vis.toFixed(2);
+      cursorEl.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${zc.toFixed(1)}px) scale(${dip.toFixed(3)})`;
+      if (rippleEl && c.clickAt !== undefined) {
+        const rp = Math.max(0, Math.min(1, (t - c.clickAt) / .55));
+        rippleEl.style.opacity = (rp > 0 && rp < 1 ? (1 - rp) : 0).toFixed(2);
+        rippleEl.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${(zc - 6).toFixed(1)}px) scale(${(0.25 + rp * 1.15).toFixed(3)})`;
+      }
+    }
+  }
+
+  /* ---------- full frame ---------- */
+  function activeShot(cfg, t) {
+    let s = cfg.shots[0];
+    for (const sh of cfg.shots) if (t >= (sh.at || 0)) s = sh;
+    return s;
+  }
+  function renderFrame(cfg, t) {
+    const shot = activeShot(cfg, t);
+    renderShot(cfg, shot, t);
+
+    // dip-flash on shot boundaries
+    let fl = 0;
+    for (const sh of cfg.shots) {
+      if (!sh.at) continue;
+      const d = Math.abs(t - sh.at);
+      if (d < .3) fl = Math.max(fl, (1 - d / .3) * .5);
+    }
+    flash.style.opacity = fl.toFixed(2);
+
+    /* overlays */
+    let anyCap = false;
+    for (const o of cfg.overlays) {
+      if (o.kind === "caption") {
+        if (t >= o.in && t <= o.out) {
+          anyCap = true;
+          if (caption.textContent !== o.text) {
+            caption.textContent = o.text;
+            caption.classList.toggle("emphasis", !!o.emphasis);
+          }
+          const fi = Math.min(1, (t - o.in) / .35), fo = Math.min(1, (o.out - t) / .35);
+          caption.style.opacity = Math.min(fi, fo).toFixed(3);
+          caption.style.transform = `translateY(${(1 - fi) * 18}px)`;
+        }
+      } else {
+        if (chip.textContent !== o.text) chip.textContent = o.text;
+        const fi = Math.min(1, Math.max(0, (t - o.in) / .35));
+        const fo = Math.min(1, Math.max(0, (o.out - t) / .35));
+        chip.style.opacity = Math.min(fi, fo).toFixed(3);
+      }
+    }
+    if (!anyCap) caption.style.opacity = 0;
+
+    const zmax = Math.max(...activeShot(cfg, t).layers.map((l) => l.z));
+    hud.innerHTML = `LAYERS ${activeShot(cfg, t).layers.length} · Zmax ${zmax}px · ${t.toFixed(2)}s / ${cfg.duration.toFixed(1)}s`;
+    progress.style.width = `${(t / cfg.duration) * 100}%`;
+    $("grain").style.transform =
+      `translate(${(Math.floor(t * 24) % 5) * 11}px, ${(Math.floor(t * 24) % 7) * 7}px)`;
+  }
+
+  /* ---------- clock / playback ---------- */
+  let t0 = 0, paused = false, pausedAt = 0, playAll = false, cur = null, stopAtMs = null;
+  const HOLD = .7;
+
+  function select(key, { autoplay = true } = {}) {
+    if (!CFG[key]) key = "8.1";
+    cur = key;
+    const cfg = CFG[key];
+    built = null;
+    buildShot(cfg.shots[0]);
+    chip.style.opacity = 0; caption.style.opacity = 0;
+    $("vname").textContent = `${cfg.name} — ${cfg.technique} · ${cfg.duration}s`;
+    document.querySelectorAll("#controls button[data-v]").forEach((b) =>
+      b.classList.toggle("active", b.dataset.v === key));
+    location.hash = key;
+    renderFrame(cfg, 0);
+    t0 = performance.now(); pausedAt = 0; paused = !autoplay;
+  }
+
+  function tick() {
+    requestAnimationFrame(tick);
+    if (!cur || paused) return;
+    const cfg = CFG[cur];
+    let t = (performance.now() - t0) / 1000;
+    if (stopAtMs !== null && t * 1000 >= stopAtMs) {
+      paused = true; pausedAt = stopAtMs / 1000;
+      renderFrame(cfg, Math.min(pausedAt, cfg.duration));
+      return;
+    }
+    if (t > cfg.duration + HOLD) {
+      if (playAll) {
+        const next = KEYS[(KEYS.indexOf(cur) + 1) % KEYS.length];
+        select(next); return;
+      }
+      t0 = performance.now(); t = 0;
+    }
+    renderFrame(cfg, Math.min(t, cfg.duration));
+  }
+
+  /* ---------- controls ---------- */
+  const controls = $("controls");
+  for (const k of KEYS) {
+    const b = document.createElement("button");
+    b.dataset.v = k;
+    b.textContent = `${k} ${CFG[k].technique.split("/")[1].trim()}`;
+    b.onclick = () => { playAll = false; select(k); };
+    controls.insertBefore(b, $("vname"));
+  }
+  const all = document.createElement("button");
+  all.textContent = "▶ Play all";
+  all.onclick = () => { playAll = true; select(KEYS[0]); };
+  controls.insertBefore(all, $("vname"));
+
+  addEventListener("keydown", (e) => {
+    if (e.code === "Space") { e.preventDefault();
+      if (paused) { t0 = performance.now() - pausedAt * 1000; paused = false; }
+      else { pausedAt = (performance.now() - t0) / 1000; paused = true; }
+    }
+    if (e.key === "r" || e.key === "R") select(cur);
+  });
+
+  /* ---------- fit stage to window ---------- */
+  function fit() {
+    const s = Math.min((innerWidth - 32) / 1600, (innerHeight - 90) / 900);
+    stage.style.transform = `scale(${s})`;
+    $("frame").style.width = `${1600 * s}px`;
+    $("frame").style.height = `${900 * s}px`;
+  }
+  addEventListener("resize", fit); fit();
+
+  /* ---------- QA hooks ---------- */
+  // window.__leSeek("8.3", 2.5) -> renders that exact frame, returns imgReady
+  window.__leSeek = (key, t) => {
+    playAll = false;
+    select(key, { autoplay: false });
+    renderFrame(CFG[key], Math.min(t, CFG[key].duration));
+    return imgReady;
+  };
+  const q = new URLSearchParams(location.search);
+  if (q.has("rec")) document.body.classList.add("rec");
+  if (q.has("stop")) stopAtMs = parseFloat(q.get("stop"));
+
+  select(location.hash ? decodeURIComponent(location.hash.slice(1)) : "8.1",
+         { autoplay: !q.has("t") });
+  if (q.has("t")) {
+    const tSeek = parseFloat(q.get("t")) / 1000;
+    paused = true; pausedAt = tSeek;
+    renderFrame(CFG[cur], Math.min(tSeek, CFG[cur].duration));
+  }
+  tick();
+})();
+</script>
+</body>
+</html>

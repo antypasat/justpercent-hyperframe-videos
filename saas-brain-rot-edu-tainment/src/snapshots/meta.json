@@ -1,0 +1,96 @@
+{
+  "home-light": {
+    "url": "https://justpercent.com/?noredirect=1#all",
+    "scrollY": 0,
+    "docH": 6029,
+    "theme": "light",
+    "extra": null
+  },
+  "home-light-search": {
+    "url": "https://justpercent.com/?noredirect=1#all",
+    "scrollY": 0,
+    "docH": 6029,
+    "theme": "light",
+    "extra": {
+      "x": 25,
+      "y": 190.953125,
+      "width": 382,
+      "height": 388,
+      "top": 190.953125,
+      "right": 407,
+      "bottom": 578.953125,
+      "left": 25
+    }
+  },
+  "home-light-pinned": {
+    "url": "https://justpercent.com/?noredirect=1#all",
+    "scrollY": 2007.5,
+    "docH": 7108,
+    "theme": "light",
+    "extra": {
+      "top": 58.1640625,
+      "bottom": 1589.1640625,
+      "height": 1531
+    }
+  },
+  "calc-decreased-light": {
+    "url": "https://justpercent.com/decreased-value-calculator/?noredirect=1#all",
+    "scrollY": 0,
+    "docH": 5257,
+    "theme": "light",
+    "extra": null
+  },
+  "calc-decreased-dark": {
+    "url": "https://justpercent.com/decreased-value-calculator/?noredirect=1#all",
+    "scrollY": 0,
+    "docH": 5257,
+    "theme": "dark",
+    "extra": {
+      "o": "240",
+      "p": "15",
+      "r": "204"
+    }
+  },
+  "calc-decreased-dark-pinned": {
+    "url": "https://justpercent.com/decreased-value-calculator/?noredirect=1#all",
+    "scrollY": 12,
+    "docH": 5439,
+    "theme": "dark",
+    "extra": {
+      "o": "300",
+      "p": "30",
+      "r": "210"
+    }
+  },
+  "faqs-dark": {
+    "url": "https://justpercent.com/faqs/?noredirect=1",
+    "scrollY": 0,
+    "docH": 13119,
+    "theme": "dark",
+    "extra": null
+  },
+  "faq-salary-dark": {
+    "url": "https://justpercent.com/faqs/salary-raise-calculator/?noredirect=1",
+    "scrollY": 0,
+    "docH": 1211,
+    "theme": "dark",
+    "extra": {
+      "sal": "4000",
+      "pct": "5",
+      "res": "4200",
+      "dec": "0,05"
+    }
+  },
+  "faq-salary-dark-8": {
+    "url": "https://justpercent.com/faqs/salary-raise-calculator/?noredirect=1",
+    "scrollY": 0,
+    "docH": 1211,
+    "extra": {
+      "sal": "4000",
+      "pct": "8",
+      "res": "4320",
+      "dec": "0,08",
+      "raiseAmt": "320"
+    }
+  }
+}

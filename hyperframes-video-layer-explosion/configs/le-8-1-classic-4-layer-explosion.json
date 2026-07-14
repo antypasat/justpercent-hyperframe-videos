@@ -1,0 +1,119 @@
+{
+  "name": "le-8-1-classic-4-layer-explosion",
+  "technique": "Layer Explosion / Classic 4-Layer",
+  "story": "Homepage SolutionCards separate on Z; cursor clicks 'Apply My Coupon'.",
+  "duration": 9,
+  "captureGuard": {
+    "networkIdleMs": 500,
+    "documentFontsReady": true,
+    "imagesDecoded": true,
+    "noActiveAnimations": true,
+    "layoutShiftQuietMs": 500,
+    "postClickSettle": "wait for triggered animation + DOM mutation to finish before capture"
+  },
+  "shots": [
+    {
+      "scene": "home-cards",
+      "perspective": 1200,
+      "tilt": {
+        "rotateX": 55,
+        "rotateZ": -45,
+        "intro": {
+          "start": 0.5,
+          "dur": 1,
+          "easing": "ease-in-out-cubic"
+        }
+      },
+      "explode": {
+        "start": 1.2,
+        "dur": 1.5,
+        "easing": "ease-out-back",
+        "stagger": 0
+      },
+      "layers": [
+        {
+          "id": "bg",
+          "z": 0
+        },
+        {
+          "id": "nav",
+          "z": 150
+        },
+        {
+          "id": "card1",
+          "z": 300,
+          "highlight": true
+        },
+        {
+          "id": "card2",
+          "z": 300
+        },
+        {
+          "id": "card3",
+          "z": 300
+        },
+        {
+          "id": "card4",
+          "z": 300
+        },
+        {
+          "id": "card5",
+          "z": 300
+        },
+        {
+          "id": "card6",
+          "z": 300
+        }
+      ],
+      "camera": {
+        "arcDeg": 15,
+        "start": 1.2,
+        "dur": 7.3,
+        "easing": "ease-in-out-sine"
+      },
+      "dolly": {
+        "from": 1,
+        "to": 1.07
+      },
+      "cursor": {
+        "z": 340,
+        "path": [
+          {
+            "t": 3,
+            "x": 1220,
+            "y": 800
+          },
+          {
+            "t": 4.6,
+            "x": 640,
+            "y": 440
+          }
+        ],
+        "clickAt": 5.1,
+        "easing": "ease-in-out-cubic"
+      },
+      "shadow": 1
+    }
+  ],
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "8.1 CLASSIC 4-LAYER · Z 0/150/300/450 · ease-out-back",
+      "in": 0.4,
+      "out": 8.6
+    },
+    {
+      "kind": "caption",
+      "text": "Every card is a real calculator.",
+      "in": 2.2,
+      "out": 4.6
+    },
+    {
+      "kind": "caption",
+      "text": "One click — coupon math, done.",
+      "in": 5.4,
+      "out": 8.4,
+      "emphasis": true
+    }
+  ]
+}

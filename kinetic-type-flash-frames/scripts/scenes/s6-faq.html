@@ -1,0 +1,183 @@
+<template id="s6-faq-template">
+  <div data-composition-id="s6-faq" data-start="0" data-width="1080" data-height="1920">
+    <div class="f-stage f-bg-dark">
+      <div class="f-orb f-orb-v" style="width:900px;height:900px;top:-260px;right:-280px;opacity:.55"></div>
+      <div class="f-orb f-orb-c" style="width:760px;height:760px;bottom:-180px;left:-220px;opacity:.4"></div>
+      <div class="f-vignette" style="opacity:.5"></div>
+
+      <div class="f-url s6-urlA">
+        <svg class="f-url-lock" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="f-url-text"><b>justpercent.com</b>/faqs/</span>
+      </div>
+      <div class="f-url s6-urlB" style="opacity:0">
+        <svg class="f-url-lock" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="f-url-text"><b>justpercent.com</b>/faqs/salary-raise-calculator/</span>
+      </div>
+
+      <!-- FAQ hub -->
+      <div class="f-win s6-winA">
+        <div class="f-pg">
+          <div class="f-off" data-jp-scope>
+            {{FRAG:faqhub-dark}}
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ page: Salary Raise -->
+      <div class="f-win s6-winB" style="opacity:0">
+        <div class="f-pg">
+          <div class="f-off" data-jp-scope>
+            {{FRAG:faq-initial-dark}}
+            <div class="s6-ring"></div>
+            <div class="s6-cursor"></div>
+            <div class="s6-ripple"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="f-cap s6-cap1"><div class="f-cap-t">64 EVERYDAY QUESTIONS. <em>ALL INTERACTIVE.</em></div></div>
+      <div class="f-cap s6-cap2"><div class="f-cap-t">Even the FAQ <em>calculates</em></div></div>
+      <div class="f-cap s6-cap3"><div class="f-cap-t"><code>$5,000 + 5%</code> &rarr; answer updates <em>live</em></div></div>
+    </div>
+
+    <style>
+      [data-composition-id="s6-faq"] { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      [data-composition-id="s6-faq"] .s6-cap1 .f-cap-t { font-size: 42px; }
+      [data-composition-id="s6-faq"] .s6-ring {
+        position: absolute; z-index: 13001; border-radius: 12px;
+        border: 2.5px solid rgba(167,139,250,.95);
+        box-shadow: 0 0 0 4px rgba(139,92,246,.3), 0 0 22px rgba(139,92,246,.6);
+        opacity: 0; pointer-events: none; will-change: transform, opacity;
+      }
+      [data-composition-id="s6-faq"] .s6-cursor {
+        position: absolute; z-index: 13003; width: 26px; height: 26px; border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.98), rgba(203,213,225,.9));
+        box-shadow: 0 3px 12px rgba(0,0,0,.6), 0 0 0 1.5px rgba(255,255,255,.28);
+        opacity: 0; will-change: transform, opacity;
+      }
+      [data-composition-id="s6-faq"] .s6-ripple {
+        position: absolute; z-index: 13002; width: 26px; height: 26px; border-radius: 50%;
+        border: 2.5px solid rgba(167,139,250,.95);
+        opacity: 0; will-change: transform, opacity;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var R = '[data-composition-id="s6-faq"] ';
+        var root = document.querySelector(R.trim());
+        var tl = gsap.timeline({ paused: true });
+
+        function pageTop(el, stop) {
+          var y = 0;
+          while (el && el !== stop) { y += el.offsetTop; el = el.offsetParent; }
+          return y;
+        }
+
+        // FAQ page interactive elements
+        var offB = root ? root.querySelector('.s6-winB .f-off') : null;
+        var inSal = offB ? offB.querySelector('#current-salary') : null;
+        var inRes = offB ? offB.querySelector('#new-salary-result') : null;
+        function pageLeft(el, stop) {
+          var x = 0;
+          while (el && el !== stop) { x += el.offsetLeft; el = el.offsetParent; }
+          return x;
+        }
+        function layout() {
+          var tapX = 150, tapY = 330;
+          if (inSal && offB) {
+            var sTop = pageTop(inSal, offB);
+            gsap.set(R + '.s6-ring', {
+              left: Math.max(4, pageLeft(inSal, offB) - 6), top: sTop - 6,
+              width: inSal.offsetWidth + 12, height: inSal.offsetHeight + 12
+            });
+            tapX = pageLeft(inSal, offB) + inSal.offsetWidth / 2;
+            tapY = sTop + inSal.offsetHeight / 2;
+          }
+          gsap.set(R + '.s6-cursor', { left: tapX - 13, top: tapY - 13 });
+          gsap.set(R + '.s6-ripple', { left: tapX - 13, top: tapY - 13 });
+        }
+        var laidOut = false;
+        function tryLayout() {
+          if (laidOut) return;
+          if (!root || (root.offsetParent === null && root.offsetWidth === 0)) return;
+          if (inSal && inSal.offsetWidth === 0) return; // page not laid out yet
+          layout();
+          laidOut = true;
+          tl.invalidate();
+        }
+        tryLayout();
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(tryLayout);
+
+        // ============== timeline ==============
+        // layout sentinel (see s2)
+        tl.to({ x: 0 }, { x: 1, duration: 6.8, ease: "none", onUpdate: tryLayout }, 0);
+
+        // hub enters
+        tl.fromTo(R + '.s6-winA',
+          { y: 220, opacity: 0, rotationX: 8, transformPerspective: 1600 },
+          { y: 0, opacity: 1, rotationX: 0, duration: 0.5, ease: "power3.out", immediateRender: true }, 0.0);
+        tl.fromTo(R + '.s6-urlA', { y: -120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 0.05);
+
+        // caption 1
+        tl.fromTo(R + '.s6-cap1', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.4);
+        tl.to(R + '.s6-cap1', { y: -40, opacity: 0, duration: 0.24, ease: "power2.in" }, 2.0);
+
+        // hub scroll tease
+        tl.fromTo(R + '.s6-winA .f-off', { top: 0 }, { top: -430, duration: 1.3, ease: "power2.inOut" }, 0.6);
+
+        // whip to the FAQ page
+        tl.to(R + '.s6-winA', { x: -560, opacity: 0, duration: 0.34, ease: "power2.in" }, 2.15);
+        tl.to(R + '.s6-urlA', { opacity: 0, y: -30, duration: 0.22 }, 2.2);
+        tl.fromTo(R + '.s6-winB', { x: 560, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.4, ease: "power3.out", immediateRender: true }, 2.42);
+        tl.fromTo(R + '.s6-urlB', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }, 2.5);
+
+        // caption 2
+        tl.fromTo(R + '.s6-cap2', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 2.75);
+        tl.to(R + '.s6-cap2', { y: -40, opacity: 0, duration: 0.24, ease: "power2.in" }, 4.35);
+
+        // cursor taps the salary input, value 4000 -> 5000, answer 4200 -> 5250
+        tl.fromTo(R + '.s6-ring', { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.26, ease: "power2.out" }, 3.0);
+        tl.fromTo(R + '.s6-cursor', { opacity: 0, x: 150, y: 230 }, { opacity: 1, x: 0, y: 0, duration: 0.6, ease: "power2.inOut" }, 3.0);
+        tl.to(R + '.s6-cursor', { scale: 0.82, duration: 0.1, yoyo: true, repeat: 1, ease: "power1.inOut" }, 3.65);
+        tl.fromTo(R + '.s6-ripple', { opacity: .9, scale: 1 }, { opacity: 0, scale: 3.2, duration: 0.4, ease: "power2.out" }, 3.7);
+        tl.to(R + '.s6-cursor', { opacity: 0, duration: 0.24 }, 4.15);
+
+        var live = { sal: 4000, res: 4200 };
+        if (inSal) {
+          tl.to(live, {
+            sal: 5000, duration: 0.7, ease: "power1.inOut",
+            onUpdate: function () { inSal.value = String(Math.round(live.sal / 100) * 100); }
+          }, 3.95);
+        }
+        if (inRes) {
+          tl.to(live, {
+            res: 5250, duration: 0.8, ease: "power2.out",
+            onUpdate: function () { inRes.value = String(Math.round(live.res / 25) * 25); }
+          }, 4.25);
+        }
+        tl.to(R + '.s6-ring', { opacity: 0, duration: 0.3 }, 4.9);
+
+        // caption 3
+        tl.fromTo(R + '.s6-cap3', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 4.6);
+        tl.to(R + '.s6-cap3', { y: -40, opacity: 0, duration: 0.24, ease: "power2.in" }, 6.3);
+
+        // peek at the explained math below
+        tl.fromTo(R + '.s6-winB .f-off', { top: 0 }, { top: -210, duration: 0.9, ease: "power2.inOut" }, 5.2);
+
+        // exit
+        tl.to(R + '.s6-winB', { scale: 0.94, opacity: 0, y: 60, duration: 0.38, ease: "power2.in" }, 6.42);
+        tl.to(R + '.s6-urlB', { y: -120, opacity: 0, duration: 0.28, ease: "power2.in" }, 6.45);
+
+        tl.set({}, {}, 6.8);
+        window.__timelines["s6-faq"] = tl;
+      })();
+    </script>
+  </div>
+</template>

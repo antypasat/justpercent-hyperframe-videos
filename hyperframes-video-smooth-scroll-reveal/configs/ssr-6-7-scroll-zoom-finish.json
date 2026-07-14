@@ -1,0 +1,86 @@
+{
+  "hyperframes": "1.0",
+  "name": "ssr-6-7-scroll-zoom-finish",
+  "technique": "Smooth Scroll Reveal / Scroll + Zoom Finish",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/faqs/bill-splitting-calculator/",
+    "displayUrl": "justpercent.com/faqs/bill-splitting-calculator",
+    "locale": "en-US",
+    "flow": "Interactive FAQ subpage: 'How much should each person pay when a bill is split by percentage?' Full scroll pass over the live example (60/40 of $250), then a zoom finish onto the Answer and the Basic Percentage Calculator CTA, held for a beat.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 5.5,
+  "page": {
+    "asset": "assets/us-faq-bill-splitting.png",
+    "w": 1600,
+    "h": 1055
+  },
+  "camera": {
+    "easing": "ease-in-out-sine",
+    "path": [
+      {
+        "t": 0,
+        "y": 0,
+        "s": 1.3
+      },
+      {
+        "t": 3,
+        "y": 300,
+        "s": 1.3
+      },
+      {
+        "t": 4.5,
+        "y": 186,
+        "s": 2,
+        "ease": "ease-in-out-cubic"
+      },
+      {
+        "t": 5.5,
+        "y": 186,
+        "s": 2
+      }
+    ]
+  },
+  "cursor": null,
+  "highlights": [],
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "FAQs → Splitting a bill by percentage",
+      "in": 0.2,
+      "out": 5.4
+    },
+    {
+      "kind": "caption",
+      "text": "Splitting the bills, 60/40.",
+      "in": 0.4,
+      "out": 1.8
+    },
+    {
+      "kind": "caption",
+      "text": "Scroll the full answer…",
+      "in": 2,
+      "out": 3.1
+    },
+    {
+      "kind": "caption",
+      "text": "You owe $150. Your roommate, $100.",
+      "in": 3.5,
+      "out": 5.4,
+      "emphasis": true
+    }
+  ]
+}

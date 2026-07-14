@@ -1,0 +1,648 @@
+{
+  "dark": {
+    "home": {
+      "search": {
+        "x": 25,
+        "y": 133,
+        "w": 382,
+        "h": 50
+      },
+      "totalPrice": {
+        "card": {
+          "x": 8,
+          "y": 510,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 581,
+          "w": 290,
+          "h": 38
+        }
+      },
+      "myTip": {
+        "card": {
+          "x": 8,
+          "y": 634,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 705,
+          "w": 290,
+          "h": 38
+        }
+      },
+      "scrollH": 6030
+    },
+    "gag": {
+      "scrollY": 156,
+      "totalPrice": {
+        "card": {
+          "x": 8,
+          "y": 354,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 425,
+          "w": 290,
+          "h": 38
+        }
+      },
+      "myTip": {
+        "card": {
+          "x": 8,
+          "y": 478,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 549,
+          "w": 290,
+          "h": 38
+        }
+      }
+    },
+    "dropdown": {
+      "portal": {
+        "x": 26,
+        "y": 152,
+        "w": 380,
+        "h": 428
+      },
+      "rows": [
+        {
+          "id": "",
+          "text": "Practical Uses",
+          "rect": {
+            "x": 38,
+            "y": 152,
+            "w": 356,
+            "h": 17
+          }
+        },
+        {
+          "id": "search-item-0",
+          "text": "Restaurant Tip:\n        A\n        15% [X] tip\n        on a\n ",
+          "rect": {
+            "x": 34,
+            "y": 176,
+            "w": 364,
+            "h": 114
+          }
+        },
+        {
+          "id": "search-item-1",
+          "text": "Original Value:\n        15% [X] of\n        what dinner bill ",
+          "rect": {
+            "x": 34,
+            "y": 290,
+            "w": 364,
+            "h": 94
+          }
+        },
+        {
+          "id": "",
+          "text": "Related FAQs",
+          "rect": {
+            "x": 38,
+            "y": 390,
+            "w": 356,
+            "h": 17
+          }
+        },
+        {
+          "id": "search-item-2",
+          "text": "Tip CalculationHow much tip should I leave based on percenta",
+          "rect": {
+            "x": 34,
+            "y": 413,
+            "w": 364,
+            "h": 60
+          }
+        },
+        {
+          "id": "",
+          "text": "Suggested solutions",
+          "rect": {
+            "x": 38,
+            "y": 480,
+            "w": 356,
+            "h": 17
+          }
+        },
+        {
+          "id": "search-item-3",
+          "text": "TipDining out or ordering in? Calculate the perfect tip for ",
+          "rect": {
+            "x": 34,
+            "y": 503,
+            "w": 364,
+            "h": 77
+          }
+        }
+      ]
+    },
+    "tipRow": {
+      "id": "search-item-0",
+      "text": "Restaurant Tip:\n        A\n        15% [X] tip\n        on a\n ",
+      "rect": {
+        "x": 34,
+        "y": 176,
+        "w": 364,
+        "h": 114
+      }
+    },
+    "selected": {
+      "scrollY": 2409,
+      "inputs": [
+        {
+          "value": "15",
+          "id": "percentage-input",
+          "rect": {
+            "x": 105,
+            "y": -10,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "60",
+          "id": "number",
+          "rect": {
+            "x": 242,
+            "y": -10,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "9",
+          "id": "basic-percentage-result",
+          "rect": {
+            "x": 168,
+            "y": 95,
+            "w": 116,
+            "h": 32
+          }
+        },
+        {
+          "value": "15",
+          "id": "increased-value-percentage-input",
+          "rect": {
+            "x": 267,
+            "y": 2329,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "15",
+          "id": "before-increase-percentage-input",
+          "rect": {
+            "x": 160,
+            "y": 2893,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "15",
+          "id": "decreased-value-percentage-input",
+          "rect": {
+            "x": 270,
+            "y": 3281,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "15",
+          "id": "before-decrease-percentage-input",
+          "rect": {
+            "x": 163,
+            "y": 3845,
+            "w": 85,
+            "h": 42
+          }
+        }
+      ],
+      "banner": {
+        "x": 33,
+        "y": -248,
+        "w": 366,
+        "h": 144
+      }
+    },
+    "inc": {
+      "original": {
+        "x": 60,
+        "y": 403,
+        "w": 85,
+        "h": 42
+      },
+      "percent": {
+        "x": 267,
+        "y": 403,
+        "w": 85,
+        "h": 42
+      },
+      "result": {
+        "x": 168,
+        "y": 508,
+        "w": 116,
+        "h": 32
+      },
+      "values": {
+        "original": "5000",
+        "percent": "25",
+        "result": "6250"
+      }
+    },
+    "faq": {
+      "bill": {
+        "x": 215,
+        "y": 280,
+        "w": 64,
+        "h": 30
+      },
+      "pct": {
+        "x": 56,
+        "y": 310,
+        "w": 30,
+        "h": 30
+      },
+      "result": {
+        "x": 250,
+        "y": 388,
+        "w": 44,
+        "h": 46
+      },
+      "values": {
+        "bill": "150",
+        "pct": "10",
+        "result": "15"
+      }
+    },
+    "calc": {
+      "scrollY": 2259,
+      "pct": {
+        "x": 105,
+        "y": 140,
+        "w": 85,
+        "h": 42
+      },
+      "num": {
+        "x": 242,
+        "y": 140,
+        "w": 85,
+        "h": 42
+      },
+      "result": {
+        "x": 168,
+        "y": 245,
+        "w": 116,
+        "h": 32
+      },
+      "banner": {
+        "x": 33,
+        "y": -98,
+        "w": 366,
+        "h": 144
+      },
+      "values": {
+        "pct": "15",
+        "num": "60",
+        "result": "9"
+      }
+    }
+  },
+  "light": {
+    "home": {
+      "search": {
+        "x": 25,
+        "y": 133,
+        "w": 382,
+        "h": 50
+      },
+      "totalPrice": {
+        "card": {
+          "x": 8,
+          "y": 510,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 581,
+          "w": 290,
+          "h": 38
+        }
+      },
+      "myTip": {
+        "card": {
+          "x": 8,
+          "y": 634,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 705,
+          "w": 290,
+          "h": 38
+        }
+      },
+      "scrollH": 6030
+    },
+    "gag": {
+      "scrollY": 156,
+      "totalPrice": {
+        "card": {
+          "x": 8,
+          "y": 354,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 425,
+          "w": 290,
+          "h": 38
+        }
+      },
+      "myTip": {
+        "card": {
+          "x": 8,
+          "y": 478,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 549,
+          "w": 290,
+          "h": 38
+        }
+      }
+    },
+    "dropdown": {
+      "portal": {
+        "x": 27,
+        "y": 153,
+        "w": 378,
+        "h": 428
+      },
+      "rows": [
+        {
+          "id": "",
+          "text": "Practical Uses",
+          "rect": {
+            "x": 39,
+            "y": 153,
+            "w": 354,
+            "h": 17
+          }
+        },
+        {
+          "id": "search-item-0",
+          "text": "Restaurant Tip:\n        A\n        15% [X] tip\n        on a\n ",
+          "rect": {
+            "x": 35,
+            "y": 177,
+            "w": 362,
+            "h": 114
+          }
+        },
+        {
+          "id": "search-item-1",
+          "text": "Original Value:\n        15% [X] of\n        what dinner bill ",
+          "rect": {
+            "x": 35,
+            "y": 291,
+            "w": 362,
+            "h": 94
+          }
+        },
+        {
+          "id": "",
+          "text": "Related FAQs",
+          "rect": {
+            "x": 39,
+            "y": 391,
+            "w": 354,
+            "h": 17
+          }
+        },
+        {
+          "id": "search-item-2",
+          "text": "Tip CalculationHow much tip should I leave based on percenta",
+          "rect": {
+            "x": 35,
+            "y": 414,
+            "w": 362,
+            "h": 60
+          }
+        },
+        {
+          "id": "",
+          "text": "Suggested solutions",
+          "rect": {
+            "x": 39,
+            "y": 481,
+            "w": 354,
+            "h": 17
+          }
+        },
+        {
+          "id": "search-item-3",
+          "text": "TipDining out or ordering in? Calculate the perfect tip for ",
+          "rect": {
+            "x": 35,
+            "y": 504,
+            "w": 362,
+            "h": 77
+          }
+        }
+      ]
+    },
+    "tipRow": {
+      "id": "search-item-0",
+      "text": "Restaurant Tip:\n        A\n        15% [X] tip\n        on a\n ",
+      "rect": {
+        "x": 35,
+        "y": 177,
+        "w": 362,
+        "h": 114
+      }
+    },
+    "selected": {
+      "scrollY": 2409,
+      "inputs": [
+        {
+          "value": "15",
+          "id": "percentage-input",
+          "rect": {
+            "x": 105,
+            "y": -10,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "60",
+          "id": "number",
+          "rect": {
+            "x": 242,
+            "y": -10,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "9",
+          "id": "basic-percentage-result",
+          "rect": {
+            "x": 168,
+            "y": 95,
+            "w": 116,
+            "h": 32
+          }
+        },
+        {
+          "value": "15",
+          "id": "increased-value-percentage-input",
+          "rect": {
+            "x": 267,
+            "y": 2329,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "15",
+          "id": "before-increase-percentage-input",
+          "rect": {
+            "x": 160,
+            "y": 2893,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "15",
+          "id": "decreased-value-percentage-input",
+          "rect": {
+            "x": 270,
+            "y": 3281,
+            "w": 85,
+            "h": 42
+          }
+        },
+        {
+          "value": "15",
+          "id": "before-decrease-percentage-input",
+          "rect": {
+            "x": 163,
+            "y": 3845,
+            "w": 85,
+            "h": 42
+          }
+        }
+      ],
+      "banner": {
+        "x": 33,
+        "y": -248,
+        "w": 366,
+        "h": 144
+      }
+    },
+    "inc": {
+      "original": {
+        "x": 60,
+        "y": 403,
+        "w": 85,
+        "h": 42
+      },
+      "percent": {
+        "x": 267,
+        "y": 403,
+        "w": 85,
+        "h": 42
+      },
+      "result": {
+        "x": 168,
+        "y": 508,
+        "w": 116,
+        "h": 32
+      },
+      "values": {
+        "original": "5000",
+        "percent": "25",
+        "result": "6250"
+      }
+    },
+    "faq": {
+      "bill": {
+        "x": 215,
+        "y": 280,
+        "w": 64,
+        "h": 30
+      },
+      "pct": {
+        "x": 56,
+        "y": 310,
+        "w": 30,
+        "h": 30
+      },
+      "result": {
+        "x": 250,
+        "y": 388,
+        "w": 44,
+        "h": 46
+      },
+      "values": {
+        "bill": "150",
+        "pct": "10",
+        "result": "15"
+      }
+    },
+    "calc": {
+      "scrollY": 2259,
+      "pct": {
+        "x": 105,
+        "y": 140,
+        "w": 85,
+        "h": 42
+      },
+      "num": {
+        "x": 242,
+        "y": 140,
+        "w": 85,
+        "h": 42
+      },
+      "result": {
+        "x": 168,
+        "y": 245,
+        "w": 116,
+        "h": 32
+      },
+      "banner": {
+        "x": 33,
+        "y": -98,
+        "w": 366,
+        "h": 144
+      },
+      "values": {
+        "pct": "15",
+        "num": "60",
+        "result": "9"
+      }
+    }
+  }
+}

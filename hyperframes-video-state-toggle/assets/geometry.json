@@ -1,0 +1,183 @@
+{
+  "home-grid": {
+    "grid": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 807
+    },
+    "__scrollY": 238,
+    "couponCta": {
+      "x": 614,
+      "y": 222,
+      "w": 134,
+      "h": 22
+    },
+    "tipCta": {
+      "x": 986,
+      "y": 385,
+      "w": 126,
+      "h": 22
+    }
+  },
+  "dec-after-coupon": {
+    "card": {
+      "x": 436,
+      "y": 203,
+      "w": 728,
+      "h": 412
+    },
+    "__scrollY": 0
+  },
+  "basic-after-tip": {
+    "card": {
+      "x": 436,
+      "y": 203,
+      "w": 728,
+      "h": 412
+    },
+    "__scrollY": 0
+  },
+  "inc-after-tax": {
+    "card": {
+      "x": 436,
+      "y": 203,
+      "w": 728,
+      "h": 412
+    },
+    "__scrollY": 0
+  },
+  "inc-default": {
+    "card": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 412
+    },
+    "__scrollY": 0
+  },
+  "inc-pu-list": {
+    "__scrollY": 299,
+    "budgetRow": {
+      "x": 468,
+      "y": 435,
+      "w": 680,
+      "h": 120
+    }
+  },
+  "inc-pu-after": {
+    "card": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 590
+    },
+    "__scrollY": 0
+  },
+  "change-default": {
+    "card": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 412
+    },
+    "__scrollY": 0
+  },
+  "change-after-renthike": {
+    "card": {
+      "x": 436,
+      "y": 203,
+      "w": 728,
+      "h": 412
+    },
+    "__scrollY": 0
+  },
+  "home-search-focused": {
+    "searchBox": {
+      "x": 461,
+      "y": 115,
+      "w": 678,
+      "h": 50
+    },
+    "__scrollY": 76
+  },
+  "home-search-portal": {
+    "searchBox": {
+      "x": 461,
+      "y": 115,
+      "w": 678,
+      "h": 50
+    },
+    "portal": {
+      "x": 463,
+      "y": 193,
+      "w": 674,
+      "h": 395
+    },
+    "__scrollY": 76,
+    "firstRow": {
+      "x": 471,
+      "y": 217,
+      "w": 658,
+      "h": 94
+    }
+  },
+  "home-search-selected": {
+    "activeCard": {
+      "x": 436,
+      "y": -74,
+      "w": 728,
+      "h": 1377
+    },
+    "pinnedUse": {
+      "x": 493,
+      "y": 864,
+      "w": 630,
+      "h": 90
+    },
+    "__scrollY": 1933
+  },
+  "faqs-index": {
+    "heading": {
+      "x": 436,
+      "y": -993,
+      "w": 728,
+      "h": 60
+    },
+    "__scrollY": 1107,
+    "billCard": {
+      "x": 440,
+      "y": 543,
+      "w": 723,
+      "h": 145
+    }
+  },
+  "faq-bill-splitting": {
+    "heading": {
+      "x": 436,
+      "y": 114,
+      "w": 728,
+      "h": 96
+    },
+    "__scrollY": 0,
+    "pageH": 1055
+  },
+  "inc-after-tax-nobanner": {
+    "card": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 412
+    },
+    "__scrollY": 0
+  },
+  "change-after-renthike-nobanner": {
+    "card": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 412
+    },
+    "__scrollY": 0
+  }
+}

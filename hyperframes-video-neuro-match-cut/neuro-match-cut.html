@@ -1,0 +1,760 @@
+<!doctype html>
+<!-- Film 5 — Neuro-Editing & Match-Cutting — justpercent.com (US)
+     Deterministic master-clock player: every pixel is a pure function of t.
+     Open via file://. Controls: Space pause · R restart · theme toggle.
+     URL: ?t=<ms> seek · ?stop=<ms> autopause · ?rec hide controls · ?theme=light · ?pause
+     QA hook: window.__f5Seek(seconds, "dark"|"light") -> Promise (frames decoded)
+     A continuous zoom (zoom infinito) runs monotonically through all 30s;
+     every cut lands on a shape-matched, screen-centered anchor; the final
+     second returns to the exact opening circle (seamless loop). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Film 5 — Neuro-Editing &amp; Match-Cutting — Just Percent</title>
+<style>
+  @font-face { font-family: "Space Grotesk"; font-weight: 700;
+    src: url("fonts/space-grotesk-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Space Grotesk"; font-weight: 500;
+    src: url("fonts/space-grotesk-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 300;
+    src: url("fonts/ibm-plex-sans-latin-300-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400;
+    src: url("fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600;
+    src: url("fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 700;
+    src: url("fonts/ibm-plex-sans-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400;
+    src: url("fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 700;
+    src: url("fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2"); }
+
+  html, body { margin: 0; height: 100%; background: #05060d; overflow: hidden;
+    font-family: "IBM Plex Sans", sans-serif; }
+  #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+
+  /* ---- 1080×1920 stage ---- */
+  #frame { position: absolute; left: 50%; top: 50%;
+    width: 1080px; height: 1920px; overflow: hidden;
+    border-radius: 8px; transform-origin: center center; background: #070812; }
+  .theme-light #frame { background: #dcdaea; }
+
+  /* void backdrop (loop-periodic drift, never zoomed) */
+  #bgfx { position: absolute; inset: -60px; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(90px); }
+  #orbA { width: 880px; height: 880px; background: rgba(124, 58, 237, .32); }
+  #orbB { width: 740px; height: 740px; background: rgba(34, 211, 238, .16); }
+  .theme-light #orbA { background: rgba(139, 92, 246, .33); }
+  .theme-light #orbB { background: rgba(96, 165, 250, .28); }
+  .dot { position: absolute; border-radius: 50%; background: #cdd3ff; filter: blur(1px); }
+  .theme-light .dot { background: #6d5fd0; }
+  #vignette { position: absolute; inset: 0;
+    background: radial-gradient(120% 90% at 50% 47%, transparent 55%, rgba(2,3,8,.5) 100%); }
+  .theme-light #vignette {
+    background: radial-gradient(120% 90% at 50% 47%, transparent 60%, rgba(30,20,70,.24) 100%); }
+
+  /* ---- zoom infinito wrapper ---- */
+  #zoomWrap { position: absolute; inset: 0; transform-origin: 540px 960px;
+    will-change: transform; }
+
+  /* micro-cut background plates (S5) */
+  .micro { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+    display: none; will-change: transform, opacity; }
+  #microScrim { position: absolute; inset: -80px; display: none;
+    background: rgba(4, 5, 14, .5); }
+  .theme-light #microScrim { background: rgba(228, 226, 242, .5); }
+
+  /* scene windows: fixed crops of a transformed page plate */
+  .win { position: absolute; overflow: hidden; display: none;
+    will-change: transform; transform: translateZ(0); }
+  .win img { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+    transform-origin: 0 0; will-change: transform, filter; -webkit-user-drag: none; }
+
+  /* anchor crops (match-cut subjects) */
+  .anchor { position: absolute; overflow: hidden; display: none;
+    box-shadow: 0 34px 80px rgba(2, 4, 14, .5); }
+  .theme-light .anchor { box-shadow: 0 34px 80px rgba(40, 30, 90, .3); }
+  .anchor > img { position: absolute; inset: 0; width: 100%; height: 100%;
+    -webkit-user-drag: none; }
+  #aVideo { background: #0c0f22; }
+  .theme-light #aVideo { background: #eceaf6; }
+  #aVideo video { position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; }
+  #slot { position: absolute; inset: 26px; border: 6px dashed rgba(255,255,255,.45);
+    border-radius: 50%; display: grid; place-items: center; text-align: center; }
+  .theme-light #slot { border-color: rgba(30, 22, 80, .45); }
+  #slot .l1 { font-family: "JetBrains Mono"; font-weight: 700; font-size: 30px;
+    color: rgba(255,255,255,.85); letter-spacing: 1px; }
+  #slot .l2 { font-family: "JetBrains Mono"; font-weight: 400; font-size: 21px;
+    color: rgba(255,255,255,.55); margin-top: 12px; }
+  .theme-light #slot .l1 { color: rgba(25, 18, 70, .85); }
+  .theme-light #slot .l2 { color: rgba(25, 18, 70, .55); }
+  #aResult img { inset: auto; width: auto; height: auto; left: 50%; top: 50%; }
+
+  /* morph container: % glyph circle → search pill → url pill → loop circle */
+  #morph { position: absolute; overflow: hidden; display: none;
+    background: rgba(10, 12, 28, .78); border: 1px solid rgba(255,255,255,.28);
+    box-shadow: 0 34px 90px rgba(2, 4, 14, .55); box-sizing: border-box; }
+  .theme-light #morph { background: rgba(255, 255, 255, .82);
+    border-color: rgba(40, 30, 110, .22);
+    box-shadow: 0 34px 90px rgba(40, 30, 90, .32); }
+  #glyph { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -54%);
+    font-family: "Space Grotesk"; font-weight: 700;
+    background: linear-gradient(115deg, #a78bfa 15%, #22d3ee 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #searchImg { position: absolute; inset: 0; width: 100%; height: 100%;
+    -webkit-user-drag: none; }
+  #urlFill { position: absolute; inset: 0; background: #fff; }
+  #urlText { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    font-family: "JetBrains Mono"; font-weight: 700; color: #0b0c18;
+    white-space: nowrap; }
+  #echoVid { position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; }
+
+  /* endcard (theme-aware so the loop closes on the same backdrop family) */
+  #ecBg { position: absolute; inset: -90px; display: none;
+    background: linear-gradient(180deg, rgba(7,8,18,.92), rgba(11,8,30,.97)); }
+  .theme-light #ecBg {
+    background: linear-gradient(180deg, rgba(226,224,240,.94), rgba(212,208,236,.97)); }
+  .ec { position: absolute; left: 540px; transform: translate(-50%, -50%);
+    text-align: center; display: none; white-space: nowrap; }
+  #ecMark { font-family: "Space Grotesk"; font-weight: 700; font-size: 150px;
+    background: linear-gradient(100deg, #a78bfa, #22d3ee);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #ecBrand { font-family: "Space Grotesk"; font-weight: 700; font-size: 92px;
+    color: #fff; }
+  .theme-light #ecBrand { color: #17123a; }
+  #ecTag { font-size: 36px; color: rgba(255,255,255,.78); }
+  .theme-light #ecTag { color: rgba(23, 18, 58, .78); }
+  #ecPills { display: none; position: absolute; left: 540px;
+    transform: translate(-50%, -50%); gap: 22px; }
+  .ecPill { font-size: 30px; font-weight: 600; color: #e9e6ff;
+    border: 1px solid rgba(255,255,255,.28); border-radius: 40px; padding: 12px 34px;
+    white-space: nowrap; }
+  .theme-light .ecPill { color: #2a2260; border-color: rgba(35, 25, 95, .3); }
+
+  /* captions — white text on a translucent dark plate (both themes) */
+  #cap { position: absolute; left: 50%; top: 1560px; transform: translateX(-50%);
+    width: 940px; text-align: center; opacity: 0; }
+  #capPlate { display: inline-block; background: rgba(8,10,22,.74);
+    border: 1px solid rgba(255,255,255,.14); border-radius: 26px;
+    padding: 28px 44px; backdrop-filter: blur(6px); }
+  #capBig { font-family: "Space Grotesk"; font-weight: 700; font-size: 56px;
+    line-height: 1.08; color: #fff; letter-spacing: .5px; }
+  #capSub { font-family: "IBM Plex Sans"; font-weight: 300; font-size: 33px;
+    color: rgba(255,255,255,.82); margin-top: 10px; }
+
+  /* technique chip */
+  #chip { position: absolute; left: 40px; top: 40px; background: rgba(8,10,22,.55);
+    border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 16px 22px; }
+  #chipL1 { font-family: "JetBrains Mono"; font-weight: 700; font-size: 24px;
+    color: rgba(255,255,255,.82); letter-spacing: 1px; }
+  #chipL2 { font-family: "JetBrains Mono"; font-weight: 400; font-size: 21px;
+    color: rgba(255,255,255,.5); margin-top: 5px; }
+
+  /* controls (never recorded: hidden by ?rec) */
+  #controls { position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%);
+    display: flex; gap: 10px; align-items: center; background: rgba(10,12,26,.85);
+    border: 1px solid rgba(255,255,255,.15); border-radius: 14px; padding: 10px 14px;
+    z-index: 50; color: #cfd3ec; font-size: 14px; }
+  #controls button { background: #262a4a; color: #e8eaff; border: 0; border-radius: 9px;
+    padding: 8px 14px; font-size: 14px; cursor: pointer; font-family: inherit; }
+  #controls input[type=range] { width: 260px; accent-color: #8b5cf6; }
+  #loading { position: fixed; inset: 0; display: grid; place-items: center;
+    background: #05060d; color: #aab; z-index: 90; font-size: 18px;
+    font-family: "JetBrains Mono", monospace; }
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="frame">
+    <div id="bgfx"><div class="orb" id="orbA"></div><div class="orb" id="orbB"></div></div>
+    <div id="vignette"></div>
+
+    <div id="zoomWrap">
+      <img class="micro" id="micro0" alt="">
+      <img class="micro" id="micro1" alt="">
+      <img class="micro" id="micro2" alt="">
+      <div id="microScrim"></div>
+
+      <div class="win" id="winHome"><img id="homePlate" alt=""></div>
+      <div class="win" id="winDec"><img id="decPlate" alt=""></div>
+      <div class="win" id="winFaq"><img id="faqPlate" alt=""></div>
+
+      <div id="ecBg"></div>
+
+      <div class="anchor" id="aVideo">
+        <video id="ballVid" muted playsinline preload="auto"
+          src="assets/opening-ball.mp4"></video>
+        <div id="slot"><div>
+          <div class="l1">VIDEO PLACEHOLDER</div>
+          <div class="l2">drop assets/opening-ball.mp4</div>
+        </div></div>
+      </div>
+      <div class="anchor" id="aToggle"><img id="toggleImg" alt=""></div>
+      <div class="anchor" id="aCta"><img id="ctaImg" alt=""></div>
+      <div class="anchor" id="aHint"><img id="hintImg" alt=""></div>
+      <div class="anchor" id="aResult"><img id="resultImg" alt=""></div>
+      <div class="anchor" id="aFaqIcon"><img id="faqIconImg" alt=""></div>
+
+      <div id="morph">
+        <span id="glyph">%</span>
+        <img id="searchImg" alt="">
+        <div id="urlFill"></div>
+        <span id="urlText"></span>
+        <video id="echoVid" muted playsinline preload="auto"
+          src="assets/opening-ball.mp4"></video>
+      </div>
+
+      <div class="ec" id="ecMark">%</div>
+      <div class="ec" id="ecBrand"></div>
+      <div class="ec" id="ecTag"></div>
+      <div id="ecPills"></div>
+    </div>
+
+    <div id="cap"><div id="capPlate">
+      <div id="capBig"></div><div id="capSub"></div>
+    </div></div>
+    <div id="chip"><div id="chipL1"></div><div id="chipL2"></div></div>
+  </div>
+</div>
+
+<div id="controls">
+  <button id="btnPlay">▶ Play</button>
+  <button id="btnRestart">↺</button>
+  <button id="btnTheme">☀️ Light</button>
+  <input type="range" id="scrub" min="0" max="30000" value="0" step="33">
+  <span id="tlabel">0.00s</span>
+</div>
+<div id="loading">loading frames…</div>
+
+<script src="configs.js"></script>
+<script src="geometry.js"></script>
+<script>
+(() => {
+  const CFG = window.F5, GEO = window.F5GEO;
+  const Q = new URLSearchParams(location.search);
+  const REC = Q.has("rec");
+  let THEME = Q.get("theme") === "light" ? "light" : "dark";
+  const D = CFG.meta.duration * 1000;
+  const K = CFG.meta.cssToStage;
+  const B = CFG.beats, SC = CFG.scenes, Zof = CFG.zoom.Zof;
+  const AX = CFG.anchor.x, AY = CFG.anchor.y;
+
+  // ---------- helpers ----------
+  const $ = (id) => document.getElementById(id);
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const norm = (t, a, b) => clamp01((t - a) / (b - a));
+  const EASE = {
+    l: (u) => u,
+    i: (u) => u * u * u,
+    o: (u) => 1 - Math.pow(1 - u, 3),
+    io: (u) => (u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2)
+  };
+  const rnd = (i) => {
+    const v = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+    return v - Math.floor(v);
+  };
+
+  // geometry rects in plate px (CSS × K); refreshed on theme change
+  let R = {};
+  function rebuildRects() {
+    const g = GEO[THEME];
+    const rx = (o) => ({ x: o.x * K, y: o.y * K, w: o.w * K, h: o.h * K });
+    R = {
+      toggle: rx(g.home.toggleClip),
+      cta: rx(g.home.ctaClip),
+      search: rx(g.home.searchClip),
+      hint: rx(g.dec.hintClip),
+      result: rx(g.dec.resultClip),
+      icon: rx(g.faq.iconClip)
+    };
+  }
+
+  // pose: plate px -> wrapper px  (pt*s + (tx,ty))
+  const poseFromAnchor = (fr, w, cx = AX, cy = AY) => {
+    const s = w / fr.w;
+    return { s, tx: cx - (fr.x + fr.w / 2) * s, ty: cy - (fr.y + fr.h / 2) * s };
+  };
+  const poseFit = (sOn, z) => {
+    const s = sOn / z;
+    return { s, tx: (1080 - 1080 * s) / 2, ty: (1920 - 1920 * s) / 2 };
+  };
+  const lerpPose = (a, b, u) =>
+    ({ s: lerp(a.s, b.s, u), tx: lerp(a.tx, b.tx, u), ty: lerp(a.ty, b.ty, u) });
+  const mapPt = (p, x, y) => ({ x: x * p.s + p.tx, y: y * p.s + p.ty });
+
+  const FULLWIN = { x: -80, y: -80, w: 1240, h: 2080, br: 0 };
+  const circleWin = (d, cx = AX, cy = AY) =>
+    ({ x: cx - d / 2, y: cy - d / 2, w: d, h: d, br: d / 2 });
+  const rectWin = (cx, cy, w, h, br) =>
+    ({ x: cx - w / 2, y: cy - h / 2, w, h, br });
+  const lerpWin = (a, b, u) => ({
+    x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u),
+    w: lerp(a.w, b.w, u), h: lerp(a.h, b.h, u), br: lerp(a.br, b.br, u)
+  });
+
+  function setBox(el, r) {
+    el.style.left = r.x + "px"; el.style.top = r.y + "px";
+    el.style.width = r.w + "px"; el.style.height = r.h + "px";
+    el.style.borderRadius = r.br + "px";
+  }
+  function applyWin(win, img, w, pose, z) {
+    setBox(win, w);
+    img.style.transform =
+      `translate(${pose.tx - w.x}px, ${pose.ty - w.y}px) scale(${pose.s})`;
+    const sOn = pose.s * z;
+    const scrBlur = Math.max(0, Math.min(12, (sOn - 1.25) * 2.0));
+    img.style.filter = scrBlur > 0.15
+      ? `blur(${(scrBlur / sOn).toFixed(2)}px)` : "";
+  }
+  const show = (el, on) => { el.style.display = on ? "block" : "none"; };
+
+  // ---------- element handles ----------
+  const zoomWrap = $("zoomWrap"), frame = $("frame");
+  const winHome = $("winHome"), winDec = $("winDec"), winFaq = $("winFaq");
+  const homePlate = $("homePlate"), decPlate = $("decPlate"), faqPlate = $("faqPlate");
+  const aVideo = $("aVideo"), aToggle = $("aToggle"), aCta = $("aCta");
+  const aHint = $("aHint"), aResult = $("aResult"), aFaqIcon = $("aFaqIcon");
+  const morph = $("morph"), glyph = $("glyph"), searchImg = $("searchImg");
+  const urlFill = $("urlFill"), urlText = $("urlText");
+  const ballVid = $("ballVid"), echoVid = $("echoVid"), slot = $("slot");
+  const micro = [$("micro0"), $("micro1"), $("micro2")], microScrim = $("microScrim");
+  const ecBg = $("ecBg"), ecMark = $("ecMark"), ecBrand = $("ecBrand");
+  const ecTag = $("ecTag"), ecPills = $("ecPills");
+
+  const imgs = [
+    { el: homePlate, src: (t) => `assets/home-plate-${t}.png` },
+    { el: decPlate, src: (t) => `assets/dec-plate-${t}.png` },
+    { el: faqPlate, src: (t) => `assets/faq-plate-${t}.png` },
+    { el: $("toggleImg"), src: (t) => `assets/toggle-hi-${t}.png` },
+    { el: $("ctaImg"), src: (t) => `assets/cta-pill-${t}.png` },
+    { el: $("hintImg"), src: (t) => `assets/hint-banner-${t}.png` },
+    { el: $("resultImg"), src: (t) => `assets/result-field-${t}.png` },
+    { el: $("faqIconImg"), src: (t) => `assets/faq-icon-hi-${t}.png` },
+    { el: searchImg, src: (t) => `assets/search-pill-${t}.png` },
+    { el: micro[0], src: (t) => `assets/home-plate-${t}.png` },
+    { el: micro[1], src: (t) => `assets/dec-plate-${t}.png` },
+    { el: micro[2], src: (t) => `assets/faq-plate-${t}.png` }
+  ];
+
+  // video placeholder availability
+  let videoOk = false;
+  ballVid.addEventListener("loadeddata", () => { videoOk = true; renderFrame(curT()); });
+  ballVid.addEventListener("error", () => { videoOk = false; });
+  echoVid.addEventListener("loadeddata", () => { try { echoVid.currentTime = 0; } catch {} });
+
+  // particles — all drift periodic in 30s so the loop closes
+  const dots = [];
+  const W2P = (2 * Math.PI) / CFG.meta.duration;
+  for (let i = 0; i < 30; i++) {
+    const d = document.createElement("div");
+    d.className = "dot";
+    const s = 3 + rnd(i) * 6;
+    d.style.width = d.style.height = s + "px";
+    $("bgfx").appendChild(d);
+    dots.push({ el: d, x: rnd(i + 50) * 1080, y0: rnd(i + 99) * 2040,
+      n: 1 + Math.floor(rnd(i + 7) * 2), // 1..2 full travels per loop
+      m: 1 + Math.floor(rnd(i + 3) * 3), ph: rnd(i + 31) * 6.28 });
+  }
+
+  // chip + endcard copy
+  $("chipL1").textContent = `TECHNIQUE ${CFG.meta.id}/7 · ${CFG.meta.technique}`;
+  $("chipL2").textContent = CFG.meta.detail;
+  ecBrand.textContent = CFG.endCopy.brand;
+  ecTag.textContent = CFG.endCopy.tagline;
+  urlText.textContent = CFG.endCopy.url;
+  for (const p of CFG.endCopy.pills) {
+    const d = document.createElement("div");
+    d.className = "ecPill"; d.textContent = p;
+    ecPills.appendChild(d);
+  }
+  ecMark.style.top = SC.endcard.markY + "px";
+  ecBrand.style.top = SC.endcard.brandY + "px";
+  ecTag.style.top = SC.endcard.tagY + "px";
+  ecPills.style.top = SC.endcard.pillsY + "px";
+
+  // ---------- theme ----------
+  function setTheme(t) {
+    THEME = t;
+    document.body.classList.toggle("theme-light", t === "light");
+    $("btnTheme").textContent = t === "dark" ? "☀️ Light" : "🌙 Dark";
+    rebuildRects();
+    for (const rec of imgs) rec.el.src = rec.src(t);
+    return Promise.all(imgs.map((r) => r.el.decode().catch(() => {})));
+  }
+
+  // ---------- render (pure function of t) ----------
+  const capEl = $("cap"), capBig = $("capBig"), capSub = $("capSub");
+
+  function renderFrame(ms) {
+    const t = ms / 1000;
+    const Z = Zof(t);
+    zoomWrap.style.transform = `scale(${Z})`;
+
+    // ---- backdrop (30s-periodic → loop-safe) ----
+    $("orbA").style.transform =
+      `translate(${-160 + Math.sin(t * W2P) * 90}px, ${140 + Math.cos(t * W2P * 2) * 110}px)`;
+    $("orbB").style.transform =
+      `translate(${520 + Math.cos(t * W2P) * 110}px, ${1160 + Math.sin(t * W2P * 2) * 130}px)`;
+    for (const d of dots) {
+      const y = ((d.y0 - t * (2040 * d.n / CFG.meta.duration)) % 2040 + 2040) % 2040 - 60;
+      d.el.style.transform = `translate(${d.x}px, ${y}px)`;
+      d.el.style.opacity = .16 + .28 * (0.5 + 0.5 * Math.sin(t * W2P * d.m + d.ph));
+    }
+
+    // ---- visibility defaults ----
+    const V = { winHome: 0, winDec: 0, winFaq: 0, aVideo: 0, aToggle: 0, aCta: 0,
+      aHint: 0, aResult: 0, aFaqIcon: 0, morph: 0, micro: -1, ecBg: 0, ec: 0 };
+
+    // ================= S1 · opening circle (video placeholder) ============
+    if (t < B.openEnd) {
+      V.aVideo = 1;
+      const dW = CFG.loopCircle.screenDiameter / Z;   // exactly 640 on screen
+      setBox(aVideo, circleWin(dW));
+      const inner = lerp(1.06, 1.2, EASE.i(norm(t, 0, B.openEnd)));
+      ballVid.style.transform = `scale(${inner})`;
+      slot.style.transform = `scale(${inner})`;
+      ballVid.style.display = videoOk ? "block" : "none";
+      slot.style.display = videoOk ? "none" : "grid";
+    }
+
+    // ================= S2 · MATCH CUT #1 → theme toggle → homepage ========
+    if (t >= B.openEnd && t < B.ctaPushEnd) {
+      V.winHome = 1;
+      let pose, win;
+      const h = SC.home;
+      if (t < B.togglePullA) {
+        const u = EASE.io(norm(t, B.openEnd, B.togglePullA));
+        pose = lerpPose(poseFromAnchor(R.toggle, h.holdCircle),
+                        poseFromAnchor(R.toggle, R.toggle.w * h.pullScaleMid), u);
+        win = lerpWin(circleWin(h.holdCircle), circleWin(h.ringGrow), u);
+      } else if (t < B.togglePullEnd) {
+        const u = EASE.io(norm(t, B.togglePullA, B.togglePullEnd));
+        pose = lerpPose(poseFromAnchor(R.toggle, R.toggle.w * h.pullScaleMid),
+                        poseFit(h.fitOnScreen, Zof(B.togglePullEnd)), u);
+        win = lerpWin(circleWin(h.ringGrow), FULLWIN, u);
+      } else {
+        const u = EASE.io(norm(t, B.togglePullEnd, B.ctaPushEnd));
+        pose = lerpPose(poseFit(h.fitOnScreen, Zof(B.togglePullEnd)),
+                        poseFromAnchor(R.cta, h.ctaScreenW / Zof(B.ctaPushEnd)), u);
+        win = FULLWIN;
+      }
+      applyWin(winHome, homePlate, win, pose, Z);
+      // crisp hi-DPR toggle overlay while the plate is heavily upscaled
+      const op = clamp01((pose.s - 1.6) / 1.0);
+      if (op > 0.01) {
+        V.aToggle = 1;
+        const c = mapPt(pose, R.toggle.x + R.toggle.w / 2, R.toggle.y + R.toggle.h / 2);
+        const dW = R.toggle.w * pose.s;
+        setBox(aToggle, circleWin(dW, c.x, c.y));
+        aToggle.style.opacity = op;
+      }
+    }
+
+    // ================= S3 · MATCH CUT #2 chain → dec reveal ================
+    const dc = SC.dec;
+    if (t >= B.ctaPushEnd && t < B.ctaHoldEnd) {          // CTA pill on void
+      V.aCta = 1;
+      const w = lerp(dc.ctaW, dc.ctaGrow, norm(t, B.ctaPushEnd, B.ctaHoldEnd));
+      const hh = w * R.cta.h / R.cta.w;
+      setBox(aCta, rectWin(AX, AY, w, hh, hh * 0.44));
+    }
+    if (t >= B.ctaHoldEnd && t < B.hintHoldEnd) {         // hint banner on void
+      V.aHint = 1;
+      const w = lerp(dc.hintW, dc.hintGrow, norm(t, B.ctaHoldEnd, B.hintHoldEnd));
+      const hh = w * R.hint.h / R.hint.w;
+      setBox(aHint, rectWin(AX, AY, w, hh, hh * 0.3));
+    }
+    if (t >= B.hintHoldEnd && t < B.resultPushEnd) {      // dec page reveal
+      V.winDec = 1;
+      let pose, win;
+      if (t < B.decRevealEnd) {
+        const u = EASE.io(norm(t, B.hintHoldEnd, B.decRevealEnd));
+        const hh = dc.hintGrow * R.hint.h / R.hint.w;
+        pose = lerpPose(poseFromAnchor(R.hint, dc.hintGrow),
+                        poseFit(dc.fitOnScreen, Zof(B.decRevealEnd)), u);
+        win = lerpWin(rectWin(AX, AY, dc.hintGrow, hh, hh * 0.3), FULLWIN, u);
+      } else {
+        const u = EASE.io(norm(t, B.decRevealEnd, B.resultPushEnd));
+        pose = lerpPose(poseFit(dc.fitOnScreen, Zof(B.decRevealEnd)),
+                        poseFromAnchor(R.result, dc.resultW), u);
+        win = FULLWIN;
+      }
+      applyWin(winDec, decPlate, win, pose, Z);
+    }
+
+    // ================= S4 · MATCH CUT #3 → result "80" → FAQ ==============
+    const fq = SC.faq;
+    if (t >= B.resultPushEnd && t < B.resultCircleEnd) {  // "80" panel on void
+      V.aResult = 1;
+      let w, hh, br, k;
+      const k0 = dc.resultW / R.result.w;
+      if (t < B.resultHoldEnd) {
+        const u = norm(t, B.resultPushEnd, B.resultHoldEnd);
+        w = lerp(dc.resultW, dc.resultW + 20, u);
+        hh = w * R.result.h / R.result.w;
+        k = w / R.result.w;
+        br = 20 * k;
+      } else {                                            // panel rounds into a circle
+        const u = EASE.io(norm(t, B.resultHoldEnd, B.resultCircleEnd));
+        w = lerp(dc.resultW + 20, fq.resultCircle, u);
+        hh = lerp((dc.resultW + 20) * R.result.h / R.result.w, fq.resultCircle, u);
+        k = lerp((dc.resultW + 20) / R.result.w, fq.resultCircle / R.result.h, u);
+        br = lerp(20 * ((dc.resultW + 20) / R.result.w), fq.resultCircle / 2, u);
+      }
+      setBox(aResult, rectWin(AX, AY, w, hh, br));
+      const img = $("resultImg");
+      img.style.width = R.result.w * k + "px";
+      img.style.height = R.result.h * k + "px";
+      img.style.transform = "translate(-50%, -50%)";
+    }
+    if (t >= B.resultCircleEnd && t < B.faqIconHoldEnd) { // round FAQ icon on void
+      V.aFaqIcon = 1;
+      const dW = lerp(fq.iconCircle, fq.iconCircle + 8,
+        norm(t, B.resultCircleEnd, B.faqIconHoldEnd));
+      setBox(aFaqIcon, circleWin(dW));
+      aFaqIcon.style.opacity = 1;
+    }
+    if (t >= B.faqIconHoldEnd && t < B.faqPushEnd) {      // FAQ hub reveal + dive
+      V.winFaq = 1;
+      let pose, win;
+      if (t < B.faqRevealEnd) {
+        const u = EASE.io(norm(t, B.faqIconHoldEnd, B.faqRevealEnd));
+        pose = lerpPose(poseFromAnchor(R.icon, fq.iconCircle + 8),
+                        poseFit(fq.fitOnScreen, Zof(B.faqRevealEnd)), u);
+        win = lerpWin(circleWin(fq.iconCircle + 8), FULLWIN, u);
+      } else {
+        const u = EASE.io(norm(t, B.faqRevealEnd, B.faqPushEnd));
+        pose = lerpPose(poseFit(fq.fitOnScreen, Zof(B.faqRevealEnd)),
+                        poseFromAnchor(R.icon, R.icon.w * fq.pushScale), u);
+        win = FULLWIN;
+      }
+      applyWin(winFaq, faqPlate, win, pose, Z);
+      // hi-DPR icon overlay while the plate is upscaled (both directions)
+      const op = clamp01((pose.s - 1.4) / (fq.overlayFadeBelow - 1.4));
+      if (op > 0.01) {
+        V.aFaqIcon = 1;
+        const c = mapPt(pose, R.icon.x + R.icon.w / 2, R.icon.y + R.icon.h / 2);
+        const dW = R.icon.w * pose.s;
+        setBox(aFaqIcon, circleWin(dW, c.x, c.y));
+        aFaqIcon.style.opacity = op;
+      }
+    }
+
+    // ================= S5 · % glyph → search pill · micro-cuts ============
+    const mc = SC.micro;
+    if (t >= mc.start && t < mc.end) {
+      const idx = Math.floor((t - mc.start) / mc.period);
+      V.micro = idx % 3;
+      const jx = (rnd(idx) - 0.5) * 2 * mc.jitter;
+      const jy = (rnd(idx + 40) - 0.5) * 2 * mc.jitter;
+      const js = mc.scale + rnd(idx + 80) * 0.05;
+      const m = micro[V.micro];
+      m.style.transform = `translate(${jx}px, ${jy}px) scale(${js})`;
+      m.style.filter = `blur(${mc.blur}px)`;
+      const fade = t > B.pillHoldEnd ? 1 - norm(t, B.pillHoldEnd, mc.end) : 1;
+      m.style.opacity = mc.opacity * fade;
+      microScrim.style.opacity = fade;
+    }
+
+    const gl = SC.glyph, se = SC.search, ec = SC.endcard;
+    if (t >= B.faqPushEnd) {
+      V.morph = 1;
+      let box, glyphOp = 0, searchOp = 0, fillOp = 0, textOp = 0, echoOp = 0;
+      if (t < B.glyphHoldEnd) {               // CUT #4: % glyph takes over
+        let dW;
+        if (t < B.glyphGrown) dW = lerp(gl.startD, gl.grownD, EASE.o(norm(t, B.faqPushEnd, B.glyphGrown)));
+        else dW = lerp(gl.grownD, gl.holdD, norm(t, B.glyphGrown, B.glyphHoldEnd));
+        box = circleWin(dW);
+        glyphOp = 1;
+      } else if (t < B.pillMorphEnd) {        // circle stretches into the search pill
+        const u = EASE.io(norm(t, B.glyphHoldEnd, B.pillMorphEnd));
+        const w = lerp(gl.holdD, se.pillW, u);
+        const hh = lerp(gl.holdD, se.pillW * R.search.h / R.search.w, u);
+        box = rectWin(AX, AY, w, hh, Math.min(w, hh) / 2);
+        glyphOp = 1 - norm(t, B.glyphHoldEnd, B.glyphHoldEnd + 0.35);
+        searchOp = norm(t, B.glyphHoldEnd + 0.3, B.pillMorphEnd - 0.05);
+      } else if (t < B.pillHoldEnd) {         // search pill hold
+        const w = lerp(se.pillW, se.pillGrow, norm(t, B.pillMorphEnd, B.pillHoldEnd));
+        const hh = w * R.search.h / R.search.w;
+        box = rectWin(AX, AY, w, hh, hh / 2);
+        searchOp = 1;
+      } else if (t < B.loopStart) {           // morph to the white URL pill + hold
+        const u = EASE.io(norm(t, B.pillHoldEnd, B.urlMorphEnd));
+        const w0 = se.pillGrow, h0 = w0 * R.search.h / R.search.w;
+        box = lerpWin(rectWin(AX, AY, w0, h0, h0 / 2),
+          rectWin(ec.urlPill.cx, ec.urlPill.cy, ec.urlPill.w, ec.urlPill.h, ec.urlPill.br), u);
+        searchOp = 1 - norm(t, B.pillHoldEnd, B.pillHoldEnd + 0.6);
+        fillOp = norm(t, B.pillHoldEnd + 0.2, B.pillHoldEnd + 0.9);
+        textOp = norm(t, B.pillHoldEnd + 0.5, B.pillHoldEnd + 1.15);
+        urlText.style.fontSize = box.h * 0.5 + "px";
+      } else {                                // LOOP CLOSURE: pill → opening circle
+        const u = EASE.io(norm(t, B.loopStart, B.end));
+        const dW = CFG.loopCircle.screenDiameter / Z;
+        box = lerpWin(
+          rectWin(ec.urlPill.cx, ec.urlPill.cy, ec.urlPill.w, ec.urlPill.h, ec.urlPill.br),
+          circleWin(dW), u);
+        fillOp = 1;
+        textOp = 1 - norm(t, B.loopStart, B.loopStart + 0.4);
+        urlText.style.fontSize = ec.urlPill.h * 0.5 + "px";
+        if (videoOk) echoOp = CFG.clip.echo.opacity * norm(t, CFG.clip.echo.start, B.end);
+      }
+      setBox(morph, box);
+      glyph.style.opacity = glyphOp;
+      glyph.style.display = glyphOp > 0.01 ? "block" : "none";
+      glyph.style.fontSize = box.h * gl.fontFrac + "px";
+      searchImg.style.opacity = searchOp;
+      searchImg.style.display = searchOp > 0.01 ? "block" : "none";
+      urlFill.style.opacity = fillOp;
+      urlFill.style.display = fillOp > 0.01 ? "block" : "none";
+      urlText.style.opacity = textOp * (fillOp > 0.05 ? 1 : 0);
+      urlText.style.display = textOp > 0.01 ? "block" : "none";
+      echoVid.style.opacity = echoOp;
+      echoVid.style.display = echoOp > 0.0005 ? "block" : "none";
+    }
+
+    // ================= S6 · endcard ========================================
+    if (t >= B.pillHoldEnd) {
+      const bgIn = EASE.o(norm(t, B.pillHoldEnd + 0.4, B.urlMorphEnd - 0.2));
+      const bgOut = 1 - EASE.io(norm(t, B.loopStart, B.end - 0.1));
+      V.ecBg = bgIn * bgOut > 0.01 ? 1 : 0;
+      ecBg.style.opacity = bgIn * bgOut;
+      const els = [ecMark, ecBrand, ecTag, ecPills];
+      const out = 1 - EASE.io(norm(t, B.endcardOutStart, B.endcardOutStart + 0.5));
+      els.forEach((el, i) => {
+        const inU = EASE.o(norm(t, B.endcardIn + i * 0.14, B.endcardIn + i * 0.14 + 0.6));
+        const op = inU * out;
+        el.style.opacity = op;
+        el.style.display = op > 0.01 ? (el === ecPills ? "flex" : "block") : "none";
+        const base = el === ecPills ? "translate(-50%, -50%)" : "translate(-50%, -50%)";
+        el.style.transform = `${base} translateY(${(1 - inU) * 60}px)`;
+      });
+      V.ec = 1;
+    }
+
+    // ---- captions ----
+    let cap = null;
+    for (const c of CFG.captions) if (t >= c.t0 && t <= c.t1) { cap = c; break; }
+    if (cap) {
+      const inU = EASE.o(norm(t, cap.t0, cap.t0 + 0.3));
+      const outU = EASE.i(clamp01((cap.t1 - t) / 0.26));
+      capEl.style.opacity = Math.min(inU, outU);
+      capEl.style.transform = `translateX(-50%) translateY(${(1 - inU) * 42}px)`;
+      if (capBig.textContent !== cap.big) {
+        capBig.textContent = cap.big; capSub.textContent = cap.sub;
+        capSub.style.display = cap.sub ? "" : "none";
+      }
+    } else capEl.style.opacity = 0;
+
+    // ---- apply visibility ----
+    show(winHome, V.winHome); show(winDec, V.winDec); show(winFaq, V.winFaq);
+    show(aVideo, V.aVideo); show(aToggle, V.aToggle); show(aCta, V.aCta);
+    show(aHint, V.aHint); show(aResult, V.aResult); show(aFaqIcon, V.aFaqIcon);
+    show(morph, V.morph); show(ecBg, V.ecBg);
+    micro.forEach((m, i) => show(m, V.micro === i));
+    show(microScrim, V.micro >= 0);
+    if (!V.ec) [ecMark, ecBrand, ecTag, ecPills].forEach((el) => show(el, 0));
+
+    // ---- opening-clip video transport (deterministic) ----
+    syncVideo(t);
+  }
+
+  // video: currentTime = clamp(t - clipStart, 0, clipDur) when paused/scrubbed;
+  // element plays during master playback (drift-corrected).
+  function syncVideo(t) {
+    if (!videoOk) return;
+    const want = Math.max(0, Math.min(CFG.clip.dur - 0.04, t - CFG.clip.start));
+    const active = t < B.openEnd + 0.1;
+    if (playing && active) {
+      if (ballVid.paused) { try { ballVid.currentTime = want; ballVid.play().catch(() => {}); } catch {} }
+      else if (Math.abs(ballVid.currentTime - want) > 0.15) ballVid.currentTime = want;
+    } else {
+      if (!ballVid.paused) ballVid.pause();
+      if (Math.abs(ballVid.currentTime - want) > 0.02) {
+        try { ballVid.currentTime = want; } catch {}
+      }
+    }
+  }
+  const videoSeeked = (v) => new Promise((res) => {
+    if (!videoOk || v.readyState < 2) return res();
+    const to = setTimeout(done, 800);
+    function done() { clearTimeout(to); v.removeEventListener("seeked", done); res(); }
+    if (v.seeking) v.addEventListener("seeked", done); else done();
+  });
+
+  // ---------- master clock ----------
+  let playing = false, t0 = 0, tAcc = 0, stopAt = null;
+  const now = () => performance.now();
+  const curT = () => (playing ? Math.min(D, tAcc + now() - t0) : tAcc);
+  function seek(ms) { tAcc = Math.max(0, Math.min(D, ms)); t0 = now(); renderFrame(tAcc); sync(); }
+  function play() {
+    if (playing) return;
+    if (tAcc >= D) tAcc = 0;
+    playing = true; t0 = now(); $("btnPlay").textContent = "⏸ Pause"; tick();
+  }
+  function pause() {
+    tAcc = curT(); playing = false; $("btnPlay").textContent = "▶ Play";
+    if (videoOk && !ballVid.paused) ballVid.pause();
+  }
+  function tick() {
+    if (!playing) return;
+    const t = curT();
+    renderFrame(t); sync();
+    if (stopAt != null && t >= stopAt) { stopAt = null; pause(); return; }
+    if (t >= D) { pause(); return; }
+    requestAnimationFrame(tick);
+  }
+  function sync() {
+    const t = curT();
+    $("scrub").value = t; $("tlabel").textContent = (t / 1000).toFixed(2) + "s";
+  }
+
+  // ---------- controls ----------
+  $("btnPlay").onclick = () => (playing ? pause() : play());
+  $("btnRestart").onclick = () => { pause(); seek(0); };
+  $("btnTheme").onclick = () => setTheme(THEME === "dark" ? "light" : "dark")
+    .then(() => renderFrame(curT()));
+  $("scrub").oninput = (e) => { pause(); seek(+e.target.value); };
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === "r" || e.key === "R") { pause(); seek(0); }
+  });
+  if (REC) $("controls").style.display = "none";
+
+  // fit stage to window
+  function fit() {
+    const s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    frame.style.transform = `translate(-50%,-50%) scale(${s})`;
+    frame.style.transformOrigin = "center center";
+  }
+  addEventListener("resize", fit); fit();
+
+  // QA hook
+  window.__f5Seek = async (sec, theme) => {
+    if (theme && theme !== THEME) await setTheme(theme);
+    pause(); seek(sec * 1000);
+    if (videoOk) {
+      const want = Math.max(0, Math.min(CFG.clip.dur - 0.04, sec - CFG.clip.start));
+      try { ballVid.currentTime = want; } catch {}
+      await videoSeeked(ballVid);
+      await videoSeeked(echoVid);
+    }
+    await Promise.all(imgs.map((r) => r.el.decode().catch(() => {})));
+    renderFrame(sec * 1000);
+    return true;
+  };
+
+  // ---------- boot ----------
+  setTheme(THEME).then(() => {
+    $("loading").style.display = "none";
+    const tq = Q.get("t"), stq = Q.get("stop");
+    if (stq) stopAt = +stq;
+    seek(tq ? +tq : 0);
+    if (!tq || stq) { if (!Q.has("pause")) play(); }
+  });
+})();
+</script>
+</body>
+</html>

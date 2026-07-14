@@ -1,0 +1,87 @@
+{
+  "name": "le-8-4-reverse-assembly-implosion",
+  "technique": "Layer Explosion / Reverse Assembly",
+  "story": "The Tip Calculation FAQ page starts exploded and assembles itself: layers collapse to Z=0 while the camera settles head-on.",
+  "duration": 8,
+  "captureGuard": {
+    "networkIdleMs": 500,
+    "documentFontsReady": true,
+    "imagesDecoded": true,
+    "noActiveAnimations": true,
+    "layoutShiftQuietMs": 500,
+    "postClickSettle": "wait for triggered animation + DOM mutation to finish before capture",
+    "note": "final stable DOM captured first, layers derived from it"
+  },
+  "shots": [
+    {
+      "scene": "faq-ex",
+      "perspective": 1300,
+      "tilt": {
+        "rotateX": 55,
+        "rotateZ": -45,
+        "outro": {
+          "start": 0.8,
+          "dur": 1.8,
+          "easing": "ease-in-out-cubic"
+        }
+      },
+      "explode": {
+        "start": 0.8,
+        "dur": 1.8,
+        "easing": "ease-in-out-cubic",
+        "reverse": true
+      },
+      "layers": [
+        {
+          "id": "bg",
+          "z": 0
+        },
+        {
+          "id": "block2",
+          "z": 160
+        },
+        {
+          "id": "heading",
+          "z": 300
+        },
+        {
+          "id": "nav",
+          "z": 430
+        }
+      ],
+      "camera": {
+        "arcDeg": 12,
+        "start": 0,
+        "dur": 2.6,
+        "easing": "ease-in-out-sine",
+        "settle": true
+      },
+      "dolly": {
+        "from": 1.05,
+        "to": 1
+      },
+      "shadow": 1
+    }
+  ],
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "8.4 REVERSE ASSEMBLY · collapse → Z0 · ease-in-out-cubic · 1.8s",
+      "in": 0.4,
+      "out": 7.6
+    },
+    {
+      "kind": "caption",
+      "text": "Interactive FAQs — built for real questions.",
+      "in": 3.2,
+      "out": 5.6
+    },
+    {
+      "kind": "caption",
+      "text": "How much tip should I leave?",
+      "in": 5.9,
+      "out": 7.5,
+      "emphasis": true
+    }
+  ]
+}

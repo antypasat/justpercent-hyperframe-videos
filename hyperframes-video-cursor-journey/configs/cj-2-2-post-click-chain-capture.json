@@ -1,0 +1,263 @@
+{
+  "hyperframes": "1.0",
+  "name": "cj-2-2-post-click-chain-capture",
+  "technique": "Cursor Journey / Post-Click Chain Capture",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/decreased-value-calculator/",
+    "locale": "en-US",
+    "flow": "Homepage → click Solution Card “Apply My Coupon” — the click mutates the DOM (navigation) and the next frame was captured only after the new page fully settled: Value Decrease Calculator pre-filled $100 − 20% = $80.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "afterClick": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 8,
+  "states": {
+    "home": {
+      "asset": "assets/s-home-top.png",
+      "w": 1600,
+      "h": 900
+    },
+    "dec": {
+      "asset": "assets/s-dec-arrived.png",
+      "w": 1600,
+      "h": 900
+    }
+  },
+  "swaps": [
+    {
+      "t": 0,
+      "state": "home",
+      "fx": "cut",
+      "dur": 0
+    },
+    {
+      "t": 2.75,
+      "state": "dec",
+      "fx": "zoom",
+      "dur": 0.6
+    }
+  ],
+  "cursor": [
+    {
+      "t": 0,
+      "x": 320,
+      "y": 190
+    },
+    {
+      "t": 2.1,
+      "x": 681,
+      "y": 471,
+      "cp": [
+        [
+          240,
+          -40
+        ],
+        [
+          -160,
+          -130
+        ]
+      ]
+    },
+    {
+      "t": 2.55,
+      "x": 681,
+      "y": 471
+    },
+    {
+      "t": 2.85,
+      "x": 700,
+      "y": 300,
+      "jump": true
+    },
+    {
+      "t": 4.1,
+      "x": 570,
+      "y": 417,
+      "cp": [
+        [
+          -160,
+          60
+        ],
+        [
+          -60,
+          -90
+        ]
+      ]
+    },
+    {
+      "t": 4.7,
+      "x": 570,
+      "y": 417
+    },
+    {
+      "t": 5.4,
+      "x": 827,
+      "y": 417,
+      "cp": [
+        [
+          90,
+          70
+        ],
+        [
+          -90,
+          70
+        ]
+      ]
+    },
+    {
+      "t": 5.9,
+      "x": 827,
+      "y": 417
+    },
+    {
+      "t": 6.7,
+      "x": 1019,
+      "y": 417,
+      "cp": [
+        [
+          70,
+          -60
+        ],
+        [
+          -70,
+          -60
+        ]
+      ]
+    },
+    {
+      "t": 8,
+      "x": 1019,
+      "y": 417
+    }
+  ],
+  "camera": {
+    "follow": {
+      "mode": "cursor",
+      "stiffness": 80,
+      "damping": "spring",
+      "offset": {
+        "x": -130,
+        "y": 0
+      }
+    },
+    "scaleTrack": [
+      {
+        "t": 0,
+        "s": 1.12
+      },
+      {
+        "t": 1.6,
+        "s": 1.12
+      },
+      {
+        "t": 2.5,
+        "s": 1.6,
+        "ease": "ease-in-out-cubic"
+      },
+      {
+        "t": 2.9,
+        "s": 1.28,
+        "ease": "ease-out-cubic"
+      },
+      {
+        "t": 6.4,
+        "s": 1.28
+      },
+      {
+        "t": 7.3,
+        "s": 1.6,
+        "ease": "ease-in-out-cubic"
+      }
+    ]
+  },
+  "events": [
+    {
+      "kind": "ring",
+      "t0": 1.9,
+      "t1": 2.6,
+      "rect": {
+        "x": 436,
+        "y": 348,
+        "w": 360,
+        "h": 155
+      }
+    },
+    {
+      "kind": "click",
+      "t": 2.55,
+      "x": 681,
+      "y": 471
+    },
+    {
+      "kind": "glow",
+      "t0": 4.1,
+      "t1": 4.9,
+      "rect": {
+        "x": 506,
+        "y": 396,
+        "w": 128,
+        "h": 42
+      }
+    },
+    {
+      "kind": "glow",
+      "t0": 5.4,
+      "t1": 6.1,
+      "rect": {
+        "x": 763,
+        "y": 396,
+        "w": 128,
+        "h": 42
+      }
+    },
+    {
+      "kind": "ring",
+      "t0": 6.8,
+      "t1": 7.9,
+      "rect": {
+        "x": 949,
+        "y": 393,
+        "w": 140,
+        "h": 48
+      }
+    }
+  ],
+  "fx": {
+    "letterbox": true,
+    "vignette": true,
+    "grain": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Home → “Apply My Coupon” → Value Decrease",
+      "in": 0.2,
+      "out": 7.9
+    },
+    {
+      "kind": "caption",
+      "text": "Have a coupon — 20% off?",
+      "in": 0.4,
+      "out": 2.3
+    },
+    {
+      "kind": "caption",
+      "text": "One tap on a Solution Card…",
+      "in": 2.5,
+      "out": 4.4
+    },
+    {
+      "kind": "caption",
+      "text": "…and your numbers are already there: $100 − 20% = $80.",
+      "in": 4.7,
+      "out": 7.9
+    }
+  ]
+}

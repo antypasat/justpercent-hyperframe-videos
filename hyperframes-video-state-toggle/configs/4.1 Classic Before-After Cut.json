@@ -1,0 +1,123 @@
+{
+  "name": "4.1 Classic Before/After Cut",
+  "technique": "State Toggle / Hard Cut",
+  "duration": 7,
+  "layers": {
+    "a": {
+      "asset": "assets/home-grid.png",
+      "h": 900
+    },
+    "b": {
+      "asset": "assets/dec-after-coupon.png",
+      "h": 900
+    }
+  },
+  "cam": {
+    "easing": "ease-in-out-cubic",
+    "keys": [
+      {
+        "t": 0,
+        "s": 1,
+        "fx": 800,
+        "fy": 450
+      },
+      {
+        "t": 1.6,
+        "s": 1.12,
+        "fx": 740,
+        "fy": 390
+      },
+      {
+        "t": 2.6,
+        "s": 1.8,
+        "fx": 681,
+        "fy": 300
+      },
+      {
+        "t": 3,
+        "s": 1.8,
+        "fx": 681,
+        "fy": 300
+      },
+      {
+        "t": 3.1,
+        "s": 1.85,
+        "fx": 681,
+        "fy": 300,
+        "e": "ease-out-cubic"
+      },
+      {
+        "t": 3.2,
+        "s": 1.8,
+        "fx": 700,
+        "fy": 330
+      },
+      {
+        "t": 3.25,
+        "s": 1.8,
+        "fx": 1010,
+        "fy": 420
+      },
+      {
+        "t": 5.2,
+        "s": 1,
+        "fx": 800,
+        "fy": 450,
+        "e": "ease-in-out-quart"
+      }
+    ]
+  },
+  "cursor": {
+    "easing": "ease-in-out-cubic",
+    "layer": "a",
+    "path": [
+      {
+        "t": 0.6,
+        "x": 430,
+        "y": 720
+      },
+      {
+        "t": 2.4,
+        "x": 681,
+        "y": 236
+      },
+      {
+        "t": 3.4,
+        "x": 681,
+        "y": 236
+      }
+    ],
+    "clickAt": 3
+  },
+  "toggle": {
+    "type": "cut",
+    "at": 3.1
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "TECHNIQUE 4 · STATE TOGGLE — HARD CUT",
+      "in": 0.4,
+      "out": 3
+    },
+    {
+      "kind": "caption",
+      "text": "Every Solution Card is a real-life problem.",
+      "in": 0.9,
+      "out": 2.7
+    },
+    {
+      "kind": "chip",
+      "text": "justpercent.com/decreased-value-calculator/",
+      "in": 3.5,
+      "out": 6.8
+    },
+    {
+      "kind": "caption",
+      "text": "$100 − 20% coupon → $80. Already solved.",
+      "emphasis": true,
+      "in": 4.1,
+      "out": 6.7
+    }
+  ]
+}

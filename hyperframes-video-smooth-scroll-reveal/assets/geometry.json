@@ -1,0 +1,1373 @@
+{
+  "us-home-full": {
+    "searchBox": {
+      "x": 461,
+      "y": 191,
+      "w": 678,
+      "h": 50
+    },
+    "quickExamples": {
+      "x": 436,
+      "y": 1211,
+      "w": 728,
+      "h": 624
+    },
+    "solutionGridDesktop": {
+      "x": 436,
+      "y": 348,
+      "w": 728,
+      "h": 807
+    },
+    "heading": {
+      "x": 436,
+      "y": 106,
+      "w": 728,
+      "h": 36
+    },
+    "__page": {
+      "scrollHeight": 5861,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    },
+    "solutionCards": [
+      {
+        "text": "Coupon Have a coupon — e.g. '20% off'? See what yo",
+        "x": 436,
+        "y": 348,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "text": "Sale Shopping the clearance rack? Find out exactly",
+        "x": 804,
+        "y": 348,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "text": "Tax In-store shopping? Calculate the total price w",
+        "x": 436,
+        "y": 511,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "text": "Tip Dining out or ordering in? Calculate the perfe",
+        "x": 804,
+        "y": 511,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "text": "Commission Closing a deal? Calculate your estimate",
+        "x": 436,
+        "y": 674,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "text": "Costs Facing a rent hike? Calculate the exact perc",
+        "x": 804,
+        "y": 674,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "text": "Salary Got a raise at work? See how much your new ",
+        "x": 436,
+        "y": 837,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "text": "Sales Tax Need the pre-tax price? Instantly calcul",
+        "x": 804,
+        "y": 837,
+        "w": 360,
+        "h": 155
+      },
+      {
+        "text": "Exam Finals coming up? Find the minimum score you ",
+        "x": 436,
+        "y": 1000,
+        "w": 360,
+        "h": 155
+      }
+    ]
+  },
+  "us-decreased-value-after-card-click": {
+    "card": {
+      "x": 436,
+      "y": 203,
+      "w": 728,
+      "h": 412
+    },
+    "helpPanel": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "result": {
+      "x": 961,
+      "y": 401,
+      "w": 116,
+      "h": 32
+    },
+    "heading": {
+      "x": 517,
+      "y": 238,
+      "w": 610,
+      "h": 28
+    },
+    "practicalUses": {
+      "x": 468,
+      "y": 827,
+      "w": 680,
+      "h": 96
+    },
+    "__page": {
+      "scrollHeight": 4610,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    },
+    "landmarks": {
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Value Decrease Calculator",
+          "x": 517,
+          "y": 238,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h2",
+          "text": "Help",
+          "x": 456,
+          "y": 711,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 456,
+          "y": 791,
+          "w": 122,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "How to Use",
+          "x": 456,
+          "y": 1535,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "How It Works",
+          "x": 456,
+          "y": 1747,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h2",
+          "text": "What Is a Value Decrease?",
+          "x": 454,
+          "y": 2178,
+          "w": 692,
+          "h": 32
+        },
+        {
+          "tag": "h3",
+          "text": "Definition",
+          "x": 454,
+          "y": 2226,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Common Applications",
+          "x": 454,
+          "y": 2494,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Mathematical Context",
+          "x": 454,
+          "y": 2862,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Need more percentage tools?",
+          "x": 454,
+          "y": 3170,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h2",
+          "text": "Requirements and Important Information",
+          "x": 456,
+          "y": 3720,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h2",
+          "text": "Helpful Calculator Features",
+          "x": 456,
+          "y": 4104,
+          "w": 412,
+          "h": 28
+        }
+      ],
+      "ctas": [
+        {
+          "tag": "a",
+          "text": "Basic Percentage",
+          "x": 724,
+          "y": 60,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Value",
+          "x": 724,
+          "y": 96,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Part-to-Whole Percentage",
+          "x": 724,
+          "y": 132,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Percentage Change",
+          "x": 724,
+          "y": 168,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Value Increase",
+          "x": 724,
+          "y": 204,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Increase",
+          "x": 724,
+          "y": 240,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Value Decrease",
+          "x": 724,
+          "y": 276,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Decrease",
+          "x": 724,
+          "y": 312,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "button",
+          "text": "Equation",
+          "x": 461,
+          "y": 316,
+          "w": 103,
+          "h": 30
+        },
+        {
+          "tag": "button",
+          "text": "Copy Copied!",
+          "x": 926,
+          "y": 440,
+          "w": 60,
+          "h": 24
+        },
+        {
+          "tag": "button",
+          "text": "Save Saved",
+          "x": 989,
+          "y": 442,
+          "w": 58,
+          "h": 20
+        },
+        {
+          "tag": "button",
+          "text": "Clear Cleared",
+          "x": 1051,
+          "y": 440,
+          "w": 61,
+          "h": 24
+        },
+        {
+          "tag": "button",
+          "text": "Prev",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "Next",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "Saved 0",
+          "x": 461,
+          "y": 560,
+          "w": 112,
+          "h": 30
+        },
+        {
+          "tag": "button",
+          "text": "Remove all",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Basic Percentage Calculator",
+          "x": 454,
+          "y": 3208,
+          "w": 201,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Part-to-Whole Percentage Calculator",
+          "x": 454,
+          "y": 3264,
+          "w": 264,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Original Value Calculator",
+          "x": 454,
+          "y": 3320,
+          "w": 176,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Percentage Change Calculator",
+          "x": 454,
+          "y": 3376,
+          "w": 216,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Value Increase Calculator",
+          "x": 454,
+          "y": 3432,
+          "w": 184,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Increase Calculator",
+          "x": 454,
+          "y": 3488,
+          "w": 251,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Decrease Calculator",
+          "x": 454,
+          "y": 3544,
+          "w": 255,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Basic Percentage",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Original Value",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Part-to-Whole Percentage",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Percentage Change",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    }
+  },
+  "us-faqs-index": {
+    "heading": {
+      "x": 436,
+      "y": 114,
+      "w": 728,
+      "h": 60
+    },
+    "__page": {
+      "scrollHeight": 13044,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    }
+  },
+  "us-increased-value-practical-use": {
+    "card": {
+      "x": 436,
+      "y": 110,
+      "w": 728,
+      "h": 590
+    },
+    "pinnedUse": {
+      "x": 468,
+      "y": 912,
+      "w": 680,
+      "h": 120
+    },
+    "result": {
+      "x": 958,
+      "y": 486,
+      "w": 116,
+      "h": 32
+    },
+    "heading": {
+      "x": 517,
+      "y": 145,
+      "w": 610,
+      "h": 28
+    },
+    "__page": {
+      "scrollHeight": 4701,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    },
+    "landmarks": {
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Value Increase Calculator",
+          "x": 517,
+          "y": 145,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h2",
+          "text": "Help",
+          "x": 456,
+          "y": 796,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 456,
+          "y": 876,
+          "w": 122,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "How to Use",
+          "x": 456,
+          "y": 1644,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "How It Works",
+          "x": 456,
+          "y": 1856,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h2",
+          "text": "What Is a Value Increase Calculation?",
+          "x": 454,
+          "y": 2287,
+          "w": 692,
+          "h": 32
+        },
+        {
+          "tag": "h3",
+          "text": "Definition",
+          "x": 454,
+          "y": 2335,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Common Applications",
+          "x": 454,
+          "y": 2655,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Mathematical Context",
+          "x": 454,
+          "y": 2927,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Need more percentage tools?",
+          "x": 454,
+          "y": 3261,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h2",
+          "text": "Requirements and Important Information",
+          "x": 456,
+          "y": 3811,
+          "w": 692,
+          "h": 28
+        },
+        {
+          "tag": "h2",
+          "text": "Helpful Calculator Features",
+          "x": 456,
+          "y": 4195,
+          "w": 412,
+          "h": 28
+        }
+      ],
+      "ctas": [
+        {
+          "tag": "a",
+          "text": "Basic Percentage",
+          "x": 724,
+          "y": 60,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Value",
+          "x": 724,
+          "y": 96,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Part-to-Whole Percentage",
+          "x": 724,
+          "y": 132,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Percentage Change",
+          "x": 724,
+          "y": 168,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Value Increase",
+          "x": 724,
+          "y": 204,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Increase",
+          "x": 724,
+          "y": 240,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Value Decrease",
+          "x": 724,
+          "y": 276,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Decrease",
+          "x": 724,
+          "y": 312,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "button",
+          "text": "Equation",
+          "x": 461,
+          "y": 401,
+          "w": 103,
+          "h": 30
+        },
+        {
+          "tag": "button",
+          "text": "Copy Copied!",
+          "x": 922,
+          "y": 525,
+          "w": 60,
+          "h": 24
+        },
+        {
+          "tag": "button",
+          "text": "Save Saved",
+          "x": 986,
+          "y": 527,
+          "w": 58,
+          "h": 20
+        },
+        {
+          "tag": "button",
+          "text": "Clear Cleared",
+          "x": 1048,
+          "y": 525,
+          "w": 61,
+          "h": 24
+        },
+        {
+          "tag": "button",
+          "text": "Prev",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "Next",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "Saved 0",
+          "x": 461,
+          "y": 645,
+          "w": 112,
+          "h": 30
+        },
+        {
+          "tag": "button",
+          "text": "Remove all",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Basic Percentage Calculator",
+          "x": 454,
+          "y": 3299,
+          "w": 201,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Part-to-Whole Percentage Calculator",
+          "x": 454,
+          "y": 3355,
+          "w": 264,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Original Value Calculator",
+          "x": 454,
+          "y": 3411,
+          "w": 176,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Percentage Change Calculator",
+          "x": 454,
+          "y": 3467,
+          "w": 216,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Value Decrease Calculator",
+          "x": 454,
+          "y": 3523,
+          "w": 188,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Increase Calculator",
+          "x": 454,
+          "y": 3579,
+          "w": 251,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Decrease Calculator",
+          "x": 454,
+          "y": 3635,
+          "w": 255,
+          "h": 20
+        },
+        {
+          "tag": "a",
+          "text": "Basic Percentage",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Original Value",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Part-to-Whole Percentage",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    }
+  },
+  "us-home-tip-pinned-full": {
+    "searchBox": {
+      "x": 461,
+      "y": 191,
+      "w": 678,
+      "h": 50
+    },
+    "pinnedUse": {
+      "x": 493,
+      "y": 2797,
+      "w": 630,
+      "h": 90
+    },
+    "activeCalc": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "__page": {
+      "scrollHeight": 6780,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    },
+    "landmarks": {
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Free, online percentage calculators",
+          "x": 436,
+          "y": 106,
+          "w": 728,
+          "h": 36
+        },
+        {
+          "tag": "h2",
+          "text": "What Can You Calculate?",
+          "x": 435,
+          "y": 347,
+          "w": 1,
+          "h": 24
+        },
+        {
+          "tag": "h2",
+          "text": "Pick a Calculator",
+          "x": 437,
+          "y": 1232,
+          "w": 726,
+          "h": 28
+        },
+        {
+          "tag": "h2",
+          "text": "Basic Percentage Calculator",
+          "x": 517,
+          "y": 1894,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "h2",
+          "text": "Part-to-Whole Percentage Calculator",
+          "x": 517,
+          "y": 3295,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "h2",
+          "text": "Percentage Change Calculator",
+          "x": 517,
+          "y": 3777,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "h2",
+          "text": "Value Increase Calculator",
+          "x": 517,
+          "y": 4259,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "h2",
+          "text": "Original Before Increase Calculator",
+          "x": 517,
+          "y": 4741,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "h2",
+          "text": "Value Decrease Calculator",
+          "x": 517,
+          "y": 5223,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "h2",
+          "text": "Original Before Decrease Calculator",
+          "x": 517,
+          "y": 5705,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "h2",
+          "text": "Original Value Calculator",
+          "x": 517,
+          "y": 6187,
+          "w": 610,
+          "h": 28
+        },
+        {
+          "tag": "h3",
+          "text": "Practical Uses",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        }
+      ],
+      "ctas": [
+        {
+          "tag": "a",
+          "text": "Basic Percentage",
+          "x": 724,
+          "y": 60,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Value",
+          "x": 724,
+          "y": 96,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Part-to-Whole Percentage",
+          "x": 724,
+          "y": 132,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Percentage Change",
+          "x": 724,
+          "y": 168,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Value Increase",
+          "x": 724,
+          "y": 204,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Increase",
+          "x": 724,
+          "y": 240,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Value Decrease",
+          "x": 724,
+          "y": 276,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Decrease",
+          "x": 724,
+          "y": 312,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "button",
+          "text": "All",
+          "x": 706,
+          "y": 291,
+          "w": 49,
+          "h": 32
+        },
+        {
+          "tag": "button",
+          "text": "Favorites",
+          "x": 755,
+          "y": 291,
+          "w": 139,
+          "h": 32
+        },
+        {
+          "tag": "button",
+          "text": "Apply My Coupon",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "See My Savings",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "Calculate Total Price",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "Calculate My Tip",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "See My Commission",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "See % Change",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "See My New Pay",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "Find Pre-Tax Price",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "Calculate My Score",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "button",
+          "text": "Apply My Coupon",
+          "x": 583,
+          "y": 452,
+          "w": 196,
+          "h": 38
+        },
+        {
+          "tag": "button",
+          "text": "See My Savings",
+          "x": 951,
+          "y": 452,
+          "w": 196,
+          "h": 38
+        },
+        {
+          "tag": "button",
+          "text": "Calculate Total Price",
+          "x": 583,
+          "y": 615,
+          "w": 196,
+          "h": 38
+        },
+        {
+          "tag": "button",
+          "text": "Calculate My Tip",
+          "x": 951,
+          "y": 615,
+          "w": 196,
+          "h": 38
+        },
+        {
+          "tag": "button",
+          "text": "See My Commission",
+          "x": 583,
+          "y": 778,
+          "w": 196,
+          "h": 38
+        }
+      ]
+    }
+  },
+  "us-faq-bill-splitting": {
+    "heading": {
+      "x": 436,
+      "y": 114,
+      "w": 728,
+      "h": 96
+    },
+    "breadcrumb": {
+      "x": 436,
+      "y": 61,
+      "w": 728,
+      "h": 28
+    },
+    "__page": {
+      "scrollHeight": 1055,
+      "viewportW": 1600,
+      "viewportH": 900,
+      "scrollY": 0
+    },
+    "landmarks": {
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "How much should each person pay when a bill is split by percentage? Pe",
+          "x": 436,
+          "y": 114,
+          "w": 728,
+          "h": 96
+        },
+        {
+          "tag": "h3",
+          "text": "My roommate and I are splitting the bills !function(){const t=300;docu",
+          "x": 453,
+          "y": 339,
+          "w": 694,
+          "h": 62
+        }
+      ],
+      "ctas": [
+        {
+          "tag": "a",
+          "text": "Basic Percentage",
+          "x": 724,
+          "y": 60,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Value",
+          "x": 724,
+          "y": 96,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Part-to-Whole Percentage",
+          "x": 724,
+          "y": 132,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Percentage Change",
+          "x": 724,
+          "y": 168,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Value Increase",
+          "x": 724,
+          "y": 204,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Increase",
+          "x": 724,
+          "y": 240,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Value Decrease",
+          "x": 724,
+          "y": 276,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Decrease",
+          "x": 724,
+          "y": 312,
+          "w": 222,
+          "h": 36
+        },
+        {
+          "tag": "button",
+          "text": "Calculation Details",
+          "x": 453,
+          "y": 592,
+          "w": 144,
+          "h": 28
+        },
+        {
+          "tag": "a",
+          "text": "Basic Percentage CALCULATOR",
+          "x": 652,
+          "y": 681,
+          "w": 196,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "text": "Basic Percentage",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Original Value",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Part-to-Whole Percentage",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Percentage Change",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Value Increase",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Increase",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Value Decrease",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "tag": "a",
+          "text": "Original Before Decrease",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    }
+  }
+}

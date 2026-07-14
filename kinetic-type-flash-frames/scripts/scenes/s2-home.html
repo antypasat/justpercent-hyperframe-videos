@@ -1,0 +1,167 @@
+<template id="s2-home-template">
+  <div data-composition-id="s2-home" data-start="0" data-width="1080" data-height="1920">
+    <div class="f-stage f-bg-light">
+      <div class="f-orb f-orb-v" style="width:820px;height:820px;top:-240px;left:-260px;opacity:.45"></div>
+      <div class="f-orb f-orb-c" style="width:700px;height:700px;bottom:-160px;right:-200px;opacity:.4"></div>
+      <div class="f-vignette" style="opacity:.3"></div>
+
+      <div class="f-url s2-url">
+        <svg class="f-url-lock" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="f-url-text"><b>justpercent.com</b>/</span>
+      </div>
+
+      <div class="f-win s2-win">
+        <div class="f-pg">
+          <div class="f-off" data-jp-scope>
+            {{FRAG:home-top-light}}
+            <div class="s2-ring"></div>
+            <div class="s2-cursor"></div>
+            <div class="s2-ripple"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="f-cap s2-cap1"><div class="f-cap-t">START FROM <em>YOUR PROBLEM</em></div></div>
+      <div class="f-cap s2-cap2"><div class="f-cap-t">Got a raise? <em>Tap.</em> That&rsquo;s it.</div></div>
+
+      <div class="f-flash s2-flash" style="background:#f8fafc"></div>
+    </div>
+
+    <style>
+      [data-composition-id="s2-home"] { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      [data-composition-id="s2-home"] .s2-ring {
+        position: absolute; z-index: 13001; border-radius: 14px;
+        border: 2.5px solid rgba(139,92,246,.95);
+        box-shadow: 0 0 0 4px rgba(139,92,246,.28), 0 0 20px rgba(139,92,246,.55);
+        opacity: 0; pointer-events: none; will-change: transform, opacity;
+      }
+      [data-composition-id="s2-home"] .s2-cursor {
+        position: absolute; z-index: 13003; width: 26px; height: 26px; border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.98), rgba(203,213,225,.9));
+        box-shadow: 0 3px 12px rgba(0,0,0,.45), 0 0 0 1.5px rgba(15,23,42,.35);
+        opacity: 0; will-change: transform, opacity;
+      }
+      [data-composition-id="s2-home"] .s2-ripple {
+        position: absolute; z-index: 13002; width: 26px; height: 26px; border-radius: 50%;
+        border: 2.5px solid rgba(124,58,237,.9);
+        opacity: 0; will-change: transform, opacity;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var R = '[data-composition-id="s2-home"] ';
+        var root = document.querySelector(R.trim());
+        var tl = gsap.timeline({ paused: true });
+
+        // --- locate the "Got a raise?" Salary solution card in the real DOM ---
+        var cards = root ? Array.prototype.slice.call(root.querySelectorAll('.solution-sticky-note')) : [];
+        var card = null, cta = null;
+        for (var i = 0; i < cards.length; i++) {
+          if (/Got a raise at work/.test(cards[i].textContent) &&
+              cards[i].offsetParent !== null && cards[i].offsetWidth > 0) { card = cards[i]; break; }
+        }
+        var off = root ? root.querySelector('.f-off') : null;
+        function pageTop(el, stop) {
+          var y = 0;
+          while (el && el !== stop) { y += el.offsetTop; el = el.offsetParent; }
+          return y;
+        }
+        var geo = { scrollTo: 0 };
+        var ring = R + '.s2-ring', cur = R + '.s2-cursor', rip = R + '.s2-ripple';
+        function layout() {
+          // re-find the card (visible mobile clone only)
+          card = null;
+          var cs = root ? Array.prototype.slice.call(root.querySelectorAll('.solution-sticky-note')) : [];
+          for (var i = 0; i < cs.length; i++) {
+            if (/Got a raise at work/.test(cs[i].textContent) &&
+                cs[i].offsetParent !== null && cs[i].offsetWidth > 0) { card = cs[i]; break; }
+          }
+          if (!card || !off) return;
+          cta = card.querySelector('.solution-cta-button');
+          var cTop = pageTop(card, off);
+          geo.scrollTo = Math.max(0, cTop - 175);        // card centered-ish in 560px viewport
+          var ringY = cTop - 7;
+          var ringX = card.offsetLeft - 7;
+          var ringW = card.offsetWidth + 14;
+          var ringH = card.offsetHeight + 14;
+          var tapX, tapY;
+          if (cta) {
+            tapY = pageTop(cta, off) + cta.offsetHeight / 2;
+            tapX = pageTop === null ? 0 : (function () {
+              var x = 0, el = cta;
+              while (el && el !== off) { x += el.offsetLeft; el = el.offsetParent; }
+              return x + cta.offsetWidth / 2;
+            })();
+          } else {
+            tapY = cTop + ringH * 0.7; tapX = ringX + ringW * 0.6;
+          }
+          gsap.set(ring, { left: ringX, top: ringY, width: ringW, height: ringH });
+          gsap.set(cur, { left: tapX - 13, top: tapY - 13 });
+          gsap.set(rip, { left: tapX - 13, top: tapY - 13 });
+        }
+        // The clip is display:none until its window starts, so geometry can only
+        // be measured once visible. Retry on every rendered frame until it works,
+        // then bake it in (idempotent, deterministic once layout is measurable).
+        var laidOut = false;
+        function tryLayout() {
+          if (laidOut) return;
+          if (!root || root.offsetParent === null && root.offsetWidth === 0) return;
+          layout();
+          if (geo.scrollTo > 0) { laidOut = true; tl.invalidate(); }
+        }
+        tryLayout();
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(tryLayout);
+
+        // layout sentinel: fires on every rendered frame of this scene
+        tl.to({ x: 0 }, { x: 1, duration: 6.8, ease: "none", onUpdate: tryLayout }, 0);
+
+        // --- entrance ---
+        tl.fromTo(R + '.s2-win',
+          { y: 220, opacity: 0, rotationX: 9, transformPerspective: 1600 },
+          { y: 0, opacity: 1, rotationX: 0, duration: 0.55, ease: "power3.out", immediateRender: true }, 0.02);
+        tl.fromTo(R + '.s2-url',
+          { y: -120, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 0.15);
+
+        // caption 1
+        tl.fromTo(R + '.s2-cap1', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.32, ease: "back.out(1.6)" }, 0.55);
+        tl.to(R + '.s2-cap1', { y: -40, opacity: 0, duration: 0.28, ease: "power2.in" }, 3.0);
+
+        // scroll down to the Salary card (function-based: resolved after relayout)
+        tl.fromTo(R + '.f-off', { top: 0 }, { top: function () { return -geo.scrollTo; }, duration: 1.5, ease: "power2.inOut" }, 0.9);
+
+        // highlight ring
+        tl.fromTo(ring, { opacity: 0, scale: 1.12 },
+          { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, 2.55);
+        tl.to(ring, { boxShadow: "0 0 0 8px rgba(139,92,246,.16), 0 0 30px rgba(139,92,246,.7)", duration: 0.35, yoyo: true, repeat: 1, ease: "sine.inOut" }, 2.85);
+
+        // cursor flies in and taps the CTA
+        tl.fromTo(cur, { opacity: 0, x: 180, y: 260 },
+          { opacity: 1, x: 0, y: 0, duration: 0.75, ease: "power2.inOut" }, 2.75);
+        tl.to(cur, { scale: 0.82, duration: 0.1, yoyo: true, repeat: 1, ease: "power1.inOut" }, 3.55);
+        if (card) tl.to(card, { scale: 0.975, transformOrigin: "50% 50%", duration: 0.11, yoyo: true, repeat: 1, ease: "power1.inOut" }, 3.55);
+        tl.fromTo(rip, { opacity: .9, scale: 1 }, { opacity: 0, scale: 3.4, duration: 0.5, ease: "power2.out" }, 3.6);
+
+        // caption 2
+        tl.fromTo(R + '.s2-cap2', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.32, ease: "back.out(1.6)" }, 3.95);
+        tl.to(R + '.s2-cap2', { y: -40, opacity: 0, duration: 0.26, ease: "power2.in" }, 6.15);
+
+        // exit: zoom punch into the card + flash => "navigation"
+        tl.to(cur, { opacity: 0, duration: 0.2 }, 6.0);
+        tl.to(ring, { opacity: 0, duration: 0.2 }, 6.0);
+        tl.to(R + '.s2-win', { scale: 1.24, y: -80, opacity: 0, duration: 0.42, ease: "power2.in" }, 6.35);
+        tl.to(R + '.s2-url', { y: -120, opacity: 0, duration: 0.3, ease: "power2.in" }, 6.4);
+        tl.set(R + '.s2-flash', { opacity: 1 }, 6.70);
+        tl.set(R + '.s2-flash', { opacity: 0 }, 6.78);
+
+        tl.set({}, {}, 6.8);
+        window.__timelines["s2-home"] = tl;
+      })();
+    </script>
+  </div>
+</template>

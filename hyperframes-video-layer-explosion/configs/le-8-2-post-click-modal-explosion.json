@@ -1,0 +1,86 @@
+{
+  "name": "le-8-2-post-click-modal-explosion",
+  "technique": "Layer Explosion / Post-Click Modal",
+  "story": "Practical Use clicked below the Value Increase calculator: the pinned example (modal) leaps off the page with real numbers filled in ($5,000 + 25% → $6,250).",
+  "duration": 8,
+  "captureGuard": {
+    "networkIdleMs": 500,
+    "documentFontsReady": true,
+    "imagesDecoded": true,
+    "noActiveAnimations": true,
+    "layoutShiftQuietMs": 500,
+    "postClickSettle": "wait for triggered animation + DOM mutation to finish before capture"
+  },
+  "shots": [
+    {
+      "scene": "calc-pu-open",
+      "perspective": 1200,
+      "tilt": {
+        "rotateX": 50,
+        "rotateZ": -38,
+        "intro": {
+          "start": 0.4,
+          "dur": 0.9,
+          "easing": "ease-in-out-cubic"
+        }
+      },
+      "explode": {
+        "start": 1.1,
+        "dur": 1.4,
+        "easing": "ease-out-elastic",
+        "stagger": 0
+      },
+      "layers": [
+        {
+          "id": "bg",
+          "z": 0
+        },
+        {
+          "id": "nav",
+          "z": 90
+        },
+        {
+          "id": "panel",
+          "z": 180
+        },
+        {
+          "id": "pu-open",
+          "z": 360,
+          "highlight": true
+        }
+      ],
+      "camera": {
+        "arcDeg": 20,
+        "start": 1.1,
+        "dur": 6.5,
+        "easing": "ease-in-out-sine"
+      },
+      "dolly": {
+        "from": 1,
+        "to": 1.09
+      },
+      "shadow": 1.15
+    }
+  ],
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "8.2 POST-CLICK MODAL · Z 0/180/360 · ease-out-elastic · 20° arc",
+      "in": 0.4,
+      "out": 7.6
+    },
+    {
+      "kind": "caption",
+      "text": "Click a Practical Use — real numbers fill in.",
+      "in": 1.6,
+      "out": 4.4
+    },
+    {
+      "kind": "caption",
+      "text": "$5,000 + 25% = $6,250",
+      "in": 4.8,
+      "out": 7.5,
+      "emphasis": true
+    }
+  ]
+}

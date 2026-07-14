@@ -1,0 +1,118 @@
+{
+  "name": "4.2 Live Post-Click Capture",
+  "technique": "State Toggle / Real DOM Mutation",
+  "duration": 7.5,
+  "layers": {
+    "a": {
+      "asset": "assets/inc-pu-list.png",
+      "h": 900
+    },
+    "b": {
+      "asset": "assets/inc-pu-after.png",
+      "h": 900
+    }
+  },
+  "cam": {
+    "easing": "ease-in-out-cubic",
+    "keys": [
+      {
+        "t": 0,
+        "s": 1.22,
+        "fx": 800,
+        "fy": 430
+      },
+      {
+        "t": 2.6,
+        "s": 1.35,
+        "fx": 808,
+        "fy": 480
+      },
+      {
+        "t": 2.8,
+        "s": 1.35,
+        "fx": 808,
+        "fy": 480
+      },
+      {
+        "t": 2.9,
+        "s": 1.43,
+        "fx": 808,
+        "fy": 490,
+        "e": "ease-out-cubic"
+      },
+      {
+        "t": 3.05,
+        "s": 1.35,
+        "fx": 808,
+        "fy": 480
+      },
+      {
+        "t": 3.45,
+        "s": 1.5,
+        "fx": 1000,
+        "fy": 470
+      },
+      {
+        "t": 5.4,
+        "s": 1,
+        "fx": 800,
+        "fy": 450,
+        "e": "ease-in-out-quart"
+      }
+    ]
+  },
+  "cursor": {
+    "easing": "ease-in-out-cubic",
+    "layer": "a",
+    "path": [
+      {
+        "t": 0.6,
+        "x": 520,
+        "y": 800
+      },
+      {
+        "t": 2.5,
+        "x": 808,
+        "y": 495
+      },
+      {
+        "t": 3.3,
+        "x": 808,
+        "y": 495
+      }
+    ],
+    "clickAt": 2.8
+  },
+  "toggle": {
+    "type": "whip",
+    "at": 3.05,
+    "dur": 0.4
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "LIVE POST-CLICK CAPTURE · REAL DOM",
+      "in": 0.4,
+      "out": 3
+    },
+    {
+      "kind": "caption",
+      "text": "Tap a Practical Use under any calculator…",
+      "in": 0.9,
+      "out": 2.8
+    },
+    {
+      "kind": "chip",
+      "text": "justpercent.com/increased-value-calculator/",
+      "in": 3.6,
+      "out": 7.3
+    },
+    {
+      "kind": "caption",
+      "text": "$5,000 + 25% → $6,250 — filled in for you.",
+      "emphasis": true,
+      "in": 4.4,
+      "out": 7.2
+    }
+  ]
+}

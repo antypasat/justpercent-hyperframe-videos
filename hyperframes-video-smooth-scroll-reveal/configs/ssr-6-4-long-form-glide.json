@@ -1,0 +1,69 @@
+{
+  "hyperframes": "1.0",
+  "name": "ssr-6-4-long-form-glide",
+  "technique": "Smooth Scroll Reveal / Parallax-Free Long Form",
+  "meta": {
+    "product": "Just Percent",
+    "sourceUrl": "https://justpercent.com/increased-value-calculator/",
+    "displayUrl": "justpercent.com/increased-value-calculator",
+    "locale": "en-US",
+    "flow": "Value Increase Calculator → clicked Practical Use 'Budget Boost' below the calculator → inputs fill themselves: $5,000 + 25% = $6,250. Then the long-form guide (How to Use, How It Works) glides past.",
+    "captureGuard": {
+      "networkIdleMs": 500,
+      "fontsReady": true,
+      "imagesDecoded": true,
+      "noActiveTransitions": true,
+      "layoutShiftQuietMs": 500,
+      "afterClick": true,
+      "neverCaptureMidTransition": true
+    }
+  },
+  "duration": 4.5,
+  "page": {
+    "asset": "assets/us-increased-value-practical-use.png",
+    "w": 1600,
+    "h": 4701
+  },
+  "camera": {
+    "easing": "ease-in-out-sine",
+    "path": [
+      {
+        "t": 0,
+        "y": 0,
+        "s": 1.2
+      },
+      {
+        "t": 4.5,
+        "y": 1500,
+        "s": 1.2
+      }
+    ]
+  },
+  "cursor": null,
+  "highlights": [],
+  "fx": {
+    "vignette": true,
+    "grain": true,
+    "letterbox": true
+  },
+  "overlays": [
+    {
+      "kind": "chip",
+      "text": "Value Increase Calculator → Practical Use: “Budget Boost”",
+      "in": 0.2,
+      "out": 4.4
+    },
+    {
+      "kind": "caption",
+      "text": "Tapped once below the calculator: $5,000 + 25% = $6,250.",
+      "in": 0.5,
+      "out": 2.3
+    },
+    {
+      "kind": "caption",
+      "text": "The whole guide reads like a page — because it is one.",
+      "in": 2.7,
+      "out": 4.3
+    }
+  ]
+}

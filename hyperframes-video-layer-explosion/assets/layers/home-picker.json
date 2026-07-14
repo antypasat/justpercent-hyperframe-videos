@@ -1,0 +1,31 @@
+{
+  "scene": "home-picker",
+  "url": "https://justpercent.com/?noredirect#all",
+  "viewport": {
+    "width": 1600,
+    "height": 900
+  },
+  "dpr": 2,
+  "layers": [
+    {
+      "id": "nav",
+      "sel": "nav",
+      "box": {
+        "x": 436,
+        "y": 0,
+        "w": 728,
+        "h": 61
+      }
+    },
+    {
+      "id": "picker",
+      "sel": "#quick-example-cards",
+      "box": {
+        "x": 436,
+        "y": 183,
+        "w": 728,
+        "h": 624
+      }
+    }
+  ]
+}

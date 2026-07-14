@@ -1,0 +1,224 @@
+<template id="s5-practical-template">
+  <div data-composition-id="s5-practical" data-start="0" data-width="1080" data-height="1920">
+    <div class="f-stage f-bg-dark">
+      <div class="f-orb f-orb-v" style="width:900px;height:900px;top:-260px;left:-280px;opacity:.55"></div>
+      <div class="f-orb f-orb-c" style="width:760px;height:760px;bottom:-180px;right:-220px;opacity:.4"></div>
+      <div class="f-vignette" style="opacity:.5"></div>
+
+      <div class="f-url s5-url">
+        <svg class="f-url-lock" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="f-url-text"><b>justpercent.com</b>/increased-value-calculator/</span>
+      </div>
+
+      <!-- state A: practical uses list below the calculator -->
+      <div class="f-win s5-winA">
+        <div class="f-pg">
+          <div class="f-off" data-jp-scope>
+            {{FRAG:calc-pulist-dark}}
+            <div class="s5-ring s5-ringA"></div>
+            <div class="s5-cursor"></div>
+            <div class="s5-ripple"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- state B: the practical use pinned above the calculator -->
+      <div class="f-win s5-winB" style="opacity:0">
+        <div class="f-pg">
+          <div class="f-off" data-jp-scope>
+            {{FRAG:calc-pinned-dark}}
+            <div class="s5-ring s5-ringB"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="f-cap s5-cap1"><div class="f-cap-t">TAP A <em>REAL-LIFE</em> EXAMPLE&hellip;</div></div>
+      <div class="f-cap s5-cap2"><div class="f-cap-t">&hellip;it pins itself <em>above the calculator</em></div></div>
+      <div class="f-cap s5-cap3"><div class="f-cap-t">&hellip;then fills it in. <em>Live.</em></div></div>
+      <div class="f-cap s5-cap4"><div class="f-cap-t s5-big"><em>$54,000.</em> DONE.</div></div>
+
+      <div class="f-flash s5-flash" style="background:#0b0d1c"></div>
+    </div>
+
+    <style>
+      [data-composition-id="s5-practical"] { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      [data-composition-id="s5-practical"] .s5-ring {
+        position: absolute; z-index: 13001; border-radius: 12px;
+        border: 2.5px solid rgba(167,139,250,.95);
+        box-shadow: 0 0 0 4px rgba(139,92,246,.3), 0 0 22px rgba(139,92,246,.6);
+        opacity: 0; pointer-events: none; will-change: transform, opacity;
+      }
+      [data-composition-id="s5-practical"] .s5-cursor {
+        position: absolute; z-index: 13003; width: 26px; height: 26px; border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.98), rgba(203,213,225,.9));
+        box-shadow: 0 3px 12px rgba(0,0,0,.6), 0 0 0 1.5px rgba(255,255,255,.28);
+        opacity: 0; will-change: transform, opacity;
+      }
+      [data-composition-id="s5-practical"] .s5-ripple {
+        position: absolute; z-index: 13002; width: 26px; height: 26px; border-radius: 50%;
+        border: 2.5px solid rgba(167,139,250,.95);
+        opacity: 0; will-change: transform, opacity;
+      }
+      [data-composition-id="s5-practical"] .s5-big { font-size: 64px; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        var R = '[data-composition-id="s5-practical"] ';
+        var root = document.querySelector(R.trim());
+        var tl = gsap.timeline({ paused: true });
+
+        function pageTop(el, stop) {
+          var y = 0;
+          while (el && el !== stop) { y += el.offsetTop; el = el.offsetParent; }
+          return y;
+        }
+
+        // ---------- state A: the "Salary Increase" practical-use row ----------
+        var offA = root ? root.querySelector('.s5-winA .f-off') : null;
+        var offB = root ? root.querySelector('.s5-winB .f-off') : null;
+        var inOrig = offB ? offB.querySelector('#increased-value-original-input') : null;
+        var inPct = offB ? offB.querySelector('#increased-value-percentage-input') : null;
+        var inRes = offB ? offB.querySelector('#increased-value-result') : null;
+        // enforce the mandated order: click -> banner visible -> THEN values fill in
+        if (inOrig) inOrig.value = '';
+        if (inPct) inPct.value = '';
+        if (inRes) inRes.value = '';
+
+        var geo = { scrollA: 1050, ok: false };
+        function pageLeft(el, stop) {
+          var x = 0;
+          while (el && el !== stop) { x += el.offsetLeft; el = el.offsetParent; }
+          return x;
+        }
+        function layout() {
+          if (offA) {
+            var rows = Array.prototype.slice.call(offA.querySelectorAll('.practical-use--interactive'));
+            var row = null;
+            for (var i = 0; i < rows.length; i++) {
+              if (/Salary Increase/.test(rows[i].textContent) && rows[i].offsetParent !== null) { row = rows[i]; break; }
+            }
+            if (row) {
+              geo.ok = true;
+              var rTop = pageTop(row, offA);
+              geo.scrollA = Math.max(0, rTop - 300);
+              var rowX = Math.max(6, pageLeft(row, offA) - 6);
+              gsap.set(R + '.s5-ringA', { left: rowX, top: rTop - 6, width: row.offsetWidth + 12, height: row.offsetHeight + 12 });
+              var tapX = rowX + 6 + Math.min(row.offsetWidth * 0.5, 190);
+              var tapY = rTop + row.offsetHeight / 2;
+              gsap.set(R + '.s5-cursor', { left: tapX - 13, top: tapY - 13 });
+              gsap.set(R + '.s5-ripple', { left: tapX - 13, top: tapY - 13 });
+            }
+          }
+          if (offB) {
+            var banner = null;
+            var candidates = Array.prototype.slice.call(offB.querySelectorAll('div,section'));
+            for (var j = 0; j < candidates.length; j++) {
+              var c = candidates[j];
+              if (c.children.length && /SELECTED PRACTICAL USE EXAMPLE/.test(c.textContent) && c.offsetHeight > 40 && c.offsetHeight < 400) {
+                banner = c; break;
+              }
+            }
+            if (banner) {
+              gsap.set(R + '.s5-ringB', {
+                left: Math.max(6, pageLeft(banner, offB) - 6), top: pageTop(banner, offB) - 6,
+                width: banner.offsetWidth + 12, height: banner.offsetHeight + 12, borderRadius: 16
+              });
+            }
+          }
+        }
+        var laidOut = false;
+        function tryLayout() {
+          if (laidOut) return;
+          if (!root || (root.offsetParent === null && root.offsetWidth === 0)) return;
+          layout();
+          if (geo.ok) { laidOut = true; tl.invalidate(); }
+        }
+        tryLayout();
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(tryLayout);
+
+        // ================= timeline =================
+        // layout sentinel (see s2): retry geometry once the clip is visible
+        tl.to({ x: 0 }, { x: 1, duration: 8.8, ease: "none", onUpdate: tryLayout }, 0);
+
+        // entrance out of the flip
+        tl.fromTo(R + '.s5-winA',
+          { scale: 0.92, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.4, ease: "power2.out", immediateRender: true }, 0.0);
+        tl.fromTo(R + '.s5-url', { y: -120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 0.05);
+        tl.fromTo(R + '.s5-winA .f-off',
+          { top: function () { return -Math.max(0, geo.scrollA - 260); } },
+          { top: function () { return -geo.scrollA; }, duration: 0.7, ease: "power2.inOut", immediateRender: true }, 0.15);
+
+        // caption 1
+        tl.fromTo(R + '.s5-cap1', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.35);
+        tl.to(R + '.s5-cap1', { y: -40, opacity: 0, duration: 0.24, ease: "power2.in" }, 2.1);
+
+        // ring + cursor tap on the practical use row  (a: the CLICK)
+        tl.fromTo(R + '.s5-ringA', { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" }, 0.95);
+        tl.fromTo(R + '.s5-cursor', { opacity: 0, x: 170, y: 240 }, { opacity: 1, x: 0, y: 0, duration: 0.7, ease: "power2.inOut" }, 1.0);
+        tl.to(R + '.s5-cursor', { scale: 0.82, duration: 0.1, yoyo: true, repeat: 1, ease: "power1.inOut" }, 1.8);
+        tl.fromTo(R + '.s5-ripple', { opacity: .9, scale: 1 }, { opacity: 0, scale: 3.4, duration: 0.45, ease: "power2.out" }, 1.85);
+
+        // (b: the app pins the example ABOVE the calculator — state swap A -> B)
+        tl.to(R + '.s5-winA', { opacity: 0, y: 26, duration: 0.22, ease: "power1.in" }, 2.18);
+        tl.fromTo(R + '.s5-winB', { opacity: 0, y: -26 }, { opacity: 1, y: 0, duration: 0.26, ease: "power2.out", immediateRender: true }, 2.30);
+        tl.fromTo(R + '.s5-winB .f-off', { top: 0 }, { top: 0, duration: 0.01 }, 2.30);
+
+        // banner spotlight
+        tl.fromTo(R + '.s5-ringB', { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, 2.62);
+        tl.to(R + '.s5-ringB', { opacity: 0, duration: 0.3, ease: "power1.in" }, 3.9);
+
+        // caption 2
+        tl.fromTo(R + '.s5-cap2', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 2.55);
+        tl.to(R + '.s5-cap2', { y: -40, opacity: 0, duration: 0.24, ease: "power2.in" }, 4.35);
+
+        // (c: fields type themselves, answer computes live)
+        var typing = { orig: 0, pct: 0, res: 0 };
+        if (inOrig) {
+          tl.to(typing, {
+            orig: 5, duration: 0.9, ease: "none",
+            onUpdate: function () { inOrig.value = '50000'.slice(0, Math.round(typing.orig)); }
+          }, 4.10);
+        }
+        if (inPct) {
+          tl.to(typing, {
+            pct: 1, duration: 0.25, ease: "none",
+            onUpdate: function () { inPct.value = '8'.slice(0, Math.round(typing.pct)); }
+          }, 5.25);
+        }
+        if (inRes) {
+          tl.to(typing, {
+            res: 54000, duration: 0.85, ease: "power2.out",
+            onUpdate: function () { var v = Math.round(typing.res / 50) * 50; inRes.value = v <= 0 ? '' : String(v); }
+          }, 5.75);
+        }
+
+        // caption 3
+        tl.fromTo(R + '.s5-cap3', { y: 90, opacity: 0, scale: .92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 4.55);
+        tl.to(R + '.s5-cap3', { y: -40, opacity: 0, duration: 0.24, ease: "power2.in" }, 6.35);
+
+        // caption 4 — the money shot, with a font-bend pulse
+        tl.fromTo(R + '.s5-cap4', { y: 90, opacity: 0, scale: .9 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.34, ease: "back.out(1.8)" }, 6.65);
+        tl.fromTo(R + '.s5-cap4 .f-cap-t', { scaleY: 1 }, { scaleY: 1.14, duration: 0.09, yoyo: true, repeat: 1, ease: "power1.inOut" }, 7.0);
+        tl.fromTo(R + '.s5-cap4 .f-cap-t', { skewX: 0 }, { skewX: -6, duration: 0.08, yoyo: true, repeat: 1, ease: "power1.inOut" }, 7.2);
+        tl.to(R + '.s5-cap4', { y: -40, opacity: 0, duration: 0.24, ease: "power2.in" }, 8.25);
+
+        // exit
+        tl.to(R + '.s5-winB', { x: -560, opacity: 0, duration: 0.4, ease: "power2.in" }, 8.35);
+        tl.to(R + '.s5-url', { y: -120, opacity: 0, duration: 0.3, ease: "power2.in" }, 8.4);
+        tl.set(R + '.s5-flash', { opacity: 1 }, 8.70);
+        tl.set(R + '.s5-flash', { opacity: 0 }, 8.78);
+
+        tl.set({}, {}, 8.8);
+        window.__timelines["s5-practical"] = tl;
+      })();
+    </script>
+  </div>
+</template>

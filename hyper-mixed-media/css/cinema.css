@@ -1,0 +1,272 @@
+/* ============================================================
+   cinema.css — stage, phone frame, URL pill, captions, brand bar,
+   endcard. (App UI replicas live in app.css; scrapbook / glitch
+   mixed-media layers live in scrapbook.css.)
+   ============================================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { background: #000; }
+
+/* ---------- fonts (from the app's own @fontsource packages) ---------- */
+@font-face { font-family: "IBM Plex Sans"; font-weight: 300; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-300-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-weight: 700; font-style: normal; src: url("../assets/fonts/ibm-plex-sans-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 300; font-style: normal; src: url("../assets/fonts/space-grotesk-latin-300-normal.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 400; font-style: normal; src: url("../assets/fonts/space-grotesk-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 500; font-style: normal; src: url("../assets/fonts/space-grotesk-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 700; font-style: normal; src: url("../assets/fonts/space-grotesk-latin-700-normal.woff2") format("woff2"); }
+
+/* ---------- stage ---------- */
+/* The stage IS its declared composition size (1080×1920). All content is
+   authored in a 540×960 design space inside #view, scaled 2× — so the
+   composition fills the full canvas in any HyperFrames preview. */
+#stage {
+  position: relative;
+  width: 1080px; height: 1920px;
+  overflow: hidden;
+  background: #EFEAE0;                 /* scrapbook paper base (light) */
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+}
+#stage.dark { background: #120B22; }
+#view {
+  position: absolute; left: 0; top: 0;
+  width: 540px; height: 960px;
+  transform: scale(2);
+  transform-origin: 0 0;
+}
+
+/* ---------- phone (the app, taped into the scrapbook) ---------- */
+#phone-tilt {
+  position: absolute; left: 20px; top: 60px;
+  width: 500px; height: 700px;
+  perspective: 1400px;
+  will-change: transform, opacity;
+  z-index: 10;
+}
+#phone {
+  position: relative;
+  width: 500px; height: 700px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #F8F9FE;                 /* app --bg (light) */
+  border: 1px solid rgba(15, 23, 42, 0.22);
+  box-shadow:
+    0 26px 60px rgba(23, 12, 51, 0.35),
+    0 4px 0 rgba(15, 23, 42, 0.10);
+  will-change: transform, filter;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+#stage.dark #phone {
+  background: #0A0514;
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.65), 0 0 42px rgba(124, 58, 237, 0.22);
+}
+
+/* the app's own atmospheric backdrop (Layout.astro mesh gradients) */
+#app-bg-light, #app-bg-dark {
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+#app-bg-light {
+  background:
+    radial-gradient(at 20% 30%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 20%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+    radial-gradient(at 40% 70%, rgba(16, 185, 129, 0.10) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
+    #F8F9FE;
+}
+#app-bg-dark {
+  opacity: 0;
+  background:
+    radial-gradient(at 15% 25%, rgba(124, 58, 237, 0.25) 0px, transparent 45%),
+    radial-gradient(at 85% 15%, rgba(14, 165, 233, 0.20) 0px, transparent 45%),
+    radial-gradient(at 35% 75%, rgba(34, 197, 94, 0.18) 0px, transparent 45%),
+    radial-gradient(ellipse at top, #1A0F2E 0%, #0A0514 100%);
+}
+
+/* scaled app viewport: app pages are authored at 430px width (their real
+   mobile proportions) and scaled to fill the 500px phone */
+#phone-scale {
+  position: absolute; left: 0; top: 0;
+  width: 430px; height: 602px;
+  transform: scale(1.16279);
+  transform-origin: 0 0;
+}
+.screen {
+  position: absolute; left: 0; top: 0;
+  width: 430px;
+  will-change: transform;
+}
+.layer { position: relative; }
+/* the app's nav is position:fixed — its layer is counter-translated by the
+   timeline and must paint above the scrolling page content */
+.navlayer { z-index: 40; }
+
+/* fixed chrome inside the phone viewport (theme toggle — the app's is
+   position:fixed, so it must not scroll with the page) */
+#phone-fixed {
+  position: absolute; left: 0; top: 0;
+  width: 430px; height: 602px;
+  transform: scale(1.16279);
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+#phone-fixed .jp-toggle { position: absolute; }
+
+/* ---------- browser URL pill ---------- */
+#urlpill {
+  position: absolute; left: 50%; top: 14px;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.82) 100%);
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  box-shadow: 0 4px 0 rgba(15, 23, 42, 0.10), 0 10px 26px rgba(31, 38, 135, 0.20);
+  font-size: 13.5px; font-weight: 500; color: #334155;
+  opacity: 0;
+  will-change: transform, opacity;
+  white-space: nowrap;
+  z-index: 30;
+}
+#urlpill .lock { width: 12px; height: 12px; flex: none; color: #16a34a; }
+#urlpill b { font-weight: 600; color: #0F172A; }
+#urlpill span.path { color: #7C3AED; font-weight: 600; }
+#stage.dark #urlpill {
+  background: linear-gradient(135deg, rgba(31,41,55,0.95) 0%, rgba(17,24,39,0.92) 100%);
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.45), 0 10px 26px rgba(0,0,0,0.5);
+  color: #B8B7CC;
+}
+#stage.dark #urlpill .lock { color: #4ade80; }
+#stage.dark #urlpill b { color: #EDEEF7; }
+#stage.dark #urlpill span.path { color: #C084FC; }
+
+/* ---------- captions (glass panels, above the brand bar) ---------- */
+.caption {
+  position: absolute; left: 50%; bottom: 118px;
+  max-width: 508px;
+  width: max-content;
+  padding: 15px 26px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.80) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 5px 0 rgba(15, 23, 42, 0.14), 0 14px 44px rgba(31, 38, 135, 0.26);
+  backdrop-filter: blur(18px) saturate(160%);
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; font-size: 26px; line-height: 1.22;
+  text-align: center; color: #0F172A;
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 32;
+}
+.caption em { font-style: normal; color: #7C3AED; }
+.caption .tape { top: -12px; left: 34px; }
+#stage.dark .caption {
+  background: linear-gradient(135deg, rgba(31,41,55,0.94) 0%, rgba(17,24,39,0.92) 100%);
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 5px 0 rgba(0,0,0,0.5), 0 14px 44px rgba(0,0,0,0.55);
+  color: #EDEEF7;
+}
+#stage.dark .caption em { color: #C084FC; }
+
+/* ---------- persistent bottom brand bar ---------- */
+#brandbar {
+  position: absolute; left: 50%; bottom: 34px;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 100%);
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  box-shadow: 0 4px 0 rgba(15, 23, 42, 0.10), 0 10px 30px rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(14px) saturate(160%);
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 35;
+}
+#brandbar img { width: 28px; height: 28px; }
+#brandbar .site {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; font-size: 19px; letter-spacing: 0.01em;
+  color: #7C3AED;
+}
+#stage.dark #brandbar {
+  background: linear-gradient(135deg, rgba(31,41,55,0.92) 0%, rgba(17,24,39,0.9) 100%);
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.45), 0 10px 30px rgba(0,0,0,0.5);
+}
+#stage.dark #brandbar .site { color: #C084FC; }
+
+/* ---------- endcard ---------- */
+#outro {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px;
+  opacity: 0;
+  z-index: 50;
+  will-change: transform, opacity;
+}
+#outro .card {
+  position: relative;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 15px;
+  padding: 52px 46px 44px;
+  will-change: transform;
+}
+#outro .logo-wrap {
+  display: flex; align-items: center; gap: 13px;
+  will-change: transform;
+}
+#outro img { width: 104px; height: 104px; filter: drop-shadow(0 16px 38px rgba(124, 58, 237, 0.55)); }
+#outro .brand {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300; letter-spacing: -0.02em;
+  font-size: 56px; color: #0F172A;
+}
+#stage.dark #outro .brand { color: #EDEEF7; }
+#outro .site {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700; font-size: 31px;
+  color: #ffffff; background: #7C3AED;
+  padding: 8px 26px; border-radius: 999px;
+  box-shadow: 0 5px 0 rgba(15, 23, 42, 0.28), 0 16px 40px rgba(124, 58, 237, 0.45);
+}
+#outro .tagline {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 500; font-size: 23px; color: #475569;
+  text-align: center; max-width: 440px;
+}
+#stage.dark #outro .tagline { color: #B8B7CC; }
+#outro .pills { display: flex; gap: 10px; margin-top: 4px; }
+#outro .pills span {
+  font-size: 14.5px; font-weight: 600;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1.5px solid rgba(15, 23, 42, 0.5); color: #1f2937;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 3px 0 rgba(15, 23, 42, 0.18);
+}
+#stage.dark #outro .pills span {
+  border-color: rgba(196, 132, 252, 0.55); color: #EDEEF7;
+  background: rgba(31, 41, 55, 0.75);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- vignette + film grain ---------- */
+#vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(24, 12, 44, 0.20) 100%);
+  pointer-events: none; z-index: 60;
+}
+#grain {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035; mix-blend-mode: overlay;
+  pointer-events: none; z-index: 61;
+}
+#stage.dark #grain { opacity: 0.055; }
