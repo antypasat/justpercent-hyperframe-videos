@@ -49,19 +49,21 @@
     scroll2: [11.80, 12.90],
     hand2: { start: 13.00, tap: 13.95, end: 14.60 },
     scrollBack: [14.20, 14.90],
-    presDec: [14.30, 15.00],
+    /* pin presentation must grow ON-SCREEN, after scrollBack settles —
+       if it grows during the scroll the viewer never sees it appear */
+    presDec: [15.05, 15.65],
     cap3: [14.40, 17.60],
-    puFillX: [15.40, 16.10],
-    puFillY: [15.70, 16.40],
-    puAns: [15.90, 16.90],
+    puFillX: [16.05, 16.75],
+    puFillY: [16.35, 17.05],
+    puAns: [16.55, 17.45],
     burst2: 17.90,
     wipe2: [17.80, 18.70], wipe2Mid: 18.28,
     focus: 18.90,
-    type: [19.20, 19.55, 19.90],
+    type: [19.20, 19.50, 19.80, 20.10],
     cap4: [19.20, 23.40],
     ddIn: 20.30, ddOut: 21.90, ddGone: 22.15,
     hand3: { start: 20.90, tap: 21.75, end: 22.40 },
-    pinBasic: 21.75,
+    pinShow: 23.35,           /* presentation pops AFTER scroll3 lands (same rule as presDec) */
     scroll3: [22.00, 23.30],
     settleHoldEnd: 24.60,
     flip: [24.60, 26.00], flipMid: 25.30,
@@ -93,7 +95,7 @@
      'dropdown', 'dd-pu-tip',
      'card-coupon', 'cta-coupon', 'marker-coupon', 'marker-coupon-path',
      'hl-basic', 'pres-basic', 'basic-x', 'basic-y', 'basic-z', 'basic-z-val',
-     'cl-card', 'cl-practical', 'pres-dec',
+     'cl-card', 'cl-practical', 'pres-dec', 'hint-calc',
      'dec-original', 'dec-decrease', 'dec-new', 'dec-new-val',
      'pu-sale', 'hub-tip',
      'tl-card', 'tip-bill', 'tip-pct', 'tip-result', 'tip-ansline',
@@ -102,6 +104,7 @@
      'app-bg-light', 'app-bg-dark',
     ].forEach((id) => { els[id.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase())] = document.getElementById(id); });
     els.couponNote = els.cardCoupon.querySelector('.jp-note');
+    els.decRlabel = els.decNew.querySelector('.rlabel');
   }
 
   /* ---------- geometry (measured; rebuilt after fonts load) ---------- */
@@ -110,9 +113,21 @@
     const screens = [els.scrHome, els.scrCalc, els.scrHub, els.scrTip];
     const prevDisp = screens.map((s) => s.style.display);
     screens.forEach((s) => { s.style.display = 'block'; });
+    /* measure() can run at any timeline state (fonts re-run) — a phone
+       mid pop-in/flip is scaled/rotated and would skew every rect */
+    const prevTf = [els.phoneTilt.style.transform, els.phone.style.transform];
+    els.phoneTilt.style.transform = 'none';
+    els.phone.style.transform = 'none';
     const prevPres = [els.presBasic.style.cssText, els.presDec.style.cssText];
     els.presBasic.style.cssText = 'display:none';
     els.presDec.style.cssText = 'display:none';
+    /* the search dropdown is display:none outside its beat (a re-measure after
+       fonts load would read all-zero rects → garbage tap target); the hint is
+       OPEN during the scroll-down + PU tap, so pass 1 measures with it shown */
+    const prevDd = els.dropdown.style.cssText;
+    els.dropdown.style.cssText = 'display:block;transform:none';
+    const prevHint = els.hintCalc.style.cssText;
+    els.hintCalc.style.cssText = 'display:block';
 
     const sAll = 2 * SCALE;          // #view scale(2) × phone scale
     const rel = (el, root) => {
@@ -137,9 +152,10 @@
     const hubTip = rel(els.scrHub.querySelector('#hub-tip'), els.scrHub);
 
     /* --- pass 2: presentation panels EXPANDED (state when we scroll to
-       the pinned calculators) --- */
+       the pinned calculators; the pin has closed the hint by then) --- */
     els.presBasic.style.cssText = 'display:block;max-height:none;margin-bottom:12px';
     els.presDec.style.cssText = 'display:block;max-height:none;margin-bottom:12px';
+    els.hintCalc.style.cssText = 'display:none';
     const homeH2 = H(els.scrHome), calcH2 = H(els.scrCalc);
     const basicFull = rel(els.hlBasic.querySelector('.jp-calc'), els.scrHome);
     const decFull = rel(els.clCard.querySelector('.jp-calc'), els.scrCalc);
@@ -147,7 +163,9 @@
     G.presDecH = rel(els.presDec.firstElementChild, els.scrCalc).h + 2;
 
     G.scrollCards = clamp(coupon.y - 140, 0, Math.max(0, G.homeH - VIEW_H));
-    G.scrollBasic = clamp(basicFull.y - Math.max(12, (VIEW_H - basicFull.h) / 2), 0, Math.max(0, homeH2 - VIEW_H));
+    /* card can be taller than the view — keep its title clear of the pinned nav */
+    const navH = rel(els.scrHome.querySelector('.navlayer'), els.scrHome).h;
+    G.scrollBasic = clamp(basicFull.y - Math.max(navH + 10, (VIEW_H - basicFull.h) / 2), 0, Math.max(0, homeH2 - VIEW_H));
     G.scrollPu = clamp(puList.y - 235, 0, Math.max(0, G.calcH - VIEW_H));
     G.scrollCalcCard = clamp(decFull.y - Math.max(10, (VIEW_H - decFull.h) / 2), 0, Math.max(0, calcH2 - VIEW_H));
     G.scrollHub = clamp(hubTip.y - 300, 0, Math.max(0, G.hubH - VIEW_H));
@@ -161,8 +179,8 @@
     G.tapDdRow = vp(ddRow, 0);
     G.tapHub = vp(hubTip, G.scrollHub);
 
-    /* marker svg placement */
-    const cc = rel(els.couponNote, els.cardCoupon);
+    /* marker svg placement (root = .jp-cards, the marker's offset parent) */
+    const cc = rel(els.couponNote, els.cardCoupon.parentElement);
     const m1 = els.markerCoupon;
     m1.setAttribute('preserveAspectRatio', 'none');
     m1.style.left = px(cc.x - 7); m1.style.top = px(cc.y - 9);
@@ -178,6 +196,10 @@
 
     els.presBasic.style.cssText = prevPres[0];
     els.presDec.style.cssText = prevPres[1];
+    els.dropdown.style.cssText = prevDd;
+    els.hintCalc.style.cssText = prevHint;
+    els.phoneTilt.style.transform = prevTf[0];
+    els.phone.style.transform = prevTf[1];
     screens.forEach((s, i) => { s.style.display = prevDisp[i]; });
   }
 
@@ -270,7 +292,7 @@
       /* URL path (verified routes, canonical trailing slash) */
       els.urlPath.textContent =
         t < T.wipe1Mid ? '/'
-        : t < T.wipe2Mid ? '/decreased-value-calculator/'
+        : t < T.wipe2Mid ? '/basic-percentage-calculator/'
         : t < T.flipMid ? '/'
         : t < T.tipSwitch ? '/faqs/'
         : '/faqs/tip-calculation-calculator/';
@@ -441,7 +463,7 @@
     });
 
     /* =========================================================
-       SCENE: home — marker circle, coupon tap
+       SCENE: home — marker circle, clearance-card tap
        ========================================================= */
     tl.drive((t) => {
       els.markerCoupon.style.opacity = (t >= T.marker1 && t < T.wipe1Mid) ? '1' : '0';
@@ -457,23 +479,41 @@
     pressScale(els.couponNote, T.hand1.tap);
 
     /* =========================================================
-       SCENE: /decreased-value-calculator/
+       SCENE: /basic-percentage-calculator/ (dec-* els; ids kept)
        ========================================================= */
+    /* SolutionCardHint: the real app shows the clicked card's note above the
+       calculator (read-only label hidden meanwhile); pinning a PU closes it
+       with a ~250 ms fade BEFORE the scroll-back re-frames the calculator */
+    tl.drive((t) => {
+      const on = t >= T.wipe1Mid && t < T.hand2.tap + 0.25;
+      els.hintCalc.style.display = on ? 'block' : 'none';
+      els.decRlabel.style.opacity = on ? '0' : '';
+    });
+    tl.tween(T.wipe1Mid, 0.25, (pe) => {                 // entrance (app: .visible transition)
+      els.hintCalc.style.opacity = pe.toFixed(3);
+      els.hintCalc.style.transform = 'translateY(' + px(lerp(-8, 0, pe)) + ')';
+    }, 'outCubic');
+    tl.tween(T.hand2.tap, 0.25, (pe, p) => {             // dismiss on pin
+      if (p === 0) return;                               // chain rule
+      els.hintCalc.style.opacity = (1 - pe).toFixed(3);
+      els.hintCalc.style.transform = 'translateY(' + px(-8 * pe) + ')';
+    }, 'inQuad');
+
     tl.setAt(T.decFill,
-      () => { els.decOriginal.textContent = '100'; els.decDecrease.textContent = '20'; },
+      () => { els.decOriginal.textContent = '25'; els.decDecrease.textContent = '80'; },
       () => { els.decOriginal.textContent = ''; els.decDecrease.textContent = ''; });
     tl.drive((t) => {
       const g = t >= T.decFill && t < T.countUp1[1] + 0.5;
       els.decOriginal.classList.toggle('glow', g);
       els.decDecrease.classList.toggle('glow', g);
     });
-    /* live count-up to 80 (base owner of #dec-new) */
+    /* live count-up to 20 (base owner of #dec-new) — 25% of 80 */
     tl.tween(T.countUp1[0], T.countUp1[1] - T.countUp1[0], (pe, p) => {
       if (p === 0) {
-        els.decNew.classList.add('empty'); els.decNewVal.textContent = 'New';
+        els.decNew.classList.add('empty'); els.decNewVal.textContent = 'Z';
       } else {
         els.decNew.classList.remove('empty');
-        els.decNewVal.textContent = String(Math.round(lerp(0, 80, pe)));
+        els.decNewVal.textContent = String(Math.round(lerp(0, 20, pe)));
       }
     }, 'outCubic');
 
@@ -492,22 +532,22 @@
 
     /* c) fields flip stop-motion to the practical-use values, answer live */
     tl.tween(T.puFillX[0], T.puFillX[1] - T.puFillX[0], (pe, p) => {
-      if (p === 0) return;                                 // base '100' set earlier
+      if (p === 0) return;                                 // base '25' set earlier
       const qp = quant(p, 6);
-      els.decOriginal.textContent = String(Math.round(lerp(100, 300, qp)));
+      els.decOriginal.textContent = String(Math.round(lerp(25, 40, qp)));
       const j = qp > 0 && qp < 1 ? (rnd(1200 + Math.round(qp * 6)) - 0.5) * 3 : 0;
       els.decOriginal.style.transform = 'rotate(' + j.toFixed(2) + 'deg)';
     }, 'linear');
     tl.tween(T.puFillY[0], T.puFillY[1] - T.puFillY[0], (pe, p) => {
       if (p === 0) return;
       const qp = quant(p, 5);
-      els.decDecrease.textContent = String(Math.round(lerp(20, 30, qp)));
+      els.decDecrease.textContent = String(Math.round(lerp(80, 2000, qp)));
       const j = qp > 0 && qp < 1 ? (rnd(1300 + Math.round(qp * 5)) - 0.5) * 3 : 0;
       els.decDecrease.style.transform = 'rotate(' + j.toFixed(2) + 'deg)';
     }, 'linear');
     tl.tween(T.puAns[0], T.puAns[1] - T.puAns[0], (pe, p) => {
-      if (p === 0) return;                                 // base '80' from count-up
-      els.decNewVal.textContent = String(Math.round(lerp(80, 210, pe)));
+      if (p === 0) return;                                 // base '20' from count-up
+      els.decNewVal.textContent = String(Math.round(lerp(20, 800, pe)));
     }, 'outCubic');
     tl.drive((t) => {
       const g = t >= T.puFillX[0] && t < T.puAns[1] + 0.4;
@@ -519,7 +559,7 @@
        SCENE: search on home
        ========================================================= */
     tl.drive((t) => {
-      const typed = t < T.type[0] ? '' : t < T.type[1] ? 't' : t < T.type[2] ? 'ti' : 'tip';
+      const typed = t < T.type[0] ? '' : t < T.type[1] ? 'r' : t < T.type[2] ? 're' : t < T.type[3] ? 'ren' : 'rent';
       els.searchTyped.textContent = typed;
       els.searchGhost.style.opacity = typed === '' ? '1' : '0';
       els.homeSearch.classList.toggle('focused', t >= T.focus && t < T.settleHoldEnd);
@@ -540,20 +580,20 @@
     }, 'inQuad');
     pressScale(els.ddPuTip, T.hand3.tap);
 
-    /* pinned basic calculator (presentation ABOVE the form + values) */
+    /* pinned value-increase calculator (presentation ABOVE the form + values) */
     tl.drive((t) => {
-      const on = t >= T.pinBasic && t < T.flipMid;
+      const on = t >= T.pinShow && t < T.flipMid;
       els.presBasic.style.display = on ? 'block' : 'none';
       if (on) els.presBasic.style.marginBottom = '12px';
-      els.basicX.textContent = on ? '15' : '';
-      els.basicY.textContent = on ? '60' : '';
-      els.basicZVal.textContent = on ? '9' : 'Z';
+      els.basicX.textContent = on ? '1200' : '';
+      els.basicY.textContent = on ? '7' : '';
+      els.basicZVal.textContent = on ? '1284' : 'New';
       els.basicZ.classList.toggle('empty', !on);
-      const glow = t >= T.pinBasic && t < T.settleHoldEnd - 0.4;
+      const glow = t >= T.pinShow && t < T.settleHoldEnd - 0.4;
       els.basicX.classList.toggle('glow', glow);
       els.basicY.classList.toggle('glow', glow);
     });
-    tl.tween(T.pinBasic, 0.35, (pe) => {
+    tl.tween(T.pinShow, 0.35, (pe) => {
       els.presBasic.style.maxHeight = px(lerp(0, G.presBasicH, pe));
       els.presBasic.style.opacity = pe.toFixed(3);
     }, 'outCubic');
@@ -669,9 +709,12 @@
 
   /* layout depends on font metrics — rebuild once real fonts are in,
      re-seeking to the current time (pure, so the frame stays identical
-     across page loads) */
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => {
+     across page loads). fonts.ready alone is not enough: faces used only
+     by display:none content (the pin presentations) are never requested,
+     so measure() would see fallback metrics and clip them — force-load
+     every declared face first. */
+  if (document.fonts) {
+    Promise.all(Array.from(document.fonts, (f) => f.load())).catch(() => {}).then(() => {
       const t = tl.time();
       buildAll();
       tl.seek(t);

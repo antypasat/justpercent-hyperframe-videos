@@ -1,16 +1,16 @@
 <template id="b4-search-to-answer-template">
-  <div data-composition-id="b4-search-to-answer" data-start="0" data-width="1080" data-height="1920">
-    <div class="b4-stage">
-      <div class="b4-orb b4-orb-a"></div>
-      <div class="b4-orb b4-orb-b"></div>
-      <div class="b4-splats" id="b4-splats"></div>
-      <div class="b4-persp">
-        <div class="b4-cam">
-          <div class="b4-frame b4-frame-a">
-            <iframe class="b4-iframe b4-iframe-a" src="../assets/screens/home-light-search.html" scrolling="no" title="justpercent.com home — search (light)"></iframe>
+  <div data-hf-id="hf-7u3j" data-composition-id="b4-search-to-answer" data-start="0" data-width="1080" data-height="1920">
+    <div data-hf-id="hf-ec43" class="b4-stage">
+      <div data-hf-id="hf-149q" class="b4-orb b4-orb-a"></div>
+      <div data-hf-id="hf-x65p" class="b4-orb b4-orb-b"></div>
+      <div data-hf-id="hf-vjv2" class="b4-splats" id="b4-splats"></div>
+      <div data-hf-id="hf-r7ah" class="b4-persp">
+        <div data-hf-id="hf-db0g" class="b4-cam">
+          <div data-hf-id="hf-t9jm" class="b4-frame b4-frame-a">
+            <iframe data-hf-id="hf-dfk5" class="b4-iframe b4-iframe-a" src="../assets/screens/home-light-search.html" scrolling="no" title="justpercent.com home — search (light)"></iframe>
           </div>
-          <div class="b4-frame b4-frame-b">
-            <iframe class="b4-iframe b4-iframe-b" src="../assets/screens/home-light-pinned.html" scrolling="no" title="justpercent.com home — pinned practical use (light)"></iframe>
+          <div data-hf-id="hf-pbfl" class="b4-frame b4-frame-b">
+            <iframe data-hf-id="hf-f8b6" class="b4-iframe b4-iframe-b" src="../assets/screens/home-light-pinned.html" scrolling="no" title="justpercent.com home — pinned practical use (light)"></iframe>
           </div>
         </div>
       </div>
@@ -64,35 +64,42 @@
         var ifB = root.querySelector('.b4-iframe-b');
         function docA() { var d = ifA.contentDocument; return d && d.body ? d : null; }
         function docB() { var d = ifB.contentDocument; return d && d.body ? d : null; }
-        function tipRow() {
+        function saleRow() {
           var d = docA(); if (!d) return null;
-          return d.getElementById('search-item-0');
+          var rows = d.querySelectorAll('[id^="search-item-"]');
+          for (var i = 0; i < rows.length; i++) if (/designer denim jeans/.test(rows[i].textContent)) return rows[i];
+          return null;
         }
         function touchDot() {
           var d = docA(); if (!d) return null;
           var t = d.getElementById('gsm-touch');
           if (!t) {
-            var row = tipRow(); if (!row) return null;
-            var r = row.getBoundingClientRect();
             t = d.createElement('div');
             t.id = 'gsm-touch';
             t.style.cssText = 'position:absolute;width:56px;height:56px;border-radius:50%;' +
               'background:radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,255,255,.25) 55%, rgba(255,255,255,0) 72%);' +
               'box-shadow:0 0 0 2px rgba(124,58,237,.5), 0 6px 18px rgba(0,0,0,.3);' +
-              'pointer-events:none;z-index:999999;opacity:0;' +
-              'left:' + (r.left + d.defaultView.scrollX + r.width * 0.5 - 28) + 'px;' +
-              'top:' + (r.top + d.defaultView.scrollY + r.height * 0.5 - 28) + 'px;';
+              'pointer-events:none;z-index:999999;opacity:0;';
             d.body.appendChild(t);
+          }
+          // reposition every frame: the row moves with the dropdown's inner scroll
+          var row = saleRow();
+          if (row) {
+            var r = row.getBoundingClientRect();
+            t.style.left = (r.left + d.defaultView.scrollX + r.width * 0.5 - 28) + 'px';
+            t.style.top = (r.top + d.defaultView.scrollY + r.height * 0.5 - 28) + 'px';
           }
           return t;
         }
 
         // ---- state proxies + single render fn per document ----
-        var V = { typed: 0, drop: 0, rowK: 0 };
+        var V = { typed: 0, drop: 0, rowK: 0, pscroll: 0 };
         function RA() {
           var d = docA(); if (!d) return;
           var input = d.getElementById('calculator-search');
-          if (input) input.value = 'tip'.slice(0, Math.round(V.typed));
+          if (input) input.value = 'discount'.slice(0, Math.round(V.typed));
+          var sc = d.getElementById('search-scroll-container');
+          if (sc) sc.scrollTop = V.pscroll;
           var clear = d.getElementById('calculator-search-clear');
           if (clear) clear.style.opacity = V.typed > 0.5 ? '1' : '0';
           var portal = d.getElementById('search-results-dropdown-portal');
@@ -102,7 +109,7 @@
             portal.style.transformOrigin = '50% 0%';
             portal.style.visibility = V.drop > 0.01 ? 'visible' : 'hidden';
           }
-          var row = tipRow();
+          var row = saleRow();
           if (row) {
             row.style.background = 'rgba(124,58,237,' + (0.16 * V.rowK).toFixed(3) + ')';
             row.style.boxShadow = V.rowK > 0.01 ? 'inset 0 0 0 2px rgba(124,58,237,' + (0.55 * V.rowK).toFixed(3) + ')' : 'none';
@@ -114,9 +121,9 @@
           var x = d.getElementById('percentage-input');
           var y = d.getElementById('number');
           var z = d.getElementById('basic-percentage-result');
-          if (x) x.value = '15';
-          if (y) y.value = '60';
-          if (z) z.value = '9';
+          if (x) x.value = '20';
+          if (y) y.value = '80';
+          if (z) z.value = '16';
           var card = d.querySelector('[data-calculator-id="basic-percentage"]');
           if (card) {
             var pres = card.querySelector('.practical-use-presentation-container');
@@ -174,15 +181,18 @@
         tl.fromTo(PB, { y: 980 }, { y: 980, duration: 0.1, ease: 'none', onUpdate: applyScrollB }, 0);
 
         // baseline renders (restore state on any seek)
-        tl.fromTo(V, { typed: 0, drop: 0, rowK: 0 }, { typed: 0, duration: 0.05, ease: 'none', onUpdate: RA }, 0);
+        tl.fromTo(V, { typed: 0, drop: 0, rowK: 0, pscroll: 0 }, { typed: 0, duration: 0.05, ease: 'none', onUpdate: RA }, 0);
         tl.fromTo(W, { glow: 0 }, { glow: 0, duration: 0.05, ease: 'none', onUpdate: RB }, 0);
 
-        // type "tip" (per keystroke), dropdown materializes, row highlighted
-        tl.to(V, { typed: 3, duration: 0.55, ease: 'steps(3)', onUpdate: RA, immediateRender: false }, 0.75);
+        // type "discount" (per keystroke), dropdown materializes, row highlighted
+        tl.to(V, { typed: 8, duration: 0.55, ease: 'steps(8)', onUpdate: RA, immediateRender: false }, 0.75);
         tl.to(V, { drop: 1, duration: 0.45, ease: 'power2.out', onUpdate: RA, immediateRender: false }, 1.55);
+        // dropdown's inner list glides so the basic "Sale Discount" PU and the
+        // RELATED FAQS section come into view before the tap
+        tl.to(V, { pscroll: 300, duration: 0.4, ease: 'power2.inOut', onUpdate: RA, immediateRender: false }, 2.0);
         tl.to(V, { rowK: 1, duration: 0.35, ease: 'power2.out', onUpdate: RA, immediateRender: false }, 2.2);
 
-        // touch tap on the "Restaurant Tip" practical use in the dropdown
+        // touch tap on the "Sale Discount" practical use in the dropdown
         var T = { o: 0, s: 1, r: 0 };
         function applyTouch() {
           var t = touchDot(); if (!t) return;
@@ -199,7 +209,7 @@
         tl.to(frameA, { opacity: 0, filter: 'blur(26px) saturate(2.4) hue-rotate(-10deg)', scale: 1.05, duration: 0.55, ease: 'power2.inOut', immediateRender: false }, 3.05);
         tl.to(frameB, { opacity: 1, filter: 'blur(0px) saturate(1)', duration: 0.6, ease: 'power2.out', immediateRender: false }, 3.15);
         // scroll fully settles (power3.out -> zero velocity), then the frame HOLDS still
-        tl.to(PB, { y: 2020, duration: 1.25, ease: 'power3.out', onUpdate: applyScrollB, immediateRender: false }, 3.2);
+        tl.to(PB, { y: 2008, duration: 1.25, ease: 'power3.out', onUpdate: applyScrollB, immediateRender: false }, 3.2);
 
         // settled: gentle glow on the pinned example above the form
         tl.to(W, { glow: 1, duration: 0.4, ease: 'power2.out', onUpdate: RB, immediateRender: false }, 4.85);

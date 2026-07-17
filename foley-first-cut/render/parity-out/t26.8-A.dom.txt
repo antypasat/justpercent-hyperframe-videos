@@ -1,0 +1,160 @@
+stage||dark|
+view|opacity: 1;||
+bg-light|||
+bg-dark|opacity: 1;||
+bg-grid|||
+shaker|transform: translate(1.37px, -0.51px) rotate(0.187deg);||
+world|||
+camera|||
+scr-home|translate: none; rotate: none; scale: none; transform-origin: 50% 0px; transform: scale(1.1907, 1.1907); visibility: visible;|screen jp|
+home-scroll|translate: none; rotate: none; scale: none; transform: translate(0px, -1204.95px);|scroller|
+hl-nav||layer|
+hl-h1|padding:12px 10px 4px|layer|
+hl-search|padding:6px 8px|layer|
+home-search|||
+search-ph||ph|
+search-typed||typed|interest
+search-ghost|opacity: 0;||Search 'Interest'...
+search-cursor|opacity: 0;|tcursor||
+hl-filter|opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|layer|
+hl-seclabel|opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|layer|
+hl-card1|opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|layer|
+hl-card2|opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|layer|
+hl-card3|opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|layer|
+hl-card4|opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|layer|
+hl-card5|opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|layer|
+hl-card6|opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|layer|
+hl-basic|padding:14px 8px 8px|layer|
+pres-basic|display: block; translate: none; rotate: none; scale: none; transform-origin: 186px 0px; transform: translate(0px, 0px); opacity: 1; visibility: inherit; max-height: 250px;|jp-presentation|
+chip-bx|left: -4px; top: -27px; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;|jp-tip-chip gold|Interest rate
+chip-by|left: 114.703px; top: -27px; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;|jp-tip-chip lime|Principal amount
+chip-bz|left: 206.234px; top: -23px; translate: none; rotate: none; scale: none; transform: translate3d(0px, 0.9px, 0px) scale(0.9663, 0.9663); opacity: 0.8875; visibility: inherit;|jp-tip-chip pink|ANSWER: Interest earned
+basic-x|translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|jp-input glow|5
+basic-y|translate: none; rotate: none; scale: none; transform: translate3d(0px, 0px, 0px) scale(0.9993, 0.9993);|jp-input glow|1000
+basic-z|translate: none; rotate: none; scale: none; transform: translate3d(0px, 0px, 0px) scale(1.16, 1.16);|jp-answer|
+basic-z-val|||50
+basic-actions||jp-actions|
+dropdown|display: none; position: absolute; top: 201.953px; z-index: 9; translate: none; rotate: none; scale: none; transform-origin: 50% 50%; transform: translate(0px, 0px); opacity: 1; visibility: inherit;|jp jp-dropdown|
+dd-pu-tip||jp-dd-item|
+dd-faq-tip||jp-dd-item jp-dd-faq|
+dd-sol-tip||jp-dd-item jp-dd-sol|
+home-fabs||jp-fabs|
+home-fab-theme||jp-fab|
+scr-calc|translate: none; rotate: none; scale: none; transform-origin: 50% 0px; transform: rotateY(92deg) scale(1.1907, 1.1907); visibility: hidden;|screen jp|
+calc-scroll|translate: none; rotate: none; scale: none; transform: translate(0px, -58px);|scroller|
+cl-nav||layer|
+cl-card|padding:12px 8px 6px|layer|
+card-hint|display: none; opacity: 0; visibility: hidden;|jp-card-hint|
+pres-chg|display: block; translate: none; rotate: none; scale: none; transform-origin: 186px 0px; transform: translate(0px, 0px); opacity: 1; visibility: inherit; max-height: 250px;|jp-presentation|
+chip-cx|left: 192.766px; top: -27px; translate: none; rotate: none; scale: none; transform: translate(0px, -8px); opacity: 0; visibility: hidden;|jp-tip-chip lime|Price increase %
+chip-cy|left: 3.5px; top: 25px; translate: none; rotate: none; scale: none; transform: translate(0px, -8px); opacity: 0; visibility: hidden;|jp-tip-chip gold|New price
+chip-cz|left: -28.5px; top: -23px; translate: none; rotate: none; scale: none; transform: translate(0px, -8px); opacity: 0; visibility: hidden;|jp-tip-chip pink|ANSWER: Original price
+chip-hx|left: 189.766px; top: -27px; translate: none; rotate: none; scale: none; transform: translate(0px, -6px); opacity: 0; visibility: hidden;|jp-tip-chip hint|Sales tax rate (%)
+chip-hy|left: -24px; top: 25px; translate: none; rotate: none; scale: none; transform: translate(0px, -6px); opacity: 0; visibility: hidden;|jp-tip-chip hint|Price with sales tax
+chip-hz|left: -16.5px; top: -23px; translate: none; rotate: none; scale: none; transform: translate(0px, -6px); opacity: 0; visibility: hidden;|jp-tip-chip hint|ANSWER: Net Price
+chg-result|translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|jp-answer|
+chg-result-val|||120
+chg-original|translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|jp-input|5
+chg-new|translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|jp-input|126
+cl-goall||layer|
+cl-practical|padding:6px 10px 4px|layer|
+pu-salary||jp-pu-item|
+pu-inflation||jp-pu-item pinned|
+pu-revenue||jp-pu-item|
+calc-fabs||jp-fabs|
+calc-fab-theme||jp-fab|
+scr-hub|translate: none; rotate: none; scale: none; transform-origin: 50% 0px; transform: translate(580px, 0px) scale(1.1907, 1.1907); visibility: hidden;|screen jp|
+hub-scroll|translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|scroller|
+fl-nav||layer|
+fl-h1|padding: 12px 10px 2px; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;|layer|
+fl-controls|padding: 10px 10px 0px; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;|layer|
+fl-cats|translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;|layer|
+fl-shop|padding:6px 10px 0|layer|
+fl-hub1|padding:2px 10px|layer|
+hub-tip|translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|jp-hubcard|
+fl-hub2|padding:2px 10px|layer|
+fl-hub3|padding:2px 10px|layer|
+scr-tip|translate: none; rotate: none; scale: none; transform-origin: 50% 0px; transform: translate(580px, 0px) scale(1.1907, 1.1907); visibility: hidden; opacity: 1;|screen jp|
+tip-scroll|translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|scroller|
+tl-nav||layer|
+tl-h1|padding:12px 10px 2px|layer|
+tl-back|padding:0 10px|layer|
+tl-card|padding:2px 10px|layer|
+tip-pct||jp-mini|15
+tip-bill||jp-mini|80000
+tip-result|translate: none; rotate: none; scale: none; transform: translate(0px, 0px);|jp-mini ro|68000
+det-y|||80000
+det-w|||80000
+det-fy|||80000
+det-fy2|||80000
+det-fr|||12000
+det-y2|||80000
+det-dep2|||12000
+det-rem|||68000
+keycap|translate: none; rotate: none; scale: none; transform: translate(0px, -560px) rotate(3deg); opacity: 0; visibility: hidden;||%
+head1|font-size: 42px; translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate(0px, -34px); opacity: 0; visibility: hidden;|headline|
+head2|font-size: 33px; translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate(0px, -40px); opacity: 0; visibility: hidden;|headline|
+urlpill|translate: none; rotate: none; scale: none; transform: translate(-50%, 0%); opacity: 1; visibility: inherit;||
+url-path||path|/
+capA|translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate(0px, 24px); opacity: 0; visibility: hidden;|caption|
+capB|translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate(0px, 24px); opacity: 0; visibility: hidden;|caption|
+capC|translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate(0px, 24px); opacity: 0; visibility: hidden;|caption|
+capD|translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate(0px, 24px); opacity: 0; visibility: hidden;|caption|
+capE|translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate(0px, 24px); opacity: 0; visibility: hidden;|caption|
+capF|translate: none; rotate: none; scale: none; transform: translate(-50%, 0%); opacity: 0; visibility: hidden;|caption|
+brandbar|translate: none; rotate: none; scale: none; transform: translate(-50%, 0%); opacity: 1; visibility: inherit;||
+eq|||
+sfx-thock|left: 352px; top: 140px; transform: translate(0px, -14px) rotate(-7.00001deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-pop1|left: 388px; top: 300px; transform: translate(0px, -14px) rotate(6.0001deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|
+sfx-whoosh1|left: 210px; top: 470px; transform: translate(0px, -14px) rotate(-4.00022deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|WHOOSH
+sfx-taps|left: 356px; top: 700px; transform: translate(0px, -14px) rotate(3.00023deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|tap·tap·tap
+sfx-clack1|left: 77.6186px; top: 483.238px; transform: translate(0px, -14px) rotate(-6.0001deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-tik1|left: 227.712px; top: 392.838px; transform: translate(0px, -14px) rotate(-4.00022deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|tik·tik·tik·tik
+sfx-tik2|left: 139.135px; top: 454.754px; transform: translate(0px, -14px) rotate(4.00022deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|tik·tik·tik·tik
+sfx-ding1|left: 380px; top: 560px; transform: translate(0px, -14px) rotate(6.0001deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-swoosh1|left: 430px; top: 420px; transform: translate(0px, -14px) rotate(7.99981deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|swoosh
+sfx-clack2|left: 60px; top: 418.392px; transform: translate(0px, -14px) rotate(-5.00022deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-plink|left: 400px; top: 438.392px; transform: translate(0px, -14px) rotate(7.00001deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|
+sfx-pop2|left: 400px; top: 270.596px; transform: translate(0px, -14px) rotate(5.00022deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|
+sfx-ding2|left: 396px; top: 520px; transform: translate(0px, -14px) rotate(-5.00022deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-click1|left: 345.042px; top: 681.89px; transform: translate(0px, -14px) rotate(-4.00022deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|CLICK
+sfx-flip|left: 224px; top: 420px; transform: translate(0px, -14px) rotate(-7.99981deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-boom1|left: 330px; top: 330px; transform: translate(0px, -14px) rotate(5.00022deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-clack3|left: 80px; top: 162.931px; transform: translate(0px, -14px) rotate(-6.0001deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-th1|left: 150px; top: 294.931px; transform: translate(0px, -14px) rotate(-3.00023deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|thock
+sfx-th2|left: 230px; top: 300.931px; transform: translate(0px, -14px) rotate(2.00003deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|thock
+sfx-th3|left: 314px; top: 294.931px; transform: translate(0px, -14px) rotate(-2.00003deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|thock
+sfx-pop3|left: 420px; top: 348.243px; transform: translate(0px, -14px) rotate(6.0001deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|
+sfx-clack4|left: 70px; top: 344.243px; transform: translate(0px, -14px) rotate(-6.0001deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-whoosh2|left: 176px; top: 430px; transform: translate(0px, -14px) rotate(-6.0001deg) scale(0.9, 0.9); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|WHOOOOSH
+sfx-thunk|left: 372px; top: 690px; transform: translate3d(0px, -3.024px, 0px) rotate(4.00022deg) scale(0.9784, 0.9784); translate: none; rotate: none; scale: none; opacity: 0.784; visibility: inherit;|sfx small|
+sfx-ding3|left: 398px; top: 470px; transform: translate3d(0px, 4.1033px, 0px) rotate(-5.00022deg) scale(1.4103, 1.4103); translate: none; rotate: none; scale: none; opacity: 0.4871; visibility: inherit;|sfx|
+sfx-clack5|left: 70px; top: 233.331px; transform: rotate(-6.0001deg); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-brrp|left: 476.233px; top: 144.884px; transform: rotate(5.00022deg); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx small|brrrp…
+sfx-ding4|left: 386px; top: 334.884px; transform: rotate(-4.00022deg); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+sfx-boom2|left: 396px; top: 320px; transform: rotate(6.0001deg); translate: none; rotate: none; scale: none; opacity: 0; visibility: hidden;|sfx|
+ring-key|left: 270px; top: 212px; translate: none; rotate: none; scale: none; transform: scale(2.1, 2.1); opacity: 0; visibility: hidden;|ring|
+ring-card|left: 267.619px; top: 569.238px; translate: none; rotate: none; scale: none; transform: scale(1.9, 1.9); opacity: 0; visibility: hidden;|ring|
+ring-pu|left: 270px; top: 498.392px; translate: none; rotate: none; scale: none; transform: scale(1.8, 1.8); opacity: 0; visibility: hidden;|ring|
+ring-fab|left: 495.042px; top: 741.89px; translate: none; rotate: none; scale: none; transform: scale(1.6, 1.6); opacity: 0; visibility: hidden;|ring|
+ring-search|left: 270px; top: 242.931px; translate: none; rotate: none; scale: none; transform: scale(1.5, 1.5); opacity: 0; visibility: hidden;|ring|
+ring-dd|left: 270px; top: 414.243px; translate: none; rotate: none; scale: none; transform: scale(1.7, 1.7); opacity: 0; visibility: hidden;|ring|
+ring-hub|left: 270px; top: 317.331px; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 0; visibility: hidden;|ring|
+ring-logo|left: 270px; top: 430px; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 0; visibility: hidden;|ring|
+wh-in|translate: none; rotate: none; scale: none; transform: translate(0px, -300px); opacity: 0; visibility: hidden;|whoosh vert|
+wh-side1|translate: none; rotate: none; scale: none; transform: translate(-320px, 0px); opacity: 0; visibility: hidden;|whoosh|
+wh-scroll1|translate: none; rotate: none; scale: none; transform: translate(0px, -300px); opacity: 0; visibility: hidden;|whoosh vert|
+wh-scroll2|translate: none; rotate: none; scale: none; transform: translate(0px, -300px); opacity: 0; visibility: hidden;|whoosh vert|
+wh-side2|translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 0; visibility: hidden;|whoosh|
+wh-side3|translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 0; visibility: hidden;|whoosh|
+chip-x|translate: none; rotate: none; scale: none; transform: translate(321.712px, 464.224px) scale(0.4, 0.4); opacity: 0; visibility: hidden;|flychip lime|5%
+chip-y|translate: none; rotate: none; scale: none; transform: translate(73.1345px, 526.14px) scale(0.4, 0.4); opacity: 0; visibility: hidden;|flychip gold|$126
+cursor|translate: none; rotate: none; scale: none; transform: translate(350px, 512.243px); opacity: 0; visibility: hidden;||
+clay||[object SVGAnimatedString]|
+clayHi||[object SVGAnimatedString]|
+specular|translate: none; rotate: none; scale: none; transform: translate(120%, 0px); opacity: 0; visibility: hidden;||
+flash|opacity: 0;||
+outro|opacity: 0; visibility: hidden;||
+vignette|||
+grain|||
+#stage.class=dark

@@ -1,18 +1,18 @@
 <template id="b2-home-flythrough-template">
-  <div data-composition-id="b2-home-flythrough" data-start="0" data-width="1080" data-height="1920">
-    <div class="b2-stage">
-      <div class="b2-orb b2-orb-a"></div>
-      <div class="b2-orb b2-orb-b"></div>
-      <div class="b2-splats b2-splats-far" id="b2-splats-far"></div>
-      <div class="b2-persp">
-        <div class="b2-cam">
-          <div class="b2-frame">
-            <iframe class="b2-iframe" src="../assets/screens/home-light.html" scrolling="no" title="justpercent.com home (light)"></iframe>
-            <div class="b2-frame-sheen"></div>
+  <div data-hf-id="hf-ti5g" data-composition-id="b2-home-flythrough" data-start="0" data-width="1080" data-height="1920">
+    <div data-hf-id="hf-z1yt" class="b2-stage">
+      <div data-hf-id="hf-smva" class="b2-orb b2-orb-a"></div>
+      <div data-hf-id="hf-oor9" class="b2-orb b2-orb-b"></div>
+      <div data-hf-id="hf-2uyw" class="b2-splats b2-splats-far" id="b2-splats-far"></div>
+      <div data-hf-id="hf-lzl7" class="b2-persp">
+        <div data-hf-id="hf-83e6" class="b2-cam">
+          <div data-hf-id="hf-awh4" class="b2-frame">
+            <iframe data-hf-id="hf-sskf" class="b2-iframe" src="../assets/screens/home-light.html" scrolling="no" title="justpercent.com home (light)"></iframe>
+            <div data-hf-id="hf-2sdw" class="b2-frame-sheen"></div>
           </div>
         </div>
       </div>
-      <div class="b2-splats b2-splats-near" id="b2-splats-near"></div>
+      <div data-hf-id="hf-42sc" class="b2-splats b2-splats-near" id="b2-splats-near"></div>
     </div>
 
     <style>
@@ -74,20 +74,26 @@
         var frame = root.querySelector('.b2-frame');
         var iframe = root.querySelector('.b2-iframe');
         function doc() { var d = iframe.contentDocument; return d && d.body ? d : null; }
-        function couponCard() {
+        function taxContainer() {
           var d = doc(); if (!d) return null;
-          return d.querySelector('#solution-mobile-grid .solution-note-container .solution-sticky-note');
+          var conts = d.querySelectorAll('#solution-mobile-grid .solution-note-container');
+          for (var i = 0; i < conts.length; i++) if (/Calculate the total price with Sales Tax/.test(conts[i].textContent)) return conts[i];
+          return null;
         }
-        function couponCta() {
-          var d = doc(); if (!d) return null;
-          return d.querySelector('#solution-mobile-grid .solution-note-container .solution-cta-button');
+        function taxCard() {
+          var c = taxContainer();
+          return c ? c.querySelector('.solution-sticky-note') : null;
         }
-        // idempotent in-page touch indicator, anchored to the coupon CTA
+        function taxCta() {
+          var c = taxContainer();
+          return c ? c.querySelector('.solution-cta-button') : null;
+        }
+        // idempotent in-page touch indicator, anchored to the sales-tax CTA
         function touchDot() {
           var d = doc(); if (!d) return null;
           var t = d.getElementById('gsm-touch');
           if (!t) {
-            var cta = couponCta(); if (!cta) return null;
+            var cta = taxCta(); if (!cta) return null;
             var r = cta.getBoundingClientRect();
             t = d.createElement('div');
             t.id = 'gsm-touch';
@@ -154,16 +160,16 @@
         tl.to(root.querySelector('.b2-cam'),
           { rotateY: 0, rotateX: 0, z: 130, duration: 1.1, ease: 'power2.in' }, beat - 1.1);
 
-        // page scroll: hero -> search -> coupon solution card (settles fully)
+        // page scroll: hero -> search -> sales-tax solution card (settles fully)
         var P = { y: 0 };
         function applyScroll() { var d = doc(); if (d) d.defaultView.scrollTo(0, P.y); }
         tl.fromTo(P, { y: 0 }, { y: 0, duration: 0.6, ease: 'none', onUpdate: applyScroll }, 0);
-        tl.to(P, { y: 110, duration: 2.1, ease: 'power2.inOut', onUpdate: applyScroll }, 0.9);
+        tl.to(P, { y: 358, duration: 2.1, ease: 'power2.inOut', onUpdate: applyScroll }, 0.9);
 
-        // spotlight the coupon card ("Have a coupon — 20% off?")
+        // spotlight the sales-tax card ("In-store shopping? Calculate the total price with Sales Tax.")
         var H = { k: 0 };
         function applyHighlight() {
-          var card = couponCard(); if (!card) return;
+          var card = taxCard(); if (!card) return;
           var k = H.k;
           card.style.boxShadow = '0 0 0 ' + (k * 3.2).toFixed(2) + 'px rgba(124,58,237,' + (0.72 * k).toFixed(3) + '), 0 10px 30px rgba(124,58,237,' + (0.4 * k).toFixed(3) + ')';
           card.style.transform = 'scale(' + (1 + 0.028 * k).toFixed(4) + ')';
@@ -180,7 +186,7 @@
           t.style.opacity = T.o.toFixed(3);
           t.style.transform = 'scale(' + T.s.toFixed(3) + ')';
           t.style.boxShadow = '0 0 0 ' + (2 + T.r * 26) + 'px rgba(124,58,237,' + (0.5 * Math.max(0, 1 - T.r)).toFixed(3) + '), 0 6px 18px rgba(0,0,0,.3)';
-          var cta = couponCta();
+          var cta = taxCta();
           if (cta) cta.style.filter = 'brightness(' + (1 + 0.35 * T.r * (1 - T.r) * 4) + ')';
         }
         tl.fromTo(T, { o: 0, s: 1, r: 0 }, { o: 0, duration: 3.8, ease: 'none', onUpdate: applyTouch }, 0);

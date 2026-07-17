@@ -1,13 +1,13 @@
 <template id="b3-calc-practical-use-template">
-  <div data-composition-id="b3-calc-practical-use" data-start="0" data-width="1080" data-height="1920">
-    <div class="b3-stage">
-      <div class="b3-orb b3-orb-a"></div>
-      <div class="b3-orb b3-orb-b"></div>
-      <div class="b3-splats" id="b3-splats"></div>
-      <div class="b3-persp">
-        <div class="b3-cam">
-          <div class="b3-frame">
-            <iframe class="b3-iframe" src="../assets/screens/calc-decreased-light.html" scrolling="no" title="justpercent.com/decreased-value-calculator/ (light)"></iframe>
+  <div data-hf-id="hf-g548" data-composition-id="b3-calc-practical-use" data-start="0" data-width="1080" data-height="1920">
+    <div data-hf-id="hf-1egg" class="b3-stage">
+      <div data-hf-id="hf-14og" class="b3-orb b3-orb-a"></div>
+      <div data-hf-id="hf-9skb" class="b3-orb b3-orb-b"></div>
+      <div data-hf-id="hf-qz9k" class="b3-splats" id="b3-splats"></div>
+      <div data-hf-id="hf-b8ui" class="b3-persp">
+        <div data-hf-id="hf-y6ef" class="b3-cam">
+          <div data-hf-id="hf-db4t" class="b3-frame">
+            <iframe data-hf-id="hf-9a57" class="b3-iframe" src="../assets/screens/calc-increased-light.html" scrolling="no" title="justpercent.com/increased-value-calculator/ (light)"></iframe>
           </div>
         </div>
       </div>
@@ -59,17 +59,17 @@
         var iframe = root.querySelector('.b3-iframe');
         function doc() { var d = iframe.contentDocument; return d && d.body ? d : null; }
         function q(sel) { var d = doc(); return d ? d.querySelector(sel) : null; }
-        function saleRow() {
+        function popRow() {
           var d = doc(); if (!d) return null;
           var rows = d.querySelectorAll('li.practical-use--interactive');
-          for (var i = 0; i < rows.length; i++) if (/Sale Discount/.test(rows[i].textContent)) return rows[i];
+          for (var i = 0; i < rows.length; i++) if (/Population Growth/.test(rows[i].textContent)) return rows[i];
           return null;
         }
         function touchDot() {
           var d = doc(); if (!d) return null;
           var t = d.getElementById('gsm-touch');
           if (!t) {
-            var row = saleRow(); if (!row) return null;
+            var row = popRow(); if (!row) return null;
             var r = row.getBoundingClientRect();
             t = d.createElement('div');
             t.id = 'gsm-touch';
@@ -86,26 +86,28 @@
 
         // ---- deterministic UI state (single render function over proxies) ----
         var V = {
-          mode: 0,        // 0 = defaults (240 / 15 / 204), 1 = typing the practical use
-          o: 0,           // typed chars of "300"
-          p: 0,           // typed chars of "30"
-          res: 0,         // counted result -> 210
+          mode: 0,        // 0 = defaults (100 / 8 / 108), 1 = typing the practical use
+          o: 0,           // typed chars of "100000"
+          p: 0,           // typed chars of "3"
+          res: 0,         // counted result -> 103000
           resPop: 0,      // answer pop scale
           pres: 0,        // presentation container reveal 0..1
-          rowK: 0,        // sale row pin highlight
-          hlK: 0          // filled-fields glow
+          rowK: 0,        // population row pin highlight
+          hlK: 0,         // filled-fields glow
+          hintO: 1,       // SolutionCardHint opacity (open on arrival via the sales-tax card)
+          hintH: 1        // SolutionCardHint height factor (collapses during scroll-back)
         };
         function R() {
           var d = doc(); if (!d) return;
-          var oIn = d.getElementById('decreased-value-original-input');
-          var pIn = d.getElementById('decreased-value-percentage-input');
-          var rIn = d.getElementById('decreased-value-result');
+          var oIn = d.getElementById('increased-value-original-input');
+          var pIn = d.getElementById('increased-value-percentage-input');
+          var rIn = d.getElementById('increased-value-result');
           if (oIn && pIn && rIn) {
             if (V.mode < 0.5) {
-              oIn.value = '240'; pIn.value = '15'; rIn.value = '204';
+              oIn.value = '100'; pIn.value = '8'; rIn.value = '108';
             } else {
-              var ot = '300'.slice(0, Math.round(V.o));
-              var pt = '30'.slice(0, Math.round(V.p));
+              var ot = '100000'.slice(0, Math.round(V.o));
+              var pt = '3'.slice(0, Math.round(V.p));
               oIn.value = ot; pIn.value = pt;
               rIn.value = (V.res > 0.5) ? String(Math.round(V.res)) : '';
             }
@@ -114,14 +116,29 @@
             rIn.style.transform = 'scale(' + (1 + 0.22 * V.resPop).toFixed(4) + ')';
             rIn.style.transformOrigin = '50% 50%';
           }
+          // SolutionCardHint: open until the PU pin closes it (app fades it ~250 ms,
+          // its space collapses while the page scrolls back, masking the reflow);
+          // the read-only Answer/Result label is hidden exactly while the hint is open.
+          var hint = d.getElementById('solution-card-hint-increased-value');
+          if (hint) {
+            hint.style.opacity = V.hintO.toFixed(3);
+            hint.style.maxHeight = V.hintH >= 0.999 ? '' : Math.round(V.hintH * 200) + 'px';
+            hint.style.marginBottom = V.hintH >= 0.999 ? '' : Math.round(V.hintH * 12) + 'px';
+            hint.style.overflow = V.hintH >= 0.999 ? '' : 'hidden';
+            // padding must collapse with the box: max-height alone cannot squeeze
+            // below the padding floor (border-box), leaving a 35px ghost strip
+            hint.style.paddingTop = hint.style.paddingBottom = V.hintH >= 0.999 ? '' : Math.round(V.hintH * 17.6) + 'px';
+          }
+          var lbl = d.querySelector('.readonly-result-label');
+          if (lbl) lbl.style.opacity = (1 - V.hintO).toFixed(3);
           var pres = d.getElementById('gsm-pres');
           if (pres) {
             pres.style.opacity = V.pres.toFixed(3);
-            pres.style.maxHeight = Math.round(V.pres * 160) + 'px';
+            pres.style.maxHeight = Math.round(V.pres * 176) + 'px';
             pres.style.transform = 'scale(' + (0.9 + 0.1 * V.pres).toFixed(4) + ')';
             pres.style.transformOrigin = '50% 0%';
           }
-          var row = saleRow();
+          var row = popRow();
           if (row) {
             row.style.background = 'rgba(255,255,255,' + (0.85 * V.rowK).toFixed(3) + ')';
             row.style.boxShadow = V.rowK > 0.01
@@ -174,12 +191,12 @@
         function applyScroll() { var d = doc(); if (d) d.defaultView.scrollTo(0, P.y); }
         tl.fromTo(P, { y: 16 }, { y: 16, duration: 0.9, ease: 'none', onUpdate: applyScroll }, 0);
         tl.to(P, { y: 870, duration: 1.15, ease: 'power2.inOut', onUpdate: applyScroll }, 0.95);
-        tl.to(P, { y: 20, duration: 0.95, ease: 'power2.inOut', onUpdate: applyScroll }, 3.1);
+        tl.to(P, { y: 20, duration: 0.75, ease: 'power2.inOut', onUpdate: applyScroll }, 3.1);
 
         // baseline state render across the whole beat (also restores on reverse scrub)
         tl.fromTo(V, { mode: 0 }, { mode: 0, duration: 0.05, ease: 'none', onUpdate: R }, 0);
 
-        // touch: tap the "Sale Discount" practical use (a)
+        // touch: tap the "Population Growth" practical use (a)
         var T = { o: 0, s: 1, r: 0 };
         function applyTouch() {
           var t = touchDot(); if (!t) return;
@@ -195,14 +212,20 @@
         // row pin highlight sticks after the tap
         tl.to(V, { rowK: 1, duration: 0.3, ease: 'power2.out', onUpdate: R, immediateRender: false }, 2.45);
 
+        // pinning closes the SolutionCardHint like the app: fade ~250 ms right after
+        // the tap (hint is off-screen at the PU list), then its space collapses while
+        // the page scrolls back so the reflow is masked by the scroll motion
+        tl.to(V, { hintO: 0, duration: 0.25, ease: 'power2.out', onUpdate: R, immediateRender: false }, 2.6);
+        tl.to(V, { hintH: 0, duration: 0.4, ease: 'power2.inOut', onUpdate: R, immediateRender: false }, 3.15);
+
         // (b) the selected practical use appears ABOVE the calculator — exactly like the app
         tl.to(V, { pres: 1, duration: 0.55, ease: 'power2.out', onUpdate: R, immediateRender: false }, 3.9);
 
         // (c) only then: the fields are filled and the answer is computed live
         tl.to(V, { mode: 1, duration: 0.02, ease: 'none', onUpdate: R, immediateRender: false }, 4.55);
-        tl.to(V, { o: 3, duration: 0.5, ease: 'steps(3)', onUpdate: R, immediateRender: false }, 4.65);
-        tl.to(V, { p: 2, duration: 0.34, ease: 'steps(2)', onUpdate: R, immediateRender: false }, 5.25);
-        tl.to(V, { res: 210, duration: 0.4, ease: 'power2.out', onUpdate: R, immediateRender: false }, 5.68);
+        tl.to(V, { o: 6, duration: 0.5, ease: 'steps(6)', onUpdate: R, immediateRender: false }, 4.65);
+        tl.to(V, { p: 1, duration: 0.34, ease: 'steps(1)', onUpdate: R, immediateRender: false }, 5.25);
+        tl.to(V, { res: 103000, duration: 0.4, ease: 'power2.out', onUpdate: R, immediateRender: false }, 5.68);
         tl.to(V, { resPop: 1, duration: 0.22, ease: 'back.out(3)', onUpdate: R, immediateRender: false }, 5.68);
         tl.to(V, { resPop: 0, duration: 0.3, ease: 'power2.inOut', onUpdate: R, immediateRender: false }, 5.95);
         tl.to(V, { hlK: 1, duration: 0.3, ease: 'power2.out', onUpdate: R, immediateRender: false }, 5.6);

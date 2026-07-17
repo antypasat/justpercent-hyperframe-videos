@@ -186,6 +186,7 @@
   flex: none;
 }
 .jp-dd-sol .pill.orange { background: #ea580c; }
+.jp-dd-sol .pill.mint { background: #059669; }   /* app: solution-card-color-mint → bg-emerald-600 */
 .jp-dd-faq .t { font-size: 13.5px; font-weight: 500; }
 .jp-dd-faq .s { font-size: 11.5px; color: var(--gray500); }
 #stage.dark .jp-dd-faq .s { color: var(--gray400); }
@@ -279,14 +280,41 @@
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
-.jp-calc .dots {
-  position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 5px;
+/* collapse/expand chevron strip — live app's edge-control-btn row (⌄ ⇊ ⇈ ⌃),
+   right of center at the card top */
+.jp-calc .edge-arrows {
+  position: absolute; top: 8px; right: 52px;
+  display: flex; gap: 12px;
 }
-.jp-calc .dots i {
-  width: 4px; height: 4px; border-radius: 50%;
-  background: rgba(100, 116, 139, 0.6);
+.jp-calc .edge-arrows span {
+  width: 32px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  color: #9ca3af;
 }
+#stage.dark .jp-calc .edge-arrows span { color: #6b7280; }
+.jp-calc .edge-arrows svg { width: 15px; height: 15px; }
+/* vertical dot rail hugging the card's left edge (live drag/side rail) */
+.jp-calc .vrail {
+  position: absolute; left: 7px; top: 46%;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.jp-calc .vrail i {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(148, 163, 184, 0.8);
+}
+/* edge tab — blue chevron drawer toggle ("<" dedicated page, ">" home card) */
+.jp-calc .edge-tab {
+  position: absolute; top: 60px;
+  width: 22px; height: 56px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(226, 232, 240, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: #2563eb;
+}
+#stage.dark .jp-calc .edge-tab { background: rgba(51, 65, 85, 0.9); color: #60a5fa; }
+.jp-calc .edge-tab.left { left: 0; border-radius: 0 8px 8px 0; border-left: 0; }
+.jp-calc .edge-tab.right { right: 0; border-radius: 8px 0 0 8px; border-right: 0; }
+.jp-calc .edge-tab svg { width: 15px; height: 15px; }
 .jp-calc .corner-star {
   position: absolute; left: 0; top: 0;
   width: 26px; height: 26px;
@@ -299,19 +327,31 @@
 }
 #stage.dark .jp-calc .corner-star { color: rgba(255,255,255,0.75); background-color: rgba(15,23,42,0.35); }
 .jp-calc .corner-star svg { width: 15px; height: 15px; }
-.jp-calc .clear-btn {
-  position: absolute; right: 12px; top: 10px;
-  display: flex; align-items: center; gap: 4px;
-  border: 0; background: transparent;
-  color: #3b82f6; font-size: 13px; font-family: inherit;
+/* Copy / Save / Clear row centered under the result (copy-clear-group) */
+.jp-actions {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin-top: 12px;
 }
-#stage.dark .jp-calc .clear-btn { color: #60a5fa; }
-.jp-calc .clear-btn svg { width: 15px; height: 15px; }
+.jp-actions .act {
+  display: flex; align-items: center; gap: 4px;
+  border: 0; background: transparent; padding: 0;
+  color: #3b82f6; font-size: 14px; font-family: inherit;
+}
+#stage.dark .jp-actions .act { color: #60a5fa; }
+.jp-actions .act svg { width: 16px; height: 16px; }
 .jp-calc h2 {
   font-family: "Space Grotesk", sans-serif;
   font-size: 19px; font-weight: 700; letter-spacing: -0.01em;
   color: var(--text);
   margin: 4px 0 3px;
+  display: flex; align-items: center; gap: 12px;
+}
+/* live app shows a calculator glyph left of the title (% / trend arrow) */
+.jp-calc .h2-icon { display: flex; align-items: center; color: var(--text); }
+.jp-calc .h2-icon svg { width: 24px; height: 24px; }
+.jp-calc .h2-icon.pct {
+  font-size: 26px; font-weight: 700; line-height: 1;
+  letter-spacing: -0.04em;
 }
 .jp-calc .subtitle { font-size: 13.5px; color: #1f2937; margin-bottom: 14px; }
 #stage.dark .jp-calc .subtitle { color: #e5e7eb; }
@@ -366,6 +406,31 @@
 }
 .jp-answer.empty { color: var(--gray400); font-size: 17px; font-weight: 400; }
 
+/* SolutionCardHint replica (components/SolutionCardHint.astro, mobile values):
+   shown above the calculator after SolutionCard navigation, closed by PU pin */
+.jp-hint {
+  position: relative;
+  display: none;
+  margin: 4px 0 12px;
+  padding: 18px 19px;
+  background: linear-gradient(135deg, #d8b4fe 0%, #bfdbfe 100%);
+  color: #2d3748;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(31, 41, 55, 0.15);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.jp-hint .hint-text { font-size: 16px; line-height: 1.4; font-weight: 600; text-align: center; }
+.jp-hint .hint-close {
+  position: absolute; top: 0; right: 0;
+  width: 36px; height: 36px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.85); border: none; border-radius: 50%;
+  color: #1f2937; cursor: pointer;
+  transform: translate(calc(50% - 10px), calc(-50% + 10px));
+}
+.jp-hint .hint-close svg { width: 22px; height: 22px; }
+
 .jp-copy {
   display: flex; align-items: center; gap: 4px;
   color: #3b82f6; font-size: 13px;
@@ -373,59 +438,78 @@
 #stage.dark .jp-copy { color: #60a5fa; }
 .jp-copy svg { width: 14px; height: 14px; }
 
+/* Equation | Round row — sits ABOVE the form on the live site, space-between */
 .jp-controls {
-  display: flex; align-items: center; gap: 14px;
-  margin-top: 16px; font-size: 13px; color: var(--gray600);
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 0 0 14px;
 }
-#stage.dark .jp-controls { color: #d1d5db; }
-.jp-controls .eq {
-  display: flex; align-items: center; gap: 5px;
-  border: 1px solid var(--input-border); border-radius: 6px;
-  padding: 4px 10px; background: transparent; color: inherit;
-  font-family: inherit; font-size: 13px;
-}
-.jp-check {
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.jp-check .boxx {
-  width: 15px; height: 15px; border-radius: 4px;
-  border: 1.5px solid var(--gray400);
-  display: flex; align-items: center; justify-content: center;
-  background: #7c3aed; border-color: #7c3aed;
-}
-.jp-check .boxx svg { width: 11px; height: 11px; color: #fff; }
-
-/* Practical Uses toggle button with the animated beam border */
-.jp-pu-btn {
-  position: relative;
-  margin-top: 16px;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  width: 100%;
-  padding: 9px 12px;
-  border: 1px solid rgba(59, 130, 246, 0.35);
-  border-radius: 8px;
-  background: rgba(59, 130, 246, 0.05);
-  color: #2563eb;
+/* shared white pill (equation-toggle / help-icon / memos toggle on justpercent.com) */
+.jp-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 10px;
+  border: 1px solid #e5e7eb; border-radius: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  color: #374151;
   font-family: inherit; font-size: 14px; font-weight: 500;
 }
-#stage.dark .jp-pu-btn { color: #60a5fa; border-color: rgba(96, 165, 250, 0.35); background: rgba(96, 165, 250, 0.06); }
-.jp-pu-btn .beam { position: absolute; inset: 0; border-radius: 8px; overflow: visible; }
-.jp-pu-btn .beam rect {
-  fill: none; stroke: #3b82f6; stroke-width: 1.5px;
-  stroke-dasharray: 25 200;
+#stage.dark .jp-pill { color: #e5e7eb; border-color: #374151; background: rgba(31, 41, 55, 0.9); }
+.jp-pill > svg { width: 16px; height: 16px; color: #4b5563; flex: none; }
+#stage.dark .jp-pill > svg { color: #9ca3af; }
+.jp-check {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; color: #4b5563;
 }
-#stage.dark .jp-pu-btn .beam rect { stroke: #60a5fa; }
+#stage.dark .jp-check { color: #9ca3af; }
+.jp-check .boxx {
+  width: 20px; height: 20px; border-radius: 4px;
+  border: 2px solid #2563eb; background: #2563eb;
+  display: flex; align-items: center; justify-content: center;
+}
+.jp-check .boxx svg { width: 12px; height: 12px; color: #fff; }
+
+/* Practical Uses toggle — same white pill as Equation, left-aligned (help-icon) */
+.jp-pu-btn { margin-top: 16px; }
+
+/* "Saved 0" pill | "Expand on save" checkbox row */
+.jp-saved-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 12px;
+}
+.jp-saved-row .cnt {
+  min-width: 20px; padding: 1px 6px; border-radius: 9999px;
+  background: #f3f4f6; color: #6b7280;
+  font-size: 12px; font-weight: 500; text-align: center;
+}
+#stage.dark .jp-saved-row .cnt { background: #374151; color: #d1d5db; }
+.jp-expand {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; color: #4b5563;
+}
+#stage.dark .jp-expand { color: #9ca3af; }
+.jp-expand .ebox {
+  width: 20px; height: 20px; border-radius: 4px;
+  border: 2px solid #d1d5db; background: rgba(255, 255, 255, 0.7);
+}
+#stage.dark .jp-expand .ebox { border-color: #4b5563; background: rgba(31, 41, 55, 0.7); }
 
 .jp-disclaimer { margin-top: 14px; font-size: 10px; color: rgba(156, 163, 175, 0.6); text-align: center; }
 
-/* ---------- practical uses list (PracticalUse.astro) ---------- */
+/* ---------- Help section + practical uses list (PracticalUse.astro) ----------
+   live order: "Help" (IBM Plex, bold) → description → "Practical Uses"
+   (Space Grotesk, medium) → list */
 .jp-practical { padding: 4px 2px; }
 .jp-practical h3 {
   font-family: "Space Grotesk", sans-serif;
-  font-size: 17px; font-weight: 700; color: var(--text);
+  font-size: 17px; font-weight: 500; color: var(--text);
+  margin-bottom: 8px;
+}
+.jp-practical .help-h {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 700;
   margin-bottom: 3px;
 }
-.jp-practical .desc { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+.jp-practical .desc { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
 .jp-pu-item {
   position: relative;
   padding: 11px 14px 11px 16px;

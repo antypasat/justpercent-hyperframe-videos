@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1080, height=1920" />
-    <link rel="stylesheet" href="capture/fonts.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <link rel="stylesheet" href="capture/fonts.css">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,7 +37,10 @@
                 box-shadow: 0 10px 34px rgba(0,0,0,.5); }
       #urlbar svg { flex-shrink: 0; }
       #urltext { font-family: "JetBrains Mono", monospace; font-size: 29px; color: #2b2350;
-                 white-space: nowrap; letter-spacing: -0.01em; }
+                 white-space: nowrap; letter-spacing: -0.01em;
+                 /* long calculator/FAQ paths must clip inside the pill like a real
+                    browser URL bar instead of running off-canvas */
+                 min-width: 0; overflow: hidden; text-overflow: ellipsis; }
       #urlbar.dark-mode #urltext { color: #cfc7f4; }
 
       /* ---------- page card (the app view) ---------- */
@@ -75,6 +78,7 @@
                border-radius: 30px; backdrop-filter: blur(10px);
                box-shadow: 0 16px 40px rgba(0,0,0,.35); }
       .introcap { position: absolute; left: 50%; top: 585px; transform: translateX(-50%);
+                  z-index: 5; /* headlines read ABOVE the loop badge panel */
                   padding: 30px 54px; opacity: 0; text-align: center; max-width: 940px;
                   font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 74px;
                   line-height: 1.12; color: #ffffff; letter-spacing: -0.02em; white-space: nowrap; }
@@ -139,86 +143,86 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="36"
-         data-width="1080" data-height="1920">
+    <div data-hf-id="hf-5ve3" id="root" data-composition-id="main" data-start="0" data-duration="36" data-width="1080" data-height="1920">
 
       <!-- backgrounds -->
-      <div class="bg" id="bgLight">
-        <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-        <div class="dots"></div>
+      <div data-hf-id="hf-kpzu" class="bg" id="bgLight">
+        <div data-hf-id="hf-8x5t" class="orb o1"></div><div data-hf-id="hf-cv9u" class="orb o2"></div><div data-hf-id="hf-gtdv" class="orb o3"></div>
+        <div data-hf-id="hf-zx1w" class="dots"></div>
       </div>
-      <div class="bg" id="bgDark">
-        <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-        <div class="dots"></div>
+      <div data-hf-id="hf-94pm" class="bg" id="bgDark">
+        <div data-hf-id="hf-9ywl" class="orb o1"></div><div data-hf-id="hf-kec6" class="orb o2"></div><div data-hf-id="hf-yddv" class="orb o3"></div>
+        <div data-hf-id="hf-2trg" class="dots"></div>
       </div>
 
       <!-- camera wrapper: page card + ripples -->
-      <div id="cardWrap">
-        <div id="pagecard">
-          <div class="scene" id="scHomeL"><iframe class="pageframe" src="capture/b-home-default.html" scrolling="no"></iframe></div>
-          <div class="scene" id="scCalcDef"><iframe class="pageframe" src="capture/b-calc-default.html" scrolling="no"></iframe></div>
-          <div class="scene" id="flipScene">
-            <div id="flipInner">
-              <div class="flipFace flipFront"><iframe class="pageframe" id="ifCalcPinL" src="capture/b-calc-pinned.html" scrolling="no"></iframe></div>
-              <div class="flipFace flipBack"><iframe class="pageframe" id="ifCalcPinD" src="capture/b-dark-calc-pinned.html" scrolling="no"></iframe></div>
+      <div data-hf-id="hf-7xjf" id="cardWrap">
+        <div data-hf-id="hf-f3i6" id="pagecard">
+          <div data-hf-id="hf-l8xv" class="scene" id="scHomeL"><iframe data-hf-id="hf-jm27" class="pageframe" src="capture/b-home-default.html" scrolling="no"></iframe></div>
+          <div data-hf-id="hf-ptc4" class="scene" id="scCalcDef"><iframe data-hf-id="hf-7xwl" class="pageframe" src="capture/b-calc-default.html" scrolling="no"></iframe></div>
+          <div data-hf-id="hf-o6i5" class="scene" id="flipScene">
+            <div data-hf-id="hf-ps3o" id="flipInner">
+              <div data-hf-id="hf-0jbc" class="flipFace flipFront"><iframe data-hf-id="hf-8auv" class="pageframe" id="ifCalcPinL" src="capture/b-calc-pinned.html" scrolling="no"></iframe></div>
+              <div data-hf-id="hf-4y2m" class="flipFace flipBack"><iframe data-hf-id="hf-v45q" class="pageframe" id="ifCalcPinD" src="capture/b-dark-calc-pinned.html" scrolling="no"></iframe></div>
             </div>
           </div>
-          <div class="scene" id="scHomeD"><iframe class="pageframe" src="capture/b-dark-home-default.html" scrolling="no"></iframe></div>
-          <div class="scene" id="scSearchD"><iframe class="pageframe" src="capture/b-dark-home-search.html" scrolling="no"></iframe></div>
-          <div class="scene" id="scTargetD"><iframe class="pageframe" src="capture/b-dark-home-target.html" scrolling="no"></iframe></div>
-          <div class="scene" id="scFaqHub"><iframe class="pageframe" src="capture/b-dark-faqs-hub.html" scrolling="no"></iframe></div>
-          <div class="scene" id="scFaqBill"><iframe class="pageframe" src="capture/b-dark-faq-bill.html" scrolling="no"></iframe></div>
+          <div data-hf-id="hf-ttcb" class="scene" id="scHomeD"><iframe data-hf-id="hf-wqju" class="pageframe" src="capture/b-dark-home-default.html" scrolling="no"></iframe></div>
+          <div data-hf-id="hf-xcyw" class="scene" id="scSearchD"><iframe data-hf-id="hf-kvw3" class="pageframe" src="capture/b-dark-home-search.html" scrolling="no"></iframe></div>
+          <div data-hf-id="hf-t29x" class="scene" id="scTargetD"><iframe data-hf-id="hf-r0y6" class="pageframe" src="capture/b-dark-change-pinned.html" scrolling="no"></iframe></div>
+          <div data-hf-id="hf-x0it" class="scene" id="scFaqHub"><iframe data-hf-id="hf-ec1m" class="pageframe" src="capture/b-dark-faqs-hub.html" scrolling="no"></iframe></div>
+          <div data-hf-id="hf-fqf1" class="scene" id="scFaqFilt"><iframe data-hf-id="hf-fqf2" class="pageframe" src="capture/b-dark-faqs-filtered.html" scrolling="no"></iframe></div>
+          <div data-hf-id="hf-hskf" class="scene" id="scFaqBill"><iframe data-hf-id="hf-h4vb" class="pageframe" src="capture/b-dark-faq-deposit.html" scrolling="no"></iframe></div>
         </div>
-        <div class="ripple" id="rip1"></div>
-        <div class="ripple" id="rip2"></div>
-        <div class="ripple" id="rip3"></div>
-        <div class="ripple" id="rip4"></div>
+        <div data-hf-id="hf-d81m" class="ripple" id="rip1"></div>
+        <div data-hf-id="hf-99xl" class="ripple" id="rip2"></div>
+        <div data-hf-id="hf-6ao0" class="ripple" id="rip3"></div>
+        <div data-hf-id="hf-2cjz" class="ripple" id="rip4"></div>
+        <div data-hf-id="hf-fqf3" class="ripple" id="rip5"></div>
       </div>
 
       <!-- URL bar -->
-      <div id="urlbar">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8b7fc7" stroke-width="2.4"
-             stroke-linecap="round" stroke-linejoin="round">
-          <rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+      <div data-hf-id="hf-p4pj" id="urlbar">
+        <svg data-hf-id="hf-br6n" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8b7fc7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect data-hf-id="hf-1gk6" x="4" y="10" width="16" height="11" rx="2.5" /><path data-hf-id="hf-apke" d="M8 10V7a4 4 0 0 1 8 0v3" />
         </svg>
-        <span id="urltext">justpercent.com/</span>
+        <span data-hf-id="hf-xgnd" id="urltext">justpercent.com/</span>
       </div>
 
       <!-- cut ring + flash -->
-      <div class="cutring" id="cutring"></div>
-      <div id="flash"></div>
+      <div data-hf-id="hf-o2re" class="cutring" id="cutring"></div>
+      <div data-hf-id="hf-hmg5" id="flash"></div>
 
       <!-- intro headlines (sequential, same spot) -->
-      <div class="introcap glass" id="ic1">Math class? <b>No.</b></div>
-      <div class="introcap glass" id="ic2">Your life — <b>in percent.</b></div>
+      <div data-hf-id="hf-yl14" class="introcap glass" id="ic1">Math class? <b data-hf-id="hf-d1vg">No.</b></div>
+      <div data-hf-id="hf-fb9x" class="introcap glass" id="ic2">Your life — <b data-hf-id="hf-eq2n">in percent.</b></div>
 
       <!-- captions (sequential, same spot, above brand bar) -->
-      <div class="cap glass" id="c3">Start from <b>your life</b> — not from a formula.</div>
-      <div class="cap glass" id="c4">Have a coupon? <b>One tap.</b></div>
-      <div class="cap glass" id="c5"><em>$300</em> parka − <em>30%</em> → <em>$210</em> at the register.</div>
-      <div class="cap glass" id="c6">Day or night — <b>one tap.</b></div>
-      <div class="cap glass" id="c7">Or just <b>type what happened…</b></div>
-      <div class="cap glass" id="c8">A <em>15%</em> tip on <em>$60</em> → <em>$9</em>. Done.</div>
-      <div class="cap glass" id="c9"><b>64 real-life questions</b> — every one calculates.</div>
-      <div class="cap glass" id="c10">Change a number. <b>The answer follows.</b></div>
+      <div data-hf-id="hf-9d0s" class="cap glass" id="c3">Start from <b data-hf-id="hf-gs58">your life</b> — not from a formula.</div>
+      <div data-hf-id="hf-q6f9" class="cap glass" id="c4">Exam coming up? <b data-hf-id="hf-2g7g">One tap.</b></div>
+      <div data-hf-id="hf-uelc" class="cap glass" id="c5"><em data-hf-id="hf-u5em">85%</em> of <em data-hf-id="hf-2i5f">120</em> points → <em data-hf-id="hf-flq8">102</em>.</div>
+      <div data-hf-id="hf-ay6c" class="cap glass" id="c6">Day or night — <b data-hf-id="hf-czak">one tap.</b></div>
+      <div data-hf-id="hf-74nl" class="cap glass" id="c7">Or just <b data-hf-id="hf-9ky8">type what happened…</b></div>
+      <div data-hf-id="hf-2qzm" class="cap glass" id="c8"><em data-hf-id="hf-g2tc">$1M</em> → <em data-hf-id="hf-agtj">$1.2M</em> revenue = <em data-hf-id="hf-hwuo">+20%</em>. Done.</div>
+      <div data-hf-id="hf-bzbk" class="cap glass" id="c9"><b data-hf-id="hf-jo5b">82 real-life questions</b> — every one calculates.</div>
+      <div data-hf-id="hf-i810" class="cap glass" id="c10">Change a number. <b data-hf-id="hf-mn8e">The answer follows.</b></div>
 
       <!-- brand bar -->
-      <div id="brandbar">
-        <img src="assets/logo-percentage.webp" alt="Just Percent logo" />
-        <span>just<b>percent</b>.com</span>
+      <div data-hf-id="hf-k5bb" id="brandbar">
+        <img data-hf-id="hf-0m9i" src="assets/logo-percentage.webp" alt="Just Percent logo">
+        <span data-hf-id="hf-xn9w">just<b data-hf-id="hf-yxoa">percent</b>.com</span>
       </div>
 
       <!-- opening / loop badge -->
-      <div id="badgeRing"></div>
-      <div id="badge"><img src="assets/logo-percentage.webp" alt="%" /></div>
+      <div data-hf-id="hf-oo0s" id="badgeRing"></div>
+      <div data-hf-id="hf-wwdm" id="badge"><img data-hf-id="hf-ozd9" src="assets/logo-percentage.webp" alt="%"></div>
 
       <!-- endcard -->
-      <div id="endcard">
-        <div id="endBadge" class="endEl"><img src="assets/logo-percentage.webp" alt="Just Percent" /></div>
-        <div id="endName" class="endEl">Just <b>Percent</b></div>
-        <div id="endUrl" class="endEl">justpercent.com</div>
-        <div id="endTag" class="endEl">Every percent problem — solved in seconds.</div>
-        <div id="endPills" class="endEl"><span>Free</span><span>Instant</span><span>No sign-up</span></div>
+      <div data-hf-id="hf-3q5y" id="endcard">
+        <div data-hf-id="hf-mbzi" id="endBadge" class="endEl"><img data-hf-id="hf-nimv" src="assets/logo-percentage.webp" alt="Just Percent"></div>
+        <div data-hf-id="hf-9f0u" id="endName" class="endEl">Just <b data-hf-id="hf-kcpm">Percent</b></div>
+        <div data-hf-id="hf-k6f8" id="endUrl" class="endEl">justpercent.com</div>
+        <div data-hf-id="hf-3e1t" id="endTag" class="endEl">Every percent problem — solved in seconds.</div>
+        <div data-hf-id="hf-vgdf" id="endPills" class="endEl"><span data-hf-id="hf-yh5b">Free</span><span data-hf-id="hf-5gdi">Instant</span><span data-hf-id="hf-zw9n">No sign-up</span></div>
       </div>
     </div>
 
@@ -275,6 +279,8 @@
           /* animated scroll uses a negative top margin (works with overflow:hidden) */
           o.scroll = function (y) { try { if (o.doc) o.doc.documentElement.style.marginTop = (-y) + "px"; } catch (e) {} };
           o.val = function (id, v) { try { var el = o.doc && o.doc.getElementById(id); if (el && el.value !== v) el.value = v; } catch (e) {} };
+          o.txt = function (id, v) { try { var el = o.doc && o.doc.getElementById(id); if (el && el.textContent !== v) el.textContent = v; } catch (e) {} };
+          o.sty = function (id, prop, v) { try { var el = o.doc && o.doc.getElementById(id); if (el && el.style[prop] !== v) el.style[prop] = v; } catch (e) {} };
           return o;
         }
 
@@ -286,6 +292,7 @@
         var fSearchD = reg("scSearchD");
         var fTargetD = reg("scTargetD");
         var fFaqHub  = reg("scFaqHub");
+        var fFaqFilt = reg("scFaqFilt");
         var fFaqBill = reg("scFaqBill");
 
         /* ---------- beat sheet (all times in seconds) ---------- */
@@ -293,32 +300,36 @@
           introC1: [0.45, 1.65], introC2: [1.85, 3.05],
           badgeOut: [2.80, 3.25],          /* badge shrinks into the page cut       */
           homeIn: 3.10,                    /* S1 home light appears                 */
-          ctaFocus: [7.35, 8.25],          /* push into "Apply My Coupon"           */
+          ctaFocus: [7.35, 8.25],          /* push into "Calculate My Score"        */
           rip1: 7.30,                      /* tap on CTA                            */
           cut1: 8.25,                      /* CUT -> calc page                      */
           calcScroll: [9.60, 11.00],       /* scroll down to Practical Uses         */
-          rip2: 11.25,                     /* tap on "Sale Discount" row            */
+          rip2: 11.25,                     /* tap on "Grade Points" row             */
           pinSwap: 11.70,                  /* pinned presentation appears on top    */
-          typeOrig: [12.40, 12.95],        /* "300"                                 */
-          typePct: [13.10, 13.50],         /* "30"                                  */
-          count1: [13.70, 14.30],          /* result counts to 210                  */
+          typeOrig: [12.40, 12.95],        /* "85"                                  */
+          typePct: [13.10, 13.50],         /* "120"                                 */
+          count1: [13.70, 14.30],          /* result counts to 102                  */
           fabFocus: [15.20, 15.95],        /* glide toward the round theme FAB      */
           rip3: 15.85,                     /* tap on FAB                            */
           flip: [16.10, 17.05],            /* 3D flip light -> dark                 */
           flipRelax: [15.95, 16.32],       /* camera back to center BEFORE the flip */
           cut2: 17.45,                     /* CUT -> dark home                      */
-          typeTip: [18.25, 19.30],         /* typing "tip" in the search box        */
+          typeTip: [18.25, 19.30],         /* typing "revenue" in the search box    */
           dropSwap: 19.45,                 /* dropdown state appears                */
-          itemGlow: [20.10, 20.90],        /* highlight of the Restaurant Tip item  */
+          itemGlow: [20.10, 20.90],        /* highlight of the Revenue Growth item  */
           rip4: 20.60,                     /* tap on dropdown item                  */
           whoosh: [20.95, 21.60],          /* scroll-whoosh to the target calc      */
-          typePct2: [21.90, 22.35],        /* "15"                                  */
-          typeNum2: [22.45, 22.90],        /* "60"                                  */
-          count2: [23.00, 23.50],          /* result counts to 9                    */
+          typePct2: [21.90, 22.35],        /* "1000000"                             */
+          typeNum2: [22.45, 22.90],        /* "1200000"                             */
+          count2: [23.00, 23.50],          /* result counts to 20%                  */
           cut3: 24.45,                     /* CUT -> FAQ hub                        */
-          hubFocus: [25.40, 26.25],        /* push into a category circle           */
-          cut4: 26.25,                     /* MATCH CUT -> bill splitting FAQ       */
-          billRoll: [27.60, 28.60],        /* 250 -> 300 live update                */
+          typeFaq: [24.90, 25.70],         /* typing "deposit" in Search FAQs       */
+          filtSwap: 25.85,                 /* filtered state appears (2 of 82)      */
+          faqScroll: [26.00, 26.60],       /* scroll to the Bank Deposit card       */
+          rip5: 26.75,                     /* tap on the card                       */
+          cardFocus: [26.85, 27.45],       /* push into the card                    */
+          cut4: 27.45,                     /* MATCH CUT -> bank deposit FAQ         */
+          billRoll: [28.30, 29.30],        /* 5000 -> 6000 live update              */
           cardOut: [30.00, 30.55],         /* page recedes                          */
           endIn: [30.55, 31.40],           /* endcard builds                        */
           endHold: 34.40,
@@ -336,20 +347,22 @@
         /* URL per scene */
         var urls = [
           [3.10,  "justpercent.com/", false],
-          [8.25,  "justpercent.com/decreased-value-calculator/", false],
-          [17.05, "justpercent.com/decreased-value-calculator/", true],
+          [8.25,  "justpercent.com/basic-percentage-calculator/", false],
+          [17.05, "justpercent.com/basic-percentage-calculator/", true],
           [17.45, "justpercent.com/", true],
+          [20.95, "justpercent.com/percentage-change-calculator/", true],
           [24.45, "justpercent.com/faqs/", true],
-          [26.25, "justpercent.com/faqs/bill-splitting-calculator/", true]
+          [27.45, "justpercent.com/faqs/bank-deposit-interest-calculator/", true]
         ];
 
         /* ripples: [time, x(page css px), y(page css px viewport), scroll-space note] */
         function pageToStage(x, y) { return { x: 27 + x * 2.375, y: 200 + y * 2.375 }; }
         var ripDefs = {
           rip1: { t: B.rip1, p: pageToStage(270, 351.8) },            /* CTA pill center            */
-          rip2: { t: B.rip2, p: pageToStage(224, 346) },              /* Sale Discount row (scrolled)*/
+          rip2: { t: B.rip2, p: pageToStage(224, 346) },              /* Grade Points row (scrolled) */
           rip3: { t: B.rip3, p: pageToStage(395, 527) },              /* theme FAB                   */
-          rip4: { t: B.rip4, p: pageToStage(216, 233.6) }             /* dropdown item               */
+          rip4: { t: B.rip4, p: pageToStage(216, 253.5) },            /* dropdown item               */
+          rip5: { t: B.rip5, p: pageToStage(216, 392.7) }             /* Bank Deposit card (scrolled 300) */
         };
 
         /* camera focus: local coords inside 1026x1340 card */
@@ -370,7 +383,7 @@
         var flipInner = $("flipInner");
         var scenes = { scHomeL: $("scHomeL"), scCalcDef: $("scCalcDef"), flipScene: $("flipScene"),
                        scHomeD: $("scHomeD"), scSearchD: $("scSearchD"), scTargetD: $("scTargetD"),
-                       scFaqHub: $("scFaqHub"), scFaqBill: $("scFaqBill") };
+                       scFaqHub: $("scFaqHub"), scFaqFilt: $("scFaqFilt"), scFaqBill: $("scFaqBill") };
         var flash = $("flash"), cutring = $("cutring");
         var badge = $("badge"), badgeRing = $("badgeRing");
         var brandbar = $("brandbar");
@@ -432,8 +445,10 @@
           for (var ui = 0; ui < urls.length; ui++) if (t >= urls[ui][0]) cur = urls[ui];
           if (cur) {
             if (urltext.textContent !== cur[1]) urltext.textContent = cur[1];
-            urlbar.classList.toggle("dark-mode", !!cur[2] && darkMix > 0.5);
           }
+          /* class must also reset for t before the first url segment, so
+             backwards seeks don't keep a stale dark pill */
+          urlbar.classList.toggle("dark-mode", !!(cur && cur[2]) && darkMix > 0.5);
           /* url swap micro-bounce at each cut */
           var ub = 0;
           urls.forEach(function (u) { ub = Math.max(ub, pulseWin(t, u[0], u[0] + 0.30)); });
@@ -447,7 +462,9 @@
             if (on && kick) {
               var k = 1 + 0.035 * (1 - eO(seg(t, a, a + 0.35)));
               el.style.transform = "scale(" + k + ")";
-            } else if (on) {
+            } else {
+              /* also reset when OFF: a hidden scene must not keep a stale
+                 kick/whoosh transform, so state stays a pure function of t */
               el.style.transform = "none";
             }
             return on;
@@ -458,7 +475,8 @@
           win(scenes.scHomeD, B.cut2, B.dropSwap, true);
           win(scenes.scSearchD, B.dropSwap, B.whoosh[0], false);
           var targOn = win(scenes.scTargetD, B.whoosh[0], B.cut3, false);
-          win(scenes.scFaqHub, B.cut3, B.cut4, true);
+          win(scenes.scFaqHub, B.cut3, B.filtSwap, true);
+          win(scenes.scFaqFilt, B.filtSwap, B.cut4, false);   /* seamless swap, like scSearchD */
           win(scenes.scFaqBill, B.cut4, B.cardOut[1], true);
 
           /* pinned swap gets a soft entrance for the presentation zone */
@@ -476,13 +494,13 @@
             scenes.scTargetD.style.filter = "none";
           }
 
-          /* FAQ hub push-in blur just before match cut */
-          if (t >= B.cut3 && t < B.cut4) {
-            var hb = eI(seg(t, B.hubFocus[0], B.hubFocus[1]));
-            scenes.scFaqHub.style.filter = "blur(" + (hb * 14) + "px)";
-          } else scenes.scFaqHub.style.filter = "none";
+          /* FAQ filtered-state push-in blur just before match cut */
+          if (t >= B.filtSwap && t < B.cut4) {
+            var hb = eI(seg(t, B.cardFocus[0], B.cardFocus[1]));
+            scenes.scFaqFilt.style.filter = "blur(" + (hb * 14) + "px)";
+          } else scenes.scFaqFilt.style.filter = "none";
 
-          /* faq bill lands from the match cut with a soft iris feel */
+          /* faq page lands from the match cut with a soft iris feel */
           if (t >= B.cut4 && t < B.cardOut[1]) {
             var fb = eO(seg(t, B.cut4, B.cut4 + 0.45));
             scenes.scFaqBill.style.filter = "blur(" + lerp(14, 0, fb) + "px)";
@@ -499,41 +517,67 @@
           pagecard.style.borderColor = flipping ? "transparent" : "";
 
           /* ---------- iframe scroll states (pure fn of t) ----------
-             static offsets (searchD 58 / targetD 2007.5 / faqBill 60) and the
-             dark theme are BAKED into the b-*.html copies; only the animated
+             static offsets (homeL 992.9 / searchD 58 / changePinned 60 / faqDeposit 60)
+             and the dark theme are BAKED into the b-*.html copies; only the animated
              scroll of the calculator page is driven at runtime. */
-          fCalcDef.scroll(lerp(0, 830, eIO(seg(t, B.calcScroll[0], B.calcScroll[1]))));
+          /* 688.4 lands the "Grade Points" PU row center at viewport y 346
+             (rip2); calc-default now carries the SolutionCardHint (102px)
+             above the calculator, which shifted the PU list down vs the
+             old hint-less capture (542). */
+          fCalcDef.scroll(lerp(0, 688.4, eIO(seg(t, B.calcScroll[0], B.calcScroll[1]))));
+          /* 300 brings the Bank Deposit Interest card (page y 288.9-496.5) under
+             the still-visible search box; search box y 331.9 matches the hub
+             state, so the filtSwap is seamless at scroll 0 */
+          fFaqFilt.scroll(lerp(0, 300, eIO(seg(t, B.faqScroll[0], B.faqScroll[1]))));
 
           /* ---------- live values (pure fn of t) ---------- */
-          /* S2: coupon calc  300 - 30% -> 210 */
-          var vOrig = typed("300", t, B.typeOrig[0], B.typeOrig[1]);
-          var vPct = typed("30", t, B.typePct[0], B.typePct[1]);
+          /* S2: pinned "Grade Points" prefill  85% of 120 -> 102
+             (the live app fills the pinned PU's own values; 85/120/102 also
+             matches the pinned panel text and caption c5) */
+          var vOrig = typed("85", t, B.typeOrig[0], B.typeOrig[1]);
+          var vPct = typed("120", t, B.typePct[0], B.typePct[1]);
           var c1e = seg(t, B.count1[0], B.count1[1]);
-          var vRes = c1e <= 0 ? "" : String(Math.round(eO(c1e) * 210));
+          var vRes = c1e <= 0 ? "" : String(Math.round(eO(c1e) * 102));
           [fCalcPinL, fCalcPinD].forEach(function (f) {
-            f.val("decreased-value-original-input", vOrig);
-            f.val("decreased-value-percentage-input", vPct);
-            f.val("decreased-value-result", vRes);
+            f.val("percentage-input", vOrig);
+            f.val("number", vPct);
+            f.val("basic-percentage-result", vRes);
           });
 
-          /* S4: tip calc  15% of 60 -> 9 */
-          var vTipSearch = typed("tip", t, B.typeTip[0], B.typeTip[1]);
+          /* S4: revenue growth  1,000,000 -> 1,200,000 = +20% */
+          var vTipSearch = typed("revenue", t, B.typeTip[0], B.typeTip[1]);
           fHomeD.val("calculator-search", vTipSearch);
-          var vP2 = typed("15", t, B.typePct2[0], B.typePct2[1]);
-          var vN2 = typed("60", t, B.typeNum2[0], B.typeNum2[1]);
+          /* the app hides its typewriter placeholder overlay once the input has
+             text (b-dark-home-search bakes it at opacity 0) — mirror that here,
+             and restore on backward seeks to empty */
+          fHomeD.sty("animated-placeholder", "opacity", vTipSearch ? "0" : "");
+          var vP2 = typed("1000000", t, B.typePct2[0], B.typePct2[1]);
+          var vN2 = typed("1200000", t, B.typeNum2[0], B.typeNum2[1]);
           var c2e = seg(t, B.count2[0], B.count2[1]);
-          var vR2 = c2e <= 0 ? "" : String(Math.round(eO(c2e) * 9));
-          fTargetD.val("percentage-input", vP2);
-          fTargetD.val("number", vN2);
-          fTargetD.val("basic-percentage-result", vR2);
+          var vR2 = c2e <= 0 ? "" : String(Math.round(eO(c2e) * 20)) + "%";
+          fTargetD.val("original", vP2);
+          fTargetD.val("new", vN2);
+          fTargetD.val("percentage-change-result", vR2);
 
-          /* S5: bill splitting live roll 250 -> 300 (60/40 split) */
-          var bill = Math.round(lerp(250, 300, eIO(seg(t, B.billRoll[0], B.billRoll[1]))));
-          fFaqBill.val("bill-amount", String(bill));
-          fFaqBill.val("my-percent", "60");
-          fFaqBill.val("roommate-percent", "40");
-          fFaqBill.val("my-result", String(Math.round(bill * 0.6)));
-          fFaqBill.val("roommate-result", String(Math.round(bill * 0.4)));
+          /* S5a: hub search — "deposit" typed into the real Search FAQs box
+             (native placeholder attribute hides itself once value is set) */
+          fFaqHub.val("faq-search", typed("deposit", t, B.typeFaq[0], B.typeFaq[1]));
+
+          /* S5: bank deposit interest live roll 5000 -> 6000 (3% rate) */
+          var dep = Math.round(lerp(5000, 6000, eIO(seg(t, B.billRoll[0], B.billRoll[1]))));
+          var depS = String(dep), intS = String(Math.round(dep * 0.03));
+          fFaqBill.val("deposit-amount", depS);
+          fFaqBill.val("interest-rate", "3");
+          fFaqBill.val("interest-result", intS);
+          /* the real app also live-updates the prose spans in Calculation
+             Details (BankDepositInterestFAQ.astro): deposit-display..5 and
+             the final interest-amount */
+          fFaqBill.txt("deposit-display", depS);
+          fFaqBill.txt("deposit-display2", depS);
+          fFaqBill.txt("deposit-display3", depS);
+          fFaqBill.txt("deposit-display4", depS);
+          fFaqBill.txt("deposit-display5", depS);
+          fFaqBill.txt("interest-amount", intS);
 
           /* ---------- camera (zoom infinito + focus moves) ---------- */
           var zb = 1 + 0.0062 * Math.min(t, B.cardOut[0]);          /* monotonic base zoom */
@@ -556,10 +600,11 @@
           } else if (t < B.cut3) {
             /* after the whoosh, drift focus down so the result row clears the caption */
             s = zb; q = { x: 513, y: lerp(670, 748, eIO(seg(t, B.whoosh[1], B.whoosh[1] + 0.6))) };
-          } else if (t < B.cut4) {                                   /* hub center push     */
-            var he = eI(seg(t, B.hubFocus[0], B.hubFocus[1]));
+          } else if (t < B.cut4) {                                   /* push into the deposit card */
+            var he = eI(seg(t, B.cardFocus[0], B.cardFocus[1]));
             s = lerp(zb, 2.35, he);
-            q = { x: 513, y: lerp(670, 560, he) };
+            /* card center after scroll 300: page (216, 392.7) -> local (513, 932.7) */
+            q = { x: 513, y: lerp(670, 932.7, he) };
           } else {
             s = zb; q = { x: 513, y: 670 };
           }
@@ -583,7 +628,7 @@
           Object.keys(ripDefs).forEach(function (id) {
             var r = $(id), d = ripDefs[id];
             var e = seg(t, d.t, d.t + 0.55);
-            if (e <= 0 || e >= 1) { r.style.opacity = 0; return; }
+            if (e <= 0 || e >= 1) { r.style.opacity = 0; r.style.transform = "translate(-50%,-50%) scale(0)"; return; }
             /* ripple must track the camera transform: convert card-local to stage */
             var lx = (d.p.x - 27), ly = (d.p.y - 200);
             var sx = 27 + cxy.x + s * lx, sy = 200 + cxy.y + s * ly;
@@ -603,7 +648,7 @@
           if (ringE > 0 && ringE < 1) {
             cutring.style.opacity = (1 - ringE) * 0.8;
             cutring.style.transform = "translate(-50%,-50%) scale(" + (0.3 + eO(ringE) * 3.4) + ")";
-          } else cutring.style.opacity = 0;
+          } else { cutring.style.opacity = 0; cutring.style.transform = "translate(-50%,-50%) scale(0)"; }
 
           /* ---------- brand bar ---------- */
           var bbOut = 1 - eI(seg(t, B.cardOut[0], B.cardOut[1] + 0.15));

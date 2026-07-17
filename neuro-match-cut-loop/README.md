@@ -22,7 +22,7 @@ random-order seek tests — no hysteresis, loop frame 36.0 ≡ frame 0.0).
 
 - **Match cuts on a center anchor** — every hard cut lands on a shape-matched element at
   stage center: fruity `%` badge → home page → "Apply My Coupon" pill → result chip →
-  round theme FAB → FAQ category push → endcard badge.
+  round theme FAB → FAQ card push (Bank Deposit Interest) → endcard badge.
 - **Zoom Infinito** — monotonic `1 + 0.0062·t` base zoom runs under all scenes until the endcard.
 - **Seamless loop** — the endcard collapses back into the opening `%` badge; the last frame
   equals the first (badge scale 1, brand-bar visible, URL bar hidden, light background).
@@ -35,10 +35,10 @@ random-order seek tests — no hysteresis, loop frame 36.0 ≡ frame 0.0).
 |---|---|
 | 0.0–3.1 | Hook: `%` badge + sequential glass headlines ("Math class? No." / "Your life — in percent.") |
 | 3.1–8.25 | Home (light), URL `justpercent.com/` — "Start from your life — not from a formula."; tap **Apply My Coupon**, push-in match cut |
-| 8.25–15.2 | `/decreased-value-calculator/`: scroll to Practical Uses → tap **Sale Discount** → pinned card appears ABOVE the calculator → fields type 300 / 30 → result counts to **210** (app-faithful order: click → presentation → fill) |
+| 8.25–15.2 | `/basic-percentage-calculator/`: scroll to Practical Uses → tap **Grade Points** → pinned card appears ABOVE the calculator → fields type 85 / 120 → result counts to **102** (app-faithful order: click → presentation → fill) |
 | 15.2–17.45 | Glide to the round theme FAB → tap → **3D flip** light→dark (two calc-pinned faces, transparent shell) |
-| 17.45–24.45 | Dark home: type **"tip"** in the SearchBox → dropdown (real portal) → tap **Restaurant Tip** → whoosh to Basic Percentage with pinned practical use above the form → 15 / 60 → **9** |
-| 24.45–30.45 | `/faqs/` hub → push into category → match cut → `/faqs/bill-splitting-calculator/`: bill rolls 250→**300**, answers live-update 150/100 → **180/120** (60/40 split) |
+| 17.45–24.45 | Dark home: type **"revenue"** in the SearchBox → dropdown (real portal) → tap **Revenue Growth** → whoosh to Percentage Change with pinned practical use above the form → 1,000,000 / 1,200,000 → **+20%** |
+| 24.45–30.45 | `/faqs/` hub → type **"deposit"** into Search FAQs → filtered state pops (2 of 82) → scroll to the **Bank Deposit Interest** card → tap → match cut → `/faqs/bank-deposit-interest-calculator/`: deposit rolls 5000→**6000**, interest live-updates 150 → **180** (3% rate) |
 | 30.45–36.0 | Endcard (logo badge, Just Percent, justpercent.com pill, tagline, Free·Instant·No sign-up) → collapse into the opening badge → **loop closed** |
 
 ## Fidelity
@@ -49,13 +49,16 @@ random-order seek tests — no hysteresis, loop frame 36.0 ≡ frame 0.0).
   idle ≥ 500 ms, no CLS ≥ 500 ms, + hard 5 s margin) — nothing is hand-drawn; proportions are 1:1.
 - `b-*.html` are the baked variants actually used by the composition: helper style
   (animations off, scrollbars hidden), dark mode class + static scroll offsets baked in
-  (`b-dark-home-target.html` = scrollY 2007.5 with the pinned Restaurant Tip, etc.).
+  (`b-dark-change-pinned.html` = scrollY 60 with the pinned Revenue Growth, etc.);
+  `b-dark-faqs-hub.html` / `b-dark-faqs-filtered.html` are the same-session pair behind the
+  FAQ search journey (filtered = "deposit" typed live into `#faq-search`, 2 of 82 shown).
 - Dark mode = the app's real Tailwind `.dark` theme (class strategy), not a filter.
 - Logo: `assets/logo-percentage.webp` = the app's real `/images/percentage.webp`.
 - URLs shown in the chrome bar are verified routes from `handy-percent/src/pages/`
   (canonical, trailing slash).
-- Values are real app behavior, verified live: $300 −30% → $210 (Sale Discount practical use),
-  15% of $60 → $9 (Restaurant Tip via search), bill split 60/40 of $250→$300 → $150/$100→$180/$120.
+- Values are real app behavior, verified live: 85% of 120 → 102 (Grade Points practical use),
+  $1,000,000 → $1,200,000 = +20% (Revenue Growth via search), bank deposit interest at 3%:
+  $5,000→$6,000 → $150→$180. The FAQ filter really shows 2 of 82 for "deposit".
 
 ## Cue sheet (for post: SFX/music, video is silent)
 
@@ -66,22 +69,26 @@ random-order seek tests — no hysteresis, loop frame 36.0 ≡ frame 0.0).
 | 7.30 | tap ripple on CTA (click) |
 | 8.25 | match cut → calculator (impact) |
 | 9.6–11.0 | scroll (paper slide) |
-| 11.25 | tap ripple on Sale Discount (click) |
+| 11.25 | tap ripple on Grade Points (click) |
 | 11.70 | pinned card pops in (pop) |
-| 12.4–13.5 | keystrokes ×5 |
+| 12.4–13.5 | keystrokes "85" + "120" ×5 |
 | 13.7–14.3 | result count-up → ding at 14.3 |
 | 15.85 | tap on theme FAB (click) |
 | 16.1–17.05 | 3D flip (deep whoosh) |
 | 17.45 | cut → dark home |
-| 18.25–19.30 | keystrokes "tip" ×3 |
+| 18.25–19.30 | keystrokes "revenue" ×7 |
 | 19.45 | dropdown pop |
-| 20.60 | tap on Restaurant Tip (click) |
+| 20.60 | tap on Revenue Growth (click) |
 | 20.95–21.6 | whoosh down |
-| 21.9–22.9 | keystrokes ×4 |
+| 21.9–22.9 | keystrokes "1000000" + "1200000" ×14 |
 | 23.0–23.5 | count-up → ding |
 | 24.45 | cut → FAQ hub |
-| 26.25 | match cut → bill splitting FAQ |
-| 27.6–28.6 | number roll (tick-tick) + live answers |
+| 24.9–25.7 | keystrokes "deposit" ×7 |
+| 25.85 | filter results pop (2 of 82) |
+| 26.0–26.6 | scroll to the card (paper slide) |
+| 26.75 | tap ripple on Bank Deposit card (click) |
+| 27.45 | match cut → bank deposit FAQ |
+| 28.3–29.3 | number roll (tick-tick) + live answers |
 | 30.45 | page recedes, endcard build (riser) |
 | 34.4–35.9 | collapse into badge (reverse whoosh → loop) |
 

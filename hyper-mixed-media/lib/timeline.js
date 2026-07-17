@@ -5,13 +5,15 @@
  * animation adapter relies on: paused construction, .duration(),
  * .totalDuration(), .seek(t), .progress(p), .time().
  *
- * FULLY BIDIRECTIONAL: seek(t) is a pure function of t. On every seek,
- * EVERY tween is replayed in insertion order with its progress clamped
- * to [0,1] — tweens that haven't started yet apply their p=0 state, and
- * finished tweens apply their p=1 state. Scrubbing backwards therefore
- * never leaves stale ("hung") states: the frame at time t is identical
- * no matter what seek sequence preceded it. No wall-clock, no
- * Math.random at seek time.
+ * FULLY BIDIRECTIONAL: seek(t) is a pure function of t. Tweens are
+ * replayed in insertion order with progress clamped to [0,1] — tweens
+ * that haven't started yet apply their p=0 state, finished tweens their
+ * p=1 state (on forward seeks, tweens already finished before the last
+ * applied time are skipped: their p=1 state is still in the DOM; any
+ * backward seek is a full replay). Scrubbing backwards therefore never
+ * leaves stale ("hung") states: the frame at time t is identical no
+ * matter what seek sequence preceded it. No wall-clock, no Math.random
+ * at seek time.
  *
  * Registered via window.__timelines[compositionId] like a GSAP timeline.
  */
@@ -71,6 +73,7 @@
       this._tweens = [];   // {start, dur, ease, apply}
       this._t = 0;
       this._end = 0;
+      this._lastT = -Infinity; // last applied time (monotonic fast-path marker)
       this.paused = opts.paused !== false; // always effectively paused; seek-driven
     }
 
@@ -102,22 +105,31 @@
 
     static lerp(a, b, p) { return a + (b - a) * p; }
 
-    clear() { this._tweens = []; this._end = 0; return this; }
+    clear() { this._tweens = []; this._end = 0; this._lastT = -Infinity; return this; }
 
     duration() { return this._end; }
     totalDuration() { return this._end; }
     time() { return this._t; }
 
-    /* Pure state reconstruction: replay ALL tweens in insertion order with
-       clamped progress. Same t in => same frame out, regardless of history. */
+    /* Pure state reconstruction: replay tweens in insertion order with
+       clamped progress. Same t in => same frame out, regardless of history.
+       Monotonic fast-path: on a FORWARD seek, tweens that ended before the
+       last applied time are skipped — their p=1 state is already sitting in
+       the DOM from the seek that crossed them (a full replay re-applies the
+       same values in the same order, so skipping them is state-identical;
+       verified by render/paritycheck.mjs). Any backward seek, and the first
+       seek after construction/clear(), is a full replay. Drives always run. */
     seek(t) {
-      this._t = t;
+      const fwd = t >= this._lastT;
       for (const tw of this._tweens) {
         if (tw.drive) { tw.apply(0, 0, t); continue; }
+        if (fwd && tw.start + tw.dur < this._lastT) continue;
         let p = (t - tw.start) / tw.dur;
         if (p < 0) p = 0; else if (p > 1) p = 1;
         tw.apply(tw.ease(p), p, t);
       }
+      this._lastT = t;
+      this._t = t;
       return this;
     }
 

@@ -374,45 +374,52 @@
 .jp-copy svg { width: 14px; height: 14px; }
 
 .jp-controls {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; justify-content: space-between;
   margin-top: 16px; font-size: 13px; color: var(--gray600);
 }
 #stage.dark .jp-controls { color: #d1d5db; }
 .jp-controls .eq {
-  display: flex; align-items: center; gap: 5px;
-  border: 1px solid var(--input-border); border-radius: 6px;
-  padding: 4px 10px; background: transparent; color: inherit;
-  font-family: inherit; font-size: 13px;
-}
-.jp-check {
   display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid #e5e7eb; border-radius: 6px;
+  padding: 4px 10px; background: rgba(255, 255, 255, 0.9); color: #374151;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  font-family: inherit; font-size: 14px; font-weight: 500;
+}
+#stage.dark .jp-controls .eq { background: rgba(31, 41, 55, 0.9); border-color: #374151; color: #e5e7eb; }
+.jp-controls .eq svg { color: #4b5563; }
+#stage.dark .jp-controls .eq svg { color: #9ca3af; }
+.jp-check {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12px;
 }
 .jp-check .boxx {
-  width: 15px; height: 15px; border-radius: 4px;
-  border: 1.5px solid var(--gray400);
+  width: 18px; height: 18px; border-radius: 4px;
+  border: 2px solid var(--gray400);
   display: flex; align-items: center; justify-content: center;
-  background: #7c3aed; border-color: #7c3aed;
+  background: #2563eb; border-color: #2563eb;
 }
 .jp-check .boxx svg { width: 11px; height: 11px; color: #fff; }
 
-/* Practical Uses toggle button with the animated beam border */
+/* Practical Uses toggle (site's help-icon: gray pill, chevron, beam hidden at rest) */
 .jp-pu-btn {
   position: relative;
-  margin-top: 16px;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  width: 100%;
-  padding: 9px 12px;
-  border: 1px solid rgba(59, 130, 246, 0.35);
-  border-radius: 8px;
-  background: rgba(59, 130, 246, 0.05);
-  color: #2563eb;
+  margin: 16px 0 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: fit-content;
+  padding: 4px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  color: #374151;
   font-family: inherit; font-size: 14px; font-weight: 500;
 }
-#stage.dark .jp-pu-btn { color: #60a5fa; border-color: rgba(96, 165, 250, 0.35); background: rgba(96, 165, 250, 0.06); }
-.jp-pu-btn .beam { position: absolute; inset: 0; border-radius: 8px; overflow: visible; }
+#stage.dark .jp-pu-btn { color: #e5e7eb; border-color: #374151; background: rgba(31, 41, 55, 0.9); }
+.jp-pu-btn > svg:not(.beam) { color: #4b5563; }
+#stage.dark .jp-pu-btn > svg:not(.beam) { color: #9ca3af; }
+.jp-pu-btn .beam { position: absolute; inset: 0; border-radius: 6px; overflow: visible; opacity: 0; }
 .jp-pu-btn .beam rect {
-  fill: none; stroke: #3b82f6; stroke-width: 1.5px;
-  stroke-dasharray: 25 200;
+  fill: none; stroke: #3b82f6; stroke-width: 1.5px; stroke-linecap: round;
+  stroke-dasharray: 25 200; stroke-dashoffset: 25;
 }
 #stage.dark .jp-pu-btn .beam rect { stroke: #60a5fa; }
 
@@ -800,3 +807,28 @@ mark.shl {
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
 }
 .jp-faqctl .ffav svg { width: 22px; height: 22px; color: var(--gray400); }
+
+/* ---------- SolutionCardHint (SolutionCardHint.astro, mobile ≤640px) ---------- */
+.jp-hint {
+  position: relative;
+  margin: 0;
+  padding: 17px 19px;
+  background: linear-gradient(135deg, #d8b4fe 0%, #bfdbfe 100%);
+  color: #2d3748;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(31, 41, 55, 0.15);
+  z-index: 20;
+}
+.jp-hint .hint-text {
+  font-size: 16px; line-height: 1.4; font-weight: 600; text-align: center;
+}
+.jp-hint .hint-close {
+  position: absolute; top: 0; right: 0;
+  width: 36px; height: 36px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.85);
+  border: none; border-radius: 50%;
+  color: #1f2937; cursor: pointer;
+  transform: translate(calc(50% - 10px), calc(-50% + 10px));
+}
+.jp-hint .hint-close svg { width: 22px; height: 22px; }

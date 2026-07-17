@@ -250,11 +250,11 @@ function processState(name) {
   });
   const VALUES = {
     'home-light':            { '#calculator-search': '' },
-    'home-light-search':     { '#calculator-search': 'tip' },
-    'home-light-pinned':     { '#calculator-search': '', '#percentage-input': '15', '#number': '60', '#basic-percentage-result': '9' },
-    'calc-decreased-light':  { '#decreased-value-original-input': '240', '#decreased-value-percentage-input': '15', '#decreased-value-result': '204' },
-    'calc-decreased-dark':   { '#decreased-value-original-input': '240', '#decreased-value-percentage-input': '15', '#decreased-value-result': '204' },
-    'calc-decreased-dark-pinned': { '#decreased-value-original-input': '300', '#decreased-value-percentage-input': '30', '#decreased-value-result': '210' },
+    'home-light-search':     { '#calculator-search': 'tax' },
+    'home-light-pinned':     { '#calculator-search': '', '#percentage-input': '8', '#number': '250', '#basic-percentage-result': '20' },
+    'calc-decreased-light':  { '#decreased-value-original-input': '', '#decreased-value-percentage-input': '', '#decreased-value-result': '' },
+    'calc-decreased-dark':   { '#decreased-value-original-input': '', '#decreased-value-percentage-input': '', '#decreased-value-result': '' },
+    'calc-decreased-dark-pinned': { '#decreased-value-original-input': '10000', '#decreased-value-percentage-input': '25', '#decreased-value-result': '7500' },
     'faqs-dark':             {},
     'faq-salary-dark':       { '#current-salary': '4000', '#raise-percent': '5', '#new-salary-result': '4200' },
     'faq-salary-dark-8':     { '#current-salary': '4000', '#raise-percent': '8', '#new-salary-result': '4320' },
@@ -271,7 +271,13 @@ function processState(name) {
   const bodyClass = (bodyEl.getAttribute('class') || '').trim();
   const bodyStyle = (bodyEl.getAttribute('style') || '').trim();
   const bodyTheme = bodyEl.getAttribute('data-theme') || '';
-  const frag = `<div class="jp-html ${htmlClass}" style="${htmlStyle}"><div class="jp-body ${bodyClass}" data-theme="${bodyTheme}" style="${bodyStyle}">${bodyEl.innerHTML}</div></div>`;
+  let frag = `<div class="jp-html ${htmlClass}" style="${htmlStyle}"><div class="jp-body ${bodyClass}" data-theme="${bodyTheme}" style="${bodyStyle}">${bodyEl.innerHTML}</div></div>`;
+  // capture browser ran with a comma-decimal locale; film is en-US — decimal
+  // separator on screen must be a dot (thousands commas like 10,000 are fine)
+  frag = frag
+    .replace('data-number="39.60">39,6<', 'data-number="39.60">39.6<')
+    .replace('so 0,70 × $120', 'so 0.70 × $120')
+    .replace(/(id="decimal-result">)(\d+),(\d+)(<)/, '$1$2.$3$4');
   fs.writeFileSync(path.join(SNAP_DIR, name + '.html'), frag);
   const meta = { url: d.url, scrollY: d.scrollY, docH: d.docH, theme: d.theme, extra: d.vals || d.cardRect || d.ddRect || null };
   return meta;

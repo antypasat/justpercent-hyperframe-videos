@@ -11,11 +11,11 @@
       Use Example" panel appears ABOVE the calculator form (exactly
       like practicalUsePinning.ts does) → THEN the values fill in
    5  theme flip light → dark (3D card flip)
-   6  search "tip" → dropdown (Practical Uses → Related FAQs →
+   6  search "stock" → dropdown (Practical Uses → Related FAQs →
       Suggested solutions, the app's real order) → click → the page
-      scrolls to the Basic Percentage calculator, the pinned example
+      scrolls to the Value Decrease calculator, the pinned example
       appears above the form, values fill in
-   7  FAQs hub → /faqs/tip-calculation-calculator/ — live drag
+   7  FAQs hub → /faqs/weight-loss-percentage-calculator/ — live drag
    8  outro
    ============================================================ */
 (function () {
@@ -49,12 +49,12 @@
     home: ['hl-nav', 'hl-h1', 'hl-search', 'hl-filter', 'hl-seclabel',
            'hl-card1', 'hl-card2', 'hl-card3', 'hl-card4', 'hl-card5', 'hl-card6',
            'hl-basic'].map($),
-    calc: ['cl-nav', 'cl-card', 'cl-practical'].map($),
+    calc: ['cl-nav', 'cl-hint', 'cl-card', 'cl-practical'].map($),
     hub: ['fl-nav', 'fl-h1', 'fl-controls', 'fl-cat', 'fl-hub1', 'fl-hub2', 'fl-hub3'].map($),
     tip: ['tl-nav', 'tl-h1', 'tl-card'].map($),
   };
-  const IDX = { tipCard: 8, basic: 11 };                  // within LAYERS.home
-  const FALL = [5, 6, 7, 9, 10];                          // non-matching cards in scene 6
+  const IDX = { basic: 11 };                              // within LAYERS.home
+  const FALL = [5, 6, 7, 8, 9, 10];                       // non-matching cards in scene 6 (none match "stock")
 
   /* move the search-results portal into the home screen, under the search box */
   const dropdown = $('dropdown');
@@ -96,6 +96,9 @@
       p.style.opacity = '';
       p.style.transform = '';
     }
+    /* pass A = post-navigation layout: the SolutionCardHint is still open
+       (the app shows it until a Practical Use gets pinned) */
+    $('hint-chg').style.display = 'block';
 
     function grab(map, id) {
       const el = $(id);
@@ -112,13 +115,15 @@
     }
 
     const wantA = [
-      'hl-card6', 'hl-search', 'hl-basic', 'basic-x', 'basic-y', 'basic-z',
+      'hl-card6', 'card6-cta', 'hl-search', 'hl-basic', 'basic-x', 'basic-y', 'basic-z',
       'cl-card', 'chg-original', 'chg-new', 'chg-result', 'pu-inflation',
       'theme-toggle', 'dd-pu-tip', 'hub-tip', 'tip-pct', 'tip-result', 'cl-practical',
     ];
     for (const id of wantA) grab(POS, id);
 
-    /* pass B: pinned layout (presentation panels shown, natural height) */
+    /* pass B: pinned layout (presentation panels shown, natural height;
+       the SolutionCardHint is closed by the pin, like in the app) */
+    $('hint-chg').style.display = 'none';
     for (const p of [presChg, presBasic]) {
       p.style.display = 'block';
       p.style.maxHeight = 'none';
@@ -143,6 +148,7 @@
       p.style.opacity = '';
       p.style.transform = '';
     }
+    $('hint-chg').style.display = 'block';
   }
 
   /* ================= mutable scene state ================= */
@@ -154,15 +160,19 @@
   const cur = { x: 430, y: 1050, sx: 1, sy: 1, rot: 0, o: 0, press: 0 };
   let cx = 430, cy = 1050; // builder-time cursor position (reset per build)
 
-  /* screen states. y solves: stageY = 480 + (localY + y - 480) * s
-     → y = (targetStage - 480) / s + 480 - localY */
-  const yFor = (map, id, targetStage, s) => (targetStage - 480) / s + 480 - map[id].y;
+  /* screen states. The screen's CSS transform is
+       translateX(-50%+x) translateY(y) … scale(s)  with origin (50%, 480px),
+     and transform functions apply right-to-left: the point is scaled about
+     (215, 480) FIRST, then translated by y unscaled. So
+       stageY = 480 + (localY - 480) * s + y
+       → y = targetStage - 480 - (localY - 480) * s */
+  const yFor = (map, id, targetStage, s) => targetStage - 480 - (map[id].y - 480) * s;
 
   let HOME1, HOME2, HOME4, CALC1, CALC2, CALC3, CALC4, HUB1, TIP1;
   function computeStates() {
     HOME1 = { y: 140, s: 1.2 };
     HOME2 = { y: yFor(POS, 'hl-card6', 610, 1.2), s: 1.2 };     // rent-hike card in view
-    HOME4 = { y: yFor(POSP, 'hl-basic', 415, 1.05), s: 1.05 };  // whole pinned Basic calc in frame
+    HOME4 = { y: yFor(POSP, 'hl-basic', 415, 1.05), s: 1.05 };  // whole pinned Value Decrease calc in frame
     CALC1 = { y: 140, s: 1.2 };
     CALC2 = { y: yFor(POS, 'pu-inflation', 600, 1.2), s: 1.2 }; // Practical Uses in view
     CALC3 = { y: yFor(POSP, 'cl-card', 415, 1.05), s: 1.05 };   // whole pinned calc in frame
@@ -171,12 +181,14 @@
     TIP1 = { y: 140, s: 1.2 };
   }
 
-  /* stage-space position of a measured element under a screen state */
+  /* stage-space position of a measured element under a screen state
+     (same right-to-left transform math as yFor: scale about (215,480)
+     first, then the unscaled translateY) */
   function pt(id, st, map = POS) {
     const p = map[id];
     return {
       x: 270 + (p.x - 215) * st.s,
-      y: 480 + (p.y + st.y - 480) * st.s,
+      y: 480 + (p.y - 480) * st.s + st.y,
     };
   }
 
@@ -239,11 +251,17 @@
     document.querySelector('#hl-card6 .jp-note').classList.remove('lifted');
     const pu = $('pu-inflation'); pu.classList.remove('hot', 'pinned');
 
+    /* SolutionCardHint above the calculator (open until the pin closes it) +
+       the "read-only Answer/Result" label it hides while visible */
+    const hint = $('hint-chg');
+    hint.style.display = 'block'; hint.style.opacity = '1'; hint.style.transform = 'none';
+    $('chg-rlabel').style.opacity = '';
+
     /* basic calculator */
     $('basic-x').textContent = ''; $('basic-x').classList.remove('glow');
     $('basic-y').textContent = ''; $('basic-y').classList.remove('glow');
     const bzr = $('basic-z'); bzr.classList.add('empty'); bzr.style.transform = ''; bzr.style.boxShadow = '';
-    $('basic-z-val').textContent = 'Z';
+    $('basic-z-val').textContent = 'New';
 
     /* search */
     $('home-search').classList.remove('focused');
@@ -253,11 +271,11 @@
     dropdown.style.opacity = '0'; dropdown.style.transform = '';
     $('dd-pu-tip').classList.remove('hover');
 
-    /* tip FAQ */
+    /* weight-loss FAQ */
     const tp = $('tip-pct'); tp.textContent = '10'; tp.classList.remove('glow');
-    const tr = $('tip-result'); tr.textContent = '15'; tr.style.transform = '';
+    const tr = $('tip-result'); tr.textContent = '18'; tr.style.transform = '';
     $('det-x').textContent = '10'; $('det-x2').textContent = '10';
-    $('det-fx').textContent = '10'; $('det-fr').textContent = '15';
+    $('det-fx').textContent = '10'; $('det-fr').textContent = '18';
 
     /* screen-space chrome */
     urlPath.textContent = '';
@@ -480,7 +498,7 @@
   tl.tween(0, 4.5, () => { urlpill.style.opacity = '0'; }, 'linear');   // scrub-safe hold
   tl.set(4.4, () => { scr.home.z = 0; scr.home.o = 1; scr.home.y = HOME1.y; });
   peelIn(4.5, LAYERS.home.slice(0, 11), 0.075, 0.66);
-  peelIn(5.4, [LAYERS.home[IDX.basic]], 0, 0.6);   /* the Basic calc card assembles below the fold */
+  peelIn(5.4, [LAYERS.home[IDX.basic]], 0, 0.6);   /* the calculator card assembles below the fold */
   tl.tween(4.5, 0.8, (p) => { urlpill.style.opacity = String(p); urlpill.style.transform = 'translateX(-50%)'; }, 'outCubic');
   sweep(5.7);
   capInOut($('cap1'), 6.0, 8.3);
@@ -495,8 +513,9 @@
     scr.home.y = lerp(HOME1.y, HOME2.y, p);
     cam.rx = Math.sin(p * Math.PI) * -2.6;
   }, 'inOutCubic');
-  const cardPt = pt('hl-card6', HOME2);
-  cursorTo(8.95, 1.0, cardPt.x + 60, cardPt.y + 24, 60);
+  /* aim at the card's "See % Change" CTA button, not the card center */
+  const ctaPt = pt('card6-cta', HOME2);
+  cursorTo(8.95, 1.0, ctaPt.x + 42, ctaPt.y + 2, 60);
   /* hover: the card lifts toward the camera */
   const card6note = document.querySelector('#hl-card6 .jp-note');
   setCls(9.95, card6note, 'lifted', true);
@@ -512,6 +531,9 @@
   screenOff(11.5, 'home');
   screenOn(11.1, 'calc');
   tl.set(11.1, () => { scr.calc.y = CALC1.y; scr.calc.s = CALC1.s; scr.calc.o = 1; LAYERS.calc.forEach((el) => { el.style.opacity = '0'; }); });
+  /* while the SolutionCardHint is open the app hides the "read-only
+     Answer/Result" label (SolutionCardHint.astro hideReadOnlyLabels) */
+  tl.set(11.1, () => { $('chg-rlabel').style.opacity = '0'; });
   tl.tween(10.7, 0.9, (p) => { cam.s = lerp(1.045, 1, p); }, 'inOutQuad');
   peelIn(11.25, LAYERS.calc, 0.12, 0.62);
   urlSwap(11.35, '/percentage-change-calculator/');
@@ -562,21 +584,33 @@
   setCls(18.0, $('pu-inflation'), 'pinned', true);
   cursorHide(18.35);
 
-  /* (b) the pinned example unfolds ABOVE the calculator form,
-     exactly like practicalUsePinning.ts's presentation container */
-  presIn(18.05, presChg, PRESH.chg + 26, 0.7);
-  /* re-frame so the whole calculator (panel + form + answer) is in shot */
-  tl.tween(18.3, 0.95, (p) => {
+  /* pinning closes the SolutionCardHint (practicalUsePinning.ts
+     closeSolutionCardHint: 250ms fade, then display:none) and restores
+     the "read-only Answer/Result" label */
+  const hintChg = $('hint-chg');
+  tl.tween(18.0, 0.25, (p) => {
+    hintChg.style.opacity = String(1 - p);
+    hintChg.style.transform = `translateY(${-8 * p}px)`;
+  }, 'linear');
+  tl.set(18.3, () => { hintChg.style.display = 'none'; $('chg-rlabel').style.opacity = ''; });
+
+  /* (b) re-frame FIRST so the whole calculator (panel + form + answer)
+     is in shot — like the app, the scroll completes BEFORE the pinned
+     example unfolds (capture-after-scroll, same rule as scene 6) */
+  tl.tween(18.1, 0.95, (p) => {
     scr.calc.y = lerp(CALC2.y, CALC3.y, p);
     scr.calc.s = lerp(CALC2.s, CALC3.s, p);
     cam.rx = Math.sin(p * Math.PI) * 2.8;
     cam.s = lerp(1.02, 1, p);
   }, 'inOutCubic');
-  sweep(18.55, 0.8);
+  /* scroll has fully settled → the pinned example unfolds ABOVE the
+     form, fully in frame, exactly like practicalUsePinning.ts */
+  presIn(19.15, presChg, PRESH.chg + 26, 0.7);
+  sweep(19.3, 0.8);
 
   /* (c) value chips fly from the pinned example into the inputs */
   const chipX = $('chip-x'), chipY = $('chip-y');
-  const presPt = { x: 270, y: 480 + (POSP['cl-card'].y - POSP['cl-card'].h / 2 + 70 + CALC3.y - 480) * CALC3.s };
+  const presPt = { x: 270, y: 480 + (POSP['cl-card'].y - POSP['cl-card'].h / 2 + 70 - 480) * CALC3.s + CALC3.y };
   const inOPt = pt('chg-original', CALC3, POSP), inNPt = pt('chg-new', CALC3, POSP);
   function flyChip(el, t0, from, to) {
     tl.tween(t0, 0.75, (p) => {
@@ -588,17 +622,17 @@
       el.style.transform = `translate(-50%, -50%) scale(${lerp(0.6, 1.05, pe)})`;
     }, 'linear');
   }
-  flyChip(chipX, 19.3, { x: presPt.x - 70, y: presPt.y }, inOPt);
-  flyChip(chipY, 19.45, { x: presPt.x + 40, y: presPt.y }, inNPt);
-  setText(20.0, chgO, '100');
-  setText(20.15, chgN, '103');
-  tl.set(20.3, () => { chgResVal.textContent = '3%'; });
-  tl.tween(20.3, 0.55, (p) => {
+  flyChip(chipX, 20.1, { x: presPt.x - 70, y: presPt.y }, inOPt);
+  flyChip(chipY, 20.25, { x: presPt.x + 40, y: presPt.y }, inNPt);
+  setText(20.8, chgO, '100');
+  setText(20.95, chgN, '103');
+  tl.set(21.1, () => { chgResVal.textContent = '3%'; });
+  tl.tween(21.1, 0.55, (p) => {
     const pb = E.outBack(p);
     chgRes.style.transform = `scale(${lerp(0.75, 1, pb)})`;
     chgRes.style.boxShadow = `2px 2px 5px rgba(0,0,0,0.08), -2px -2px 5px rgba(255,255,255,0.8), 0 0 ${lerp(24, 0, p)}px rgba(124,58,237,${0.5 * (1 - p)})`;
   }, 'linear');
-  capInOut($('cap3'), 19.7, 21.8);
+  capInOut($('cap3'), 20.3, 21.8);
 
   /* ============================================================
      SCENE 5 — theme flip light → dark (22.0 – 24.8)
@@ -623,7 +657,7 @@
   capInOut($('cap4'), 23.75, 25.0);
 
   /* ============================================================
-     SCENE 6 — search "tip" → dropdown → scroll to the calculator →
+     SCENE 6 — search "stock" → dropdown → scroll to the calculator →
      pinned example above the form → values fill (24.9 – 33.1) DARK
      ============================================================ */
   peelOut(25.0, LAYERS.calc, 0.06, 0.45);
@@ -647,7 +681,7 @@
   const typed = $('search-typed'), ghost = $('search-ghost'), tcur = $('search-cursor');
   setCls(27.1, searchInput, 'focused', true);
   tl.set(27.1, () => { ghost.style.display = 'none'; });
-  ['t', 'ti', 'tip'].forEach((s, i) => setText(27.35 + i * 0.22, typed, s));
+  ['s', 'st', 'sto', 'stoc', 'stock'].forEach((s, i) => setText(27.35 + i * 0.15, typed, s));
   tl.set(28.0, () => { tcur.style.display = 'none'; });
 
   /* results dropdown springs open — Practical Uses → Related FAQs →
@@ -658,7 +692,7 @@
     dropdown.style.transform = `translateY(${lerp(-14, 0, pb)}px) scale(${lerp(0.94, 1, pb)})`;
   }, 'linear');
 
-  /* the non-matching solution cards fall away into depth (the Tip card stays) */
+  /* the non-matching solution cards fall away into depth (none match "stock") */
   FALL.forEach((idx, i) => {
     tl.tween(28.15 + i * 0.05, 0.6, (p) => {
       const pe = E.inCubic(p);
@@ -673,28 +707,28 @@
   click(29.25, 12);
   cursorHide(29.5);
 
-  /* dropdown closes; the page scrolls until the Basic Percentage
+  /* dropdown closes; the page scrolls until the Value Decrease
      calculator stands fully in frame (the scroll finishes COMPLETELY
      before anything else happens — capture-after-scroll rule) */
   tl.tween(29.35, 0.35, (p) => { dropdown.style.opacity = String(1 - p); }, 'linear');
-  tl.set(29.35, () => { typed.textContent = 'tip'; });
+  tl.set(29.35, () => { typed.textContent = 'stock'; });
   tl.tween(29.5, 1.2, (p) => {
     scr.home.y = lerp(HOME1.y, HOME4.y, p);
     scr.home.s = lerp(HOME1.s, HOME4.s, p);
     cam.rx = Math.sin(p * Math.PI) * -4;
   }, 'inOutCubic');
 
-  /* scroll has fully settled → the pinned "Restaurant Tip" example
-     appears ABOVE the form, then the values pour in: 15% of $60 → 9 */
+  /* scroll has fully settled → the pinned "Stock Price Drop" example
+     appears ABOVE the form, then the values pour in: $45 − 12% → $39.60 */
   presIn(30.85, presBasic, PRESH.basic + 26, 0.7);
   const bx = $('basic-x'), by = $('basic-y'), bz = $('basic-z'), bzv = $('basic-z-val');
   setCls(31.7, bx, 'glow', true);
-  ['1', '15'].forEach((s, i) => setText(31.75 + i * 0.12, bx, s));
+  ['4', '45'].forEach((s, i) => setText(31.75 + i * 0.12, bx, s));
   setCls(32.05, bx, 'glow', false);
   setCls(32.07, by, 'glow', true);
-  ['6', '60'].forEach((s, i) => setText(32.11 + i * 0.12, by, s));
+  ['1', '12'].forEach((s, i) => setText(32.11 + i * 0.12, by, s));
   setCls(32.4, by, 'glow', false);
-  tl.set(32.5, () => { bz.classList.remove('empty'); bzv.textContent = '9'; });
+  tl.set(32.5, () => { bz.classList.remove('empty'); bzv.textContent = '39.60'; });
   tl.tween(32.5, 0.55, (p) => {
     const pb = E.outBack(p);
     bz.style.transform = `scale(${lerp(0.75, 1, pb)})`;
@@ -730,24 +764,24 @@
     LAYERS.tip.forEach((el) => { el.style.opacity = '0'; });
   });
   peelIn(35.55, LAYERS.tip, 0.09, 0.5);
-  urlSwap(35.65, '/faqs/tip-calculation-calculator/');
+  urlSwap(35.65, '/faqs/weight-loss-percentage-calculator/');
   sweep(35.9, 0.8);
 
-  /* drag the tip % — the whole FAQ recalculates live */
+  /* drag the goal % — the whole FAQ recalculates live */
   const tipPct = $('tip-pct'), tipRes = $('tip-result');
   const detX = $('det-x'), detX2 = $('det-x2'), detFx = $('det-fx'), detFr = $('det-fr');
   const tipPt = pt('tip-pct', TIP1);
   tl.tween(36.0, 0.9, (p) => { cam.s = lerp(1, 1.025, p); }, 'inOutQuad');
-  cursorTo(36.0, 0.55, tipPt.x + 8, tipPt.y + 10, 30);
+  cursorTo(36.0, 0.55, tipPt.x + 6, tipPt.y + 2, 30);
   /* press & hold */
   tl.tween(36.55, 0.12, (p) => { cur.sx = cur.sy = lerp(1, 0.86, p); cur.press = p; }, 'inQuad');
   setCls(36.6, tipPct, 'glow', true);
   shake(36.6, 6);
-  /* drag right: 10 → 18, answer 15 → 27, explanation follows */
-  const steps = [11, 12, 13, 14, 15, 16, 17, 18];
-  const results = ['16.5', '18', '19.5', '21', '22.5', '24', '25.5', '27'];
-  tl.tween(36.7, 1.0, (p) => { cur.x = tipPt.x + 8 + 78 * p; cur.y = tipPt.y + 10 + Math.sin(p * 9) * 1.5; }, 'inOutQuad');
-  cx = tipPt.x + 86; cy = tipPt.y + 10;
+  /* drag right: 10 → 15, answer 18 → 27 lb (180 × pct/100), explanation follows */
+  const steps = [11, 12, 13, 14, 15];
+  const results = ['19.8', '21.6', '23.4', '25.2', '27'];
+  tl.tween(36.7, 1.0, (p) => { cur.x = tipPt.x + 6 + 78 * p; cur.y = tipPt.y + 2 + Math.sin(p * 9) * 1.5; }, 'inOutQuad');
+  cx = tipPt.x + 84; cy = tipPt.y + 2;
   steps.forEach((v, i) => {
     const t = 36.73 + (i / (steps.length - 1)) * 0.95;
     tl.set(t, () => {

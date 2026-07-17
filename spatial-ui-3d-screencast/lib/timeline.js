@@ -91,7 +91,7 @@
     /* drop every scheduled tween (used to rebuild deterministically
        after document.fonts.ready — layout must be measured with the
        final fonts, or measurements would differ between page loads) */
-    clear() { this._tweens = []; this._end = 0; return this; }
+    clear() { this._tweens = []; this._end = 0; this._lastApplied = undefined; return this; }
 
     duration() { return this._end; }
     totalDuration() { return this._end; }
@@ -105,13 +105,24 @@
        (which is how both the renderer and playback drive it), and matches
        GSAP's render order semantics for our usage. */
     seek(t) {
+      /* Monotonic fast-path: a tween that already FINISHED before the
+         previous seek wrote its clamped p=1 state to the DOM then, and
+         nothing re-dirties it while time only moves forward — so it can
+         be skipped. This turns real-time playback from O(whole timeline)
+         per frame into O(active tweens) without changing a single frame:
+         the state is still the same pure function of t. Any backward
+         seek (scrubbing) falls back to the full replay. */
+      const from = this._lastApplied;
+      const fullReplay = typeof from !== 'number' || t < from;
       this._t = t;
       for (const tw of this._tweens) {
         if (t < tw.start) continue;               // not started — no effect
+        if (!fullReplay && tw.start + tw.dur < from) continue; // finished before last seek — already applied at p=1
         let p = (t - tw.start) / tw.dur;
         if (p > 1) p = 1;
         tw.apply(tw.ease(p), p);
       }
+      this._lastApplied = t;
       return this;
     }
 

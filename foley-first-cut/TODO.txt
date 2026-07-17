@@ -1,0 +1,1 @@
+Sprawdzić poprawność czy na ekranach się wszystko zgadza - następstwo: kliknięty element -> wyświetlona stron, zgodność z oryginałem, poprawność obliczeń, sensowność treści napisów i ich synchronizacji obrazem.

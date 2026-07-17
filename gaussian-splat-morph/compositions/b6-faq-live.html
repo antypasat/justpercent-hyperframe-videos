@@ -1,16 +1,16 @@
 <template id="b6-faq-live-template">
-  <div data-composition-id="b6-faq-live" data-start="0" data-width="1080" data-height="1920">
-    <div class="b6-stage">
-      <div class="b6-orb b6-orb-a"></div>
-      <div class="b6-orb b6-orb-b"></div>
-      <div class="b6-splats" id="b6-splats"></div>
-      <div class="b6-persp">
-        <div class="b6-cam">
-          <div class="b6-frame b6-frame-c">
-            <iframe class="b6-iframe b6-iframe-c" src="../assets/screens/faqs-dark.html" scrolling="no" title="justpercent.com/faqs/ (dark)"></iframe>
+  <div data-hf-id="hf-vwcb" data-composition-id="b6-faq-live" data-start="0" data-width="1080" data-height="1920">
+    <div data-hf-id="hf-9xv5" class="b6-stage">
+      <div data-hf-id="hf-1v3i" class="b6-orb b6-orb-a"></div>
+      <div data-hf-id="hf-xwzh" class="b6-orb b6-orb-b"></div>
+      <div data-hf-id="hf-a2iy" class="b6-splats" id="b6-splats"></div>
+      <div data-hf-id="hf-g3zr" class="b6-persp">
+        <div data-hf-id="hf-bc16" class="b6-cam">
+          <div data-hf-id="hf-zyx0" class="b6-frame b6-frame-c">
+            <iframe data-hf-id="hf-zkxk" class="b6-iframe b6-iframe-c" src="../assets/screens/faqs-dark.html" scrolling="no" title="justpercent.com/faqs/ (dark)"></iframe>
           </div>
-          <div class="b6-frame b6-frame-d">
-            <iframe class="b6-iframe b6-iframe-d" src="../assets/screens/faq-billsplit-dark.html" scrolling="no" title="justpercent.com/faqs/bill-splitting-calculator/ (dark)"></iframe>
+          <div data-hf-id="hf-ngej" class="b6-frame b6-frame-d">
+            <iframe data-hf-id="hf-emog" class="b6-iframe b6-iframe-d" src="../assets/screens/faq-billsplit-dark.html" scrolling="no" title="justpercent.com/faqs/bill-splitting-calculator/ (dark)"></iframe>
           </div>
         </div>
       </div>
@@ -103,7 +103,7 @@
             : '';
           card.style.transform = 'scale(' + (1 + 0.02 * V.hlC).toFixed(4) + ')';
         }
-        var W = { billTyped: 3, my: 150, rm: 100, glow: 0, mode: 0 };
+        var W = { billTyped: 3, glow: 0, mode: 0 };
         function RD() {
           var d = docD(); if (!d) return;
           var bill = d.getElementById('bill-amount');
@@ -113,12 +113,18 @@
           var rp = d.getElementById('roommate-percent');
           if (mp) mp.value = '60';
           if (rp) rp.value = '40';
+          var bt = (W.mode < 0.5) ? '250' : '300'.slice(0, Math.max(0, Math.round(W.billTyped)));
           if (bill) {
-            bill.value = (W.mode < 0.5) ? '250' : '300'.slice(0, Math.max(0, Math.round(W.billTyped)));
+            bill.value = bt;
             bill.style.boxShadow = 'inset 0 0 0 2px rgba(167,139,250,' + (0.9 * W.glow).toFixed(3) + ')';
           }
-          if (my) { my.value = String(Math.round(W.my)); my.style.textShadow = '0 0 ' + (12 * W.glow).toFixed(1) + 'px rgba(167,139,250,' + (0.8 * W.glow).toFixed(3) + ')'; }
-          if (rm) { rm.value = String(Math.round(W.rm)); rm.style.textShadow = '0 0 ' + (12 * W.glow).toFixed(1) + 'px rgba(167,139,250,' + (0.8 * W.glow).toFixed(3) + ')'; }
+          // results recompute per keystroke exactly like the app (formatNumber,
+          // Round = 2 decimal places, trailing zeros dropped; empty bill clears them)
+          var base = parseFloat(bt);
+          var myv = isFinite(base) ? String(Math.round(base * 60) / 100) : '';
+          var rmv = isFinite(base) ? String(Math.round(base * 40) / 100) : '';
+          if (my) { my.value = myv; my.style.textShadow = '0 0 ' + (12 * W.glow).toFixed(1) + 'px rgba(167,139,250,' + (0.8 * W.glow).toFixed(3) + ')'; }
+          if (rm) { rm.value = rmv; rm.style.textShadow = '0 0 ' + (12 * W.glow).toFixed(1) + 'px rgba(167,139,250,' + (0.8 * W.glow).toFixed(3) + ')'; }
         }
 
         // ---- splats ----
@@ -162,7 +168,7 @@
 
         // baseline state renders
         tl.fromTo(V, { hlC: 0 }, { hlC: 0, duration: 0.05, ease: 'none', onUpdate: RC }, 0);
-        tl.fromTo(W, { billTyped: 3, my: 150, rm: 100, glow: 0, mode: 0 }, { mode: 0, duration: 0.05, ease: 'none', onUpdate: RD }, 0);
+        tl.fromTo(W, { billTyped: 3, glow: 0, mode: 0 }, { mode: 0, duration: 0.05, ease: 'none', onUpdate: RD }, 0);
 
         // scrolls
         var PC = { y: 0 };
@@ -198,7 +204,6 @@
         // live interactivity: the bill becomes $300 -> shares update instantly
         tl.to(W, { mode: 1, billTyped: 0, duration: 0.02, ease: 'none', onUpdate: RD, immediateRender: false }, 4.55);
         tl.to(W, { billTyped: 3, duration: 0.5, ease: 'steps(3)', onUpdate: RD, immediateRender: false }, 4.65);
-        tl.to(W, { my: 180, rm: 120, duration: 0.5, ease: 'power2.out', onUpdate: RD, immediateRender: false }, 5.25);
         tl.to(W, { glow: 1, duration: 0.3, ease: 'power2.out', onUpdate: RD, immediateRender: false }, 5.25);
         tl.to(W, { glow: 0, duration: 0.6, ease: 'power2.inOut', onUpdate: RD, immediateRender: false }, 6.2);
 

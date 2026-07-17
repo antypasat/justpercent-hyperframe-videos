@@ -81,6 +81,9 @@ html, body { width: 1080px; height: 1920px; overflow: hidden; background: #05060
 .snap { position: absolute; left: 0; top: 0; width: 432px; visibility: hidden; opacity: 0; }
 .snap .jp-html { position: relative; width: 432px; display: block; }
 .snap .jp-body { display: block; position: relative; }
+/* ExpandableInput width-measure span; its Astro scoped style is lost in capture,
+   without this it renders visible text doubled over the input value */
+.snap .jp-html .hidden-text { position: absolute; visibility: hidden; white-space: pre; }
 
 /* phone edge gloss */
 .phone::after {

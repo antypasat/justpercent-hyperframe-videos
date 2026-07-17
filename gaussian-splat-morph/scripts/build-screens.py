@@ -98,23 +98,21 @@ def t_home_search(html):
     # give it a hook id-preserving inline style (hidden class removed by app already).
     return html
 
-# presentation container template used by the app (verbatim structure from s3 capture),
-# populated with the Sale Discount practical use of the decreased-value calculator.
-PRES_SALE_DISCOUNT = '''<div class="practical-use-presentation-container mb-4 is-visible" id="gsm-pres" style="opacity:0">
+# presentation container template used by the app (verbatim structure from the
+# live pinned capture), populated with the Population Growth practical use of
+# the increased-value calculator (content 1:1 from the s9 live capture).
+PRES_POPULATION_GROWTH = '''<div class="practical-use-presentation-container mb-4 is-visible" id="gsm-pres" style="opacity:0">
   <div class="practical-use-presentation-wrapper relative bg-gray-50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg p-3">
     <div class="practical-use-presentation-header mb-2 pr-8">
       <span class="practical-use-presentation-pin" aria-hidden="true"><span class="practical-use-presentation-pin-wrapper"><span class="practical-use-presentation-pin-head"></span><span class="practical-use-presentation-pin-needle"></span></span></span>
       <p class="practical-use-presentation-title text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Selected Practical Use Example</p>
     </div>
     <button type="button" class="practical-use-presentation-close absolute top-2 right-2 text-gray-400 p-1 rounded-full" aria-label="Close presentation"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-    <ul class="practical-use-presentation-content list-none m-0 p-0 text-sm sm:text-base"><li class="practical-use practical-use--presentation" tabindex="0" data-astro-cid-yv6xsh4l="">   <span class="practical-use-content" data-astro-cid-yv6xsh4l=""><strong>Sale Discount:</strong><span class="pu-line-gap" aria-hidden="true"></span>
-        A
-        <span data-field="input1" data-tooltip-text="Original price" class="pu-hl-input1">$<span data-number="300">300</span> <strong>[Original]</strong> winter parka</span>
-        with a
-        <span data-field="input2" data-tooltip-text="Discount" class="pu-hl-input2"><span data-number="30">30</span>% <strong>[Decrease]</strong> discount</span>
-        costs
-        <span data-field="answer" data-tooltip-text="Final price" class="pu-hl-answer">what <strong>[New]</strong>?</span><span class="pu-line-gap" aria-hidden="true"></span>
-        <span data-field="answer" class="pu-hl-answer">$<span data-number="210">210</span></span></span></li></ul>
+    <ul class="practical-use-presentation-content list-none m-0 p-0 text-sm sm:text-base"><li class="practical-use practical-use--presentation" data-heart-index="2" data-heart-logical-id="pu.increased-value.population-growth" data-practical-use-logical-id="pu.increased-value.population-growth" data-heart-calculator-id="increased-value" tabindex="0" data-astro-cid-yv6xsh4l="">   <span class="practical-use-content" data-astro-cid-yv6xsh4l=""><strong>Population Growth:</strong><span class="pu-line-gap" aria-hidden="true"></span>
+        <span data-field="input1" data-tooltip-text="Current population" data-target-placeholder="inc-original" class="pu-hl-input1">A city like <strong>Austin</strong> of <span data-number="100000">100000</span> <strong>[Original]</strong> people</span>
+        <span data-field="input2" data-tooltip-text="Growth percentage" data-target-placeholder="inc-increase" class="pu-hl-input2">with 3% <strong>[Increase]</strong> growth</span>
+        <span data-field="answer" data-tooltip-text="Population after growth" data-target-placeholder="inc-new" class="pu-hl-answer">reaches what population <strong>[New]</strong>?</span><span class="pu-line-gap" aria-hidden="true"></span>
+        <span data-field="answer" data-tooltip-text="Population after growth" data-target-placeholder="inc-new" class="pu-hl-answer"><span data-number="103000">103000</span></span></span></li></ul>
   </div>
 </div>'''
 
@@ -124,21 +122,46 @@ PIN_HL_CSS = '''
 #gsm-pres .pu-hl-input2{background:linear-gradient(105deg,rgba(163,230,53,0) 0%,rgba(163,230,53,.9) 8%,rgba(163,230,53,1) 92%,rgba(163,230,53,0) 100%);border-radius:4px;padding:0 4px;color:#111827;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 #gsm-pres .pu-hl-answer{background:linear-gradient(105deg,rgba(244,114,182,0) 0%,rgba(244,114,182,.9) 8%,rgba(244,114,182,1) 92%,rgba(244,114,182,0) 100%);border-radius:4px;padding:0 4px;color:#111827;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 #gsm-pres .practical-use-presentation-pin-head{background:rgb(239,68,68);border-color:rgb(220,38,38)}
+
+/* SolutionCardHint — the component's Astro-scoped CSS is not part of the serialized
+   bundle, so the visible-state styles are reproduced here 1:1 from
+   handy-percent/src/components/SolutionCardHint.astro (mobile breakpoint values,
+   unified light gradient). The composition timeline fades/collapses it at pin. */
+#solution-card-hint-increased-value{position:relative;display:block;margin:0 0 .75rem 0;padding:1.1rem 1.2rem;background:linear-gradient(135deg,#d8b4fe 0%,#bfdbfe 100%);color:#2d3748;font-family:"Roboto",system-ui,sans-serif;box-shadow:0 4px 12px rgba(31,41,55,.15);border-radius:12px;z-index:20}
+#solution-card-hint-increased-value .hint-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:.85rem}
+#solution-card-hint-increased-value .hint-text{font-size:1rem;line-height:1.4;font-weight:600;text-align:center}
+#solution-card-hint-increased-value .hint-close-btn{position:absolute;top:0;right:0;background:rgba(255,255,255,.85);border:none;border-radius:50%;width:2.25rem;height:2.25rem;display:flex;align-items:center;justify-content:center;color:#1f2937;z-index:10;padding:0;transform:translate(calc(50% - 10px),calc(-50% + 10px))}
+#solution-card-hint-increased-value .hint-close-btn svg{width:22px;height:22px}
+#solution-card-hint-increased-value .hint-footnote{display:none}
 '''
 
-def t_calc_decreased(html):
+def t_calc_increased(html):
     # inject the presentation container (initially transparent; the composition
     # timeline reveals it exactly like the app's .is-visible transition) right
-    # before the round-checkbox row of the decreased-value card.
+    # before the round-checkbox row of the increased-value card.
     m = re.search(r'<div class="round-checkbox-row', html)
     assert m, 'round-checkbox-row not found'
-    html = html[:m.start()] + PRES_SALE_DISCOUNT + html[m.start():]
+    html = html[:m.start()] + PRES_POPULATION_GROWTH + html[m.start():]
+    # activate the SolutionCardHint exactly as the app renders it after navigating
+    # from the sales-tax solution card (note text 1:1 from en-US/solution-notes.ts
+    # id 1); while the hint is open the read-only Answer/Result label stays hidden
+    # (the composition timeline owns both, closing the hint at the PU pin).
+    before = html
+    html = html.replace(
+        '<div id="solution-card-hint-increased-value" class="solution-card-hint hidden"',
+        '<div id="solution-card-hint-increased-value" class="solution-card-hint visible"', 1)
+    assert html != before, 'solution-card-hint element not found'
+    before = html
+    html = html.replace(
+        '<div class="hint-text" data-role="text" data-astro-cid-2jrj375w=""></div>',
+        '<div class="hint-text" data-role="text" data-astro-cid-2jrj375w="">In-store shopping? Calculate the total price with Sales Tax.</div>', 1)
+    assert html != before, 'hint-text slot not found'
     return html
 
 process('home-light', 's1-home-light-top.json', transform=None)
-process('home-light-search', 's2-home-light-search-tip.json', transform=t_home_search)
-process('home-light-pinned', 's3-home-light-tip-pinned.json')
-process('calc-decreased-light', 's5-decreased-light-pinned.json', extra_css=PIN_HL_CSS, transform=t_calc_decreased)
+process('home-light-search', 's2-home-light-search-discount.json', transform=t_home_search)
+process('home-light-pinned', 's3-home-light-discount-pinned.json')
+process('calc-increased-light', 's9-increased-light-top.json', extra_css=PIN_HL_CSS, transform=t_calc_increased)
 process('home-dark', 's6-home-dark-top.json')
 process('faqs-dark', 's7-faqs-dark-top.json')
 process('faq-billsplit-dark', 's8-faq-billsplit-dark.json')

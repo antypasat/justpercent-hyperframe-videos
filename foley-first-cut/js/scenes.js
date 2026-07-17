@@ -64,13 +64,16 @@
 
   // scroll destinations (local 430px units)
   var SCROLL_CARD6 = Math.max(0, localTop($('#hl-card6'), homeScroller) - 300);
-  var SCROLL_PU    = Math.max(0, localTop($('#cl-practical'), calcScroller) - 70);
   var SCROLL_CARD  = Math.max(0, localTop($('#cl-card'), calcScroller) - 6);
   var SCROLL_BASIC = Math.max(0, localTop($('#hl-basic'), homeScroller) - 6);
   var SCROLL_SHOP  = Math.max(0, localTop($('#fl-shop'), hubScroller) - 64);
   var SCROLL_FAQ   = Math.max(0, localTop($('#tl-back'), tipScroller) - 4);
 
-  // field tooltip chips: park each one centered above its target input
+  // field tooltip chips: park each one centered above its target input.
+  // Positions are pure build-time constants measured in the exact layout the
+  // chips are visible in — never re-measured during playback, so state stays
+  // a pure function of t (live re-measure reads the PREVIOUS tick's layout
+  // and made frames depend on seek history).
   function placeChip(chipSel, targetSel, lift) {
     var chip = $(chipSel), t = $(targetSel);
     var card = chip.offsetParent;                 // .jp-calc (position: relative)
@@ -80,18 +83,23 @@
     chip.style.left = ((tr.left - cr.left) / k + tr.width / (2 * k) - chip.offsetWidth / 2) + 'px';
     chip.style.top = ((tr.top - cr.top) / k - chip.offsetHeight - (lift || 7)) + 'px';
   }
-  function placeChgChips() {
-    placeChip('#chip-cx', '#chg-original');
-    placeChip('#chip-cy', '#chg-new');
-    placeChip('#chip-cz', '#chg-result', 1);
-  }
-  function placeBasicChips() {
-    placeChip('#chip-bx', '#basic-x');
-    placeChip('#chip-by', '#basic-y');
-    placeChip('#chip-bz', '#basic-z', 1);
-  }
-  placeChgChips();
-  placeBasicChips();
+
+  // S3 is entered via the "Find Pre-Tax Price" SolutionCard, so the
+  // SolutionCardHint sits above the calculator (app behavior) until the PU
+  // pin dismisses it. Everything visible while the hint is open is measured
+  // WITH the hint in the flow; the hint-styled tooltips are parked here too.
+  var hintEl = $('#card-hint');
+  hintEl.style.display = 'block';
+  var SCROLL_PU = Math.max(0, localTop($('#cl-practical'), calcScroller) - 70);
+  var HINT_M = {
+    chgOrig: viewPos($('#chg-original')),         // S3 typing frame (unscrolled)
+    chgNew:  viewPos($('#chg-new')),
+    puInf:   viewPos($('#pu-inflation'), SCROLL_PU)
+  };
+  placeChip('#chip-hx', '#chg-original');
+  placeChip('#chip-hy', '#chg-new');
+  placeChip('#chip-hz', '#chg-result', 1);
+  hintEl.style.display = 'none';
 
   // dropdown sits right under the search box (portal position)
   var ddTop = localTop($('#hl-search'), homeScroller) +
@@ -109,24 +117,39 @@
     el.style.display = prev;
     return r;
   }
-  var presChgEl = $('#pres-chg');
+  var presChgEl = $('#pres-chg'), presBasicEl = $('#pres-basic');
   var P = {
-    card6:  viewPos($('#hl-card6'), SCROLL_CARD6),
-    puInf:  viewPos($('#pu-inflation'), SCROLL_PU),
+    card6:  viewPos($('#hl-card6 .cta'), SCROLL_CARD6),   // the interactive element: the CTA button
+    puInf:  HINT_M.puInf,                                 // hint still open at pin time
     fab:    viewPos($('#calc-fab-theme')),
     search: viewPos($('#hl-search')),
     ddTip:  measureShown(dropdown, 'block', function () { return viewPos($('#dd-pu-tip')); }),
     hubTip: viewPos($('#hub-tip'), SCROLL_SHOP),
     bill:   viewPos($('#tip-bill'), SCROLL_FAQ),
     presChg: measureShown(presChgEl, 'block', function () { return viewPos(presChgEl); }),
-    chgOrig: viewPos($('#chg-original')),                 // S3 frame (unscrolled, no presentation)
-    chgNew:  viewPos($('#chg-new')),
+    chgOrig: HINT_M.chgOrig,                              // S3 typing frame (hint open, unscrolled)
+    chgNew:  HINT_M.chgNew,
     chgOrigPU: measureShown(presChgEl, 'block', function () { return viewPos($('#chg-original'), SCROLL_CARD); }),
     chgNewPU:  measureShown(presChgEl, 'block', function () { return viewPos($('#chg-new'), SCROLL_CARD); }),
     keycap: { x: 270, y: 212 }
   };
   // the presentation itself, measured in the scrolled-to-card frame
   P.presChg.y -= SCROLL_CARD * SCALE;
+
+  // PU-state tooltips, parked once for the layout they are visible in
+  // (presentation open, hint dismissed)
+  measureShown(presChgEl, 'block', function () {
+    placeChip('#chip-cx', '#chg-original');
+    placeChip('#chip-cy', '#chg-new');
+    placeChip('#chip-cz', '#chg-result', 1);
+    return 0;
+  });
+  measureShown(presBasicEl, 'block', function () {
+    placeChip('#chip-bx', '#basic-x');
+    placeChip('#chip-by', '#basic-y');
+    placeChip('#chip-bz', '#basic-z', 1);
+    return 0;
+  });
 
   function place(sel, x, y, rot) {
     var el = $(sel);
@@ -224,8 +247,11 @@
   ft('#view', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power1.out' }, 0);
   ft('#brandbar', { autoAlpha: 0, y: 46 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'back.out(1.8)' }, 0.18);
   // keycap drop → THOCK
+  // autoAlpha must live in the TO vars as well: from-only props are a GSAP
+  // "startAt" set — reverted on backward seeks and never re-applied on the
+  // next forward pass, which made the keycap render invisible after priming
   ft('#keycap', { autoAlpha: 1, y: -520, rotation: -13 },
-                { y: 0, rotation: 3, duration: 0.3, ease: 'power3.in' }, 0.12);
+                { autoAlpha: 1, y: 0, rotation: 3, duration: 0.3, ease: 'power3.in' }, 0.12);
   ft('#keycap', { }, { scaleY: 0.9, scaleX: 1.07, duration: 0.07, ease: 'power2.out' }, 0.42);
   ft('#keycap', { }, { scaleY: 1, scaleX: 1, duration: 0.3, ease: 'elastic.out(1.4,0.45)' }, 0.49);
   ring('#ring-key', 0.42, 2.1); flash(0.42, 0.4);
@@ -254,15 +280,21 @@
                     { autoAlpha: 1, y: 0, scale: 1, duration: 0.3, ease: 'back.out(2.1)' }, 4.42 + ci * 0.145);
   }
   pop('#sfx-taps', 4.55, 0.85);
-  // the app's animated "beam" border on the Practical Uses button
-  ft('#scr-home .jp-pu-btn .beam rect', { strokeDashoffset: 0 }, { strokeDashoffset: -340, duration: 5.6, ease: 'none' }, 3.6);
-  ft('#scr-home .jp-pu-btn .beam rect', { }, { strokeDashoffset: -900, duration: 7.5, ease: 'none' }, 20.4);
+  // the app's "beam-run" flash on the Practical Uses button:
+  // one dash (dasharray 25/200, pathLength 100) travels once around, then the beam hides again
+  function beamFlash(t) {
+    ft('#scr-home .jp-pu-btn .beam', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.12 }, t);
+    ft('#scr-home .jp-pu-btn .beam rect', { strokeDashoffset: 25 }, { strokeDashoffset: -200, duration: 2, ease: 'none' }, t);
+    ft('#scr-home .jp-pu-btn .beam', { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.25 }, t + 1.75);
+  }
+  beamFlash(3.6);
+  beamFlash(20.4);
   ft('#capA', { autoAlpha: 0, y: 44, scale: 1.25 },
               { autoAlpha: 1, y: 0, scale: 1, duration: 0.3, ease: 'power4.out' }, 5.7);
   ft('#capA', { }, { autoAlpha: 0, y: 24, duration: 0.24, ease: 'power2.in' }, 8.35);
 
-  /* ---------- 7.9–13.3 · SolutionCard → /percentage-change-calculator/ ---------- */
-  // scroll the homepage down to the rent-hike card
+  /* ---------- 7.9–13.3 · SolutionCard → /original-before-increase-calculator/ ---------- */
+  // scroll the homepage down to the pre-tax-price card
   tl.to('#home-scroll', { y: -SCROLL_CARD6, duration: 0.55, ease: 'power2.inOut' }, 7.85, IR);
   ft('#cursor', { autoAlpha: 0, x: 560, y: 900 }, { autoAlpha: 1, x: P.card6.x + 60, y: P.card6.y + 70, duration: 0.42, ease: 'power2.out' }, 8.05);
   tl.to('#cursor', { x: P.card6.x + 14, y: P.card6.y + 8, duration: 0.34, ease: 'power2.inOut' }, 8.42, IR);
@@ -278,6 +310,10 @@
   tl.to('#scr-home', { x: -600, rotationY: -9, duration: 0.5, ease: 'power3.in' }, 9.1, IR);
   tl.to('#scr-calc', { x: 0, rotationY: 0, duration: 0.55, ease: 'power3.out' }, 9.3, IR);
   ft('#urlpill', { }, { scale: 1.07, duration: 0.12, yoyo: true, repeat: 1, ease: 'power2.out' }, 9.5);
+  // the SolutionCardHint's field tooltips pop over the fields right after landing
+  ft('#chip-hx', { autoAlpha: 0, y: 8, scale: 0.7 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.24, ease: 'back.out(2.2)' }, 9.62);
+  ft('#chip-hy', { autoAlpha: 0, y: 8, scale: 0.7 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.24, ease: 'back.out(2.2)' }, 9.7);
+  ft('#chip-hz', { autoAlpha: 0, y: 8, scale: 0.7 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.24, ease: 'back.out(2.2)' }, 9.82);
   // the inputs type themselves (characters driven by sync(t)); answer DING
   ft('#capB', { autoAlpha: 0, y: 44, scale: 1.25 },
               { autoAlpha: 1, y: 0, scale: 1, duration: 0.3, ease: 'power4.out' }, 10.35);
@@ -301,6 +337,12 @@
   ft('#pu-inflation .jp-pin', { scale: 0.2, rotation: 60 }, { scale: 1, rotation: 20, duration: 0.3, ease: 'back.out(3)' }, 14.5);
   pop('#sfx-plink', 14.66, 0.5);
   ft('#cursor', { }, { autoAlpha: 0, x: '+=80', y: '+=90', duration: 0.28, ease: 'power2.in' }, 14.9);
+  // pinning dismisses the SolutionCardHint (app: fade ~250ms, then reflow);
+  // the display flip at 15.1 happens inside the scroll so the reflow is masked
+  ft('#card-hint', { }, { autoAlpha: 0, duration: 0.3, ease: 'power1.in' }, 14.6);
+  ft('#chip-hx', { }, { autoAlpha: 0, y: -6, duration: 0.24 }, 14.6);
+  ft('#chip-hy', { }, { autoAlpha: 0, y: -6, duration: 0.24 }, 14.64);
+  ft('#chip-hz', { }, { autoAlpha: 0, y: -6, duration: 0.24 }, 14.68);
   // (b) scroll back up — the pinned example is presented ABOVE the calculator
   tl.to('#calc-scroll', { y: -SCROLL_CARD, duration: 0.6, ease: 'power2.inOut' }, 14.98, IR);
   ft('#pres-chg', { maxHeight: 0, autoAlpha: 0, scaleY: 0.7, transformOrigin: '50% 0' },
@@ -344,7 +386,7 @@
   tl.set('#home-scroll', { y: 0 }, 19.5);
   tl.to('#scr-home', { rotationY: 0, duration: 0.9, ease: 'power2.out' }, 20.44, IR);
   ft('#bg-dark', { }, { opacity: 1, duration: 1.0, ease: 'power1.inOut' }, 19.9);
-  ft('#specular', { autoAlpha: 1, x: '-120%' }, { x: '120%', duration: 1.5, ease: 'power1.inOut' }, 19.62);
+  ft('#specular', { autoAlpha: 1, x: '-120%' }, { autoAlpha: 1, x: '120%', duration: 1.5, ease: 'power1.inOut' }, 19.62);
   ft('#specular', { }, { autoAlpha: 0, duration: 0.2 }, 21.05);
   pop('#sfx-flip', 19.98, 0.6);
   flash(20.44, 0.32);
@@ -359,7 +401,7 @@
   ring('#ring-search', 21.97, 1.5);
   pop('#sfx-clack3', 21.99, 0.5);
   tl.to('#cursor', { x: P.search.x + 130, y: P.search.y + 60, autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, 22.2, IR);
-  // t·i·p — three key thocks (characters land via sync(t))
+  // i·n·t·e·r·e·s·t — key thocks (characters land via sync(t))
   pop('#sfx-th1', 22.38, 0.34);
   pop('#sfx-th2', 22.73, 0.34);
   pop('#sfx-th3', 23.08, 0.34);
@@ -382,6 +424,10 @@
   tl.to('#home-scroll', { y: -SCROLL_BASIC, duration: 0.3, ease: 'back.out(1.6)' }, 26.08, IR);
   ft('#capE', { }, { autoAlpha: 0, y: 24, duration: 0.22, ease: 'power2.in' }, 25.86);
   pop('#sfx-thunk', 26.18, 0.5);
+  // the pinned example unfolds only AFTER the scroll settles — an entrance
+  // during the scroll would be masked by the motion and read as page furniture
+  ft('#pres-basic', { maxHeight: 0, autoAlpha: 0, scaleY: 0.7, transformOrigin: '50% 0' },
+                    { maxHeight: 250, autoAlpha: 1, scaleY: 1, duration: 0.45, ease: 'back.out(1.3)' }, 26.12);
   // the selected Practical Use fills the calculator (values via sync)
   ft('#basic-x', { }, { scale: 1.12, duration: 0.1, ease: 'power3.out' }, 26.36);
   ft('#basic-x', { }, { scale: 1, duration: 0.2, ease: 'back.out(2.5)' }, 26.47);
@@ -405,7 +451,7 @@
   ft('#fl-h1', { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power3.out' }, 28.5);
   ft('#fl-controls', { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.28, ease: 'power3.out' }, 28.62);
   ft('#fl-cats', { autoAlpha: 0, x: 60 }, { autoAlpha: 1, x: 0, duration: 0.3, ease: 'power3.out' }, 28.74);
-  // scroll to Shopping and Promotions
+  // scroll to Transportation and Travel Costs
   tl.to('#hub-scroll', { y: -SCROLL_SHOP, duration: 0.6, ease: 'power2.inOut' }, 29.4, IR);
   ft('#cursor', { autoAlpha: 0, x: 540, y: 900 }, { autoAlpha: 1, x: P.hubTip.x + 70, y: P.hubTip.y + 50, duration: 0.4, ease: 'power2.out' }, 29.85);
   tl.to('#cursor', { x: P.hubTip.x + 20, y: P.hubTip.y + 8, duration: 0.26, ease: 'power2.inOut' }, 30.2, IR);
@@ -425,7 +471,7 @@
   tl.to('#tip-scroll', { y: -SCROLL_FAQ, duration: 0.45, ease: 'power2.inOut' }, 31.95, IR);
   ft('#capF', { autoAlpha: 0, y: 44, scale: 1.25 },
               { autoAlpha: 1, y: 0, scale: 1, duration: 0.3, ease: 'power4.out' }, 32.05);
-  // scrub the bill: 150 → 180, everything recomputes live (sync drives the numbers)
+  // scrub the car price: 80000 → 90000, everything recomputes live (sync drives the numbers)
   ft('#cursor', { autoAlpha: 0, x: P.bill.x + 120, y: P.bill.y + 120 },
                { autoAlpha: 1, x: P.bill.x + 4, y: P.bill.y + 6, duration: 0.4, ease: 'power2.out' }, 31.98);
   press(32.42);
@@ -475,15 +521,19 @@
     searchInput: $('#home-search'), searchTyped: $('#search-typed'),
     searchGhost: $('#search-ghost'), searchCursor: $('#search-cursor'),
     chgO: $('#chg-original'), chgN: $('#chg-new'),
-    chgRes: $('#chg-result'), chgResVal: $('#chg-result-val'), chgStatus: $('#chg-status'),
+    chgRes: $('#chg-result'), chgResVal: $('#chg-result-val'),
     puInf: $('#pu-inflation'), presChg: $('#pres-chg'), presBasic: $('#pres-basic'),
+    hint: $('#card-hint'),
+    chgRlabel: document.querySelector('#chg-result .rlabel'),
+    basicRlabel: document.querySelector('#basic-z .rlabel'),
     basicX: $('#basic-x'), basicY: $('#basic-y'),
     basicZ: $('#basic-z'), basicZVal: $('#basic-z-val'),
     ddTip: $('#dd-pu-tip'),
     card6note: $('#hl-card6').querySelector('.jp-note'),
     tipBill: $('#tip-bill'), tipRes: $('#tip-result'),
     detY: $('#det-y'), detY2: $('#det-y2'), detW: $('#det-w'),
-    detFy: $('#det-fy'), detFy2: $('#det-fy2'), detFr: $('#det-fr')
+    detFy: $('#det-fy'), detFy2: $('#det-fy2'), detFr: $('#det-fr'),
+    detDep2: $('#det-dep2'), detRem: $('#det-rem')
   };
 
   function typed(t, t0, step, str) {
@@ -504,35 +554,29 @@
     /* ----- URL pill (verified routes from src/pages, trailing slash) ----- */
     var path;
     if (t < 9.45) path = '/';
-    else if (t < 20.44) path = '/percentage-change-calculator/';
+    else if (t < 20.44) path = '/original-before-increase-calculator/';
     else if (t < 28.15) path = '/';
     else if (t < 31.5) path = '/faqs/';
-    else path = '/faqs/tip-calculation-calculator/';
+    else path = '/faqs/car-depreciation-calculator/';
     if (els.urlPath.textContent !== path) els.urlPath.textContent = path;
 
-    /* ----- percentage-change calculator: typing + live recompute ----- */
-    var oStr = t >= 16.84 ? '100' : typed(t, 9.95, 0.14, '2000');
-    var nStr = t >= 16.98 ? '103' : typed(t, 10.95, 0.14, '2200');
+    /* ----- original-before-increase calculator: typing + live recompute ----- */
+    var oStr = t >= 16.84 ? '5' : typed(t, 9.95, 0.14, '8');
+    var nStr = t >= 16.98 ? '126' : typed(t, 10.95, 0.14, '108');
     if (els.chgO.textContent !== oStr) els.chgO.textContent = oStr;
     if (els.chgN.textContent !== nStr) els.chgN.textContent = nStr;
     els.chgO.classList.toggle('glow', (t >= 9.9 && t < 10.75) || (t >= 16.82 && t < 18.6));
     els.chgN.classList.toggle('glow', (t >= 10.9 && t < 11.7) || (t >= 16.9 && t < 18.6));
     var oV = parseFloat(oStr), nV = parseFloat(nStr);
-    var hasRes = t >= 11.55 && oStr.length && nStr.length && oV > 0;
+    var hasRes = t >= 11.55 && oStr.length && nStr.length && oV > -100;
     // the app recomputes on every keystroke of the New field
     if (t >= 11.09 && t < 11.55 && nStr.length) hasRes = true;
     if (hasRes) {
-      var chg = Math.round(((nV - oV) / oV) * 10000) / 100;
-      var up = chg >= 0;
-      els.chgResVal.textContent = fmt(Math.abs(chg)) + '%';
-      els.chgStatus.textContent = up ? 'is an INCREASE of' : 'is a DECREASE of';
-      els.chgStatus.classList.toggle('inc', up);
-      els.chgStatus.classList.toggle('dec', !up);
+      // Original = New / (1 + Increase/100), rounded to 2 decimals like the app
+      els.chgResVal.textContent = fmt(nV / (1 + oV / 100));
       els.chgRes.classList.remove('empty');
     } else {
-      els.chgResVal.textContent = 'Change%';
-      els.chgStatus.textContent = 'is a change of:';
-      els.chgStatus.classList.remove('inc'); els.chgStatus.classList.remove('dec');
+      els.chgResVal.textContent = 'Original';
       els.chgRes.classList.add('empty');
     }
 
@@ -547,7 +591,7 @@
     /* ----- dark homepage: search focus, typing, dropdown ----- */
     var focused = t >= 21.97 && t < 24.95;
     els.searchInput.classList.toggle('focused', focused);
-    var q = typed(t, 22.35, 0.35, 'tip');
+    var q = typed(t, 22.35, 0.13, 'interest');
     if (t < 21.9) q = '';
     if (els.searchTyped.textContent !== q) els.searchTyped.textContent = q;
     els.searchGhost.style.opacity = (focused || q.length) ? '0' : '1';
@@ -555,38 +599,42 @@
     dropdown.style.display = (t >= 23.55 && t < 25.0) ? 'block' : 'none';
 
     /* ----- basic calculator (search target): pinned example + fill ----- */
-    els.presBasic.style.display = t >= 25.55 ? 'block' : 'none';
-    if (t >= 25.55) { els.presBasic.style.maxHeight = 'none'; }
-    var bx = t >= 26.36 ? '15' : '';
-    var by = t >= 26.5 ? '60' : '';
+    els.presBasic.style.display = t >= 26.1 ? 'block' : 'none';
+    var bx = t >= 26.36 ? '5' : '';
+    var by = t >= 26.5 ? '1000' : '';
     if (els.basicX.textContent !== bx) els.basicX.textContent = bx;
     if (els.basicY.textContent !== by) els.basicY.textContent = by;
     els.basicX.classList.toggle('glow', t >= 26.34 && t < 27.6);
     els.basicY.classList.toggle('glow', t >= 26.48 && t < 27.6);
     if (t >= 26.66) {
-      els.basicZVal.textContent = '9';
+      els.basicZVal.textContent = '50';
       els.basicZ.classList.remove('empty');
     } else {
       els.basicZVal.textContent = 'Z';
       els.basicZ.classList.add('empty');
     }
 
-    /* ----- FAQ page: scrub 150 → 180, everything recomputes live ----- */
-    var bill = 150;
-    if (t >= 33.2) bill = 180;
-    else if (t >= 32.48) bill = Math.round(lerp(150, 180, easeIO(clamp((t - 32.48) / 0.72, 0, 1))));
-    var billS = String(bill), tipS = fmt(bill * 0.1);
-    if (els.tipBill.textContent !== billS) {
-      els.tipBill.textContent = billS;
-      els.detY.textContent = billS; els.detY2.textContent = billS;
-      els.detW.textContent = billS; els.detFy.textContent = billS; els.detFy2.textContent = billS;
-      els.tipRes.textContent = tipS; els.detFr.textContent = tipS;
+    /* ----- FAQ page: scrub the car price 80000 → 90000, everything recomputes live ----- */
+    var price = 80000;
+    if (t >= 33.2) price = 90000;
+    else if (t >= 32.48) price = Math.round(lerp(80000, 90000, easeIO(clamp((t - 32.48) / 0.72, 0, 1))) / 100) * 100;
+    var priceS = String(price), depS = fmt(price * 0.15), remS = fmt(price * 0.85);
+    if (els.tipBill.textContent !== priceS) {
+      els.tipBill.textContent = priceS;
+      els.detY.textContent = priceS; els.detY2.textContent = priceS;
+      els.detW.textContent = priceS; els.detFy.textContent = priceS; els.detFy2.textContent = priceS;
+      els.detFr.textContent = depS; els.detDep2.textContent = depS;
+      els.detRem.textContent = remS; els.tipRes.textContent = remS;
     }
     els.tipBill.classList.toggle('glow', t >= 32.35 && t < 33.55);
 
-    /* ----- field tooltip chips track the (re-wrapped) form layout ----- */
-    if (t >= 16.3 && t < 19.0) placeChgChips();
-    if (t >= 26.2 && t < 28.0) placeBasicChips();
+    /* ----- SolutionCardHint: open on S3 entry, dismissed by the PU pin;
+             its reflow (display flip) is hidden inside the 14.98 scroll.
+             While the hint or any field tooltips are visible, the app hides
+             the "read-only Answer/Result" label (fieldTooltipManager). ----- */
+    els.hint.style.display = (t >= 9.26 && t < 15.1) ? 'block' : 'none';
+    els.chgRlabel.style.opacity = (t >= 9.26 && t < 20.5) ? '0' : '';
+    els.basicRlabel.style.opacity = (t >= 25.55 && t < 28.0) ? '0' : '';
 
     /* ----- camera shake: decaying sine after every hit + handheld drift ----- */
     var dx = 1.1 * Math.sin(t * 0.8), dy = 0.9 * Math.cos(t * 0.63), rot = 0.12 * Math.sin(t * 0.5);
@@ -620,6 +668,12 @@
     set: function (v) { this._p = v; sync(v * DUR); }
   });
   tl.to(driver, { p: 1, duration: DUR, ease: 'none' }, 0);
+
+  // prime every tween once (records start values and writes the same inline
+  // residue a replay would), so the first monotonic play, forced full replays
+  // and backward seeks all produce identical frames
+  tl.progress(1, true);
+  tl.progress(0, true);
 
   sync(0); // initial state
 

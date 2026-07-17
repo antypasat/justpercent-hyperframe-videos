@@ -53,7 +53,7 @@
   var mCardS3  = pageRect('S3', '#basic-percentage-section');
   var mResS3   = pageRect('S3', '#basic-percentage-result');
   var mPUlist  = pageRect('S5', '.practical-use--interactive');
-  var mPUcard  = (function(){ var els = $$('#S5 .practical-use--interactive'); return els[3] || null; })();
+  var mPUcard  = (function(){ var els = $$('#S5 .practical-use--interactive'); return els[0] || null; })(); // Budget Cut = first PU
   var mPanelS6 = pageRect('S6', '.practical-use-presentation-wrapper');
   var mCardS6  = pageRect('S6', '#decreased-value-section') || pageRect('S6', '.calculator-card');
   var mResS6   = pageRect('S6', '#decreased-value-result');
@@ -65,15 +65,15 @@
 
   var mPU4 = (function(){
     var els = $$('#S5 .practical-use--interactive');
-    if (!els[3]) return null;
+    if (!els[0]) return null;
     var body = $('#S5 .jp-body');
-    var r = els[3].getBoundingClientRect(), b = body.getBoundingClientRect();
+    var r = els[0].getBoundingClientRect(), b = body.getBoundingClientRect();
     var sc = b.width / 432 || 1;
     return { x:(r.left-b.left)/sc, y:(r.top-b.top)/sc, w:r.width/sc, h:r.height/sc };
   })();
   var SCROLL_CARDS = mCards ? Math.max(0, mCards.y - 96) : 620;
   var SCROLL_PU    = mPU4 ? Math.max(0, mPU4.y - 330) : (mPUlist ? Math.max(0, mPUlist.y - 210) : 900);
-  var SCROLL_FAQ   = mFaqLinkR ? Math.max(0, Math.min(mFaqLinkR.y - 320, 11000)) : 1500;
+  var SCROLL_FAQ   = mFaqLinkR ? Math.max(0, mFaqLinkR.y - 320) : 1500;
   var SCROLL_S8    = mQuesS8 ? Math.max(0, mQuesS8.y - 60) : 0;
 
   /* ---------- inject presentation-layer helpers (tap rings, caret) ---------- */
@@ -91,6 +91,15 @@
   var ringPU    = ring(mPUcard, 'ring-pu', 50, 40);
   var ringFaq   = ring(mFaqLink, 'ring-faq', 40, 50);
   var ringRaise = ring(mRaiseS8 && mRaiseS8.el && mRaiseS8.el.parentElement, 'ring-raise', 50, 50);
+  if (ringRaise && mRaiseS8) {
+    /* host is the input's parent row (an <input> can't contain children) —
+       re-center the ring on the input itself, not the wider row */
+    var rp = mRaiseS8.el.parentElement.getBoundingClientRect();
+    var ri = mRaiseS8.el.getBoundingClientRect();
+    var sc8 = ($('#S8 .jp-body').getBoundingClientRect().width / 432) || 1;
+    ringRaise.style.left = ((ri.left - rp.left + ri.width / 2) / sc8) + 'px';
+    ringRaise.style.top = ((ri.top - rp.top + ri.height / 2) / sc8) + 'px';
+  }
 
   /* typing caret inside the S1 search input */
   var searchInput = document.querySelector('#S1 #calculator-search');
@@ -111,7 +120,7 @@
     var ctx = document.createElement('canvas').getContext('2d');
     var f = getComputedStyle(searchInput);
     ctx.font = f.fontWeight + ' ' + f.fontSize + ' ' + f.fontFamily;
-    charW = ctx.measureText('tip').width / 3;
+    charW = ctx.measureText('tax').width / 3;
     wrap.appendChild(caret);
   }
 
@@ -135,7 +144,8 @@
   function lerp(a, b, p){ return a + (b - a) * p; }
 
   var TYPE = { t1: 8.9, t2: 9.3, t3: 9.7, on: 8.55, off: 10.05 };
-  var FILL = { oA: 23.9, oB: 24.5, pA: 24.6, pB: 25.0 };
+  /* S6 fill: both inputs rise in parallel (a..b), result counts up after both land (rA..rB) */
+  var FILL = { a: 23.9, b: 24.6, rA: 24.65, rB: 25.0 };
   var RAISE = { a: 30.2, b: 30.7 };
 
   function urlFor(t) {
@@ -154,7 +164,7 @@
     /* search typing */
     if (sInput) {
       var n = t < TYPE.t1 ? 0 : t < TYPE.t2 ? 1 : t < TYPE.t3 ? 2 : 3;
-      var v = 'tip'.slice(0, n);
+      var v = 'tax'.slice(0, n);
       if (sInput.value !== v) sInput.value = v;
       if (typewriter) typewriter.style.visibility = (t >= TYPE.on && t <= TYPE.off + 26) ? 'hidden' : '';
       if (caret) {
@@ -164,14 +174,17 @@
         caret.style.left = (caretBaseX + charW * n + 1) + 'px';
       }
     }
-    /* S6 practical-use fill (240/15/204 -> 300/30/210, live result) */
+    /* S6 practical-use fill (Budget Cut): empty until FILL.a, then original+percentage
+       count up IN PARALLEL to 10000/25; result appears only after both land and counts
+       up to 7500 — monotonic, never approaches 7500 from above */
     if (s6o) {
-      var o = Math.round(lerp(240, 300, cubicOut(seg(t, FILL.oA, FILL.oB))));
-      var p2 = Math.round(lerp(15, 30, cubicOut(seg(t, FILL.pA, FILL.pB))));
-      var r2 = Math.round(o * (1 - p2 / 100));
-      if (s6o.value !== String(o)) s6o.value = String(o);
-      if (s6p.value !== String(p2)) s6p.value = String(p2);
-      if (s6r && s6r.value !== String(r2)) s6r.value = String(r2);
+      var fe = cubicOut(seg(t, FILL.a, FILL.b));
+      var o = t < FILL.a ? '' : String(Math.round(10000 * fe));
+      var p2 = t < FILL.a ? '' : String(Math.round(25 * fe));
+      var r2 = t < FILL.rA ? '' : String(Math.round(7500 * cubicOut(seg(t, FILL.rA, FILL.rB))));
+      if (s6o.value !== o) s6o.value = o;
+      if (s6p.value !== p2) s6p.value = p2;
+      if (s6r && s6r.value !== r2) s6r.value = r2;
     }
     /* S8 salary raise 5 -> 8 (4200 -> 4320) */
     if (s8raise) {
@@ -179,7 +192,7 @@
       var ns = 4000 + 40 * r, amt = 40 * r;
       if (s8raise.value !== String(r)) s8raise.value = String(r);
       if (s8res && s8res.value !== String(ns)) s8res.value = String(ns);
-      if (s8dec) { var d = '0,0' + r; if (s8dec.textContent !== d) s8dec.textContent = d; }
+      if (s8dec) { var d = '0.0' + r; if (s8dec.textContent !== d) s8dec.textContent = d; } // en-US decimal point
       if (s8amt && s8amt.textContent !== String(amt)) s8amt.textContent = String(amt);
       if (s8amtD && s8amtD.textContent !== String(amt)) s8amtD.textContent = String(amt);
       if (s8newD && s8newD.textContent !== String(ns)) s8newD.textContent = String(ns);
