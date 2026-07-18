@@ -189,6 +189,15 @@ const cardRect = (page, text) =>
 // prep a fresh homepage and type a prefix into the search box
 async function typedSearch(ctx, prefix) {
   const page = await ctx.newPage();
+  // site chrome that must never appear in captures:
+  // floating nav, minimap (wrapper + hitbox)
+  await page.addInitScript(() => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const s = document.createElement("style");
+      s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+      document.head.appendChild(s);
+    });
+  });
   await page.goto(`${BASE}/?noredirect`, { waitUntil: "domcontentloaded" });
   await acceptCookies(page);
   await page.waitForSelector("#solution-mobile-grid .solution-sticky-note", {
@@ -238,6 +247,15 @@ for (const theme of ["dark", "light"]) {
   if (RUN.has("h")) {
     const ctx = await newThemeContext(browser, theme);
     const page = await ctx.newPage();
+    // site chrome that must never appear in captures:
+    // floating nav, minimap (wrapper + hitbox)
+    await page.addInitScript(() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const s = document.createElement("style");
+        s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+        document.head.appendChild(s);
+      });
+    });
     await page.goto(`${BASE}/?noredirect`, { waitUntil: "domcontentloaded" });
     await acceptCookies(page);
     await page.waitForSelector("#solution-mobile-grid .solution-sticky-note", {
@@ -419,6 +437,15 @@ for (const theme of ["dark", "light"]) {
   if (RUN.has("i")) {
     const ctx = await newThemeContext(browser, theme);
     const page = await ctx.newPage();
+    // site chrome that must never appear in captures:
+    // floating nav, minimap (wrapper + hitbox)
+    await page.addInitScript(() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const s = document.createElement("style");
+        s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+        document.head.appendChild(s);
+      });
+    });
     await page.goto(`${BASE}/increased-value-calculator/?noredirect`, {
       waitUntil: "domcontentloaded"
     });
@@ -465,6 +492,15 @@ for (const theme of ["dark", "light"]) {
   if (RUN.has("f")) {
     const ctx = await newThemeContext(browser, theme);
     const page = await ctx.newPage();
+    // site chrome that must never appear in captures:
+    // floating nav, minimap (wrapper + hitbox)
+    await page.addInitScript(() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const s = document.createElement("style");
+        s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+        document.head.appendChild(s);
+      });
+    });
     await page.goto(`${BASE}/faqs/tip-calculation-calculator/?noredirect`, {
       waitUntil: "domcontentloaded"
     });

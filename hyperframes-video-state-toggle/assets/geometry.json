@@ -2,20 +2,20 @@
   "home-grid": {
     "grid": {
       "x": 436,
-      "y": 110,
+      "y": 46,
       "w": 728,
       "h": 807
     },
-    "__scrollY": 238,
+    "__scrollY": 302,
     "couponCta": {
       "x": 614,
-      "y": 222,
+      "y": 158,
       "w": 134,
       "h": 22
     },
     "tipCta": {
       "x": 986,
-      "y": 385,
+      "y": 321,
       "w": 126,
       "h": 22
     }
@@ -50,17 +50,23 @@
   "inc-default": {
     "card": {
       "x": 436,
-      "y": 110,
+      "y": 203,
       "w": 728,
       "h": 412
     },
     "__scrollY": 0
   },
   "inc-pu-list": {
-    "__scrollY": 299,
+    "helpPanel": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "__scrollY": 0,
     "budgetRow": {
       "x": 468,
-      "y": 435,
+      "y": 827,
       "w": 680,
       "h": 120
     }
@@ -95,29 +101,29 @@
   "home-search-focused": {
     "searchBox": {
       "x": 461,
-      "y": 115,
+      "y": -111,
       "w": 678,
       "h": 50
     },
-    "__scrollY": 76
+    "__scrollY": 302
   },
   "home-search-portal": {
     "searchBox": {
       "x": 461,
-      "y": 115,
+      "y": 75,
       "w": 678,
       "h": 50
     },
     "portal": {
       "x": 463,
-      "y": 193,
+      "y": 153,
       "w": 674,
-      "h": 395
+      "h": 455
     },
-    "__scrollY": 76,
+    "__scrollY": 116,
     "firstRow": {
       "x": 471,
-      "y": 217,
+      "y": 175,
       "w": 658,
       "h": 94
     }
@@ -125,17 +131,17 @@
   "home-search-selected": {
     "activeCard": {
       "x": 436,
-      "y": -74,
+      "y": -244,
       "w": 728,
       "h": 1377
     },
     "pinnedUse": {
       "x": 493,
-      "y": 864,
+      "y": 694,
       "w": 630,
       "h": 90
     },
-    "__scrollY": 1933
+    "__scrollY": 2103
   },
   "faqs-index": {
     "heading": {
@@ -161,23 +167,5 @@
     },
     "__scrollY": 0,
     "pageH": 1055
-  },
-  "inc-after-tax-nobanner": {
-    "card": {
-      "x": 436,
-      "y": 110,
-      "w": 728,
-      "h": 412
-    },
-    "__scrollY": 0
-  },
-  "change-after-renthike-nobanner": {
-    "card": {
-      "x": 436,
-      "y": 110,
-      "w": 728,
-      "h": 412
-    },
-    "__scrollY": 0
   }
 }

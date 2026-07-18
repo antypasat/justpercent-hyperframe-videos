@@ -170,6 +170,15 @@ const ctx = await browser.newContext({
   serviceWorkers: "block"
 });
 const page = await ctx.newPage();
+// site chrome that must never appear in captures:
+// floating nav, minimap (wrapper + hitbox)
+await page.addInitScript(() => {
+  document.addEventListener("DOMContentLoaded", () => {
+    const s = document.createElement("style");
+    s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+    document.head.appendChild(s);
+  });
+});
 
 // ---- 1. HOME (full page) — 6.1 Classic Scan / 6.6 Highlight-on-Scroll ------
 if (want("home")) {

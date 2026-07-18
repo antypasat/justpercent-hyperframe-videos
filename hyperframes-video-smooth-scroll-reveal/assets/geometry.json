@@ -111,9 +111,9 @@
     },
     "result": {
       "x": 961,
-      "y": 401,
+      "y": 399,
       "w": 116,
-      "h": 32
+      "h": 35
     },
     "heading": {
       "x": 517,
@@ -236,7 +236,7 @@
         {
           "tag": "a",
           "text": "Basic Percentage",
-          "x": 724,
+          "x": 719,
           "y": 60,
           "w": 222,
           "h": 36
@@ -244,7 +244,7 @@
         {
           "tag": "a",
           "text": "Original Value",
-          "x": 724,
+          "x": 719,
           "y": 96,
           "w": 222,
           "h": 36
@@ -252,7 +252,7 @@
         {
           "tag": "a",
           "text": "Part-to-Whole Percentage",
-          "x": 724,
+          "x": 719,
           "y": 132,
           "w": 222,
           "h": 36
@@ -260,7 +260,7 @@
         {
           "tag": "a",
           "text": "Percentage Change",
-          "x": 724,
+          "x": 719,
           "y": 168,
           "w": 222,
           "h": 36
@@ -268,7 +268,7 @@
         {
           "tag": "a",
           "text": "Value Increase",
-          "x": 724,
+          "x": 719,
           "y": 204,
           "w": 222,
           "h": 36
@@ -276,7 +276,7 @@
         {
           "tag": "a",
           "text": "Original Before Increase",
-          "x": 724,
+          "x": 719,
           "y": 240,
           "w": 222,
           "h": 36
@@ -284,7 +284,7 @@
         {
           "tag": "a",
           "text": "Value Decrease",
-          "x": 724,
+          "x": 719,
           "y": 276,
           "w": 222,
           "h": 36
@@ -292,7 +292,7 @@
         {
           "tag": "a",
           "text": "Original Before Decrease",
-          "x": 724,
+          "x": 719,
           "y": 312,
           "w": 222,
           "h": 36
@@ -460,7 +460,7 @@
       "h": 60
     },
     "__page": {
-      "scrollHeight": 13044,
+      "scrollHeight": 16251,
       "viewportW": 1600,
       "viewportH": 900,
       "scrollY": 0
@@ -481,9 +481,9 @@
     },
     "result": {
       "x": 958,
-      "y": 486,
+      "y": 485,
       "w": 116,
-      "h": 32
+      "h": 35
     },
     "heading": {
       "x": 517,
@@ -600,7 +600,7 @@
         {
           "tag": "a",
           "text": "Basic Percentage",
-          "x": 724,
+          "x": 719,
           "y": 60,
           "w": 222,
           "h": 36
@@ -608,7 +608,7 @@
         {
           "tag": "a",
           "text": "Original Value",
-          "x": 724,
+          "x": 719,
           "y": 96,
           "w": 222,
           "h": 36
@@ -616,7 +616,7 @@
         {
           "tag": "a",
           "text": "Part-to-Whole Percentage",
-          "x": 724,
+          "x": 719,
           "y": 132,
           "w": 222,
           "h": 36
@@ -624,7 +624,7 @@
         {
           "tag": "a",
           "text": "Percentage Change",
-          "x": 724,
+          "x": 719,
           "y": 168,
           "w": 222,
           "h": 36
@@ -632,7 +632,7 @@
         {
           "tag": "a",
           "text": "Value Increase",
-          "x": 724,
+          "x": 719,
           "y": 204,
           "w": 222,
           "h": 36
@@ -640,7 +640,7 @@
         {
           "tag": "a",
           "text": "Original Before Increase",
-          "x": 724,
+          "x": 719,
           "y": 240,
           "w": 222,
           "h": 36
@@ -648,7 +648,7 @@
         {
           "tag": "a",
           "text": "Value Decrease",
-          "x": 724,
+          "x": 719,
           "y": 276,
           "w": 222,
           "h": 36
@@ -656,7 +656,7 @@
         {
           "tag": "a",
           "text": "Original Before Decrease",
-          "x": 724,
+          "x": 719,
           "y": 312,
           "w": 222,
           "h": 36
@@ -672,7 +672,7 @@
         {
           "tag": "button",
           "text": "Copy Copied!",
-          "x": 922,
+          "x": 923,
           "y": 525,
           "w": 60,
           "h": 24
@@ -680,7 +680,7 @@
         {
           "tag": "button",
           "text": "Save Saved",
-          "x": 986,
+          "x": 987,
           "y": 527,
           "w": 58,
           "h": 20
@@ -688,7 +688,7 @@
         {
           "tag": "button",
           "text": "Clear Cleared",
-          "x": 1048,
+          "x": 1049,
           "y": 525,
           "w": 61,
           "h": 24
@@ -828,7 +828,7 @@
       "h": 0
     },
     "__page": {
-      "scrollHeight": 6780,
+      "scrollHeight": 6958,
       "viewportW": 1600,
       "viewportH": 900,
       "scrollY": 0
@@ -927,7 +927,7 @@
           "tag": "h2",
           "text": "Original Before Increase Calculator",
           "x": 517,
-          "y": 4741,
+          "y": 4919,
           "w": 610,
           "h": 28
         },
@@ -943,7 +943,7 @@
           "tag": "h2",
           "text": "Value Decrease Calculator",
           "x": 517,
-          "y": 5223,
+          "y": 5401,
           "w": 610,
           "h": 28
         },
@@ -959,7 +959,7 @@
           "tag": "h2",
           "text": "Original Before Decrease Calculator",
           "x": 517,
-          "y": 5705,
+          "y": 5883,
           "w": 610,
           "h": 28
         },
@@ -975,7 +975,7 @@
           "tag": "h2",
           "text": "Original Value Calculator",
           "x": 517,
-          "y": 6187,
+          "y": 6365,
           "w": 610,
           "h": 28
         },
@@ -992,7 +992,7 @@
         {
           "tag": "a",
           "text": "Basic Percentage",
-          "x": 724,
+          "x": 719,
           "y": 60,
           "w": 222,
           "h": 36
@@ -1000,7 +1000,7 @@
         {
           "tag": "a",
           "text": "Original Value",
-          "x": 724,
+          "x": 719,
           "y": 96,
           "w": 222,
           "h": 36
@@ -1008,7 +1008,7 @@
         {
           "tag": "a",
           "text": "Part-to-Whole Percentage",
-          "x": 724,
+          "x": 719,
           "y": 132,
           "w": 222,
           "h": 36
@@ -1016,7 +1016,7 @@
         {
           "tag": "a",
           "text": "Percentage Change",
-          "x": 724,
+          "x": 719,
           "y": 168,
           "w": 222,
           "h": 36
@@ -1024,7 +1024,7 @@
         {
           "tag": "a",
           "text": "Value Increase",
-          "x": 724,
+          "x": 719,
           "y": 204,
           "w": 222,
           "h": 36
@@ -1032,7 +1032,7 @@
         {
           "tag": "a",
           "text": "Original Before Increase",
-          "x": 724,
+          "x": 719,
           "y": 240,
           "w": 222,
           "h": 36
@@ -1040,7 +1040,7 @@
         {
           "tag": "a",
           "text": "Value Decrease",
-          "x": 724,
+          "x": 719,
           "y": 276,
           "w": 222,
           "h": 36
@@ -1048,7 +1048,7 @@
         {
           "tag": "a",
           "text": "Original Before Decrease",
-          "x": 724,
+          "x": 719,
           "y": 312,
           "w": 222,
           "h": 36
@@ -1226,7 +1226,7 @@
         {
           "tag": "a",
           "text": "Basic Percentage",
-          "x": 724,
+          "x": 719,
           "y": 60,
           "w": 222,
           "h": 36
@@ -1234,7 +1234,7 @@
         {
           "tag": "a",
           "text": "Original Value",
-          "x": 724,
+          "x": 719,
           "y": 96,
           "w": 222,
           "h": 36
@@ -1242,7 +1242,7 @@
         {
           "tag": "a",
           "text": "Part-to-Whole Percentage",
-          "x": 724,
+          "x": 719,
           "y": 132,
           "w": 222,
           "h": 36
@@ -1250,7 +1250,7 @@
         {
           "tag": "a",
           "text": "Percentage Change",
-          "x": 724,
+          "x": 719,
           "y": 168,
           "w": 222,
           "h": 36
@@ -1258,7 +1258,7 @@
         {
           "tag": "a",
           "text": "Value Increase",
-          "x": 724,
+          "x": 719,
           "y": 204,
           "w": 222,
           "h": 36
@@ -1266,7 +1266,7 @@
         {
           "tag": "a",
           "text": "Original Before Increase",
-          "x": 724,
+          "x": 719,
           "y": 240,
           "w": 222,
           "h": 36
@@ -1274,7 +1274,7 @@
         {
           "tag": "a",
           "text": "Value Decrease",
-          "x": 724,
+          "x": 719,
           "y": 276,
           "w": 222,
           "h": 36
@@ -1282,7 +1282,7 @@
         {
           "tag": "a",
           "text": "Original Before Decrease",
-          "x": 724,
+          "x": 719,
           "y": 312,
           "w": 222,
           "h": 36

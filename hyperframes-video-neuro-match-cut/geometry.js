@@ -2,10 +2,10 @@ window.F5GEO = {
   "dark": {
     "home": {
       "toggle": {
-        "x": 374,
-        "y": 710,
-        "w": 42,
-        "h": 42
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
       },
       "search": {
         "x": 25,
@@ -21,10 +21,10 @@ window.F5GEO = {
         "text": "Apply My Coupon"
       },
       "toggleClip": {
-        "x": 372,
-        "y": 708,
-        "w": 46,
-        "h": 46
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 4
       },
       "searchClip": {
         "x": 21,
@@ -47,10 +47,10 @@ window.F5GEO = {
         "h": 80
       },
       "result": {
-        "x": 168,
-        "y": 450,
+        "x": 169,
+        "y": 448,
         "w": 116,
-        "h": 32
+        "h": 35
       },
       "values": {
         "original": "100",
@@ -64,10 +64,10 @@ window.F5GEO = {
         "h": 88
       },
       "resultClip": {
-        "x": 158,
-        "y": 440,
+        "x": 159,
+        "y": 438,
         "w": 136,
-        "h": 52
+        "h": 55
       }
     },
     "faq": {
@@ -92,10 +92,10 @@ window.F5GEO = {
     },
     "hi": {
       "toggleClip": {
-        "x": 372,
-        "y": 708,
-        "w": 46,
-        "h": 46
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 4
       },
       "faqIconClip": {
         "x": 346,
@@ -108,10 +108,10 @@ window.F5GEO = {
   "light": {
     "home": {
       "toggle": {
-        "x": 374,
-        "y": 710,
-        "w": 42,
-        "h": 42
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
       },
       "search": {
         "x": 25,
@@ -127,10 +127,10 @@ window.F5GEO = {
         "text": "Apply My Coupon"
       },
       "toggleClip": {
-        "x": 372,
-        "y": 708,
-        "w": 46,
-        "h": 46
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 4
       },
       "searchClip": {
         "x": 21,
@@ -153,10 +153,10 @@ window.F5GEO = {
         "h": 80
       },
       "result": {
-        "x": 168,
-        "y": 450,
+        "x": 169,
+        "y": 448,
         "w": 116,
-        "h": 32
+        "h": 35
       },
       "values": {
         "original": "100",
@@ -170,10 +170,10 @@ window.F5GEO = {
         "h": 88
       },
       "resultClip": {
-        "x": 158,
-        "y": 440,
+        "x": 159,
+        "y": 438,
         "w": 136,
-        "h": 52
+        "h": 55
       }
     },
     "faq": {
@@ -198,10 +198,10 @@ window.F5GEO = {
     },
     "hi": {
       "toggleClip": {
-        "x": 372,
-        "y": 708,
-        "w": 46,
-        "h": 46
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 4
       },
       "faqIconClip": {
         "x": 346,

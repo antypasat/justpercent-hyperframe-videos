@@ -227,6 +227,15 @@ const ctx = await browser.newContext({
   serviceWorkers: "block", // PWA SW otherwise serves the offline page on goto
 });
 const page = await ctx.newPage();
+// site chrome that must never appear in captures:
+// floating nav, minimap (wrapper + hitbox)
+await page.addInitScript(() => {
+  document.addEventListener("DOMContentLoaded", () => {
+    const s = document.createElement("style");
+    s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+    document.head.appendChild(s);
+  });
+});
 
 // ---- 1. HOME: nav / heading / search / picker panel ------------------------
 await page.goto(`${BASE}/?noredirect`, { waitUntil: "domcontentloaded" });

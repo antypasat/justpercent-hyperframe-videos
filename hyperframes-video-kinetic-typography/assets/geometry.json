@@ -26,7 +26,7 @@
           "x": 26,
           "y": 152,
           "w": 380,
-          "h": 7537
+          "h": 8631
         },
         "rows": [
           "Practical Uses",
@@ -36,12 +36,12 @@
           "Price Before Hike: What was the original cable TV bill [Original] befo",
           "Inflation Rate: A concert ticket rising from $100 [Original] to $103 [",
           "Restaurant Tip: A 15% [X] tip on a $60 [Y] Italian chain dinner bill c",
-          "Website Traffic Change: A drop in online craft shop visits from 10,000",
           "Budget Boost: A $5,000 [Original] theme park vacation budget increased",
+          "Website Traffic Change: A drop in online craft shop visits from 10,000",
           "Employee Reduction: A 500 [Original]-person tech startup reduced by 10",
-          "Tax Calculation: 8% [X] NYC sales tax on a $250 [Y] pro wireless earbu",
           "Pre-Tax Amount: 8% [X] of what pre-tax amount [Y] is $16 [Z] sales tax",
           "Test Score: What is your grade [X%] on a 100 [Y] point Bar Exam sectio",
+          "Tax Calculation: 8% [X] NYC sales tax on a $250 [Y] pro wireless earbu",
           "Total Budget: 30% [X] of what total Christmas budget [Y] is $600 [Z]? ",
           "Original Value: 15% [X] of what dinner bill [Y] is a 30 [Z] tip? 200",
           "Pre-Growth Population: What was the original population of Boise [Orig",
@@ -63,16 +63,22 @@
           "Weight Loss: Weight dropping from 180 [Original] lbs to 162 [New] lbs ",
           "Related FAQs",
           "Textbook ExpenseHow much will I spend on textbooks this year?",
-          "Hotel BudgetHow to calculate hotel budget when it represents a percent",
+          "Foreign Transaction FeeHow to Calculate the Fee and Total on a Purchas",
+          "Price Before TaxHow to calculate the price before tax from a tax-inclu",
           "LED Bulb EnergyHow much power does an LED bulb consume when it uses a ",
+          "Hotel BudgetHow to calculate hotel budget when it represents a percent",
+          "Reverse TipHow to find the bill amount before the tip was added?",
           "Fuel CostsHow to calculate fuel costs when they represent a percentage",
+          "Successive DiscountsHow to combine two stacked discounts into a final ",
           "Price ReductionWhat's the discount percentage on this sale?",
-          "Income Tax PercentageHow to calculate what percentage of income the pa",
-          "Expense ReductionHow to Calculate Target Amount After Reducing Expense",
           "Tuition IncreaseWhat's my tuition after a percentage increase in fees?",
-          "Second Product DiscountHow much for two items with second one discount",
-          "Monthly Pass Price IncreaseCalculate Transit Pass Percentage Increase",
+          "Expense ReductionHow to Calculate Target Amount After Reducing Expense",
+          "Income Tax PercentageHow to calculate what percentage of income the pa",
           "Scholarship TuitionHow much do I pay after my scholarship covers a per",
+          "Monthly Pass Price IncreaseCalculate Transit Pass Percentage Increase",
+          "Inflation-Adjusted SavingsHow to Calculate What Your Savings Are Worth",
+          "Salary After InflationHow to Check if Your Raise Beat Inflation in Rea",
+          "Second Product DiscountHow much for two items with second one discount",
           "Income TaxHow to calculate income tax amount from tax rate and income?",
           "Tip CalculationHow much tip should I leave based on percentage?",
           "Calorie CalculationHow to find calories in a serving when you know wha",
@@ -80,11 +86,18 @@
           "VAT / Sales TaxHow to calculate gross price including VAT / Sales tax ",
           "Compound InterestHow to Calculate Total Amount",
           "Savings GoalHow to calculate total savings goal from current percentag",
+          "Dividend YieldHow to Calculate the Dividend Yield of a Stock",
+          "Effective Interest Rate (EAR)How to Convert a Nominal Rate to the Effe",
+          "Loan PaymentHow to Calculate the Monthly Payment on a Fixed-Rate Loan",
+          "Currency Exchange MarkupHow to Calculate the Markup Cost on a Bad Exch",
           "Gasoline Price IncreaseHow to calculate the new gasoline price after a",
+          "Credit Card PayoffHow Long to Pay Off a Card and How Much Interest",
           "Price IncreaseBy what percentage did the price increase?",
+          "Debt-to-Income RatioHow to Calculate What Percentage of Income Goes to",
           "Rent PercentageHow to Calculate Rent as Percentage of Income",
           "Education ExpensesWhat percentage of family income goes to education c",
           "Investment CommissionHow to Calculate Commission Amount",
+          "CAGRHow to Calculate Compound Annual Growth Rate",
           "Down PaymentHow to Calculate Required Down Payment",
           "Investment ProfitHow to Calculate Initial Investment Amount",
           "Loan InterestHow to Calculate Annual Interest Amount",
@@ -98,7 +111,9 @@
           "Stock Price IncreaseHow to Calculate New Stock Price",
           "Utility BillsHow to Calculate Bills Amount from Expenses",
           "Weight Loss GoalCalculate Kilograms to Lose from Percentage",
+          "Real Rate of ReturnHow to Calculate Return After Inflation",
           "Car DepreciationHow to Calculate Car Value After Percentage Depreciati",
+          "Compound Interest with Monthly ContributionsHow to Calculate Future Va",
           "Expense IncreaseHow to Calculate Percentage Increase in Monthly Expens",
           "Health InsuranceHow to Calculate Contribution from Rate and Salary",
           "Home Insurance PremiumHow to Calculate Premium from Property Value",
@@ -109,7 +124,10 @@
           "Insurance CoverageHow to Calculate Insurer and Patient Share of Medica",
           "Yogurt ProteinHow to calculate protein grams from percentage content i",
           "Savings PercentageHow to calculate monthly savings amount from a perce",
+          "Break-Even RecoveryWhat percentage gain do I need to recover from a lo",
+          "Rent IncreaseHow to Calculate New Rent and Yearly Cost After a Percent",
           "Heating BillWhat's my new heating bill after upgrading to a more energ",
+          "Margin vs MarkupHow to Calculate Profit Margin and Markup from Cost an",
           "Suggested solutions",
           "TaxIn-store shopping? Calculate the total price with Sales Tax.Calcula",
           "TipDining out or ordering in? Calculate the perfect tip for your serve",
@@ -131,7 +149,7 @@
           "x": 26,
           "y": 152,
           "w": 380,
-          "h": 562
+          "h": 682
         },
         "rows": [
           "Practical Uses",
@@ -140,6 +158,8 @@
           "Original Value: 15% [X] of what dinner bill [Y] is a 30 [Z] tip? 200",
           "Related FAQs",
           "Tip CalculationHow much tip should I leave based on percentage?",
+          "Reverse TipHow to find the bill amount before the tip was added?",
+          "Credit Card PayoffHow Long to Pay Off a Card and How Much Interest",
           "Suggested solutions",
           "TipDining out or ordering in? Calculate the perfect tip for your serve"
         ]
@@ -155,7 +175,7 @@
           "x": 26,
           "y": 152,
           "w": 380,
-          "h": 428
+          "h": 488
         },
         "rows": [
           "Practical Uses",
@@ -163,6 +183,7 @@
           "Original Value: 15% [X] of what dinner bill [Y] is a 30 [Z] tip? 200",
           "Related FAQs",
           "Tip CalculationHow much tip should I leave based on percentage?",
+          "Reverse TipHow to find the bill amount before the tip was added?",
           "Suggested solutions",
           "TipDining out or ordering in? Calculate the perfect tip for your serve"
         ]
@@ -214,10 +235,10 @@
               "id": "basic-percentage-result",
               "value": "9",
               "r": {
-                "x": 168,
-                "y": 415,
+                "x": 169,
+                "y": 413,
                 "w": 116,
-                "h": 32
+                "h": 35
               }
             },
             {
@@ -286,10 +307,10 @@
         "h": 1543
       },
       "resultClip": {
-        "x": 158,
-        "y": 405,
+        "x": 159,
+        "y": 403,
         "w": 136,
-        "h": 52
+        "h": 55
       },
       "resultValue": "9",
       "bannerClip": {
@@ -327,7 +348,7 @@
           "x": 27,
           "y": 153,
           "w": 378,
-          "h": 7537
+          "h": 8631
         },
         "rows": [
           "Practical Uses",
@@ -337,12 +358,12 @@
           "Price Before Hike: What was the original cable TV bill [Original] befo",
           "Inflation Rate: A concert ticket rising from $100 [Original] to $103 [",
           "Restaurant Tip: A 15% [X] tip on a $60 [Y] Italian chain dinner bill c",
-          "Website Traffic Change: A drop in online craft shop visits from 10,000",
           "Budget Boost: A $5,000 [Original] theme park vacation budget increased",
+          "Website Traffic Change: A drop in online craft shop visits from 10,000",
           "Employee Reduction: A 500 [Original]-person tech startup reduced by 10",
-          "Tax Calculation: 8% [X] NYC sales tax on a $250 [Y] pro wireless earbu",
           "Pre-Tax Amount: 8% [X] of what pre-tax amount [Y] is $16 [Z] sales tax",
           "Test Score: What is your grade [X%] on a 100 [Y] point Bar Exam sectio",
+          "Tax Calculation: 8% [X] NYC sales tax on a $250 [Y] pro wireless earbu",
           "Total Budget: 30% [X] of what total Christmas budget [Y] is $600 [Z]? ",
           "Original Value: 15% [X] of what dinner bill [Y] is a 30 [Z] tip? 200",
           "Pre-Growth Population: What was the original population of Boise [Orig",
@@ -364,16 +385,22 @@
           "Weight Loss: Weight dropping from 180 [Original] lbs to 162 [New] lbs ",
           "Related FAQs",
           "Textbook ExpenseHow much will I spend on textbooks this year?",
-          "Hotel BudgetHow to calculate hotel budget when it represents a percent",
+          "Foreign Transaction FeeHow to Calculate the Fee and Total on a Purchas",
+          "Price Before TaxHow to calculate the price before tax from a tax-inclu",
           "LED Bulb EnergyHow much power does an LED bulb consume when it uses a ",
+          "Hotel BudgetHow to calculate hotel budget when it represents a percent",
+          "Reverse TipHow to find the bill amount before the tip was added?",
           "Fuel CostsHow to calculate fuel costs when they represent a percentage",
+          "Successive DiscountsHow to combine two stacked discounts into a final ",
           "Price ReductionWhat's the discount percentage on this sale?",
-          "Income Tax PercentageHow to calculate what percentage of income the pa",
-          "Expense ReductionHow to Calculate Target Amount After Reducing Expense",
           "Tuition IncreaseWhat's my tuition after a percentage increase in fees?",
-          "Second Product DiscountHow much for two items with second one discount",
-          "Monthly Pass Price IncreaseCalculate Transit Pass Percentage Increase",
+          "Expense ReductionHow to Calculate Target Amount After Reducing Expense",
+          "Income Tax PercentageHow to calculate what percentage of income the pa",
           "Scholarship TuitionHow much do I pay after my scholarship covers a per",
+          "Monthly Pass Price IncreaseCalculate Transit Pass Percentage Increase",
+          "Inflation-Adjusted SavingsHow to Calculate What Your Savings Are Worth",
+          "Salary After InflationHow to Check if Your Raise Beat Inflation in Rea",
+          "Second Product DiscountHow much for two items with second one discount",
           "Income TaxHow to calculate income tax amount from tax rate and income?",
           "Tip CalculationHow much tip should I leave based on percentage?",
           "Calorie CalculationHow to find calories in a serving when you know wha",
@@ -381,11 +408,18 @@
           "VAT / Sales TaxHow to calculate gross price including VAT / Sales tax ",
           "Compound InterestHow to Calculate Total Amount",
           "Savings GoalHow to calculate total savings goal from current percentag",
+          "Dividend YieldHow to Calculate the Dividend Yield of a Stock",
+          "Effective Interest Rate (EAR)How to Convert a Nominal Rate to the Effe",
+          "Loan PaymentHow to Calculate the Monthly Payment on a Fixed-Rate Loan",
+          "Currency Exchange MarkupHow to Calculate the Markup Cost on a Bad Exch",
           "Gasoline Price IncreaseHow to calculate the new gasoline price after a",
+          "Credit Card PayoffHow Long to Pay Off a Card and How Much Interest",
           "Price IncreaseBy what percentage did the price increase?",
+          "Debt-to-Income RatioHow to Calculate What Percentage of Income Goes to",
           "Rent PercentageHow to Calculate Rent as Percentage of Income",
           "Education ExpensesWhat percentage of family income goes to education c",
           "Investment CommissionHow to Calculate Commission Amount",
+          "CAGRHow to Calculate Compound Annual Growth Rate",
           "Down PaymentHow to Calculate Required Down Payment",
           "Investment ProfitHow to Calculate Initial Investment Amount",
           "Loan InterestHow to Calculate Annual Interest Amount",
@@ -399,7 +433,9 @@
           "Stock Price IncreaseHow to Calculate New Stock Price",
           "Utility BillsHow to Calculate Bills Amount from Expenses",
           "Weight Loss GoalCalculate Kilograms to Lose from Percentage",
+          "Real Rate of ReturnHow to Calculate Return After Inflation",
           "Car DepreciationHow to Calculate Car Value After Percentage Depreciati",
+          "Compound Interest with Monthly ContributionsHow to Calculate Future Va",
           "Expense IncreaseHow to Calculate Percentage Increase in Monthly Expens",
           "Health InsuranceHow to Calculate Contribution from Rate and Salary",
           "Home Insurance PremiumHow to Calculate Premium from Property Value",
@@ -410,7 +446,10 @@
           "Insurance CoverageHow to Calculate Insurer and Patient Share of Medica",
           "Yogurt ProteinHow to calculate protein grams from percentage content i",
           "Savings PercentageHow to calculate monthly savings amount from a perce",
+          "Break-Even RecoveryWhat percentage gain do I need to recover from a lo",
+          "Rent IncreaseHow to Calculate New Rent and Yearly Cost After a Percent",
           "Heating BillWhat's my new heating bill after upgrading to a more energ",
+          "Margin vs MarkupHow to Calculate Profit Margin and Markup from Cost an",
           "Suggested solutions",
           "TaxIn-store shopping? Calculate the total price with Sales Tax.Calcula",
           "TipDining out or ordering in? Calculate the perfect tip for your serve",
@@ -432,7 +471,7 @@
           "x": 27,
           "y": 153,
           "w": 378,
-          "h": 562
+          "h": 682
         },
         "rows": [
           "Practical Uses",
@@ -441,6 +480,8 @@
           "Original Value: 15% [X] of what dinner bill [Y] is a 30 [Z] tip? 200",
           "Related FAQs",
           "Tip CalculationHow much tip should I leave based on percentage?",
+          "Reverse TipHow to find the bill amount before the tip was added?",
+          "Credit Card PayoffHow Long to Pay Off a Card and How Much Interest",
           "Suggested solutions",
           "TipDining out or ordering in? Calculate the perfect tip for your serve"
         ]
@@ -456,7 +497,7 @@
           "x": 27,
           "y": 153,
           "w": 378,
-          "h": 428
+          "h": 488
         },
         "rows": [
           "Practical Uses",
@@ -464,6 +505,7 @@
           "Original Value: 15% [X] of what dinner bill [Y] is a 30 [Z] tip? 200",
           "Related FAQs",
           "Tip CalculationHow much tip should I leave based on percentage?",
+          "Reverse TipHow to find the bill amount before the tip was added?",
           "Suggested solutions",
           "TipDining out or ordering in? Calculate the perfect tip for your serve"
         ]
@@ -515,10 +557,10 @@
               "id": "basic-percentage-result",
               "value": "9",
               "r": {
-                "x": 168,
-                "y": 415,
+                "x": 169,
+                "y": 413,
                 "w": 116,
-                "h": 32
+                "h": 35
               }
             },
             {
@@ -587,10 +629,10 @@
         "h": 1543
       },
       "resultClip": {
-        "x": 158,
-        "y": 405,
+        "x": 159,
+        "y": 403,
         "w": 136,
-        "h": 52
+        "h": 55
       },
       "resultValue": "9",
       "bannerClip": {

@@ -73,7 +73,7 @@ window.F7GEO = {
         "x": 26,
         "y": 152,
         "w": 380,
-        "h": 428
+        "h": 488
       },
       "rows": [
         {
@@ -127,21 +127,31 @@ window.F7GEO = {
           }
         },
         {
+          "id": "search-item-3",
+          "text": "Reverse TipHow to find the bill amount before the tip was ad",
+          "rect": {
+            "x": 34,
+            "y": 473,
+            "w": 364,
+            "h": 60
+          }
+        },
+        {
           "id": "",
           "text": "Suggested solutions",
           "rect": {
             "x": 38,
-            "y": 480,
+            "y": 540,
             "w": 356,
             "h": 17
           }
         },
         {
-          "id": "search-item-3",
+          "id": "search-item-4",
           "text": "TipDining out or ordering in? Calculate the perfect tip for ",
           "rect": {
             "x": 34,
-            "y": 503,
+            "y": 563,
             "w": 364,
             "h": 77
           }
@@ -185,10 +195,10 @@ window.F7GEO = {
           "value": "9",
           "id": "basic-percentage-result",
           "rect": {
-            "x": 168,
-            "y": 95,
+            "x": 169,
+            "y": 93,
             "w": 116,
-            "h": 32
+            "h": 35
           }
         },
         {
@@ -205,7 +215,7 @@ window.F7GEO = {
           "value": "15",
           "id": "before-increase-percentage-input",
           "rect": {
-            "x": 160,
+            "x": 159,
             "y": 2893,
             "w": 85,
             "h": 42
@@ -225,7 +235,7 @@ window.F7GEO = {
           "value": "15",
           "id": "before-decrease-percentage-input",
           "rect": {
-            "x": 163,
+            "x": 162,
             "y": 3845,
             "w": 85,
             "h": 42
@@ -241,7 +251,7 @@ window.F7GEO = {
     },
     "inc": {
       "original": {
-        "x": 60,
+        "x": 59,
         "y": 403,
         "w": 85,
         "h": 42
@@ -253,10 +263,10 @@ window.F7GEO = {
         "h": 42
       },
       "result": {
-        "x": 168,
-        "y": 508,
+        "x": 169,
+        "y": 507,
         "w": 116,
-        "h": 32
+        "h": 35
       },
       "values": {
         "original": "5000",
@@ -304,10 +314,10 @@ window.F7GEO = {
         "h": 42
       },
       "result": {
-        "x": 168,
-        "y": 245,
+        "x": 169,
+        "y": 243,
         "w": 116,
-        "h": 32
+        "h": 35
       },
       "banner": {
         "x": 33,
@@ -396,7 +406,7 @@ window.F7GEO = {
         "x": 27,
         "y": 153,
         "w": 378,
-        "h": 428
+        "h": 488
       },
       "rows": [
         {
@@ -450,21 +460,31 @@ window.F7GEO = {
           }
         },
         {
+          "id": "search-item-3",
+          "text": "Reverse TipHow to find the bill amount before the tip was ad",
+          "rect": {
+            "x": 35,
+            "y": 474,
+            "w": 362,
+            "h": 60
+          }
+        },
+        {
           "id": "",
           "text": "Suggested solutions",
           "rect": {
             "x": 39,
-            "y": 481,
+            "y": 541,
             "w": 354,
             "h": 17
           }
         },
         {
-          "id": "search-item-3",
+          "id": "search-item-4",
           "text": "TipDining out or ordering in? Calculate the perfect tip for ",
           "rect": {
             "x": 35,
-            "y": 504,
+            "y": 564,
             "w": 362,
             "h": 77
           }
@@ -508,10 +528,10 @@ window.F7GEO = {
           "value": "9",
           "id": "basic-percentage-result",
           "rect": {
-            "x": 168,
-            "y": 95,
+            "x": 169,
+            "y": 93,
             "w": 116,
-            "h": 32
+            "h": 35
           }
         },
         {
@@ -528,7 +548,7 @@ window.F7GEO = {
           "value": "15",
           "id": "before-increase-percentage-input",
           "rect": {
-            "x": 160,
+            "x": 159,
             "y": 2893,
             "w": 85,
             "h": 42
@@ -548,7 +568,7 @@ window.F7GEO = {
           "value": "15",
           "id": "before-decrease-percentage-input",
           "rect": {
-            "x": 163,
+            "x": 162,
             "y": 3845,
             "w": 85,
             "h": 42
@@ -564,7 +584,7 @@ window.F7GEO = {
     },
     "inc": {
       "original": {
-        "x": 60,
+        "x": 59,
         "y": 403,
         "w": 85,
         "h": 42
@@ -576,10 +596,10 @@ window.F7GEO = {
         "h": 42
       },
       "result": {
-        "x": 168,
-        "y": 508,
+        "x": 169,
+        "y": 507,
         "w": 116,
-        "h": 32
+        "h": 35
       },
       "values": {
         "original": "5000",
@@ -627,10 +647,10 @@ window.F7GEO = {
         "h": 42
       },
       "result": {
-        "x": 168,
-        "y": 245,
+        "x": 169,
+        "y": 243,
         "w": 116,
-        "h": 32
+        "h": 35
       },
       "banner": {
         "x": 33,

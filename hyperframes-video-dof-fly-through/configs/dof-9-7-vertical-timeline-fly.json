@@ -21,10 +21,10 @@
   "plane": {
     "asset": "assets/us-faqs-index.png",
     "w": 1600,
-    "h": 13044
+    "h": 16251
   },
   "scene": {
-    "tiltX": 76,
+    "tiltX": 31,
     "perspective": 1400,
     "lift": 40
   },
@@ -34,7 +34,7 @@
       {
         "t": 0,
         "x": 0,
-        "y": 12500,
+        "y": 15707,
         "z": -100
       },
       {

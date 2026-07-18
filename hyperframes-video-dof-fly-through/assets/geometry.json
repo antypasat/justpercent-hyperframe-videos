@@ -19,7 +19,7 @@
       "h": 36
     },
     "__page": {
-      "scrollHeight": 5861,
+      "scrollHeight": 5845,
       "viewportW": 1600,
       "viewportH": 900,
       "scrollY": 0
@@ -86,7 +86,7 @@
       "x": 463,
       "y": 269,
       "w": 674,
-      "h": 395
+      "h": 455
     },
     "scrollContainer": {
       "x": 463,
@@ -95,7 +95,7 @@
       "h": 384
     },
     "__page": {
-      "scrollHeight": 5861,
+      "scrollHeight": 5845,
       "viewportW": 1600,
       "viewportH": 900,
       "scrollY": 76
@@ -106,19 +106,19 @@
       "x": 436,
       "y": 1859,
       "w": 728,
-      "h": 458
+      "h": 1377
     },
     "pinnedUse": {
-      "x": 0,
-      "y": 5477,
-      "w": 0,
-      "h": 0
+      "x": 493,
+      "y": 2490,
+      "w": 630,
+      "h": 90
     },
     "__page": {
-      "scrollHeight": 6780,
+      "scrollHeight": 6764,
       "viewportW": 1600,
       "viewportH": 900,
-      "scrollY": 5477
+      "scrollY": 2103
     }
   },
   "us-decreased-value-after-card-click": {
@@ -141,7 +141,7 @@
       "h": 28
     },
     "__page": {
-      "scrollHeight": 4610,
+      "scrollHeight": 4594,
       "viewportW": 1600,
       "viewportH": 900,
       "scrollY": 0
@@ -173,7 +173,7 @@
       "h": 28
     },
     "__page": {
-      "scrollHeight": 4701,
+      "scrollHeight": 4685,
       "viewportW": 1600,
       "viewportH": 900,
       "scrollY": 0
@@ -187,7 +187,7 @@
       "h": 60
     },
     "__page": {
-      "scrollHeight": 13044,
+      "scrollHeight": 16235,
       "viewportW": 1600,
       "viewportH": 900,
       "scrollY": 0
@@ -207,7 +207,7 @@
       "h": 28
     },
     "__page": {
-      "scrollHeight": 1055,
+      "scrollHeight": 1039,
       "viewportW": 1600,
       "viewportH": 900,
       "scrollY": 0

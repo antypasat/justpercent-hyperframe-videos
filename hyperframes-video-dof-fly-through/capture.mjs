@@ -95,6 +95,14 @@ async function acceptCookies(page) {
   } catch {
     /* banner absent */
   }
+  // Fixed chrome must not bake into page captures at its scroll-0 position:
+  // CookieYes revisit icon, floating nav (search/theme), theme toggle, minimap.
+  await page.addStyleTag({ content: `
+    [class^="cky-"], [class*=" cky-"],
+    #floating-nav-container, .floating-nav-container, [data-minimap-wrapper],
+    [data-minimap-hitbox],
+    #theme-toggle-fixed-container { display: none !important; }
+  ` });
 }
 
 async function rects(page, spec) {
@@ -122,6 +130,20 @@ async function rects(page, spec) {
 }
 
 async function shot(page, name, { fullPage = true } = {}) {
+  if (fullPage) {
+    // walk the whole page first so lazy/below-the-fold content hydrates;
+    // scrollHeight is re-read every step because loading can extend the page
+    await page.evaluate(async () => {
+      const step = window.innerHeight;
+      let y = 0;
+      while (y < document.documentElement.scrollHeight) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 80));
+        y += step;
+      }
+      window.scrollTo(0, 0);
+    });
+  }
   await stabilize(page);
   await page.screenshot({
     path: join(OUT, `${name}.png`),
@@ -220,7 +242,14 @@ const coupon = page
   .locator("#solution-desktop-grid")
   .getByText("Apply My Coupon", { exact: false })
   .first();
-await coupon.click();
+await coupon.scrollIntoViewIfNeeded().catch(() => {});
+try {
+  await coupon.click({ timeout: 10000 });
+} catch {
+  // Playwright visibility check can flake on entrance-animated cards; the
+  // element exists — fire the click at DOM level instead.
+  await coupon.evaluate((el) => el.closest("button, a").click());
+}
 await page.waitForURL(/decreased-value-calculator/, { timeout: 15000 });
 await acceptCookies(page);
 await shot(page, "us-decreased-value-after-card-click");

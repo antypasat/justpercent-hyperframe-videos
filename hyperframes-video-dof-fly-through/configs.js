@@ -24,7 +24,7 @@ window.DOF_CONFIGS = {
     },
     duration: 4.0,
     plane: { asset: "assets/us-home-full.png", w: 1600, h: 5861 },
-    scene: { tiltX: 75, perspective: 1400, lift: 40 },
+    scene: { tiltX: 30, perspective: 1400, lift: 40 },
     camera: {
       easing: "ease-in-out-cubic",
       path: [
@@ -60,7 +60,7 @@ window.DOF_CONFIGS = {
     },
     duration: 4.5,
     plane: { asset: "assets/us-decreased-value-after-card-click.png", w: 1600, h: 4610 },
-    scene: { tiltX: 72, perspective: 1400, lift: 30 },
+    scene: { tiltX: 27, perspective: 1400, lift: 30 },
     camera: {
       easing: "ease-in-out-sine",
       path: [
@@ -105,12 +105,13 @@ window.DOF_CONFIGS = {
     },
     duration: 5.0,
     plane: { asset: "assets/us-faq-bill-splitting.png", w: 1600, h: 1055 },
-    scene: { tiltX: 78, perspective: 1400, lift: 110 },
+    scene: { tiltX: 33, perspective: 1400, lift: 0 },
     camera: {
       easing: "ease-in-out-quart",
-      path: [
-        { t: 0.0, x: 0, y: 700, z: 300 },
-        { t: 5.0, x: 0, y: 360, z: 380 }
+      path: [ // low tilt: camera glides down page so each focus row stays mid-frame
+        { t: 0.0, x: 0, y: 220, z: 300 },
+        { t: 2.2, x: 0, y: 480, z: 340 },
+        { t: 5.0, x: 0, y: 700, z: 380 }
       ]
     },
     depth_of_field: true,
@@ -151,7 +152,7 @@ window.DOF_CONFIGS = {
     },
     duration: 2.2,
     plane: { asset: "assets/us-increased-value-practical-use.png", w: 1600, h: 4701 },
-    scene: { tiltX: 70, perspective: 1400, lift: 30 },
+    scene: { tiltX: 25, perspective: 1400, lift: 30 },
     camera: {
       easing: "ease-out-quint",
       path: [
@@ -195,7 +196,7 @@ window.DOF_CONFIGS = {
     },
     duration: 6.0,
     plane: { asset: "assets/us-home-search-tip.png", w: 1600, h: 900 },
-    scene: { tiltX: 80, perspective: 1400, lift: 130 },
+    scene: { tiltX: 35, perspective: 1400, lift: 130 },
     camera: {
       easing: "linear",
       path: [
@@ -238,7 +239,7 @@ window.DOF_CONFIGS = {
     },
     duration: 5.0,
     plane: { asset: "assets/us-home-full.png", w: 1600, h: 5861 },
-    scene: { tiltX: 74, perspective: 1400, lift: 40 },
+    scene: { tiltX: 29, perspective: 1400, lift: 40 },
     camera: {
       easing: "ease-in-out-sine",
       path: [                                        // gentle S-curve
@@ -285,12 +286,12 @@ window.DOF_CONFIGS = {
       }
     },
     duration: 5.5,
-    plane: { asset: "assets/us-faqs-index.png", w: 1600, h: 13044 },
-    scene: { tiltX: 76, perspective: 1400, lift: 40 },
+    plane: { asset: "assets/us-faqs-index.png", w: 1600, h: 16251 },
+    scene: { tiltX: 31, perspective: 1400, lift: 40 },
     camera: {
       easing: "ease-in-out-sine",
       path: [
-        { t: 0.0, x: 0, y: 12500, z: -100 },
+        { t: 0.0, x: 0, y: 15707, z: -100 },
         { t: 5.5, x: 0, y: 450, z: -40 }
       ]
     },

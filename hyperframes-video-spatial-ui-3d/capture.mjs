@@ -180,6 +180,15 @@ for (const theme of ["dark", "light"]) {
   // ============ H. HOME — plate + peel layers ==============================
   const ctx = await newThemeContext(browser, theme);
   const page = await ctx.newPage();
+  // site chrome that must never appear in captures:
+  // floating nav, minimap (wrapper + hitbox)
+  await page.addInitScript(() => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const s = document.createElement("style");
+      s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+      document.head.appendChild(s);
+    });
+  });
 
   if (RUN.has("h") || RUN.has("d")) {
     await page.goto(`${BASE}/?noredirect`, { waitUntil: "domcontentloaded" });

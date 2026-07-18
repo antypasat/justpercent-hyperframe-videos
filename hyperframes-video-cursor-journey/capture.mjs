@@ -151,6 +151,15 @@ const ctx = await browser.newContext({
   permissions: ["clipboard-read", "clipboard-write"]
 });
 const page = await ctx.newPage();
+// site chrome that must never appear in captures:
+// floating nav, minimap (wrapper + hitbox)
+await page.addInitScript(() => {
+  document.addEventListener("DOMContentLoaded", () => {
+    const s = document.createElement("style");
+    s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+    document.head.appendChild(s);
+  });
+});
 
 // ============ A. HOME — search journey (2.1) ================================
 if (RUN.has("a")) {
@@ -340,6 +349,15 @@ if (RUN.has("d")) {
     permissions: ["clipboard-read", "clipboard-write"]
   });
   const pageD = await ctxD.newPage();
+  // site chrome that must never appear in captures:
+  // floating nav, minimap (wrapper + hitbox)
+  await pageD.addInitScript(() => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const s = document.createElement("style");
+      s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+      document.head.appendChild(s);
+    });
+  });
   const steps = [
     { name: "s-inc-empty", f1: "", f2: "" },
     { name: "s-inc-type-5", f1: "5", f2: "" },

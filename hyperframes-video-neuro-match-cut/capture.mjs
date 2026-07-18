@@ -202,6 +202,15 @@ for (const theme of ["dark", "light"]) {
   if (RUN.has("h") || RUN.has("d")) {
     const ctx = await newThemeContext(browser, theme);
     const page = await ctx.newPage();
+    // site chrome that must never appear in captures:
+    // floating nav, minimap (wrapper + hitbox)
+    await page.addInitScript(() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const s = document.createElement("style");
+        s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+        document.head.appendChild(s);
+      });
+    });
     await page.goto(`${BASE}/?noredirect`, { waitUntil: "domcontentloaded" });
     await acceptCookies(page);
     await page.waitForSelector("#solution-mobile-grid .solution-sticky-note", {
@@ -299,6 +308,15 @@ for (const theme of ["dark", "light"]) {
   if (RUN.has("f")) {
     const ctx = await newThemeContext(browser, theme);
     const page = await ctx.newPage();
+    // site chrome that must never appear in captures:
+    // floating nav, minimap (wrapper + hitbox)
+    await page.addInitScript(() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const s = document.createElement("style");
+        s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+        document.head.appendChild(s);
+      });
+    });
     await page.goto(`${BASE}/faqs/?noredirect`, {
       waitUntil: "domcontentloaded"
     });
@@ -325,6 +343,15 @@ for (const theme of ["dark", "light"]) {
   if (RUN.has("x")) {
     const ctx = await newThemeContext(browser, theme, 8);
     const page = await ctx.newPage();
+    // site chrome that must never appear in captures:
+    // floating nav, minimap (wrapper + hitbox)
+    await page.addInitScript(() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const s = document.createElement("style");
+        s.textContent = "#floating-nav-container, .floating-nav-container, [data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }";
+        document.head.appendChild(s);
+      });
+    });
 
     // theme toggle on the homepage
     await page.goto(`${BASE}/?noredirect`, { waitUntil: "domcontentloaded" });

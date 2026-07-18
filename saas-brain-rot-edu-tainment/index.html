@@ -171,6 +171,10 @@ html, body { width: 1080px; height: 1920px; overflow: hidden; background: #05060
   visibility: hidden; opacity: 0;
 }
 
+/* site chrome that must never appear on screen: floating nav + minimap */
+#floating-nav-container, .floating-nav-container,
+[data-minimap-wrapper], [data-minimap-hitbox] { display: none !important; }
+
     </style>
     <style>
 /* generated from live captures of justpercent.com — do not edit by hand */
