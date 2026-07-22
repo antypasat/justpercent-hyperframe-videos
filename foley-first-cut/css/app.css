@@ -319,7 +319,10 @@
 
 .jp-form {
   display: flex; flex-wrap: wrap; align-items: center;
-  gap: 8px 6px;
+  /* row gap + top margin fit a FieldTooltip chip (~22px + 7px lift) above
+     every input, incl. wrapped rows, with a small margin to spare */
+  gap: 32px 6px;
+  margin-top: 32px;
   font-size: 17px;
 }
 .jp-form .word { color: var(--gray600); font-size: 17px; }
