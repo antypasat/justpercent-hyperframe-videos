@@ -409,21 +409,9 @@
                   data-media-start="2"
                   style="object-fit: cover;"> keeping the same id + CSS (geometry comes
            from the stylesheet id selector, which stays untouched). -->
-      <div data-hf-id="hf-ufje" id="screen-mac-slot-1" class="clip" data-start="18.2" data-duration="14.8" data-track-index="3">
-        <div data-hf-id="hf-tdx7" class="ph-inner">
-          <div data-hf-id="hf-03k9" class="ph-id">SCREEN-MAC-SLOT-1</div>
-          <div data-hf-id="hf-lusy" class="ph-dim">760 × 475 @ (160, 615) · 16:10</div>
-          <div data-hf-id="hf-pkc6" class="ph-note">awaiting SS-06-MAC CLEAN.mp4</div>
-        </div>
-      </div>
+      <video data-hf-id="hf-ufje" id="screen-mac-slot-1" class="clip" src="assets/SS-06-MAC_overwrite-30pct_CLEAN.mp4" data-start="18.2" data-duration="14.8" data-media-start="11.4" data-track-index="3" muted playsinline style="object-fit: cover;"></video>
 
-      <div data-hf-id="hf-9ozk" id="screen-iphone-slot-1" class="clip" data-start="8" data-duration="25" data-track-index="2">
-        <div data-hf-id="hf-hbi3" class="ph-inner">
-          <div data-hf-id="hf-n4fl" class="ph-id">SCREEN-IPHONE-SLOT-1</div>
-          <div data-hf-id="hf-iv9v" class="ph-dim">384 × 832 @ (348, 464) · ~19.5:9</div>
-          <div data-hf-id="hf-f3ji" class="ph-note">awaiting SS-06-IPHONE CLEAN.mp4</div>
-        </div>
-      </div>
+      <video data-hf-id="hf-9ozk" id="screen-iphone-slot-1" class="clip" src="assets/SS-06-IPHONE_rent-pin_CLEAN.mp4" data-start="8" data-duration="25" data-media-start="4.5" data-track-index="2" muted playsinline style="object-fit: cover;"></video>
 
       <!-- GLASS OVERLAYS — sit on top of the future <video>, mirrored too -->
       <div data-hf-id="hf-rqmh" id="glass-mac">
@@ -441,10 +429,23 @@
       <div data-hf-id="hf-f6d6" id="grain"></div>
       <div data-hf-id="hf-h7i3" id="vignette"></div>
 
-      <!-- MUSIC (Stage 3 / when the Suno instrumental arrives):
-           <audio id="bgm" src="assets/bgm.mp3" data-start="0" data-duration="36"
-                  data-track-index="10" data-volume="0.85"></audio>
-           Sync points: 2 / 8 / 18 / 28 / 33 s. Assumed 120 BPM grid (0.5 s). -->
+      <!-- MUSIC: added later in the external editor during montage (not in this composition). -->
+
+      <!-- NARRATION — track 11, ElevenLabs v3 (voice: Will - Relaxed Optimist).
+           data-start = C2 window start (vo-10 = 33.10 per C4); data-duration = measured net (C3.1). -->
+      <audio id="vo-01"  class="clip" src="assets/vo/vo-01.mp3"  data-start="0.30"  data-duration="2.247" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-02a" class="clip" src="assets/vo/vo-02a.mp3" data-start="2.55"  data-duration="0.705" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-02b" class="clip" src="assets/vo/vo-02b.mp3" data-start="3.55"  data-duration="0.993" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-02c" class="clip" src="assets/vo/vo-02c.mp3" data-start="4.55"  data-duration="0.967" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-02d" class="clip" src="assets/vo/vo-02d.mp3" data-start="5.55"  data-duration="0.653" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-03"  class="clip" src="assets/vo/vo-03.mp3"  data-start="7.15"  data-duration="1.593" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-04"  class="clip" src="assets/vo/vo-04.mp3"  data-start="12.05" data-duration="2.090" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-05"  class="clip" src="assets/vo/vo-05.mp3"  data-start="15.40" data-duration="1.802" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-06"  class="clip" src="assets/vo/vo-06.mp3"  data-start="18.55" data-duration="1.646" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-07"  class="clip" src="assets/vo/vo-07.mp3"  data-start="20.70" data-duration="2.821" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-08"  class="clip" src="assets/vo/vo-08.mp3"  data-start="24.88" data-duration="1.593" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-09"  class="clip" src="assets/vo/vo-09.mp3"  data-start="28.60" data-duration="3.265" data-track-index="11" data-volume="1.0"></audio>
+      <audio id="vo-10"  class="clip" src="assets/vo/vo-10.mp3"  data-start="33.10" data-duration="2.717" data-track-index="11" data-volume="1.0"></audio>
     </div>
 
     <script>
@@ -520,6 +521,13 @@
       /* gentle sway while the recording plays (max 2.2° — stays readable) */
       tl.to(PHONE, { rotationY: 2.2, duration: 2.2, ease: "sine.inOut", yoyo: true, repeat: 2 }, 9.5);
 
+      /* CAMERA PUSH-IN — iPhone hero: scale up the whole group (stays glued) so the
+         UI is readable, hold through the callouts, pull back before the phone recedes.
+         Origin = device center → grows in place, no re-centering needed. iPhone is
+         already z 30-32 (above the not-yet-entered Mac), so it reads on top. */
+      tl.to(PHONE, { scale: 1.45, duration: 1.1, ease: "power2.inOut" }, 9.0);
+      tl.to(PHONE, { scale: 1, duration: 1.0, ease: "power2.inOut" }, 16.8);
+
       /* headline → scene 3 callouts */
       tl.to("#s2-headline", { y: -120, autoAlpha: 0, filter: "blur(20px)", duration: 0.33, ease: "power2.in" }, 11.6);
       tl.set("#scene-2", { autoAlpha: 0 }, 11.95);
@@ -543,6 +551,19 @@
       tl.to(MAC, { rotationY: 2, duration: 0.8, ease: "power2.inOut" }, 19.8);
       tl.to(MAC, { rotationX: 1.4, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 6 }, 21.0);
       tl.to(PHONE, { y: "+=12", duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 7 }, 20.0);
+
+      /* CAMERA PUSH-IN — Mac hero: bump the whole Mac group above the lingering phone
+         (device on top during the zoom, per brief), scale up to read the UI (1.2 →
+         frame == canvas width, no side bleed), hold through the 30% badge, then pull
+         back and restore z so the phone is front-right in the duo scene. */
+      tl.set("#dev-mac", { zIndex: 33 }, 20.4);
+      tl.set("#screen-mac-slot-1", { zIndex: 34 }, 20.4);
+      tl.set("#glass-mac", { zIndex: 35 }, 20.4);
+      tl.to(MAC, { scale: 1.2, duration: 1.1, ease: "power2.inOut" }, 20.4);
+      tl.to(MAC, { scale: 0.94, duration: 1.0, ease: "power2.inOut" }, 26.6);
+      tl.set("#dev-mac", { zIndex: 20 }, 27.7);
+      tl.set("#screen-mac-slot-1", { zIndex: 21 }, 27.7);
+      tl.set("#glass-mac", { zIndex: 22 }, 27.7);
       tl.fromTo("#glow-emerald", { autoAlpha: 0 }, { autoAlpha: 0.55, duration: 1.2, ease: "sine.out", immediateRender: false }, 18.4);
 
       tl.fromTo("#s4-chip", { y: 120, autoAlpha: 0, filter: "blur(14px)" }, { y: 0, autoAlpha: 1, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }, 18.5);

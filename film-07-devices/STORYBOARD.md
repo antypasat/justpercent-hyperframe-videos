@@ -131,6 +131,38 @@ Każdy placeholder-`<div>` slotu podmienić 1:1 na (przykład dla Maca):
 (ścieżki plików w `assets/`) oraz `data-media-start` (gdy zmienisz długość zapasu).
 Niczego więcej.
 
+### Zmierzone wartości (Etap 3, wykonane 2026-07-22)
+
+Nagrania mierzone z timestamp-filmstripów; `data-media-start` liczony formułą
+(iPhone `= T_type − 2.0`, Mac `= T_res − 6.7`) tak, by beaty spadały na film 10.0
+(typing) i 24.9 (30%).
+
+| slot | plik | T_anchor | data-media-start | data-start | data-duration |
+|---|---|---|---|---|---|
+| screen-iphone-slot-1 | `assets/SS-06-IPHONE_rent-pin_CLEAN.mp4` | T_type = 6.5 s | **4.5** | 8 | 25 |
+| screen-mac-slot-1 | `assets/SS-06-MAC_overwrite-30pct_CLEAN.mp4` | T_res = 18.1 s | **11.4** | 18.2 | 14.8 |
+
+QA klatek z `renders/preview-draft.mp4` — 6 beatów B-tabeli zgodne (9.9 puste /
+10.4 „r" / 12.5 wyniki / 16.8 pin 20% / 24.8 Mac 3% / 25.1 Mac 30%). Seek OK mimo
+ostrzeżenia o rzadkich keyframe'ach — **przed finalnym renderem 60 fps** przekoduj
+oba mp4 gęstszym GOP: `ffmpeg -i <in> -c:v libx264 -r 30 -g 30 -keyint_min 30 -movflags +faststart <out>`.
+
+### Najazd kamery na prezentowane urządzenie (2026-07-22)
+
+UI był za daleko, żeby czytać szczegóły → dodany „najazd kamery" = **scale-up całej
+grupy `[wrapper, slot, glass]`** przez stałe `PHONE`/`MAC` (origin = środek urządzenia,
+więc rośnie w miejscu i pozostaje przyklejone — kontrakt glue nietknięty).
+
+| urządzenie | okno | scale | z-index podczas najazdu |
+|---|---|---|---|
+| iPhone | 9.0 → 16.8 s | 1 → **1.45** → 1 | 30/31/32 (Mac jeszcze nie wszedł, sam na wierzchu) |
+| Mac | 20.4 → 27.7 s | 0.94 → **1.2** → 0.94 | **bump 33/34/35** (nad iPhone), restore 20/21/22 przed duo |
+
+Sekwencja: najazd iPhone (demo) → odjazd (telefon odlatuje, Mac wjeżdża) → najazd Mac
+(PEAK, urządzenie na wierzchu bo telefon wisi w rogu) → odjazd + restore z → duo
+(iPhone przód-prawo z przodu). Wszystkie tweeny absolutne `.to` = seek-safe. Mac 1.2 →
+ramka == szerokość canvas (bez bocznego bleedu). QA klatek 12.5/17.5/25.1/27.5/29.5 OK.
+
 ## Muzyka
 
 Brak pliku na etapie budowy — kompozycja trzyma sync na 2/8/18/28/33 s i pulsy na

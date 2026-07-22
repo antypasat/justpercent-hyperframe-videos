@@ -40,3 +40,11 @@ Thumbs.db
 # Generated verification / capture frames (regenerable via build-qa.py / build-screens.py; videos don't read these)
 qa/
 capture/
+
+# Render workspaces (frame dumps, compiled/probe temp — regenerated per render)
+renders/
+work-*/
+
+# Raw audio masters + facecam capture scratch (shipped audio ships as .mp3)
+*.wav
+facecam-src/

@@ -1,1 +1,21 @@
-Przygotować mp4 do wklejenia na ekrany.
+ZROBIONE (Etap 3, 2026-07-22)
+- Nagrania Playwright justpercent.com -> 2x CLEAN mp4 w assets/, wmontowane jako <video>.
+  iPhone media-start 4.5 (T_type 6.5), Mac media-start 11.4 (T_res 18.1).
+- Narracja ElevenLabs v3 (glos: Will - Relaxed Optimist), 13 segmentow assets/vo/vo-*.mp3,
+  <audio> track 11. vo-08/vo-10 = fallback; vo-01 & vo-02b atempo 1.31/1.30 (za zgoda usera,
+  waiver C3.4) by zmiescic w oknie. vo-10 start 33.10 (C4).
+- Weryfikacja: lint (0 err poza zakomentowanym bgm), validate (0 err), inspect
+  (7 err = pre-existing #ghost-pct/#s4-badge, nie ruszamy), render:draft OK,
+  QA 6 beatow z draftu zgodne.
+
+- Najazd kamery (2026-07-22): scale-up calej grupy [wrapper,slot,glass] przez stale
+  PHONE/MAC (glue zachowany, origin=srodek urzadzenia). iPhone hero scale 1->1.45 (9.0-16.8s),
+  Mac hero scale 0.94->1.2 (20.4-27.7s) + z-bump 33/34/35 nad iPhone podczas najazdu,
+  restore 20/21/22 przed duo (telefon przod-prawo). Absolutne .to = seek-safe. QA klatek OK.
+
+ZOSTALO
+- bgm: dodawane w zewnetrznym edytorze podczas montazu (poza ta kompozycja) - NIE w index.html.
+- PRZED finalnym renderem: przekodowac oba ekranowe mp4 gestszym GOP
+  (ffmpeg -c:v libx264 -r 30 -g 30 -keyint_min 30 -movflags +faststart) -> usuwa ostrzezenie sparse keyframes.
+- Finalny render 60 fps: npm run render:final.
+- NIE commitowac do decyzji uzytkownika.

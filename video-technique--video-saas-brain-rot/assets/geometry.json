@@ -1,0 +1,842 @@
+{
+  "dark": {
+    "home": {
+      "search": {
+        "x": 25,
+        "y": 133,
+        "w": 382,
+        "h": 50
+      },
+      "pageH": 6030,
+      "right": {
+        "rect": {
+          "x": 8,
+          "y": 354,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 425,
+          "w": 290,
+          "h": 38
+        },
+        "scrollY": 32,
+        "clip": {
+          "x": 5,
+          "y": 351,
+          "w": 422,
+          "h": 124
+        },
+        "full": {
+          "x": 8,
+          "y": 386,
+          "w": 416,
+          "h": 118
+        }
+      },
+      "wrong": {
+        "rect": {
+          "x": 8,
+          "y": 354,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 425,
+          "w": 290,
+          "h": 38
+        },
+        "scrollY": 280,
+        "clip": {
+          "x": 5,
+          "y": 351,
+          "w": 422,
+          "h": 124
+        },
+        "full": {
+          "x": 8,
+          "y": 634,
+          "w": 416,
+          "h": 118
+        }
+      }
+    },
+    "search": {
+      "query": "sale",
+      "states": [
+        {
+          "typed": "s",
+          "box": {
+            "x": 25,
+            "y": 75,
+            "w": 382,
+            "h": 50
+          },
+          "dropdown": {
+            "x": 26,
+            "y": 134,
+            "w": 380,
+            "h": 384
+          },
+          "items": [
+            {
+              "x": 34,
+              "y": 176,
+              "w": 364,
+              "h": 134,
+              "text": "Market Share: What is the leading EV maker's market share [X%] if total EV sales are $1,00"
+            },
+            {
+              "x": 34,
+              "y": 310,
+              "w": 364,
+              "h": 134,
+              "text": "Stock Price Change: Streaming service stock going from $50 [Original] to $75 [New] represe"
+            },
+            {
+              "x": 34,
+              "y": 444,
+              "w": 364,
+              "h": 114,
+              "text": "Test Score: What is your grade [X%] on a 100 [Y] point Bar Exam section when scoring 85 [Z"
+            },
+            {
+              "x": 34,
+              "y": 558,
+              "w": 364,
+              "h": 114,
+              "text": "Sale Discount: 20% [X] off a $80 [Y] pair of designer denim jeans saves you how much [Z]? "
+            },
+            {
+              "x": 34,
+              "y": 672,
+              "w": 364,
+              "h": 134,
+              "text": "Salary Before Raise: What was the original startup salary [Original] before an 8% [Increas"
+            },
+            {
+              "x": 34,
+              "y": 806,
+              "w": 364,
+              "h": 114,
+              "text": "Energy Savings: A $200 [Original] summer AC bill reduced by 18% [Decrease] becomes what [N"
+            }
+          ]
+        },
+        {
+          "typed": "sa",
+          "box": {
+            "x": 25,
+            "y": 75,
+            "w": 382,
+            "h": 50
+          },
+          "dropdown": {
+            "x": 26,
+            "y": 134,
+            "w": 380,
+            "h": 384
+          },
+          "items": [
+            {
+              "x": 34,
+              "y": 176,
+              "w": 364,
+              "h": 114,
+              "text": "Sale Discount: 20% [X] off a $80 [Y] pair of designer denim jeans saves you how much [Z]? "
+            },
+            {
+              "x": 34,
+              "y": 290,
+              "w": 364,
+              "h": 134,
+              "text": "Savings Progress: What percentage [X%] of your $10,000 [Y] emergency fund have you reached"
+            },
+            {
+              "x": 34,
+              "y": 424,
+              "w": 364,
+              "h": 114,
+              "text": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N"
+            },
+            {
+              "x": 34,
+              "y": 538,
+              "w": 364,
+              "h": 114,
+              "text": "Salary Increase: A $50,000 [Original] nurse salary increased by 8% [Increase] becomes what"
+            },
+            {
+              "x": 34,
+              "y": 652,
+              "w": 364,
+              "h": 114,
+              "text": "Pre-Raise Salary: 10% [X] of what original base salary [Y] is a $5,000 [Z] raise? $50,000"
+            },
+            {
+              "x": 34,
+              "y": 766,
+              "w": 364,
+              "h": 134,
+              "text": "Salary Before Raise: What was the original startup salary [Original] before an 8% [Increas"
+            }
+          ]
+        },
+        {
+          "typed": "sal",
+          "box": {
+            "x": 25,
+            "y": 75,
+            "w": 382,
+            "h": 50
+          },
+          "dropdown": {
+            "x": 26,
+            "y": 134,
+            "w": 380,
+            "h": 384
+          },
+          "items": [
+            {
+              "x": 34,
+              "y": 176,
+              "w": 364,
+              "h": 114,
+              "text": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N"
+            },
+            {
+              "x": 34,
+              "y": 290,
+              "w": 364,
+              "h": 114,
+              "text": "Salary Increase: A $50,000 [Original] nurse salary increased by 8% [Increase] becomes what"
+            },
+            {
+              "x": 34,
+              "y": 404,
+              "w": 364,
+              "h": 114,
+              "text": "Pre-Raise Salary: 10% [X] of what original base salary [Y] is a $5,000 [Z] raise? $50,000"
+            },
+            {
+              "x": 34,
+              "y": 518,
+              "w": 364,
+              "h": 114,
+              "text": "Sale Discount: 20% [X] off a $80 [Y] pair of designer denim jeans saves you how much [Z]? "
+            },
+            {
+              "x": 34,
+              "y": 632,
+              "w": 364,
+              "h": 134,
+              "text": "Salary Before Raise: What was the original startup salary [Original] before an 8% [Increas"
+            },
+            {
+              "x": 34,
+              "y": 766,
+              "w": 364,
+              "h": 154,
+              "text": "Salary Change: A Big Box store manager's salary increase from $50,000 [Original] to $54,00"
+            }
+          ]
+        },
+        {
+          "typed": "sale",
+          "box": {
+            "x": 25,
+            "y": 75,
+            "w": 382,
+            "h": 50
+          },
+          "dropdown": {
+            "x": 26,
+            "y": 134,
+            "w": 380,
+            "h": 384
+          },
+          "items": [
+            {
+              "x": 34,
+              "y": 176,
+              "w": 364,
+              "h": 114,
+              "text": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N"
+            },
+            {
+              "x": 34,
+              "y": 290,
+              "w": 364,
+              "h": 114,
+              "text": "Sale Discount: 20% [X] off a $80 [Y] pair of designer denim jeans saves you how much [Z]? "
+            },
+            {
+              "x": 34,
+              "y": 404,
+              "w": 364,
+              "h": 114,
+              "text": "Pre-Tax Amount: 8% [X] of what pre-tax amount [Y] is $16 [Z] sales tax? $200"
+            },
+            {
+              "x": 34,
+              "y": 518,
+              "w": 364,
+              "h": 134,
+              "text": "Performance Improvement: Monthly sales leads improving from 70 [Original] to 84 [New] repr"
+            },
+            {
+              "x": 34,
+              "y": 652,
+              "w": 364,
+              "h": 114,
+              "text": "Tax Calculation: 8% [X] NYC sales tax on a $250 [Y] pro wireless earbuds comes to how much"
+            },
+            {
+              "x": 34,
+              "y": 766,
+              "w": 364,
+              "h": 134,
+              "text": "Market Share: What is the leading EV maker's market share [X%] if total EV sales are $1,00"
+            }
+          ]
+        }
+      ],
+      "verified": {
+        "matchText": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N",
+        "matchRect": {
+          "x": 34,
+          "y": 176,
+          "w": 364,
+          "h": 114,
+          "text": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N"
+        }
+      }
+    },
+    "calc": {
+      "url": "https://justpercent.com/basic-percentage-calculator/#all",
+      "route": "basic-percentage-calculator",
+      "px": {
+        "x": 105,
+        "y": 345,
+        "w": 85,
+        "h": 42
+      },
+      "num": {
+        "x": 242,
+        "y": 345,
+        "w": 85,
+        "h": 42
+      },
+      "result": {
+        "x": 169,
+        "y": 448,
+        "w": 116,
+        "h": 35
+      },
+      "values": {
+        "percent": "25",
+        "number": "80",
+        "result": "20"
+      },
+      "pageH": 5294
+    },
+    "keys": {
+      "states": [
+        {
+          "name": "p2",
+          "values": {
+            "percent": "2",
+            "number": "250",
+            "result": "5"
+          }
+        },
+        {
+          "name": "p25",
+          "values": {
+            "percent": "25",
+            "number": "250",
+            "result": "62.5"
+          }
+        },
+        {
+          "name": "n8",
+          "values": {
+            "percent": "25",
+            "number": "8",
+            "result": "2"
+          }
+        },
+        {
+          "name": "n80",
+          "values": {
+            "percent": "25",
+            "number": "80",
+            "result": "20"
+          }
+        }
+      ]
+    },
+    "pu": {
+      "scrollY": 174.5,
+      "rows": [
+        {
+          "x": 40,
+          "y": 521,
+          "w": 368,
+          "h": 120,
+          "text": "Daily Nutritional Value:\n        40% [X]\n        of a standard\n        2000 [Y] "
+        }
+      ],
+      "clickedRow": {
+        "x": 40,
+        "y": 521,
+        "w": 368,
+        "h": 120,
+        "text": "Daily Nutritional Value:\n        40% [X]\n        of a standard\n        2000 [Y] "
+      },
+      "pinnedValues": {
+        "percent": "40",
+        "number": "2000",
+        "result": "800"
+      },
+      "result": {
+        "x": 169,
+        "y": 332,
+        "w": 116,
+        "h": 35
+      },
+      "resultClip": {
+        "x": 159,
+        "y": 322,
+        "w": 136,
+        "h": 55
+      }
+    },
+    "faq": {
+      "url": "https://justpercent.com/faqs/product-discount-calculator/",
+      "slug": "product-discount-calculator"
+    }
+  },
+  "light": {
+    "home": {
+      "search": {
+        "x": 25,
+        "y": 133,
+        "w": 382,
+        "h": 50
+      },
+      "pageH": 6030,
+      "right": {
+        "rect": {
+          "x": 8,
+          "y": 354,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 425,
+          "w": 290,
+          "h": 38
+        },
+        "scrollY": 32,
+        "clip": {
+          "x": 5,
+          "y": 351,
+          "w": 422,
+          "h": 124
+        },
+        "full": {
+          "x": 8,
+          "y": 386,
+          "w": 416,
+          "h": 118
+        }
+      },
+      "wrong": {
+        "rect": {
+          "x": 8,
+          "y": 354,
+          "w": 416,
+          "h": 118
+        },
+        "cta": {
+          "x": 125,
+          "y": 425,
+          "w": 290,
+          "h": 38
+        },
+        "scrollY": 280,
+        "clip": {
+          "x": 5,
+          "y": 351,
+          "w": 422,
+          "h": 124
+        },
+        "full": {
+          "x": 8,
+          "y": 634,
+          "w": 416,
+          "h": 118
+        }
+      }
+    },
+    "search": {
+      "query": "sale",
+      "states": [
+        {
+          "typed": "s",
+          "box": {
+            "x": 25,
+            "y": 75,
+            "w": 382,
+            "h": 50
+          },
+          "dropdown": {
+            "x": 27,
+            "y": 135,
+            "w": 378,
+            "h": 384
+          },
+          "items": [
+            {
+              "x": 35,
+              "y": 177,
+              "w": 362,
+              "h": 134,
+              "text": "Batting Average: What is the batting average [X%] for a pro baseball player with 100 [Y] a"
+            },
+            {
+              "x": 35,
+              "y": 311,
+              "w": 362,
+              "h": 134,
+              "text": "Budget (Pre-Cut): What was the original renovation budget [Original] before a 25% [Decreas"
+            },
+            {
+              "x": 35,
+              "y": 445,
+              "w": 362,
+              "h": 134,
+              "text": "Budget (Pre-Raise): What was the original wedding budget [Original] before a 25% [Increase"
+            },
+            {
+              "x": 35,
+              "y": 579,
+              "w": 362,
+              "h": 134,
+              "text": "Budget Boost: A $5,000 [Original] theme park vacation budget increased by 25% [Increase] b"
+            },
+            {
+              "x": 35,
+              "y": 713,
+              "w": 362,
+              "h": 114,
+              "text": "Budget Cut: A $10,000 [Original] party budget cut by 25% [Decrease] becomes what [New]? $7"
+            },
+            {
+              "x": 35,
+              "y": 827,
+              "w": 362,
+              "h": 114,
+              "text": "Daily Nutritional Value: 40% [X] of a standard 2,000 [Y] calorie diet is how many calories"
+            }
+          ]
+        },
+        {
+          "typed": "sa",
+          "box": {
+            "x": 25,
+            "y": 75,
+            "w": 382,
+            "h": 50
+          },
+          "dropdown": {
+            "x": 27,
+            "y": 135,
+            "w": 378,
+            "h": 384
+          },
+          "items": [
+            {
+              "x": 35,
+              "y": 177,
+              "w": 362,
+              "h": 114,
+              "text": "Sale Discount: 20% [X] off a $80 [Y] pair of designer denim jeans saves you how much [Z]? "
+            },
+            {
+              "x": 35,
+              "y": 291,
+              "w": 362,
+              "h": 134,
+              "text": "Savings Progress: What percentage [X%] of your $10,000 [Y] emergency fund have you reached"
+            },
+            {
+              "x": 35,
+              "y": 425,
+              "w": 362,
+              "h": 114,
+              "text": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N"
+            },
+            {
+              "x": 35,
+              "y": 539,
+              "w": 362,
+              "h": 114,
+              "text": "Salary Increase: A $50,000 [Original] nurse salary increased by 8% [Increase] becomes what"
+            },
+            {
+              "x": 35,
+              "y": 653,
+              "w": 362,
+              "h": 114,
+              "text": "Pre-Raise Salary: 10% [X] of what original base salary [Y] is a $5,000 [Z] raise? $50,000"
+            },
+            {
+              "x": 35,
+              "y": 767,
+              "w": 362,
+              "h": 134,
+              "text": "Salary Before Raise: What was the original startup salary [Original] before an 8% [Increas"
+            }
+          ]
+        },
+        {
+          "typed": "sal",
+          "box": {
+            "x": 25,
+            "y": 75,
+            "w": 382,
+            "h": 50
+          },
+          "dropdown": {
+            "x": 27,
+            "y": 135,
+            "w": 378,
+            "h": 384
+          },
+          "items": [
+            {
+              "x": 35,
+              "y": 177,
+              "w": 362,
+              "h": 114,
+              "text": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N"
+            },
+            {
+              "x": 35,
+              "y": 291,
+              "w": 362,
+              "h": 114,
+              "text": "Salary Increase: A $50,000 [Original] nurse salary increased by 8% [Increase] becomes what"
+            },
+            {
+              "x": 35,
+              "y": 405,
+              "w": 362,
+              "h": 114,
+              "text": "Pre-Raise Salary: 10% [X] of what original base salary [Y] is a $5,000 [Z] raise? $50,000"
+            },
+            {
+              "x": 35,
+              "y": 519,
+              "w": 362,
+              "h": 114,
+              "text": "Sale Discount: 20% [X] off a $80 [Y] pair of designer denim jeans saves you how much [Z]? "
+            },
+            {
+              "x": 35,
+              "y": 633,
+              "w": 362,
+              "h": 134,
+              "text": "Salary Before Raise: What was the original startup salary [Original] before an 8% [Increas"
+            },
+            {
+              "x": 35,
+              "y": 767,
+              "w": 362,
+              "h": 154,
+              "text": "Salary Change: A Big Box store manager's salary increase from $50,000 [Original] to $54,00"
+            }
+          ]
+        },
+        {
+          "typed": "sale",
+          "box": {
+            "x": 25,
+            "y": 75,
+            "w": 382,
+            "h": 50
+          },
+          "dropdown": {
+            "x": 27,
+            "y": 135,
+            "w": 378,
+            "h": 384
+          },
+          "items": [
+            {
+              "x": 35,
+              "y": 177,
+              "w": 362,
+              "h": 114,
+              "text": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N"
+            },
+            {
+              "x": 35,
+              "y": 291,
+              "w": 362,
+              "h": 114,
+              "text": "Sale Discount: 20% [X] off a $80 [Y] pair of designer denim jeans saves you how much [Z]? "
+            },
+            {
+              "x": 35,
+              "y": 405,
+              "w": 362,
+              "h": 114,
+              "text": "Pre-Tax Amount: 8% [X] of what pre-tax amount [Y] is $16 [Z] sales tax? $200"
+            },
+            {
+              "x": 35,
+              "y": 519,
+              "w": 362,
+              "h": 134,
+              "text": "Performance Improvement: Monthly sales leads improving from 70 [Original] to 84 [New] repr"
+            },
+            {
+              "x": 35,
+              "y": 653,
+              "w": 362,
+              "h": 114,
+              "text": "Tax Calculation: 8% [X] NYC sales tax on a $250 [Y] pro wireless earbuds comes to how much"
+            },
+            {
+              "x": 35,
+              "y": 767,
+              "w": 362,
+              "h": 134,
+              "text": "Market Share: What is the leading EV maker's market share [X%] if total EV sales are $1,00"
+            }
+          ]
+        }
+      ],
+      "verified": {
+        "matchText": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N",
+        "matchRect": {
+          "x": 35,
+          "y": 177,
+          "w": 362,
+          "h": 114,
+          "text": "Sale Discount: A $300 [Original] winter parka with a 30% [Decrease] discount costs what [N"
+        }
+      }
+    },
+    "calc": {
+      "url": "https://justpercent.com/basic-percentage-calculator/#all",
+      "route": "basic-percentage-calculator",
+      "px": {
+        "x": 105,
+        "y": 345,
+        "w": 85,
+        "h": 42
+      },
+      "num": {
+        "x": 242,
+        "y": 345,
+        "w": 85,
+        "h": 42
+      },
+      "result": {
+        "x": 169,
+        "y": 448,
+        "w": 116,
+        "h": 35
+      },
+      "values": {
+        "percent": "25",
+        "number": "80",
+        "result": "20"
+      },
+      "pageH": 5294
+    },
+    "keys": {
+      "states": [
+        {
+          "name": "p2",
+          "values": {
+            "percent": "2",
+            "number": "250",
+            "result": "5"
+          }
+        },
+        {
+          "name": "p25",
+          "values": {
+            "percent": "25",
+            "number": "250",
+            "result": "62.5"
+          }
+        },
+        {
+          "name": "n8",
+          "values": {
+            "percent": "25",
+            "number": "8",
+            "result": "2"
+          }
+        },
+        {
+          "name": "n80",
+          "values": {
+            "percent": "25",
+            "number": "80",
+            "result": "20"
+          }
+        }
+      ]
+    },
+    "pu": {
+      "scrollY": 174.5,
+      "rows": [
+        {
+          "x": 40,
+          "y": 521,
+          "w": 368,
+          "h": 120,
+          "text": "Daily Nutritional Value:\n        40% [X]\n        of a standard\n        2000 [Y] "
+        }
+      ],
+      "clickedRow": {
+        "x": 40,
+        "y": 521,
+        "w": 368,
+        "h": 120,
+        "text": "Daily Nutritional Value:\n        40% [X]\n        of a standard\n        2000 [Y] "
+      },
+      "pinnedValues": {
+        "percent": "40",
+        "number": "2000",
+        "result": "800"
+      },
+      "result": {
+        "x": 169,
+        "y": 332,
+        "w": 116,
+        "h": 35
+      },
+      "resultClip": {
+        "x": 159,
+        "y": 322,
+        "w": 136,
+        "h": 55
+      }
+    },
+    "faq": {
+      "url": "https://justpercent.com/faqs/product-discount-calculator/",
+      "slug": "product-discount-calculator"
+    }
+  }
+}
