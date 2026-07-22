@@ -136,6 +136,13 @@
   // the presentation itself, measured in the scrolled-to-card frame
   P.presChg.y -= SCROLL_CARD * SCALE;
 
+  // #tip-bill scrub: the cursor TIP (svg apex ≈ (11,7) of the 74-box → lands
+  // at (x+1, y-3) of the placement point) rides the field's BOTTOM edge
+  var billRect = $('#tip-bill').getBoundingClientRect();
+  var kBill = view.getBoundingClientRect().width / 540;
+  var BILL_W = billRect.width / kBill;
+  var BILL_EDGE = P.bill.y + billRect.height / (2 * kBill) + 3;
+
   // PU-state tooltips, parked once for the layout they are visible in
   // (presentation open, hint dismissed)
   measureShown(presChgEl, 'block', function () {
@@ -472,10 +479,10 @@
   ft('#capF', { autoAlpha: 0, y: 44, scale: 1.25 },
               { autoAlpha: 1, y: 0, scale: 1, duration: 0.3, ease: 'power4.out' }, 32.05);
   // scrub the car price: 80000 → 90000, everything recomputes live (sync drives the numbers)
-  ft('#cursor', { autoAlpha: 0, x: P.bill.x + 120, y: P.bill.y + 120 },
-               { autoAlpha: 1, x: P.bill.x + 4, y: P.bill.y + 6, duration: 0.4, ease: 'power2.out' }, 31.98);
+  ft('#cursor', { autoAlpha: 0, x: P.bill.x + 120, y: BILL_EDGE + 120 },
+               { autoAlpha: 1, x: P.bill.x - BILL_W / 2, y: BILL_EDGE, duration: 0.4, ease: 'power2.out' }, 31.98);
   press(32.42);
-  tl.to('#cursor', { x: P.bill.x + 46, duration: 0.72, ease: 'power1.inOut' }, 32.48, IR);
+  tl.to('#cursor', { x: P.bill.x + BILL_W / 2, duration: 0.72, ease: 'power1.inOut' }, 32.48, IR);
   ft('#cursor', { }, { rotation: -10, duration: 0.2 }, 32.44);
   ft('#cursor', { }, { rotation: 0, duration: 0.2 }, 33.2);
   pop('#sfx-brrp', 32.56, 0.72);
@@ -595,6 +602,9 @@
     if (t < 21.9) q = '';
     if (els.searchTyped.textContent !== q) els.searchTyped.textContent = q;
     els.searchGhost.style.opacity = (focused || q.length) ? '0' : '1';
+    // caret sits right after the typed characters; drop it from the flow when
+    // unfocused so the (hidden) caret never shifts the placeholder ghost
+    els.searchCursor.style.display = focused ? 'inline' : 'none';
     els.searchCursor.style.opacity = (focused && (Math.floor(t * 2.5) % 2 === 0)) ? '1' : '0';
     dropdown.style.display = (t >= 23.55 && t < 25.0) ? 'block' : 'none';
 

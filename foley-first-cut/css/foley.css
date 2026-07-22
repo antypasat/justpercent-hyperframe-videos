@@ -319,6 +319,7 @@ html, body { background: #000; }
   position: absolute; left: 0; top: 0;
   width: 74px; height: 74px;
   margin: -10px 0 0 -10px;
+  transform-origin: 11px 7px; /* the arrow TIP — press/rotate keep the tip planted */
   opacity: 0;
   will-change: transform, opacity;
   filter: drop-shadow(0 14px 22px rgba(49, 10, 101, 0.4));
