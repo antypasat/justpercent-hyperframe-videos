@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>justpercent.com — discount stack gotcha</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      body {
+        font-family: "Inter", system-ui, sans-serif;
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      video.footage {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      video.insert-seg {
+        filter: saturate(0.92) contrast(0.97);
+      }
+      /* --- insert overlay: browser bar + grain + vignette ---------------- */
+      #insert-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        pointer-events: none;
+      }
+      #insert-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 108px;
+        background: rgba(246, 246, 248, 0.96);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+      }
+      #insert-bar .pill {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 22px;
+        padding: 14px 34px;
+        font-size: 34px;
+        font-weight: 700;
+        color: #1c1c1e;
+        letter-spacing: 0.2px;
+      }
+      #insert-bar .lock {
+        font-size: 28px;
+      }
+      #insert-grain {
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='280' height='280' filter='url(%23n)'/></svg>")
+          repeat;
+        opacity: 0.07;
+        mix-blend-mode: overlay;
+      }
+      #insert-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 120% 105% at 50% 45%,
+          transparent 62%,
+          rgba(0, 0, 0, 0.14) 100%
+        );
+      }
+      /* --- captions ------------------------------------------------------- */
+      .caption {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 430px;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        pointer-events: none;
+      }
+      .caption span {
+        display: inline-block;
+        max-width: 920px;
+        text-align: center;
+        font-size: 64px;
+        line-height: 1.18;
+        font-weight: 900;
+        color: #fff;
+        -webkit-text-stroke: 2px rgba(0, 0, 0, 0.85);
+        paint-order: stroke fill;
+        text-shadow:
+          0 3px 14px rgba(0, 0, 0, 0.55),
+          0 0 2px rgba(0, 0, 0, 0.9);
+      }
+      /* --- CTA pill -------------------------------------------------------- */
+      #cta {
+        position: absolute;
+        top: 250px;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        pointer-events: none;
+      }
+      #cta-pill {
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        font-size: 44px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        padding: 18px 44px;
+        border-radius: 999px;
+        backdrop-filter: blur(6px);
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-63x6" id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="48.8">
+      <!-- footage: track 0 -->
+      <video data-hf-id="hf-lid5" id="vid-a" class="footage" src="assets/A1.mp4" data-start="0" data-duration="14.07" data-track-index="0" muted playsinline></video>
+      <video data-hf-id="hf-v2c9" id="vid-b" class="footage" src="assets/B1.mp4" data-start="14.07" data-duration="10.05" data-track-index="0" muted playsinline></video>
+      <video data-hf-id="hf-pacu" id="ins-1" class="footage insert-seg" src="assets/insert.webm" data-start="24.12" data-duration="3.2" data-media-start="7.2" data-track-index="0" muted playsinline></video>
+      <video data-hf-id="hf-nc1q" id="ins-2" class="footage insert-seg" src="assets/insert.webm" data-start="27.32" data-duration="2.4" data-media-start="11.0" data-track-index="0" muted playsinline></video>
+      <video data-hf-id="hf-6wv7" id="ins-3" class="footage insert-seg" src="assets/insert.webm" data-start="29.72" data-duration="4.6" data-media-start="19.4" data-track-index="0" muted playsinline></video>
+      <video data-hf-id="hf-jdsd" id="ins-4" class="footage insert-seg" src="assets/insert.webm" data-start="34.32" data-duration="2.4" data-media-start="25.4" data-track-index="0" muted playsinline></video>
+      <video data-hf-id="hf-bpxt" id="vid-c" class="footage" src="assets/C1.mp4" data-start="36.72" data-duration="12.05" data-track-index="0" muted playsinline></video>
+
+      <!-- insert chrome: track 1 -->
+      <div data-hf-id="hf-tko7" id="insert-overlay" class="clip" data-start="24.12" data-duration="12.6" data-track-index="1">
+        <div data-hf-id="hf-up54" id="insert-grain"></div>
+        <div data-hf-id="hf-kujp" id="insert-vignette"></div>
+        <div data-hf-id="hf-txbe" id="insert-bar">
+          <div data-hf-id="hf-kndt" class="pill"><span data-hf-id="hf-8f6v" class="lock">🔒</span><span data-hf-id="hf-2fcb">justpercent.com</span></div>
+        </div>
+      </div>
+
+      <!-- CTA pill: track 2 -->
+      <div data-hf-id="hf-m8ib" id="cta" class="clip" data-start="47.15" data-duration="1.65" data-track-index="2">
+        <div data-hf-id="hf-8gk5" id="cta-pill">justpercent.com</div>
+      </div>
+
+      <!-- captions: track 3 -->
+      <div data-hf-id="hf-hba2" id="cap-0" class="clip caption" data-start="0.10" data-duration="0.96" data-track-index="3"><span data-hf-id="hf-lvtv">Okay,</span></div>
+      <div data-hf-id="hf-pilj" id="cap-1" class="clip caption" data-start="1.06" data-duration="1.04" data-track-index="3"><span data-hf-id="hf-szyg">so this store</span></div>
+      <div data-hf-id="hf-86w3" id="cap-2" class="clip caption" data-start="2.10" data-duration="0.88" data-track-index="3"><span data-hf-id="hf-tod1">almost got me</span></div>
+      <div data-hf-id="hf-lzg5" id="cap-3" class="clip caption" data-start="2.98" data-duration="0.72" data-track-index="3"><span data-hf-id="hf-3zf0">today.</span></div>
+      <div data-hf-id="hf-dqv8" id="cap-4" class="clip caption" data-start="3.70" data-duration="1.76" data-track-index="3"><span data-hf-id="hf-vmn5">Forty percent off,</span></div>
+      <div data-hf-id="hf-nzpg" id="cap-5" class="clip caption" data-start="5.46" data-duration="0.80" data-track-index="3"><span data-hf-id="hf-8tvb">then an extra</span></div>
+      <div data-hf-id="hf-f3a4" id="cap-6" class="clip caption" data-start="6.26" data-duration="0.80" data-track-index="3"><span data-hf-id="hf-enfm">twenty percent at</span></div>
+      <div data-hf-id="hf-86x4" id="cap-7" class="clip caption" data-start="7.06" data-duration="0.88" data-track-index="3"><span data-hf-id="hf-evlr">the register,</span></div>
+      <div data-hf-id="hf-tjpf" id="cap-8" class="clip caption" data-start="7.94" data-duration="0.96" data-track-index="3"><span data-hf-id="hf-6gnx">so that's sixty</span></div>
+      <div data-hf-id="hf-tisz" id="cap-9" class="clip caption" data-start="8.90" data-duration="0.96" data-track-index="3"><span data-hf-id="hf-6k29">percent off,</span></div>
+      <div data-hf-id="hf-ld59" id="cap-10" class="clip caption" data-start="9.86" data-duration="2.56" data-track-index="3"><span data-hf-id="hf-9p0y">right?</span></div>
+      <div data-hf-id="hf-a336" id="cap-11" class="clip caption" data-start="12.42" data-duration="0.72" data-track-index="3"><span data-hf-id="hf-poi9">It's not,</span></div>
+      <div data-hf-id="hf-fsaz" id="cap-12" class="clip caption" data-start="13.14" data-duration="0.98" data-track-index="3"><span data-hf-id="hf-s5cm">it's not sixty.</span></div>
+      <div data-hf-id="hf-noll" id="cap-13" class="clip caption" data-start="14.25" data-duration="0.72" data-track-index="3"><span data-hf-id="hf-7m01">So my sister</span></div>
+      <div data-hf-id="hf-yvle" id="cap-14" class="clip caption" data-start="14.97" data-duration="0.64" data-track-index="3"><span data-hf-id="hf-py7m">sends me this</span></div>
+      <div data-hf-id="hf-ja8g" id="cap-15" class="clip caption" data-start="15.61" data-duration="0.96" data-track-index="3"><span data-hf-id="hf-cooi">website where you</span></div>
+      <div data-hf-id="hf-rtna" id="cap-16" class="clip caption" data-start="16.57" data-duration="1.12" data-track-index="3"><span data-hf-id="hf-ghbs">just type in</span></div>
+      <div data-hf-id="hf-2rm3" id="cap-17" class="clip caption" data-start="17.69" data-duration="1.70" data-track-index="3"><span data-hf-id="hf-ddtd">your exact situation</span></div>
+      <div data-hf-id="hf-d0nl" id="cap-18" class="clip caption" data-start="19.93" data-duration="0.80" data-track-index="3"><span data-hf-id="hf-5emr">and it just</span></div>
+      <div data-hf-id="hf-mvwd" id="cap-19" class="clip caption" data-start="20.73" data-duration="1.04" data-track-index="3"><span data-hf-id="hf-nujw">tells you with</span></div>
+      <div data-hf-id="hf-9hhl" id="cap-20" class="clip caption" data-start="21.77" data-duration="0.64" data-track-index="3"><span data-hf-id="hf-1r5c">the math.</span></div>
+      <div data-hf-id="hf-9xp5" id="cap-21" class="clip caption" data-start="22.41" data-duration="0.96" data-track-index="3"><span data-hf-id="hf-ezs7">Like I'm five.</span></div>
+      <div data-hf-id="hf-s0l1" id="cap-22" class="clip caption" data-start="23.37" data-duration="0.82" data-track-index="3"><span data-hf-id="hf-smkh">I love it.</span></div>
+      <div data-hf-id="hf-qq15" id="cap-23" class="clip caption" data-start="36.82" data-duration="1.20" data-track-index="3"><span data-hf-id="hf-apb0">Turns out 40%</span></div>
+      <div data-hf-id="hf-e1xl" id="cap-24" class="clip caption" data-start="38.02" data-duration="0.88" data-track-index="3"><span data-hf-id="hf-ao3w">plus another 20</span></div>
+      <div data-hf-id="hf-sjyi" id="cap-25" class="clip caption" data-start="38.90" data-duration="1.28" data-track-index="3"><span data-hf-id="hf-n2dm">is 52% off,</span></div>
+      <div data-hf-id="hf-jdwd" id="cap-26" class="clip caption" data-start="40.18" data-duration="0.88" data-track-index="3"><span data-hf-id="hf-aui6">not 60.</span></div>
+      <div data-hf-id="hf-budx" id="cap-27" class="clip caption" data-start="41.06" data-duration="1.04" data-track-index="3"><span data-hf-id="hf-kmju">They're literally counting</span></div>
+      <div data-hf-id="hf-trf1" id="cap-28" class="clip caption" data-start="42.10" data-duration="0.48" data-track-index="3"><span data-hf-id="hf-qd0a">on you not</span></div>
+      <div data-hf-id="hf-r7z0" id="cap-29" class="clip caption" data-start="42.58" data-duration="1.14" data-track-index="3"><span data-hf-id="hf-syh3">doing the math.</span></div>
+      <div data-hf-id="hf-0j79" id="cap-30" class="clip caption" data-start="44.18" data-duration="0.96" data-track-index="3"><span data-hf-id="hf-94fg">Anyway,</span></div>
+      <div data-hf-id="hf-vufw" id="cap-31" class="clip caption" data-start="45.14" data-duration="0.80" data-track-index="3"><span data-hf-id="hf-ok3e">it's free.</span></div>
+      <div data-hf-id="hf-nnb2" id="cap-32" class="clip caption" data-start="45.94" data-duration="1.20" data-track-index="3"><span data-hf-id="hf-bwnf">justpercent.com</span></div>
+      <div data-hf-id="hf-2fqk" id="cap-33" class="clip caption" data-start="47.14" data-duration="0.40" data-track-index="3"><span data-hf-id="hf-i8o3">Okay,</span></div>
+      <div data-hf-id="hf-3jqv" id="cap-34" class="clip caption" data-start="47.54" data-duration="0.66" data-track-index="3"><span data-hf-id="hf-69z7">bye.</span></div>
+
+      <!-- audio: tracks 10-11 -->
+      <audio data-hf-id="hf-mv8u" id="aud-a" src="assets/A1.mp4" data-start="0" data-duration="14.07" data-track-index="10" data-volume="1"></audio>
+      <audio data-hf-id="hf-qviy" id="aud-b" src="assets/B1.mp4" data-start="14.07" data-duration="10.05" data-track-index="10" data-volume="1"></audio>
+      <audio data-hf-id="hf-6w4i" id="aud-c" src="assets/C1.mp4" data-start="36.72" data-duration="12.05" data-track-index="10" data-volume="1"></audio>
+      <audio data-hf-id="hf-khn1" id="aud-room" src="assets/room-tone.wav" data-start="24.12" data-duration="12.6" data-track-index="11" data-volume="0.8"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Caption pop-in: tiny scale/settle on each caption's span at its start time.
+      document.querySelectorAll(".caption").forEach((cap) => {
+        const t = parseFloat(cap.getAttribute("data-start"));
+        const span = cap.querySelector("span");
+        tl.fromTo(
+          span,
+          { scale: 0.9 },
+          { scale: 1, duration: 0.18, ease: "back.out(2.5)" },
+          t
+        );
+      });
+
+      // CTA pill: fade/slide in when she says the domain.
+      tl.fromTo(
+        "#cta-pill",
+        { autoAlpha: 0, y: 24 },
+        { autoAlpha: 1, y: 0, duration: 0.45, ease: "power3.out" },
+        47.2
+      );
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
