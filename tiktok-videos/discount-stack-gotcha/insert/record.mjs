@@ -1,5 +1,5 @@
 // Records the real-app insert for the TikTok short (segment 17-27s).
-// Flow: justpercent.com home -> search "double discount" -> click Successive Discounts FAQ
+// Flow: justpercent.com home -> search "stacked discounts" -> click Successive Discounts FAQ
 // -> type 40 / 20 -> live answer $96 / 52% -> slow scroll through explanation.
 // Raw recording is intentionally long; it gets trimmed in the edit.
 import { createRequire } from "module";
@@ -8,7 +8,7 @@ const { chromium } = require("@playwright/test");
 import { rename, readdir } from "fs/promises";
 
 const OUT_DIR = new URL("./recording/", import.meta.url).pathname;
-const PHRASE = "double discount";
+const PHRASE = "stacked discounts";
 
 const browser = await chromium.launch();
 const ctx = await browser.newContext({
@@ -41,6 +41,14 @@ await ctx.addInitScript(() => {
   };
   document.addEventListener("DOMContentLoaded", hide);
   setInterval(hide, 500);
+  // Force English (US) locale (dot decimal separator) before app boots — US-market video
+  try {
+    const k = "jp:config:v1";
+    const cfg = JSON.parse(localStorage.getItem(k) || "{}");
+    cfg.locale = "us";
+    cfg.theme = "light";
+    localStorage.setItem(k, JSON.stringify(cfg));
+  } catch {}
 });
 
 const human = (ms) => ms + Math.floor(Math.random() * 120);
@@ -61,8 +69,8 @@ for (const ch of PHRASE) {
 }
 await page.waitForTimeout(2600); // let FAQ semantic results settle
 
-// --- 3. Find + click the Successive Discounts FAQ row ---------------------
-const target = page.locator('[id^="search-item-"]', { hasText: "Successive Discounts" }).first();
+// --- 3. Find + click the Stacked Discounts FAQ row (sole dropdown result) --
+const target = page.locator('[id^="search-item-"]', { hasText: "Stacked Discounts" }).first();
 await target.waitFor({ state: "visible", timeout: 10000 }).catch(async () => {
   await target.scrollIntoViewIfNeeded();
 });
@@ -85,6 +93,7 @@ await page.waitForTimeout(1500);
 // --- 5. Type the story's numbers: 40 then 20 -------------------------------
 const d1 = page.locator("#discount-one").first();
 await d1.click({ clickCount: 3 });
+await page.keyboard.press("ControlOrMeta+a"); // fields now have defaults; triple-click alone doesn't select in touch context
 await page.waitForTimeout(500);
 for (const ch of "40") {
   await page.keyboard.type(ch);
@@ -94,6 +103,7 @@ await page.waitForTimeout(900);
 
 const d2 = page.locator("#discount-two").first();
 await d2.click({ clickCount: 3 });
+await page.keyboard.press("ControlOrMeta+a");
 await page.waitForTimeout(500);
 for (const ch of "20") {
   await page.keyboard.type(ch);
@@ -134,7 +144,7 @@ await browser.close();
 
 // Rename the produced webm to a stable name
 const files = await readdir(OUT_DIR);
-const webm = files.find((f) => f.endsWith(".webm"));
+const webm = files.find((f) => f.endsWith(".webm") && f !== "insert-raw.webm");
 if (webm) {
   await rename(OUT_DIR + webm, OUT_DIR + "insert-raw.webm");
   console.log("saved:", OUT_DIR + "insert-raw.webm");
